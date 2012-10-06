@@ -1,0 +1,112 @@
+<html lang="en">
+<head>
+<title>Advanced macros Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Literal-Tutorial.html#Literal-Tutorial" title="Literal Tutorial">
+<link rel="next" href="Compilation-Tokens-Tutorial.html#Compilation-Tokens-Tutorial" title="Compilation Tokens Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Advanced-macros-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Compilation-Tokens-Tutorial.html#Compilation-Tokens-Tutorial">Compilation Tokens Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Literal-Tutorial.html#Literal-Tutorial">Literal Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.35 Advanced macros</h3>
+
+<p><a name="index-macros_002c-advanced-tutorial-130"></a><a name="index-run_002dtime-code-generation_002c-tutorial-131"></a>
+Reconsider <code>map-array</code> from <a href="Execution-Tokens-Tutorial.html#Execution-Tokens-Tutorial">Execution Tokens</a>.  It frequently performs <code>execute</code>, a relatively
+expensive operation in some Forth implementations.  You can use
+<code>compile,</code> and <code>POSTPONE</code> to eliminate these <code>execute</code>s
+and produce a word that contains the word to be performed directly:
+
+<!-- use ]] ... [[ -->
+<pre class="example">     : compile-map-array ( compilation: xt -- ; run-time: ... addr u -- ... )
+     \ at run-time, execute xt ( ... x -- ... ) for each element of the
+     \ array beginning at addr and containing u elements
+       { xt }
+       POSTPONE cells POSTPONE over POSTPONE + POSTPONE swap POSTPONE ?do
+         POSTPONE i POSTPONE @ xt compile,
+       1 cells POSTPONE literal POSTPONE +loop ;
+     
+     : sum-array ( addr u -- n )
+      0 rot rot [ ' + compile-map-array ] ;
+     see sum-array
+     a 5 sum-array .
+</pre>
+   <p>You can use the full power of Forth for generating the code; here's an
+example where the code is generated in a loop:
+
+<pre class="example">     : compile-vmul-step ( compilation: n --; run-time: n1 addr1 -- n2 addr2 )
+     \ n2=n1+(addr1)*n, addr2=addr1+cell
+       POSTPONE tuck POSTPONE @
+       POSTPONE literal POSTPONE * POSTPONE +
+       POSTPONE swap POSTPONE cell+ ;
+     
+     : compile-vmul ( compilation: addr1 u -- ; run-time: addr2 -- n )
+     \ n=v1*v2 (inner product), where the v_i are represented as addr_i u
+       0 postpone literal postpone swap
+       [ ' compile-vmul-step compile-map-array ]
+       postpone drop ;
+     see compile-vmul
+     
+     : a-vmul ( addr -- n )
+     \ n=a*v, where v is a vector that's as long as a and starts at addr
+      [ a 5 compile-vmul ] ;
+     see a-vmul
+     a a-vmul .
+</pre>
+   <p>This example uses <code>compile-map-array</code> to show off, but you could
+also use <code>map-array</code> instead (try it now!).
+
+   <p>You can use this technique for efficient multiplication of large
+matrices.  In matrix multiplication, you multiply every line of one
+matrix with every column of the other matrix.  You can generate the code
+for one line once, and use it for every column.  The only downside of
+this technique is that it is cumbersome to recover the memory consumed
+by the generated code when you are done (and in more complicated cases
+it is not possible portably).
+
+<!-- !! @xref{Macros} for reference -->
+</body></html>
+

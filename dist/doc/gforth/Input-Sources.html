@@ -1,0 +1,122 @@
+<html lang="en">
+<head>
+<title>Input Sources - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-Text-Interpreter.html#The-Text-Interpreter" title="The Text Interpreter">
+<link rel="prev" href="The-Text-Interpreter.html#The-Text-Interpreter" title="The Text Interpreter">
+<link rel="next" href="Number-Conversion.html#Number-Conversion" title="Number Conversion">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Input-Sources"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Number-Conversion.html#Number-Conversion">Number Conversion</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="The-Text-Interpreter.html#The-Text-Interpreter">The Text Interpreter</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-Text-Interpreter.html#The-Text-Interpreter">The Text Interpreter</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.13.1 Input Sources</h4>
+
+<p><a name="index-input-sources-1453"></a><a name="index-text-interpreter-_002d-input-sources-1454"></a>
+By default, the text interpreter processes input from the user input
+device (the keyboard) when Forth starts up. The text interpreter can
+process input from any of these sources:
+
+     <ul>
+<li>The user input device &ndash; the keyboard. 
+<li>A file, using the words described in <a href="Forth-source-files.html#Forth-source-files">Forth source files</a>. 
+<li>A block, using the words described in <a href="Blocks.html#Blocks">Blocks</a>. 
+<li>A text string, using <code>evaluate</code>. 
+</ul>
+
+   <p>A program can identify the current input device from the values of
+<code>source-id</code> and <code>blk</code>.
+
+   <p><a name="index-source_002did-_0040var_007b-_002d_002d-0-_007c-_002d1-_007c-fileid---_007d--core_002dext_002cfile-1455"></a><a name="index-g_t_0040code_007bsource_002did_007d-1456"></a><a name="index-source_002did-1457"></a>
+<pre class="format"><code>source-id</code>       <i>&ndash; 0 | -1 | fileid  </i>       core-ext,file       &ldquo;source-i-d&rdquo;
+</pre>
+   <p>Return 0 (the input source is the user input device), -1 (the
+input source is a string being processed by <code>evaluate</code>) or
+a <i>fileid</i> (the input source is the file specified by
+<i>fileid</i>).
+
+   <p><a name="index-blk-_0040var_007b-_002d_002d-addr---_007d--block-1458"></a><a name="index-g_t_0040code_007bblk_007d-1459"></a><a name="index-blk-1460"></a>
+<pre class="format"><code>blk</code>       <i>&ndash; addr  </i>       block       &ldquo;b-l-k&rdquo;
+</pre>
+   <p><code>input-var</code> variable &ndash; This cell contains the current
+block number
+
+   <p><a name="index-save_002dinput-_0040var_007b-_002d_002d-x1-_002e_002e-xn-n---_007d--core_002dext-1461"></a><a name="index-g_t_0040code_007bsave_002dinput_007d-1462"></a><a name="index-save_002dinput-1463"></a>
+<pre class="format"><code>save-input</code>       <i>&ndash; x1 .. xn n  </i>       core-ext       &ldquo;save-input&rdquo;
+</pre>
+   <p>The <i>n</i> entries <i>xn - x1</i> describe the current state of the
+input source specification, in some platform-dependent way that can
+be used by <code>restore-input</code>.
+
+   <p><a name="index-restore_002dinput-_0040var_007b-x1-_002e_002e-xn-n-_002d_002d-flag---_007d--core_002dext-1464"></a><a name="index-g_t_0040code_007brestore_002dinput_007d-1465"></a><a name="index-restore_002dinput-1466"></a>
+<pre class="format"><code>restore-input</code>       <i>x1 .. xn n &ndash; flag  </i>       core-ext       &ldquo;restore-input&rdquo;
+</pre>
+   <p>Attempt to restore the input source specification to the state
+described by the <i>n</i> entries <i>xn - x1</i>. <i>flag</i> is true if
+the restore fails.  In Gforth with the new input code, it fails
+only with a flag that can be used to throw again; it is also
+possible to save and restore between different active input
+streams. Note that closing the input streams must happen in the
+reverse order as they have been opened, but in between
+everything is allowed.
+
+   <p><a name="index-evaluate-_0040var_007b-_002e_002e_002e-addr-u-_002d_002d-_002e_002e_002e---_007d--core_002cblock-1467"></a><a name="index-g_t_0040code_007bevaluate_007d-1468"></a><a name="index-evaluate-1469"></a>
+<pre class="format"><code>evaluate</code>       <i>... addr u &ndash; ...  </i>       core,block       &ldquo;evaluate&rdquo;
+</pre>
+   <p>Save the current input source specification. Store <code>-1</code> in
+<code>source-id</code> and <code>0</code> in <code>blk</code>. Set <code>&gt;IN</code> to
+<code>0</code> and make the string <i>c-addr u</i> the input source and
+input buffer. Interpret. When the parse area is empty, restore the
+input source specification.
+
+   <p><a name="index-query-_0040var_007b-_002d_002d---_007d--core_002dext_002dobsolescent-1470"></a><a name="index-g_t_0040code_007bquery_007d-1471"></a><a name="index-query-1472"></a>
+<pre class="format"><code>query</code>       <i>&ndash;  </i>       core-ext-obsolescent       &ldquo;query&rdquo;
+</pre>
+   <p>Make the user input device the input source. Receive input into
+the Terminal Input Buffer. Set <code>&gt;IN</code> to zero. OBSOLESCENT:
+superceeded by <code>accept</code>.
+
+   </body></html>
+

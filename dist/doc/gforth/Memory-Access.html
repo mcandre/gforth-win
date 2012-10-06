@@ -1,0 +1,157 @@
+<html lang="en">
+<head>
+<title>Memory Access - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Memory.html#Memory" title="Memory">
+<link rel="prev" href="Heap-Allocation.html#Heap-Allocation" title="Heap Allocation">
+<link rel="next" href="Address-arithmetic.html#Address-arithmetic" title="Address arithmetic">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Memory-Access"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Address-arithmetic.html#Address-arithmetic">Address arithmetic</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Heap-Allocation.html#Heap-Allocation">Heap Allocation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Memory.html#Memory">Memory</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.7.4 Memory Access</h4>
+
+<p><a name="index-memory-access-words-832"></a>
+<a name="index-g_t_0040_0040-_0040var_007b-a_002daddr-_002d_002d-w--_007d--core-833"></a><a name="index-g_t_0040code_007b_0040_0040_007d-834"></a><a name="index-g_t_0040_0040-835"></a>
+<pre class="format"><code>@</code>       <i>a-addr &ndash; w </i>       core       &ldquo;fetch&rdquo;
+</pre>
+   <p><i>w</i> is the cell stored at <i>a_addr</i>.
+
+   <p><a name="index-g_t_0021-_0040var_007b-w-a_002daddr-_002d_002d--_007d--core-836"></a><a name="index-g_t_0040code_007b_0021_007d-837"></a><a name="index-g_t_0021-838"></a>
+<pre class="format"><code>!</code>       <i>w a-addr &ndash; </i>       core       &ldquo;store&rdquo;
+</pre>
+   <p>Store <i>w</i> into the cell at <i>a-addr</i>.
+
+   <p><a name="index-g_t_002b_0021-_0040var_007b-n-a_002daddr-_002d_002d--_007d--core-839"></a><a name="index-g_t_0040code_007b_002b_0021_007d-840"></a><a name="index-g_t_002b_0021-841"></a>
+<pre class="format"><code>+!</code>       <i>n a-addr &ndash; </i>       core       &ldquo;plus-store&rdquo;
+</pre>
+   <p>Add <i>n</i> to the cell at <i>a-addr</i>.
+
+   <p><a name="index-c_0040_0040-_0040var_007b-c_002daddr-_002d_002d-c--_007d--core-842"></a><a name="index-g_t_0040code_007bc_0040_0040_007d-843"></a><a name="index-c_0040_0040-844"></a>
+<pre class="format"><code>c@</code>       <i>c-addr &ndash; c </i>       core       &ldquo;c-fetch&rdquo;
+</pre>
+   <p><i>c</i> is the char stored at <i>c_addr</i>.
+
+   <p><a name="index-c_0021-_0040var_007b-c-c_002daddr-_002d_002d--_007d--core-845"></a><a name="index-g_t_0040code_007bc_0021_007d-846"></a><a name="index-c_0021-847"></a>
+<pre class="format"><code>c!</code>       <i>c c-addr &ndash; </i>       core       &ldquo;c-store&rdquo;
+</pre>
+   <p>Store <i>c</i> into the char at <i>c-addr</i>.
+
+   <p><a name="index-g_t2_0040_0040-_0040var_007b-a_002daddr-_002d_002d-w1-w2--_007d--core-848"></a><a name="index-g_t_0040code_007b2_0040_0040_007d-849"></a><a name="index-g_t2_0040_0040-850"></a>
+<pre class="format"><code>2@</code>       <i>a-addr &ndash; w1 w2 </i>       core       &ldquo;two-fetch&rdquo;
+</pre>
+   <p><i>w2</i> is the content of the cell stored at <i>a-addr</i>, <i>w1</i> is
+the content of the next cell.
+
+   <p><a name="index-g_t2_0021-_0040var_007b-w1-w2-a_002daddr-_002d_002d--_007d--core-851"></a><a name="index-g_t_0040code_007b2_0021_007d-852"></a><a name="index-g_t2_0021-853"></a>
+<pre class="format"><code>2!</code>       <i>w1 w2 a-addr &ndash; </i>       core       &ldquo;two-store&rdquo;
+</pre>
+   <p>Store <i>w2</i> into the cell at <i>c-addr</i> and <i>w1</i> into the next cell.
+
+   <p><a name="index-f_0040_0040-_0040var_007b-f_002daddr-_002d_002d-r--_007d--float-854"></a><a name="index-g_t_0040code_007bf_0040_0040_007d-855"></a><a name="index-f_0040_0040-856"></a>
+<pre class="format"><code>f@</code>       <i>f-addr &ndash; r </i>       float       &ldquo;f-fetch&rdquo;
+</pre>
+   <p><i>r</i> is the float at address <i>f-addr</i>.
+
+   <p><a name="index-f_0021-_0040var_007b-r-f_002daddr-_002d_002d--_007d--float-857"></a><a name="index-g_t_0040code_007bf_0021_007d-858"></a><a name="index-f_0021-859"></a>
+<pre class="format"><code>f!</code>       <i>r f-addr &ndash; </i>       float       &ldquo;f-store&rdquo;
+</pre>
+   <p>Store <i>r</i> into the float at address <i>f-addr</i>.
+
+   <p><a name="index-sf_0040_0040-_0040var_007b-sf_002daddr-_002d_002d-r--_007d--float_002dext-860"></a><a name="index-g_t_0040code_007bsf_0040_0040_007d-861"></a><a name="index-sf_0040_0040-862"></a>
+<pre class="format"><code>sf@</code>       <i>sf-addr &ndash; r </i>       float-ext       &ldquo;s-f-fetch&rdquo;
+</pre>
+   <p>Fetch the single-precision IEEE floating-point value <i>r</i> from the address <i>sf-addr</i>.
+
+   <p><a name="index-sf_0021-_0040var_007b-r-sf_002daddr-_002d_002d--_007d--float_002dext-863"></a><a name="index-g_t_0040code_007bsf_0021_007d-864"></a><a name="index-sf_0021-865"></a>
+<pre class="format"><code>sf!</code>       <i>r sf-addr &ndash; </i>       float-ext       &ldquo;s-f-store&rdquo;
+</pre>
+   <p>Store <i>r</i> as single-precision IEEE floating-point value to the
+address <i>sf-addr</i>.
+
+   <p><a name="index-df_0040_0040-_0040var_007b-df_002daddr-_002d_002d-r--_007d--float_002dext-866"></a><a name="index-g_t_0040code_007bdf_0040_0040_007d-867"></a><a name="index-df_0040_0040-868"></a>
+<pre class="format"><code>df@</code>       <i>df-addr &ndash; r </i>       float-ext       &ldquo;d-f-fetch&rdquo;
+</pre>
+   <p>Fetch the double-precision IEEE floating-point value <i>r</i> from the address <i>df-addr</i>.
+
+   <p><a name="index-df_0021-_0040var_007b-r-df_002daddr-_002d_002d--_007d--float_002dext-869"></a><a name="index-g_t_0040code_007bdf_0021_007d-870"></a><a name="index-df_0021-871"></a>
+<pre class="format"><code>df!</code>       <i>r df-addr &ndash; </i>       float-ext       &ldquo;d-f-store&rdquo;
+</pre>
+   <p>Store <i>r</i> as double-precision IEEE floating-point value to the
+address <i>df-addr</i>.
+
+   <p><a name="index-sw_0040_0040-_0040var_007b-c_002daddr-_002d_002d-n--_007d--gforth-872"></a><a name="index-g_t_0040code_007bsw_0040_0040_007d-873"></a><a name="index-sw_0040_0040-874"></a>
+<pre class="format"><code>sw@</code>       <i>c-addr &ndash; n </i>       gforth       &ldquo;s-w-fetch&rdquo;
+</pre>
+   <p><i>n</i> is the sign-extended 16-bit value stored at <i>c_addr</i>.
+
+   <p><a name="index-uw_0040_0040-_0040var_007b-c_002daddr-_002d_002d-u--_007d--gforth-875"></a><a name="index-g_t_0040code_007buw_0040_0040_007d-876"></a><a name="index-uw_0040_0040-877"></a>
+<pre class="format"><code>uw@</code>       <i>c-addr &ndash; u </i>       gforth       &ldquo;u-w-fetch&rdquo;
+</pre>
+   <p><i>u</i> is the zero-extended 16-bit value stored at <i>c_addr</i>.
+
+   <p><a name="index-w_0021-_0040var_007b-w-c_002daddr-_002d_002d--_007d--gforth-878"></a><a name="index-g_t_0040code_007bw_0021_007d-879"></a><a name="index-w_0021-880"></a>
+<pre class="format"><code>w!</code>       <i>w c-addr &ndash; </i>       gforth       &ldquo;w-store&rdquo;
+</pre>
+   <p>Store the bottom 16 bits of <i>w</i> at <i>c_addr</i>.
+
+   <p><a name="index-sl_0040_0040-_0040var_007b-c_002daddr-_002d_002d-n--_007d--gforth-881"></a><a name="index-g_t_0040code_007bsl_0040_0040_007d-882"></a><a name="index-sl_0040_0040-883"></a>
+<pre class="format"><code>sl@</code>       <i>c-addr &ndash; n </i>       gforth       &ldquo;s-l-fetch&rdquo;
+</pre>
+   <p><i>n</i> is the sign-extended 32-bit value stored at <i>c_addr</i>.
+
+   <p><a name="index-ul_0040_0040-_0040var_007b-c_002daddr-_002d_002d-u--_007d--gforth-884"></a><a name="index-g_t_0040code_007bul_0040_0040_007d-885"></a><a name="index-ul_0040_0040-886"></a>
+<pre class="format"><code>ul@</code>       <i>c-addr &ndash; u </i>       gforth       &ldquo;u-l-fetch&rdquo;
+</pre>
+   <p><i>u</i> is the zero-extended 32-bit value stored at <i>c_addr</i>.
+
+   <p><a name="index-l_0021-_0040var_007b-w-c_002daddr-_002d_002d--_007d--gforth-887"></a><a name="index-g_t_0040code_007bl_0021_007d-888"></a><a name="index-l_0021-889"></a>
+<pre class="format"><code>l!</code>       <i>w c-addr &ndash; </i>       gforth       &ldquo;l-store&rdquo;
+</pre>
+   <p>Store the bottom 32 bits of <i>w</i> at <i>c_addr</i>.
+
+   </body></html>
+

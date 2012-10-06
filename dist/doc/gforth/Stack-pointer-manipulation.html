@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+<title>Stack pointer manipulation - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Stack-Manipulation.html#Stack-Manipulation" title="Stack Manipulation">
+<link rel="prev" href="Locals-stack.html#Locals-stack" title="Locals stack">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Stack-pointer-manipulation"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Locals-stack.html#Locals-stack">Locals stack</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Stack-Manipulation.html#Stack-Manipulation">Stack Manipulation</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.6.5 Stack pointer manipulation</h4>
+
+<p><a name="index-stack-pointer-manipulation-words-737"></a>
+<!-- removed s0 r0 l0 - they are obsolete aliases for sp0 rp0 lp0 -->
+<a name="index-sp0-_0040var_007b-_002d_002d-a_002daddr---_007d--gforth-738"></a><a name="index-g_t_0040code_007bsp0_007d-739"></a><a name="index-sp0-740"></a>
+<pre class="format"><code>sp0</code>       <i>&ndash; a-addr  </i>       gforth       &ldquo;sp0&rdquo;
+</pre>
+   <p><code>User</code> variable &ndash; initial value of the data stack pointer. 
+OBSOLETE alias of <code>sp0</code>
+
+   <p><a name="index-sp_0040_0040-_0040var_007b-S_003a_002e_002e_002e-_002d_002d-a_002daddr--_007d--gforth-741"></a><a name="index-g_t_0040code_007bsp_0040_0040_007d-742"></a><a name="index-sp_0040_0040-743"></a>
+<pre class="format"><code>sp@</code>       <i>S:... &ndash; a-addr </i>       gforth       &ldquo;sp-fetch&rdquo;
+</pre>
+   <p><a name="index-sp_0021-_0040var_007b-a_002daddr-_002d_002d-S_003a_002e_002e_002e--_007d--gforth-744"></a><a name="index-g_t_0040code_007bsp_0021_007d-745"></a><a name="index-sp_0021-746"></a>
+<pre class="format"><code>sp!</code>       <i>a-addr &ndash; S:... </i>       gforth       &ldquo;sp-store&rdquo;
+</pre>
+   <p><a name="index-fp0-_0040var_007b-_002d_002d-a_002daddr---_007d--gforth-747"></a><a name="index-g_t_0040code_007bfp0_007d-748"></a><a name="index-fp0-749"></a>
+<pre class="format"><code>fp0</code>       <i>&ndash; a-addr  </i>       gforth       &ldquo;fp0&rdquo;
+</pre>
+   <p><code>User</code> variable &ndash; initial value of the floating-point stack pointer.
+
+   <p><a name="index-fp_0040_0040-_0040var_007b-f_003a_002e_002e_002e-_002d_002d-f_002daddr--_007d--gforth-750"></a><a name="index-g_t_0040code_007bfp_0040_0040_007d-751"></a><a name="index-fp_0040_0040-752"></a>
+<pre class="format"><code>fp@</code>       <i>f:... &ndash; f-addr </i>       gforth       &ldquo;fp-fetch&rdquo;
+</pre>
+   <p><a name="index-fp_0021-_0040var_007b-f_002daddr-_002d_002d-f_003a_002e_002e_002e--_007d--gforth-753"></a><a name="index-g_t_0040code_007bfp_0021_007d-754"></a><a name="index-fp_0021-755"></a>
+<pre class="format"><code>fp!</code>       <i>f-addr &ndash; f:... </i>       gforth       &ldquo;fp-store&rdquo;
+</pre>
+   <p><a name="index-rp0-_0040var_007b-_002d_002d-a_002daddr---_007d--gforth-756"></a><a name="index-g_t_0040code_007brp0_007d-757"></a><a name="index-rp0-758"></a>
+<pre class="format"><code>rp0</code>       <i>&ndash; a-addr  </i>       gforth       &ldquo;rp0&rdquo;
+</pre>
+   <p><code>User</code> variable &ndash; initial value of the return stack pointer. 
+OBSOLETE alias of <code>rp0</code>
+
+   <p><a name="index-rp_0040_0040-_0040var_007b-_002d_002d-a_002daddr--_007d--gforth-759"></a><a name="index-g_t_0040code_007brp_0040_0040_007d-760"></a><a name="index-rp_0040_0040-761"></a>
+<pre class="format"><code>rp@</code>       <i>&ndash; a-addr </i>       gforth       &ldquo;rp-fetch&rdquo;
+</pre>
+   <p><a name="index-rp_0021-_0040var_007b-a_002daddr-_002d_002d--_007d--gforth-762"></a><a name="index-g_t_0040code_007brp_0021_007d-763"></a><a name="index-rp_0021-764"></a>
+<pre class="format"><code>rp!</code>       <i>a-addr &ndash; </i>       gforth       &ldquo;rp-store&rdquo;
+</pre>
+   <p><a name="index-lp0-_0040var_007b-_002d_002d-a_002daddr---_007d--gforth-765"></a><a name="index-g_t_0040code_007blp0_007d-766"></a><a name="index-lp0-767"></a>
+<pre class="format"><code>lp0</code>       <i>&ndash; a-addr  </i>       gforth       &ldquo;lp0&rdquo;
+</pre>
+   <p><code>User</code> variable &ndash; initial value of the locals stack pointer. 
+OBSOLETE alias of <code>lp0</code>
+
+   <p><a name="index-lp_0040_0040-_0040var_007b-_002d_002d-addr---_007d--gforth-768"></a><a name="index-g_t_0040code_007blp_0040_0040_007d-769"></a><a name="index-lp_0040_0040-770"></a>
+<pre class="format"><code>lp@</code>       <i>&ndash; addr  </i>       gforth       &ldquo;lp-fetch&rdquo;
+</pre>
+   <p><a name="index-lp_0021-_0040var_007b-c_002daddr-_002d_002d--_007d--gforth-771"></a><a name="index-g_t_0040code_007blp_0021_007d-772"></a><a name="index-lp_0021-773"></a>
+<pre class="format"><code>lp!</code>       <i>c-addr &ndash; </i>       gforth       &ldquo;lp-store&rdquo;
+</pre>
+   </body></html>
+

@@ -1,0 +1,129 @@
+<html lang="en">
+<head>
+<title>Interpretation and Compilation Semantics - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Defining-Words.html#Defining-Words" title="Defining Words">
+<link rel="next" href="Tokens-for-Words.html#Tokens-for-Words" title="Tokens for Words">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Interpretation-and-Compilation-Semantics"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Tokens-for-Words.html#Tokens-for-Words">Tokens for Words</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Defining-Words.html#Defining-Words">Defining Words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.10 Interpretation and Compilation Semantics</h3>
+
+<p><a name="index-semantics_002c-interpretation-and-compilation-1295"></a>
+<!-- !! state and ' are used without explanation -->
+<!-- example for immediate/compile-only? or is the tutorial enough -->
+
+   <p><a name="index-interpretation-semantics-1296"></a>The <dfn>interpretation semantics</dfn> of a (named) word are what the text
+interpreter does when it encounters the word in interpret state. It also
+appears in some other contexts, e.g., the execution token returned by
+<code>' </code><i>word</i> identifies the interpretation semantics of <i>word</i>
+(in other words, <code>' </code><i>word</i><code> execute</code> is equivalent to
+interpret-state text interpretation of <i>word</i>).
+
+   <p><a name="index-compilation-semantics-1297"></a>The <dfn>compilation semantics</dfn> of a (named) word are what the text
+interpreter does when it encounters the word in compile state. It also
+appears in other contexts, e.g, <code>POSTPONE </code><i>word</i>
+compiles<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a> the compilation semantics of <i>word</i>.
+
+   <p><a name="index-execution-semantics-1298"></a>The standard also talks about <dfn>execution semantics</dfn>. They are used
+only for defining the interpretation and compilation semantics of many
+words. By default, the interpretation semantics of a word are to
+<code>execute</code> its execution semantics, and the compilation semantics of
+a word are to <code>compile,</code> its execution semantics.<a rel="footnote" href="#fn-2" name="fnd-2"><sup>2</sup></a>
+
+   <p>Unnamed words (see <a href="Anonymous-Definitions.html#Anonymous-Definitions">Anonymous Definitions</a>) cannot be encountered by
+the text interpreter, ticked, or <code>postpone</code>d, so they have no
+interpretation or compilation semantics.  Their behaviour is represented
+by their XT (see <a href="Tokens-for-Words.html#Tokens-for-Words">Tokens for Words</a>), and we call it execution
+semantics, too.
+
+<!-- TODO expand, make it co-operate with new sections on text interpreter. -->
+<p><a name="index-immediate-words-1299"></a><a name="index-compile_002donly-words-1300"></a>You can change the semantics of the most-recently defined word:
+
+   <p><a name="index-immediate-_0040var_007b-_002d_002d---_007d--core-1301"></a><a name="index-g_t_0040code_007bimmediate_007d-1302"></a><a name="index-immediate-1303"></a>
+<pre class="format"><code>immediate</code>       <i>&ndash;  </i>       core       &ldquo;immediate&rdquo;
+</pre>
+   <p>Make the compilation semantics of a word be to <code>execute</code>
+the execution semantics.
+
+   <p><a name="index-compile_002donly-_0040var_007b-_002d_002d---_007d--gforth-1304"></a><a name="index-g_t_0040code_007bcompile_002donly_007d-1305"></a><a name="index-compile_002donly-1306"></a>
+<pre class="format"><code>compile-only</code>       <i>&ndash;  </i>       gforth       &ldquo;compile-only&rdquo;
+</pre>
+   <p>Remove the interpretation semantics of a word.
+
+   <p><a name="index-restrict-_0040var_007b-_002d_002d---_007d--gforth-1307"></a><a name="index-g_t_0040code_007brestrict_007d-1308"></a><a name="index-restrict-1309"></a>
+<pre class="format"><code>restrict</code>       <i>&ndash;  </i>       gforth       &ldquo;restrict&rdquo;
+</pre>
+   <p>A synonym for <code>compile-only</code>
+
+   <p>By convention, words with non-default compilation semantics (e.g.,
+immediate words) often have names surrounded with brackets (e.g.,
+<code>[']</code>, see <a href="Execution-token.html#Execution-token">Execution token</a>).
+
+   <p>Note that ticking (<code>'</code>) a compile-only word gives an error
+(&ldquo;Interpreting a compile-only word&rdquo;).
+
+<ul class="menu">
+<li><a accesskey="1" href="Combined-words.html#Combined-words">Combined words</a>
+</ul>
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> In standard terminology, &ldquo;appends to the current
+definition&rdquo;.</p>
+
+   <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> In
+standard terminology: The default interpretation semantics are its
+execution semantics; the default compilation semantics are to append its
+execution semantics to the execution semantics of the current
+definition.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

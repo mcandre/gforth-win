@@ -1,0 +1,94 @@
+<html lang="en">
+<head>
+<title>Memory model - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Memory.html#Memory" title="Memory">
+<link rel="prev" href="Memory.html#Memory" title="Memory">
+<link rel="next" href="Dictionary-allocation.html#Dictionary-allocation" title="Dictionary allocation">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Memory-model"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Dictionary-allocation.html#Dictionary-allocation">Dictionary allocation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Memory.html#Memory">Memory</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Memory.html#Memory">Memory</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.7.1 ANS Forth and Gforth memory models</h4>
+
+<!-- The ANS Forth description is a mess (e.g., is the heap part of -->
+<!-- the dictionary?), so let's not stick to closely with it. -->
+<p>ANS Forth considers a Forth system as consisting of several address
+spaces, of which only <dfn>data space</dfn> is managed and accessible with
+the memory words.  Memory not necessarily in data space includes the
+stacks, the code (called code space) and the headers (called name
+space). In Gforth everything is in data space, but the code for the
+primitives is usually read-only.
+
+   <p>Data space is divided into a number of areas: The (data space portion of
+the) dictionary<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>, the heap, and a number of system-allocated
+buffers.
+
+   <p><a name="index-address-arithmetic-restrictions_002c-ANS-vs_002e-Gforth-775"></a><a name="index-contiguous-regions_002c-ANS-vs_002e-Gforth-776"></a>In ANS Forth data space is also divided into contiguous regions.  You
+can only use address arithmetic within a contiguous region, not between
+them.  Usually each allocation gives you one contiguous region, but the
+dictionary allocation words have additional rules (see <a href="Dictionary-allocation.html#Dictionary-allocation">Dictionary allocation</a>).
+
+   <p>Gforth provides one big address space, and address arithmetic can be
+performed between any addresses. However, in the dictionary headers or
+code are interleaved with data, so almost the only contiguous data space
+regions there are those described by ANS Forth as contiguous; but you
+can be sure that the dictionary is allocated towards increasing
+addresses even between contiguous regions.  The memory order of
+allocations in the heap is platform-dependent (and possibly different
+from one run to the next).
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> Sometimes, the term <dfn>dictionary</dfn> is used to
+refer to the search data structure embodied in word lists and headers,
+because it is used for looking up names, just as you would in a
+conventional dictionary.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

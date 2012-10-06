@@ -1,0 +1,131 @@
+<html lang="en">
+<head>
+<title>Name token - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tokens-for-Words.html#Tokens-for-Words" title="Tokens for Words">
+<link rel="prev" href="Compilation-token.html#Compilation-token" title="Compilation token">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Name-token"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Compilation-token.html#Compilation-token">Compilation token</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tokens-for-Words.html#Tokens-for-Words">Tokens for Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.11.3 Name token</h4>
+
+<p><a name="index-name-token-1360"></a>Gforth represents named words by the <dfn>name token</dfn>, (<i>nt</i>).  Name
+token is an abstract data type that occurs as argument or result of the
+words below.
+
+<!-- !! put this elswhere? -->
+<p><a name="index-name-field-address-1361"></a><a name="index-NFA-1362"></a>The closest thing to the nt in older Forth systems is the name field
+address (NFA), but there are significant differences: in older Forth
+systems each word had a unique NFA, LFA, CFA and PFA (in this order, or
+LFA, NFA, CFA, PFA) and there were words for getting from one to the
+next.  In contrast, in Gforth 0<small class="dots">...</small>n nts correspond to one xt; there
+is a link field in the structure identified by the name token, but
+searching usually uses a hash table external to these structures; the
+name in Gforth has a cell-wide count-and-flags field, and the nt is not
+implemented as the address of that count field.
+
+   <p><a name="index-find_002dname-_0040var_007b-c_002daddr-u-_002d_002d-nt-_007c-0---_007d--gforth-1363"></a><a name="index-g_t_0040code_007bfind_002dname_007d-1364"></a><a name="index-find_002dname-1365"></a>
+<pre class="format"><code>find-name</code>       <i>c-addr u &ndash; nt | 0  </i>       gforth       &ldquo;find-name&rdquo;
+</pre>
+   <p>Find the name <i>c-addr u</i> in the current search
+order. Return its <i>nt</i>, if found, otherwise 0.
+
+   <p><a name="index-latest-_0040var_007b-_002d_002d-nt---_007d--gforth-1366"></a><a name="index-g_t_0040code_007blatest_007d-1367"></a><a name="index-latest-1368"></a>
+<pre class="format"><code>latest</code>       <i>&ndash; nt  </i>       gforth       &ldquo;latest&rdquo;
+</pre>
+   <p><var>nt</var> is the name token of the last word defined; it is 0 if the
+last word has no name.
+
+   <p><a name="index-g_t_003ename-_0040var_007b-xt-_002d_002d-nt_007c0---_007d--gforth-1369"></a><a name="index-g_t_0040code_007b_003ename_007d-1370"></a><a name="index-g_t_003ename-1371"></a>
+<pre class="format"><code>&gt;name</code>       <i>xt &ndash; nt|0  </i>       gforth       &ldquo;to-name&rdquo;
+</pre>
+   <p>tries to find the name token <var>nt</var> of the word represented
+by <var>xt</var>; returns 0 if it fails.  This word is not
+absolutely reliable, it may give false positives and produce
+wrong nts.
+
+   <p><a name="index-name_003eint-_0040var_007b-nt-_002d_002d-xt---_007d--gforth-1372"></a><a name="index-g_t_0040code_007bname_003eint_007d-1373"></a><a name="index-name_003eint-1374"></a>
+<pre class="format"><code>name&gt;int</code>       <i>nt &ndash; xt  </i>       gforth       &ldquo;name-to-int&rdquo;
+</pre>
+   <p><i>xt</i> represents the interpretation semantics of the word
+<i>nt</i>. If <i>nt</i> has no interpretation semantics (i.e. is
+<code>compile-only</code>), <i>xt</i> is the execution token for
+<code>ticking-compile-only-error</code>, which performs <code>-2048 throw</code>.
+
+   <p><a name="index-name_003fint-_0040var_007b-nt-_002d_002d-xt---_007d--gforth-1375"></a><a name="index-g_t_0040code_007bname_003fint_007d-1376"></a><a name="index-name_003fint-1377"></a>
+<pre class="format"><code>name?int</code>       <i>nt &ndash; xt  </i>       gforth       &ldquo;name-question-int&rdquo;
+</pre>
+   <p>Like <code>name&gt;int</code>, but perform <code>-2048 throw</code> if <i>nt</i>
+has no interpretation semantics.
+
+   <p><a name="index-name_003ecomp-_0040var_007b-nt-_002d_002d-w-xt---_007d--gforth-1378"></a><a name="index-g_t_0040code_007bname_003ecomp_007d-1379"></a><a name="index-name_003ecomp-1380"></a>
+<pre class="format"><code>name&gt;comp</code>       <i>nt &ndash; w xt  </i>       gforth       &ldquo;name-to-comp&rdquo;
+</pre>
+   <p><i>w xt</i> is the compilation token for the word <i>nt</i>.
+
+   <p><a name="index-name_003estring-_0040var_007b-nt-_002d_002d-addr-count---_007d--gforth-1381"></a><a name="index-g_t_0040code_007bname_003estring_007d-1382"></a><a name="index-name_003estring-1383"></a>
+<pre class="format"><code>name&gt;string</code>       <i>nt &ndash; addr count  </i>       gforth       &ldquo;name-to-string&rdquo;
+</pre>
+   <p><i>addr count</i> is the name of the word represented by <i>nt</i>.
+
+   <p><a name="index-id_002e-_0040var_007b-nt-_002d_002d---_007d--gforth-1384"></a><a name="index-g_t_0040code_007bid_002e_007d-1385"></a><a name="index-id_002e-1386"></a>
+<pre class="format"><code>id.</code>       <i>nt &ndash;  </i>       gforth       &ldquo;i-d-dot&rdquo;
+</pre>
+   <p>Print the name of the word represented by <var>nt</var>.
+
+   <p><a name="index-g_t_002ename-_0040var_007b-nt-_002d_002d---_007d--gforth_002dobsolete-1387"></a><a name="index-g_t_0040code_007b_002ename_007d-1388"></a><a name="index-g_t_002ename-1389"></a>
+<pre class="format"><code>.name</code>       <i>nt &ndash;  </i>       gforth-obsolete       &ldquo;dot-name&rdquo;
+</pre>
+   <p>Gforth &lt;=0.5.0 name for <code>id.</code>.
+
+   <p><a name="index-g_t_002eid-_0040var_007b-nt-_002d_002d---_007d--F83-1390"></a><a name="index-g_t_0040code_007b_002eid_007d-1391"></a><a name="index-g_t_002eid-1392"></a>
+<pre class="format"><code>.id</code>       <i>nt &ndash;  </i>       F83       &ldquo;dot-i-d&rdquo;
+</pre>
+   <p>F83 name for <code>id.</code>.
+
+<!--  -->
+</body></html>
+

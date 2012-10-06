@@ -1,0 +1,341 @@
+<html lang="en">
+<head>
+<title>Blocks - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Files.html#Files" title="Files">
+<link rel="next" href="Other-I_002fO.html#Other-I_002fO" title="Other I/O">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Blocks"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Other-I_002fO.html#Other-I_002fO">Other I/O</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Files.html#Files">Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.18 Blocks</h3>
+
+<p><a name="index-I_002fO-_002d-blocks-1830"></a><a name="index-blocks-1831"></a>
+When you run Gforth on a modern desk-top computer, it runs under the
+control of an operating system which provides certain services.  One of
+these services is <var>file services</var>, which allows Forth source code
+and data to be stored in files and read into Gforth (see <a href="Files.html#Files">Files</a>).
+
+   <p>Traditionally, Forth has been an important programming language on
+systems where it has interfaced directly to the underlying hardware with
+no intervening operating system. Forth provides a mechanism, called
+<dfn>blocks</dfn>, for accessing mass storage on such systems.
+
+   <p>A block is a 1024-byte data area, which can be used to hold data or
+Forth source code. No structure is imposed on the contents of the
+block. A block is identified by its number; blocks are numbered
+contiguously from 1 to an implementation-defined maximum.
+
+   <p>A typical system that used blocks but no operating system might use a
+single floppy-disk drive for mass storage, with the disks formatted to
+provide 256-byte sectors. Blocks would be implemented by assigning the
+first four sectors of the disk to block 1, the second four sectors to
+block 2 and so on, up to the limit of the capacity of the disk. The disk
+would not contain any file system information, just the set of blocks.
+
+   <p><a name="index-blocks-file-1832"></a>On systems that do provide file services, blocks are typically
+implemented by storing a sequence of blocks within a single <dfn>blocks
+file</dfn>.  The size of the blocks file will be an exact multiple of 1024
+bytes, corresponding to the number of blocks it contains. This is the
+mechanism that Gforth uses.
+
+   <p><a name="index-g_t_0040file_007bblocks_002efb_007d-1833"></a>Only one blocks file can be open at a time. If you use block words without
+having specified a blocks file, Gforth defaults to the blocks file
+<samp><span class="file">blocks.fb</span></samp>. Gforth uses the Forth search path when attempting to
+locate a blocks file (see <a href="Source-Search-Paths.html#Source-Search-Paths">Source Search Paths</a>).
+
+   <p><a name="index-block-buffers-1834"></a>When you read and write blocks under program control, Gforth uses a
+number of <dfn>block buffers</dfn> as intermediate storage. These buffers are
+not used when you use <code>load</code> to interpret the contents of a block.
+
+   <p>The behaviour of the block buffers is analagous to that of a cache. 
+Each block buffer has three states:
+
+     <ul>
+<li>Unassigned
+<li>Assigned-clean
+<li>Assigned-dirty
+</ul>
+
+   <p>Initially, all block buffers are <i>unassigned</i>. In order to access a
+block, the block (specified by its block number) must be assigned to a
+block buffer.
+
+   <p>The assignment of a block to a block buffer is performed by <code>block</code>
+or <code>buffer</code>. Use <code>block</code> when you wish to modify the existing
+contents of a block. Use <code>buffer</code> when you don't care about the
+existing contents of the block<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>.
+
+   <p>Once a block has been assigned to a block buffer using <code>block</code> or
+<code>buffer</code>, that block buffer becomes the <i>current block
+buffer</i>. Data may only be manipulated (read or written) within the
+current block buffer.
+
+   <p>When the contents of the current block buffer has been modified it is
+necessary, <em>before calling </em><code>block</code><em> or </em><code>buffer</code><em> again</em>, to
+either abandon the changes (by doing nothing) or mark the block as
+changed (assigned-dirty), using <code>update</code>. Using <code>update</code> does
+not change the blocks file; it simply changes a block buffer's state to
+<i>assigned-dirty</i>.  The block will be written implicitly when it's
+buffer is needed for another block, or explicitly by <code>flush</code> or
+<code>save-buffers</code>.
+
+   <p>word <code>Flush</code> writes all <i>assigned-dirty</i> blocks back to the
+blocks file on disk. Leaving Gforth with <code>bye</code> also performs a
+<code>flush</code>.
+
+   <p>In Gforth, <code>block</code> and <code>buffer</code> use a <i>direct-mapped</i>
+algorithm to assign a block buffer to a block. That means that any
+particular block can only be assigned to one specific block buffer,
+called (for the particular operation) the <i>victim buffer</i>. If the
+victim buffer is <i>unassigned</i> or <i>assigned-clean</i> it is allocated to
+the new block immediately. If it is <i>assigned-dirty</i> its current
+contents are written back to the blocks file on disk before it is
+allocated to the new block.
+
+   <p>Although no structure is imposed on the contents of a block, it is
+traditional to display the contents as 16 lines each of 64 characters.  A
+block provides a single, continuous stream of input (for example, it
+acts as a single parse area) &ndash; there are no end-of-line characters
+within a block, and no end-of-file character at the end of a
+block. There are two consequences of this:
+
+     <ul>
+<li>The last character of one line wraps straight into the first character
+of the following line
+<li>The word <code>\</code> &ndash; comment to end of line &ndash; requires special
+treatment; in the context of a block it causes all characters until the
+end of the current 64-character &ldquo;line&rdquo; to be ignored. 
+</ul>
+
+   <p>In Gforth, when you use <code>block</code> with a non-existent block number,
+the current blocks file will be extended to the appropriate size and the
+block buffer will be initialised with spaces.
+
+   <p>Gforth includes a simple block editor (type <code>use blocked.fb 0 list</code>
+for details) but doesn't encourage the use of blocks; the mechanism is
+only provided for backward compatibility &ndash; ANS Forth requires blocks to
+be available when files are.
+
+   <p>Common techniques that are used when working with blocks include:
+
+     <ul>
+<li>A screen editor that allows you to edit blocks without leaving the Forth
+environment. 
+<li>Shadow screens; where every code block has an associated block
+containing comments (for example: code in odd block numbers, comments in
+even block numbers). Typically, the block editor provides a convenient
+mechanism to toggle between code and comments. 
+<li>Load blocks; a single block (typically block 1) contains a number of
+<code>thru</code> commands which <code>load</code> the whole of the application. 
+</ul>
+
+   <p>See Frank Sergeant's Pygmy Forth to see just how well blocks can be
+integrated into a Forth programming environment.
+
+<!-- TODO what about errors on open-blocks? -->
+<p><a name="index-open_002dblocks-_0040var_007b-c_002daddr-u-_002d_002d---_007d--gforth-1835"></a><a name="index-g_t_0040code_007bopen_002dblocks_007d-1836"></a><a name="index-open_002dblocks-1837"></a>
+<pre class="format"><code>open-blocks</code>       <i>c-addr u &ndash;  </i>       gforth       &ldquo;open-blocks&rdquo;
+</pre>
+   <p>Use the file, whose name is given by <i>c-addr u</i>, as the blocks file.
+
+   <p><a name="index-use-_0040var_007b-_0022file_0022-_002d_002d---_007d--gforth-1838"></a><a name="index-g_t_0040code_007buse_007d-1839"></a><a name="index-use-1840"></a>
+<pre class="format"><code>use</code>       <i>"file" &ndash;  </i>       gforth       &ldquo;use&rdquo;
+</pre>
+   <p>Use <i>file</i> as the blocks file.
+
+   <p><a name="index-block_002doffset-_0040var_007b-_002d_002d-addr---_007d--gforth-1841"></a><a name="index-g_t_0040code_007bblock_002doffset_007d-1842"></a><a name="index-block_002doffset-1843"></a>
+<pre class="format"><code>block-offset</code>       <i>&ndash; addr  </i>       gforth       &ldquo;block-offset&rdquo;
+</pre>
+   <p>User variable containing the number of the first block (default
+since 0.5.0: 0).  Block files created with Gforth versions before
+0.5.0 have the offset 1.  If you use these files you can: <code>1
+offset !</code>; or add 1 to every block number used; or prepend 1024
+characters to the file.
+
+   <p><a name="index-get_002dblock_002dfid-_0040var_007b-_002d_002d-wfileid---_007d--gforth-1844"></a><a name="index-g_t_0040code_007bget_002dblock_002dfid_007d-1845"></a><a name="index-get_002dblock_002dfid-1846"></a>
+<pre class="format"><code>get-block-fid</code>       <i>&ndash; wfileid  </i>       gforth       &ldquo;get-block-fid&rdquo;
+</pre>
+   <p>Return the file-id of the current blocks file. If no blocks
+file has been opened, use <samp><span class="file">blocks.fb</span></samp> as the default
+blocks file.
+
+   <p><a name="index-block_002dposition-_0040var_007b-u-_002d_002d---_007d--block-1847"></a><a name="index-g_t_0040code_007bblock_002dposition_007d-1848"></a><a name="index-block_002dposition-1849"></a>
+<pre class="format"><code>block-position</code>       <i>u &ndash;  </i>       block       &ldquo;block-position&rdquo;
+</pre>
+   <p>Position the block file to the start of block <i>u</i>.
+
+   <p><a name="index-list-_0040var_007b-u-_002d_002d---_007d--block_002dext-1850"></a><a name="index-g_t_0040code_007blist_007d-1851"></a><a name="index-list-1852"></a>
+<pre class="format"><code>list</code>       <i>u &ndash;  </i>       block-ext       &ldquo;list&rdquo;
+</pre>
+   <p>Display block <i>u</i>. In Gforth, the block is displayed as 16
+numbered lines, each of 64 characters.
+
+   <p><a name="index-scr-_0040var_007b-_002d_002d-a_002daddr---_007d--block_002dext-1853"></a><a name="index-g_t_0040code_007bscr_007d-1854"></a><a name="index-scr-1855"></a>
+<pre class="format"><code>scr</code>       <i>&ndash; a-addr  </i>       block-ext       &ldquo;s-c-r&rdquo;
+</pre>
+   <p><code>User</code> variable &ndash; <i>a-addr</i> is the address of a cell containing
+the block number of the block most recently processed by
+<code>list</code>.
+
+   <p><a name="index-block-_0040var_007b-u-_002d_002d-a_002daddr---_007d--block-1856"></a><a name="index-g_t_0040code_007bblock_007d-1857"></a><a name="index-block-1858"></a>
+<pre class="format"><code>block</code>       <i>u &ndash; a-addr  </i>       block       &ldquo;block&rdquo;
+</pre>
+   <p>If a block buffer is assigned for block <i>u</i>, return its
+start address, <i>a-addr</i>. Otherwise, assign a block buffer
+for block <i>u</i> (if the assigned block buffer has been
+<code>update</code>d, transfer the contents to mass storage), read
+the block into the block buffer and return its start address,
+<i>a-addr</i>.
+
+   <p><a name="index-buffer-_0040var_007b-u-_002d_002d-a_002daddr---_007d--block-1859"></a><a name="index-g_t_0040code_007bbuffer_007d-1860"></a><a name="index-buffer-1861"></a>
+<pre class="format"><code>buffer</code>       <i>u &ndash; a-addr  </i>       block       &ldquo;buffer&rdquo;
+</pre>
+   <p>If a block buffer is assigned for block <i>u</i>, return its
+start address, <i>a-addr</i>. Otherwise, assign a block buffer
+for block <i>u</i> (if the assigned block buffer has been
+<code>update</code>d, transfer the contents to mass storage) and
+return its start address, <i>a-addr</i>.  The subtle difference
+between <code>buffer</code> and <code>block</code> mean that you should
+only use <code>buffer</code> if you don't care about the previous
+contents of block <i>u</i>. In Gforth, this simply calls
+<code>block</code>.
+
+   <p><a name="index-empty_002dbuffers-_0040var_007b-_002d_002d---_007d--block_002dext-1862"></a><a name="index-g_t_0040code_007bempty_002dbuffers_007d-1863"></a><a name="index-empty_002dbuffers-1864"></a>
+<pre class="format"><code>empty-buffers</code>       <i>&ndash;  </i>       block-ext       &ldquo;empty-buffers&rdquo;
+</pre>
+   <p>Mark all block buffers as unassigned; if any had been marked as
+assigned-dirty (by <code>update</code>), the changes to those blocks
+will be lost.
+
+   <p><a name="index-empty_002dbuffer-_0040var_007b-buffer-_002d_002d---_007d--gforth-1865"></a><a name="index-g_t_0040code_007bempty_002dbuffer_007d-1866"></a><a name="index-empty_002dbuffer-1867"></a>
+<pre class="format"><code>empty-buffer</code>       <i>buffer &ndash;  </i>       gforth       &ldquo;empty-buffer&rdquo;
+</pre>
+   <p><a name="index-update-_0040var_007b-_002d_002d---_007d--block-1868"></a><a name="index-g_t_0040code_007bupdate_007d-1869"></a><a name="index-update-1870"></a>
+<pre class="format"><code>update</code>       <i>&ndash;  </i>       block       &ldquo;update&rdquo;
+</pre>
+   <p>Mark the state of the current block buffer as assigned-dirty.
+
+   <p><a name="index-updated_003f-_0040var_007b-n-_002d_002d-f---_007d--gforth-1871"></a><a name="index-g_t_0040code_007bupdated_003f_007d-1872"></a><a name="index-updated_003f-1873"></a>
+<pre class="format"><code>updated?</code>       <i>n &ndash; f  </i>       gforth       &ldquo;updated?&rdquo;
+</pre>
+   <p>Return true if <code>updated</code> has been used to mark block <i>n</i>
+as assigned-dirty.
+
+   <p><a name="index-save_002dbuffers-_0040var_007b-_002d_002d---_007d--block-1874"></a><a name="index-g_t_0040code_007bsave_002dbuffers_007d-1875"></a><a name="index-save_002dbuffers-1876"></a>
+<pre class="format"><code>save-buffers</code>       <i>&ndash;  </i>       block       &ldquo;save-buffers&rdquo;
+</pre>
+   <p>Transfer the contents of each <code>update</code>d block buffer to
+mass storage, then mark all block buffers as assigned-clean.
+
+   <p><a name="index-save_002dbuffer-_0040var_007b-buffer-_002d_002d---_007d--gforth-1877"></a><a name="index-g_t_0040code_007bsave_002dbuffer_007d-1878"></a><a name="index-save_002dbuffer-1879"></a>
+<pre class="format"><code>save-buffer</code>       <i>buffer &ndash;  </i>       gforth       &ldquo;save-buffer&rdquo;
+</pre>
+   <p><a name="index-flush-_0040var_007b-_002d_002d---_007d--block-1880"></a><a name="index-g_t_0040code_007bflush_007d-1881"></a><a name="index-flush-1882"></a>
+<pre class="format"><code>flush</code>       <i>&ndash;  </i>       block       &ldquo;flush&rdquo;
+</pre>
+   <p>Perform the functions of <code>save-buffers</code> then
+<code>empty-buffers</code>.
+
+   <p><a name="index-load-_0040var_007b-i_002ax-n-_002d_002d-j_002ax---_007d--block-1883"></a><a name="index-g_t_0040code_007bload_007d-1884"></a><a name="index-load-1885"></a>
+<pre class="format"><code>load</code>       <i>i*x n &ndash; j*x  </i>       block       &ldquo;load&rdquo;
+</pre>
+   <p>Save the current input source specification. Store <i>n</i> in
+<code>BLK</code>, set <code>&gt;IN</code> to 0 and interpret. When the parse
+area is exhausted, restore the input source specification.
+
+   <p><a name="index-thru-_0040var_007b-i_002ax-n1-n2-_002d_002d-j_002ax---_007d--block_002dext-1886"></a><a name="index-g_t_0040code_007bthru_007d-1887"></a><a name="index-thru-1888"></a>
+<pre class="format"><code>thru</code>       <i>i*x n1 n2 &ndash; j*x  </i>       block-ext       &ldquo;thru&rdquo;
+</pre>
+   <p><code>load</code> the blocks <i>n1</i> through <i>n2</i> in sequence.
+
+   <p><a name="index-g_t_002bload-_0040var_007b-i_002ax-n-_002d_002d-j_002ax---_007d--gforth-1889"></a><a name="index-g_t_0040code_007b_002bload_007d-1890"></a><a name="index-g_t_002bload-1891"></a>
+<pre class="format"><code>+load</code>       <i>i*x n &ndash; j*x  </i>       gforth       &ldquo;+load&rdquo;
+</pre>
+   <p>Used within a block to load the block specified as the
+current block + <i>n</i>.
+
+   <p><a name="index-g_t_002bthru-_0040var_007b-i_002ax-n1-n2-_002d_002d-j_002ax---_007d--gforth-1892"></a><a name="index-g_t_0040code_007b_002bthru_007d-1893"></a><a name="index-g_t_002bthru-1894"></a>
+<pre class="format"><code>+thru</code>       <i>i*x n1 n2 &ndash; j*x  </i>       gforth       &ldquo;+thru&rdquo;
+</pre>
+   <p>Used within a block to load the range of blocks specified as the
+current block + <i>n1</i> thru the current block + <i>n2</i>.
+
+   <p><a name="index-g_t_002d_002d_003e-_0040var_007b-_002d_002d---_007d--gforth-1895"></a><a name="index-g_t_0040code_007b_002d_002d_003e_007d-1896"></a><a name="index-g_t_002d_002d_003e-1897"></a>
+<pre class="format"><code>--&gt;</code>       <i>&ndash;  </i>       gforth       &ldquo;chain&rdquo;
+</pre>
+   <p>If this symbol is encountered whilst loading block <i>n</i>,
+discard the remainder of the block and load block <i>n+1</i>. Used
+for chaining multiple blocks together as a single loadable
+unit.  Not recommended, because it destroys the independence of
+loading.  Use <code>thru</code> (which is standard) or <code>+thru</code>
+instead.
+
+   <p><a name="index-block_002dincluded-_0040var_007b-a_002daddr-u-_002d_002d---_007d--gforth-1898"></a><a name="index-g_t_0040code_007bblock_002dincluded_007d-1899"></a><a name="index-block_002dincluded-1900"></a>
+<pre class="format"><code>block-included</code>       <i>a-addr u &ndash;  </i>       gforth       &ldquo;block-included&rdquo;
+</pre>
+   <p>Use within a block that is to be processed by <code>load</code>. Save
+the current blocks file specification, open the blocks file
+specified by <i>a-addr u</i> and <code>load</code> block 1 from that
+file (which may in turn chain or load other blocks). Finally,
+close the blocks file and restore the original blocks file.
+
+<!--  -->
+<div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> The ANS Forth definition of
+<code>buffer</code> is intended not to cause disk I/O; if the data associated
+with the particular block is already stored in a block buffer due to an
+earlier <code>block</code> command, <code>buffer</code> will return that block
+buffer and the existing contents of the block will be
+available. Otherwise, <code>buffer</code> will simply assign a new, empty
+block buffer for the block.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

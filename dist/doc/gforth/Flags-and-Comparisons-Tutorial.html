@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+<title>Flags and Comparisons Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Conditional-execution-Tutorial.html#Conditional-execution-Tutorial" title="Conditional execution Tutorial">
+<link rel="next" href="General-Loops-Tutorial.html#General-Loops-Tutorial" title="General Loops Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Flags-and-Comparisons-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="General-Loops-Tutorial.html#General-Loops-Tutorial">General Loops Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Conditional-execution-Tutorial.html#Conditional-execution-Tutorial">Conditional execution Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.17 Flags and Comparisons</h3>
+
+<p><a name="index-flags-tutorial-99"></a><a name="index-comparison-tutorial-100"></a>
+In a false-flag all bits are clear (0 when interpreted as integer).  In
+a canonical true-flag all bits are set (-1 as a twos-complement signed
+integer); in many contexts (e.g., <code>if</code>) any non-zero value is
+treated as true flag.
+
+<pre class="example">     false .
+     true .
+     true hex u. decimal
+</pre>
+   <p>Comparison words produce canonical flags:
+
+<pre class="example">     1 1 = .
+     1 0= .
+     0 1 &lt; .
+     0 0 &lt; .
+     -1 1 u&lt; . \ type error, u&lt; interprets -1 as large unsigned number
+     -1 1 &lt; .
+</pre>
+   <p>Gforth supports all combinations of the prefixes <code>0 u d d0 du f f0</code>
+(or none) and the comparisons <code>= &lt;&gt; &lt; &gt; &lt;= &gt;=</code>.  Only a part of
+these combinations are standard (for details see the standard,
+<a href="Numeric-comparison.html#Numeric-comparison">Numeric comparison</a>, <a href="Floating-Point.html#Floating-Point">Floating Point</a> or <a href="Word-Index.html#Word-Index">Word Index</a>).
+
+   <p>You can use <code>and or xor invert</code> as operations on canonical flags. 
+Actually they are bitwise operations:
+
+<pre class="example">     1 2 and .
+     1 2 or .
+     1 3 xor .
+     1 invert .
+</pre>
+   <p>You can convert a zero/non-zero flag into a canonical flag with
+<code>0&lt;&gt;</code> (and complement it on the way with <code>0=</code>).
+
+<pre class="example">     1 0= .
+     1 0&lt;&gt; .
+</pre>
+   <p>You can use the all-bits-set feature of canonical flags and the bitwise
+operation of the Boolean operations to avoid <code>if</code>s:
+
+<pre class="example">     : foo ( n1 -- n2 )
+       0= if
+         14
+       else
+         0
+       endif ;
+     0 foo .
+     1 foo .
+     
+     : foo ( n1 -- n2 )
+       0= 14 and ;
+     0 foo .
+     1 foo .
+</pre>
+   <blockquote>
+<b>Assignment:</b> Write <code>min</code> without <code>if</code>. 
+</blockquote>
+
+   <p>For reference, see <a href="Boolean-Flags.html#Boolean-Flags">Boolean Flags</a>, <a href="Numeric-comparison.html#Numeric-comparison">Numeric comparison</a>, and
+<a href="Bitwise-operations.html#Bitwise-operations">Bitwise operations</a>.
+
+   </body></html>
+

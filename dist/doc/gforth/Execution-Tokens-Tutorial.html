@@ -1,0 +1,143 @@
+<html lang="en">
+<head>
+<title>Execution Tokens Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial.html#Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial" title="Interpretation and Compilation Semantics and Immediacy Tutorial">
+<link rel="next" href="Exceptions-Tutorial.html#Exceptions-Tutorial" title="Exceptions Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Execution-Tokens-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Exceptions-Tutorial.html#Exceptions-Tutorial">Exceptions Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial.html#Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial">Interpretation and Compilation Semantics and Immediacy Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.29 Execution Tokens</h3>
+
+<p><a name="index-execution-tokens-tutorial-119"></a><a name="index-XT-tutorial-120"></a>
+<code>' word</code> gives you the execution token (XT) of a word.  The XT is a
+cell representing the interpretation semantics of a word.  You can
+execute this semantics with <code>execute</code>:
+
+<pre class="example">     ' + .s
+     1 2 rot execute .
+</pre>
+   <p>The XT is similar to a function pointer in C.  However, parameter
+passing through the stack makes it a little more flexible:
+
+<pre class="example">     : map-array ( ... addr u xt -- ... )
+     \ executes xt ( ... x -- ... ) for every element of the array starting
+     \ at addr and containing u elements
+       { xt }
+       cells over + swap ?do
+         i @ xt execute
+       1 cells +loop ;
+     
+     create a 3 , 4 , 2 , -1 , 4 ,
+     a 5 ' . map-array .s
+     0 a 5 ' + map-array .
+     s" max-n" environment? drop .s
+     a 5 ' min map-array .
+</pre>
+   <p>You can use map-array with the XTs of words that consume one element
+more than they produce.  In theory you can also use it with other XTs,
+but the stack effect then depends on the size of the array, which is
+hard to understand.
+
+   <p>Since XTs are cell-sized, you can store them in memory and manipulate
+them on the stack like other cells.  You can also compile the XT into a
+word with <code>compile,</code>:
+
+<pre class="example">     : foo1 ( n1 n2 -- n )
+        [ ' + compile, ] ;
+     see foo
+</pre>
+   <p>This is non-standard, because <code>compile,</code> has no compilation
+semantics in the standard, but it works in good Forth systems.  For the
+broken ones, use
+
+<pre class="example">     : [compile,] compile, ; immediate
+     
+     : foo1 ( n1 n2 -- n )
+        [ ' + ] [compile,] ;
+     see foo
+</pre>
+   <p><code>'</code> is a word with default compilation semantics; it parses the
+next word when its interpretation semantics are executed, not during
+compilation:
+
+<pre class="example">     : foo ( -- xt )
+       ' ;
+     see foo
+     : bar ( ... "word" -- ... )
+       ' execute ;
+     see bar
+     1 2 bar + .
+</pre>
+   <p>You often want to parse a word during compilation and compile its XT so
+it will be pushed on the stack at run-time.  <code>[']</code> does this:
+
+<pre class="example">     : xt-+ ( -- xt )
+       ['] + ;
+     see xt-+
+     1 2 xt-+ execute .
+</pre>
+   <p>Many programmers tend to see <code>'</code> and the word it parses as one
+unit, and expect it to behave like <code>[']</code> when compiled, and are
+confused by the actual behaviour.  If you are, just remember that the
+Forth system just takes <code>'</code> as one unit and has no idea that it is
+a parsing word (attempts to convenience programmers in this issue have
+usually resulted in even worse pitfalls, see
+<a href="http://www.complang.tuwien.ac.at/papers/ertl98.ps.gz"><code>State</code>-smartness&mdash;Why it is evil and How to Exorcise it</a>).
+
+   <p>Note that the state of the interpreter does not come into play when
+creating and executing XTs.  I.e., even when you execute <code>'</code> in
+compile state, it still gives you the interpretation semantics.  And
+whatever that state is, <code>execute</code> performs the semantics
+represented by the XT (i.e., for XTs produced with <code>'</code> the
+interpretation semantics).
+
+   <p>Reference: <a href="Tokens-for-Words.html#Tokens-for-Words">Tokens for Words</a>.
+
+   </body></html>
+

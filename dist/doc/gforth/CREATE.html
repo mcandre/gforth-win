@@ -1,0 +1,109 @@
+<html lang="en">
+<head>
+<title>CREATE - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Defining-Words.html#Defining-Words" title="Defining Words">
+<link rel="prev" href="Defining-Words.html#Defining-Words" title="Defining Words">
+<link rel="next" href="Variables.html#Variables" title="Variables">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="CREATE"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Variables.html#Variables">Variables</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Defining-Words.html#Defining-Words">Defining Words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Defining-Words.html#Defining-Words">Defining Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.9.1 <code>CREATE</code></h4>
+
+<p><a name="index-simple-defining-words-1189"></a><a name="index-defining-words_002c-simple-1190"></a>
+Defining words are used to create new entries in the dictionary. The
+simplest defining word is <code>CREATE</code>. <code>CREATE</code> is used like
+this:
+
+<pre class="example">     CREATE new-word1
+</pre>
+   <p><code>CREATE</code> is a parsing word, i.e., it takes an argument from the
+input stream (<code>new-word1</code> in our example).  It generates a
+dictionary entry for <code>new-word1</code>. When <code>new-word1</code> is
+executed, all that it does is leave an address on the stack. The address
+represents the value of the data space pointer (<code>HERE</code>) at the time
+that <code>new-word1</code> was defined. Therefore, <code>CREATE</code> is a way of
+associating a name with the address of a region of memory.
+
+   <p><a name="index-Create-_0040var_007b-_0022name_0022-_002d_002d---_007d--core-1191"></a><a name="index-g_t_0040code_007bCreate_007d-1192"></a><a name="index-Create-1193"></a>
+<pre class="format"><code>Create</code>       <i>"name" &ndash;  </i>       core       &ldquo;Create&rdquo;
+</pre>
+   <p>Note that in ANS Forth guarantees only for <code>create</code> that its body
+is in dictionary data space (i.e., where <code>here</code>, <code>allot</code>
+etc. work, see <a href="Dictionary-allocation.html#Dictionary-allocation">Dictionary allocation</a>).  Also, in ANS Forth only
+<code>create</code>d words can be modified with <code>does&gt;</code>
+(see <a href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">User-defined Defining Words</a>).  And in ANS Forth <code>&gt;body</code>
+can only be applied to <code>create</code>d words.
+
+   <p>By extending this example to reserve some memory in data space, we end
+up with something like a <i>variable</i>. Here are two different ways to do
+it:
+
+<pre class="example">     CREATE new-word2 1 cells allot  \ reserve 1 cell - initial value undefined
+     CREATE new-word3 4 ,            \ reserve 1 cell and initialise it (to 4)
+</pre>
+   <p>The variable can be examined and modified using <code>@</code> (&ldquo;fetch&rdquo;) and
+<code>!</code> (&ldquo;store&rdquo;) like this:
+
+<pre class="example">     new-word2 @ .      \ get address, fetch from it and display
+     1234 new-word2 !   \ new value, get address, store to it
+</pre>
+   <p><a name="index-arrays-1194"></a>A similar mechanism can be used to create arrays. For example, an
+80-character text input buffer:
+
+<pre class="example">     CREATE text-buf 80 chars allot
+     
+     text-buf 0 chars + c@ \ the 1st character (offset 0)
+     text-buf 3 chars + c@ \ the 4th character (offset 3)
+</pre>
+   <p>You can build arbitrarily complex data structures by allocating
+appropriate areas of memory. For further discussions of this, and to
+learn about some Gforth tools that make it easier,
+See <a href="Structures.html#Structures">Structures</a>.
+
+   </body></html>
+

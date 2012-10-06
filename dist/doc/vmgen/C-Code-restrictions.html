@@ -1,0 +1,104 @@
+<html lang="en">
+<head>
+<title>C Code restrictions - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Simple-instructions.html#Simple-instructions" title="Simple instructions">
+<link rel="prev" href="C-Code-Macros.html#C-Code-Macros" title="C Code Macros">
+<link rel="next" href="Stack-growth-direction.html#Stack-growth-direction" title="Stack growth direction">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="C-Code-restrictions"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Stack-growth-direction.html#Stack-growth-direction">Stack growth direction</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="C-Code-Macros.html#C-Code-Macros">C Code Macros</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Simple-instructions.html#Simple-instructions">Simple instructions</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.2.3 C Code restrictions</h4>
+
+<p><a name="index-C-code-restrictions-91"></a><a name="index-restrictions-on-C-code-92"></a><a name="index-assumptions-about-C-code-93"></a>
+<a name="index-accessing-stack-_0028pointer_0029-94"></a><a name="index-stack-pointer_002c-access-95"></a><a name="index-instruction-pointer_002c-access-96"></a>Vmgen generates code and performs some optimizations under the
+assumption that the user-supplied C code does not access the stack
+pointers or stack items, and that accesses to the instruction pointer
+only occur through special macros.  In general you should heed these
+restrictions.  However, if you need to break these restrictions, read
+the following.
+
+   <p>Accessing a stack or stack pointer directly can be a problem for several
+reasons:
+<a name="index-stack-caching_002c-restriction-on-C-code-97"></a><a name="index-superinstructions_002c-restrictions-on-components-98"></a>
+     <ul>
+<li>Vmgen optionally supports caching the top-of-stack item in a local
+variable (that is allocated to a register).  This is the most frequent
+source of trouble.  You can deal with it either by not using
+top-of-stack caching (slowdown factor 1-1.4, depending on machine), or
+by inserting flushing code (e.g., `<samp><span class="samp">IF_spTOS(sp[...] = spTOS);</span></samp>') at
+the start and reloading code (e.g., `<samp><span class="samp">IF_spTOS(spTOS = sp[0])</span></samp>') at
+the end of problematic C code.  Vmgen inserts a stack pointer update
+before the start of the user-supplied C code, so the flushing code has
+to use an index that corrects for that.  In the future, this flushing
+may be done automatically by mentioning a special string in the C code. 
+<!-- sometimes flushing and/or reloading unnecessary -->
+
+     <li>The Vmgen-erated code loads the stack items from stack-pointer-indexed
+memory into variables before the user-supplied C code, and stores them
+from variables to stack-pointer-indexed memory afterwards.  If you do
+any writes to the stack through its stack pointer in your C code, it
+will not affect the variables, and your write may be overwritten by the
+stores after the C code.  Similarly, a read from a stack using a stack
+pointer will not reflect computations of stack items in the same VM
+instruction.
+
+     <li>Superinstructions keep stack items in variables across the whole
+superinstruction.  So you should not include VM instructions, that
+access a stack or stack pointer, as components of superinstructions
+(see <a href="VM-profiler.html#VM-profiler">VM profiler</a>).
+
+   </ul>
+
+   <p>You should access the instruction pointer only through its special
+macros (`<samp><span class="samp">IP</span></samp>', `<samp><span class="samp">SET_IP</span></samp>', `<samp><span class="samp">IPTOS</span></samp>'); this ensure that these
+macros can be implemented in several ways for best performance. 
+`<samp><span class="samp">IP</span></samp>' points to the next instruction, and `<samp><span class="samp">IPTOS</span></samp>' is its
+contents.
+
+<!--  -->
+</body></html>
+

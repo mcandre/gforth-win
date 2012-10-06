@@ -1,0 +1,79 @@
+<html lang="en">
+<head>
+<title>Supplying names - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Defining-Words.html#Defining-Words" title="Defining Words">
+<link rel="prev" href="Anonymous-Definitions.html#Anonymous-Definitions" title="Anonymous Definitions">
+<link rel="next" href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words" title="User-defined Defining Words">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Supplying-names"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">User-defined Defining Words</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Anonymous-Definitions.html#Anonymous-Definitions">Anonymous Definitions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Defining-Words.html#Defining-Words">Defining Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.9.7 Supplying the name of a defined word</h4>
+
+<p><a name="index-names-for-defined-words-1245"></a><a name="index-defining-words_002c-name-given-in-a-string-1246"></a>
+By default, a defining word takes the name for the defined word from the
+input stream. Sometimes you want to supply the name from a string. You
+can do this with:
+
+   <p><a name="index-nextname-_0040var_007b-c_002daddr-u-_002d_002d---_007d--gforth-1247"></a><a name="index-g_t_0040code_007bnextname_007d-1248"></a><a name="index-nextname-1249"></a>
+<pre class="format"><code>nextname</code>       <i>c-addr u &ndash;  </i>       gforth       &ldquo;nextname&rdquo;
+</pre>
+   <p>The next defined word will have the name <var>c-addr u</var>; the
+defining word will leave the input stream alone.
+
+   <p>For example:
+
+<pre class="example">     s" foo" nextname create
+</pre>
+   <p class="noindent">is equivalent to:
+
+<pre class="example">     create foo
+</pre>
+   <p class="noindent"><code>nextname</code> works with any defining word.
+
+   </body></html>
+

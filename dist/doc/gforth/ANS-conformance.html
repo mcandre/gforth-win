@@ -1,0 +1,124 @@
+<html lang="en">
+<head>
+<title>ANS conformance - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Tools.html#Tools" title="Tools">
+<link rel="next" href="Standard-vs-Extensions.html#Standard-vs-Extensions" title="Standard vs Extensions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="ANS-conformance"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Standard-vs-Extensions.html#Standard-vs-Extensions">Standard vs Extensions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Tools.html#Tools">Tools</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">8 ANS conformance</h2>
+
+<p><a name="index-ANS-conformance-of-Gforth-3055"></a>
+To the best of our knowledge, Gforth is an
+
+   <p>ANS Forth System
+     <ul>
+<li>providing the Core Extensions word set
+<li>providing the Block word set
+<li>providing the Block Extensions word set
+<li>providing the Double-Number word set
+<li>providing the Double-Number Extensions word set
+<li>providing the Exception word set
+<li>providing the Exception Extensions word set
+<li>providing the Facility word set
+<li>providing <code>EKEY</code>, <code>EKEY&gt;CHAR</code>, <code>EKEY?</code>, <code>MS</code> and <code>TIME&amp;DATE</code> from the Facility Extensions word set
+<li>providing the File Access word set
+<li>providing the File Access Extensions word set
+<li>providing the Floating-Point word set
+<li>providing the Floating-Point Extensions word set
+<li>providing the Locals word set
+<li>providing the Locals Extensions word set
+<li>providing the Memory-Allocation word set
+<li>providing the Memory-Allocation Extensions word set (that one's easy)
+<li>providing the Programming-Tools word set
+<li>providing <code>;CODE</code>, <code>AHEAD</code>, <code>ASSEMBLER</code>, <code>BYE</code>, <code>CODE</code>, <code>CS-PICK</code>, <code>CS-ROLL</code>, <code>STATE</code>, <code>[ELSE]</code>, <code>[IF]</code>, <code>[THEN]</code> from the Programming-Tools Extensions word set
+<li>providing the Search-Order word set
+<li>providing the Search-Order Extensions word set
+<li>providing the String word set
+<li>providing the String Extensions word set (another easy one)
+</ul>
+
+   <p>Gforth has the following environmental restrictions:
+
+   <p><a name="index-environmental-restrictions-3056"></a>
+     <ul>
+<li>While processing the OS command line, if an exception is not caught,
+Gforth exits with a non-zero exit code instyead of performing QUIT.
+
+     <li>When an <code>throw</code> is performed after a <code>query</code>, Gforth does not
+allways restore the input source specification in effect at the
+corresponding catch.
+
+   </ul>
+
+   <p><a name="index-system-documentation-3057"></a>In addition, ANS Forth systems are required to document certain
+implementation choices. This chapter tries to meet these
+requirements. In many cases it gives a way to ask the system for the
+information instead of providing the information directly, in
+particular, if the information depends on the processor, the operating
+system or the installation options chosen, or if they are likely to
+change during the maintenance of Gforth.
+
+<!-- The framework for the rest has been taken from pfe. -->
+<ul class="menu">
+<li><a accesskey="1" href="The-Core-Words.html#The-Core-Words">The Core Words</a>
+<li><a accesskey="2" href="The-optional-Block-word-set.html#The-optional-Block-word-set">The optional Block word set</a>
+<li><a accesskey="3" href="The-optional-Double-Number-word-set.html#The-optional-Double-Number-word-set">The optional Double Number word set</a>
+<li><a accesskey="4" href="The-optional-Exception-word-set.html#The-optional-Exception-word-set">The optional Exception word set</a>
+<li><a accesskey="5" href="The-optional-Facility-word-set.html#The-optional-Facility-word-set">The optional Facility word set</a>
+<li><a accesskey="6" href="The-optional-File_002dAccess-word-set.html#The-optional-File_002dAccess-word-set">The optional File-Access word set</a>
+<li><a accesskey="7" href="The-optional-Floating_002dPoint-word-set.html#The-optional-Floating_002dPoint-word-set">The optional Floating-Point word set</a>
+<li><a accesskey="8" href="The-optional-Locals-word-set.html#The-optional-Locals-word-set">The optional Locals word set</a>
+<li><a accesskey="9" href="The-optional-Memory_002dAllocation-word-set.html#The-optional-Memory_002dAllocation-word-set">The optional Memory-Allocation word set</a>
+<li><a href="The-optional-Programming_002dTools-word-set.html#The-optional-Programming_002dTools-word-set">The optional Programming-Tools word set</a>
+<li><a href="The-optional-Search_002dOrder-word-set.html#The-optional-Search_002dOrder-word-set">The optional Search-Order word set</a>
+</ul>
+
+<!-- ===================================================================== -->
+</body></html>
+

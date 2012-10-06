@@ -1,0 +1,163 @@
+<html lang="en">
+<head>
+<title>Advanced does&gt; usage example - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words" title="User-defined Defining Words">
+<link rel="prev" href="CREATE_002e_002eDOES_003e-details.html#CREATE_002e_002eDOES_003e-details" title="CREATE..DOES> details">
+<link rel="next" href="Const_002ddoes_003e.html#Const_002ddoes_003e" title="Const-does>">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Advanced-does%3e-usage-example"></a>
+<a name="Advanced-does_003e-usage-example"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Const_002ddoes_003e.html#Const_002ddoes_003e">Const-does&gt;</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="CREATE_002e_002eDOES_003e-details.html#CREATE_002e_002eDOES_003e-details">CREATE..DOES&gt; details</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">User-defined Defining Words</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.9.8.3 Advanced does&gt; usage example</h5>
+
+<p>The MIPS disassembler (<samp><span class="file">arch/mips/disasm.fs</span></samp>) contains many words
+for disassembling instructions, that follow a very repetetive scheme:
+
+<pre class="example">     :noname <var>disasm-operands</var> s" <var>inst-name</var>" type ;
+     <var>entry-num</var> cells <var>table</var> + !
+</pre>
+   <p>Of course, this inspires the idea to factor out the commonalities to
+allow a definition like
+
+<pre class="example">     <var>disasm-operands</var> <var>entry-num</var> <var>table</var> define-inst <var>inst-name</var>
+</pre>
+   <p>The parameters <var>disasm-operands</var> and <var>table</var> are usually
+correlated.  Moreover, before I wrote the disassembler, there already
+existed code that defines instructions like this:
+
+<pre class="example">     <var>entry-num</var> <var>inst-format</var> <var>inst-name</var>
+</pre>
+   <p>This code comes from the assembler and resides in
+<samp><span class="file">arch/mips/insts.fs</span></samp>.
+
+   <p>So I had to define the <var>inst-format</var> words that performed the scheme
+above when executed.  At first I chose to use run-time code-generation:
+
+<pre class="example">     : <var>inst-format</var> ( entry-num "name" -- ; compiled code: addr w -- )
+       :noname Postpone <var>disasm-operands</var>
+       name Postpone sliteral Postpone type Postpone ;
+       swap cells <var>table</var> + ! ;
+</pre>
+   <p>Note that this supplies the other two parameters of the scheme above.
+
+   <p>An alternative would have been to write this using
+<code>create</code>/<code>does&gt;</code>:
+
+<pre class="example">     : <var>inst-format</var> ( entry-num "name" -- )
+       here name string, ( entry-num c-addr ) \ parse and save "name"
+       noname create , ( entry-num )
+       latestxt swap cells <var>table</var> + !
+     does&gt; ( addr w -- )
+       \ disassemble instruction w at addr
+       @ &gt;r
+       <var>disasm-operands</var>
+       r&gt; count type ;
+</pre>
+   <p>Somehow the first solution is simpler, mainly because it's simpler to
+shift a string from definition-time to use-time with <code>sliteral</code>
+than with <code>string,</code> and friends.
+
+   <p>I wrote a lot of words following this scheme and soon thought about
+factoring out the commonalities among them.  Note that this uses a
+two-level defining word, i.e., a word that defines ordinary defining
+words.
+
+   <p>This time a solution involving <code>postpone</code> and friends seemed more
+difficult (try it as an exercise), so I decided to use a
+<code>create</code>/<code>does&gt;</code> word; since I was already at it, I also used
+<code>create</code>/<code>does&gt;</code> for the lower level (try using
+<code>postpone</code> etc. as an exercise), resulting in the following
+definition:
+
+<pre class="example">     : define-format ( disasm-xt table-xt -- )
+         \ define an instruction format that uses disasm-xt for
+         \ disassembling and enters the defined instructions into table
+         \ table-xt
+         create 2,
+     does&gt; ( u "inst" -- )
+         \ defines an anonymous word for disassembling instruction inst,
+         \ and enters it as u-th entry into table-xt
+         2@ swap here name string, ( u table-xt disasm-xt c-addr ) \ remember string
+         noname create 2,      \ define anonymous word
+         execute latestxt swap ! \ enter xt of defined word into table-xt
+     does&gt; ( addr w -- )
+         \ disassemble instruction w at addr
+         2@ &gt;r ( addr w disasm-xt R: c-addr )
+         execute ( R: c-addr ) \ disassemble operands
+         r&gt; count type ; \ print name
+</pre>
+   <p>Note that the tables here (in contrast to above) do the <code>cells +</code>
+by themselves (that's why you have to pass an xt).  This word is used in
+the following way:
+
+<pre class="example">     ' <var>disasm-operands</var> ' <var>table</var> define-format <var>inst-format</var>
+</pre>
+   <p>As shown above, the defined instruction format is then used like this:
+
+<pre class="example">     <var>entry-num</var> <var>inst-format</var> <var>inst-name</var>
+</pre>
+   <p>In terms of currying, this kind of two-level defining word provides the
+parameters in three stages: first <var>disasm-operands</var> and <var>table</var>,
+then <var>entry-num</var> and <var>inst-name</var>, finally <code>addr w</code>, i.e.,
+the instruction to be disassembled.
+
+   <p>Of course this did not quite fit all the instruction format names used
+in <samp><span class="file">insts.fs</span></samp>, so I had to define a few wrappers that conditioned
+the parameters into the right form.
+
+   <p>If you have trouble following this section, don't worry.  First, this is
+involved and takes time (and probably some playing around) to
+understand; second, this is the first two-level
+<code>create</code>/<code>does&gt;</code> word I have written in seventeen years of
+Forth; and if I did not have <samp><span class="file">insts.fs</span></samp> to start with, I may well
+have elected to use just a one-level defining word (with some repeating
+of parameters when using the defining word). So it is not necessary to
+understand this, but it may improve your understanding of Forth.
+
+   </body></html>
+

@@ -1,0 +1,102 @@
+<html lang="en">
+<head>
+<title>Compilation token - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tokens-for-Words.html#Tokens-for-Words" title="Tokens for Words">
+<link rel="prev" href="Execution-token.html#Execution-token" title="Execution token">
+<link rel="next" href="Name-token.html#Name-token" title="Name token">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Compilation-token"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Name-token.html#Name-token">Name token</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Execution-token.html#Execution-token">Execution token</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tokens-for-Words.html#Tokens-for-Words">Tokens for Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.11.2 Compilation token</h4>
+
+<p><a name="index-compilation-token-1349"></a><a name="index-CT-_0028compilation-token_0029-1350"></a>Gforth represents the compilation semantics of a named word by a
+<dfn>compilation token</dfn> consisting of two cells: <i>w xt</i>. The top cell
+<i>xt</i> is an execution token. The compilation semantics represented by
+the compilation token can be performed with <code>execute</code>, which
+consumes the whole compilation token, with an additional stack effect
+determined by the represented compilation semantics.
+
+   <p>At present, the <i>w</i> part of a compilation token is an execution token,
+and the <i>xt</i> part represents either <code>execute</code> or
+<code>compile,</code><a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>. However, don't rely on that
+knowledge, unless necessary; future versions of Gforth may introduce
+unusual compilation tokens (e.g., a compilation token that represents
+the compilation semantics of a literal).
+
+   <p>You can perform the compilation semantics represented by the compilation
+token with <code>execute</code>.  You can compile the compilation semantics
+with <code>postpone,</code>. I.e., <code>COMP' </code><i>word</i><code> postpone,</code> is
+equivalent to <code>postpone </code><i>word</i>.
+
+   <p><a name="index-g_t_005bCOMP_0027_005d-_0040var_007b-compilation-_0022name_0022-_002d_002d-_003b-run_002dtime-_002d_002d-w-xt---_007d--gforth-1351"></a><a name="index-g_t_0040code_007b_005bCOMP_0027_005d_007d-1352"></a><a name="index-g_t_005bCOMP_0027_005d-1353"></a>
+<pre class="format"><code>[COMP']</code>       <i>compilation "name" &ndash; ; run-time &ndash; w xt  </i>       gforth       &ldquo;bracket-comp-tick&rdquo;
+</pre>
+   <p>Compilation token <i>w xt</i> represents <i>name</i>'s compilation semantics.
+
+   <p><a name="index-COMP_0027-_0040var_007b-_0022name_0022-_002d_002d-w-xt---_007d--gforth-1354"></a><a name="index-g_t_0040code_007bCOMP_0027_007d-1355"></a><a name="index-COMP_0027-1356"></a>
+<pre class="format"><code>COMP'</code>       <i>"name" &ndash; w xt  </i>       gforth       &ldquo;comp-tick&rdquo;
+</pre>
+   <p>Compilation token <i>w xt</i> represents <i>name</i>'s compilation semantics.
+
+   <p><a name="index-postpone_002c-_0040var_007b-w-xt-_002d_002d---_007d--gforth-1357"></a><a name="index-g_t_0040code_007bpostpone_002c_007d-1358"></a><a name="index-postpone_002c-1359"></a>
+<pre class="format"><code>postpone,</code>       <i>w xt &ndash;  </i>       gforth       &ldquo;postpone-comma&rdquo;
+</pre>
+   <p>Compile the compilation semantics represented by the
+compilation token <i>w xt</i>.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> Depending upon the compilation semantics of the
+word. If the word has default compilation semantics, the <i>xt</i> will
+represent <code>compile,</code>. Otherwise (e.g., for immediate words), the
+<i>xt</i> will represent <code>execute</code>.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

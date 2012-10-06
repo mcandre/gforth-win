@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+<title>Calling C Functions - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="C-Interface.html#C-Interface" title="C Interface">
+<link rel="prev" href="C-Interface.html#C-Interface" title="C Interface">
+<link rel="next" href="Declaring-C-Functions.html#Declaring-C-Functions" title="Declaring C Functions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Calling-C-Functions"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Declaring-C-Functions.html#Declaring-C-Functions">Declaring C Functions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="C-Interface.html#C-Interface">C Interface</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="C-Interface.html#C-Interface">C Interface</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.25.1 Calling C functions</h4>
+
+<p><a name="index-C-functions_002c-calls-to-2885"></a><a name="index-calling-C-functions-2886"></a>
+Once a C function is declared (see see <a href="Declaring-C-Functions.html#Declaring-C-Functions">Declaring C Functions</a>), you
+can call it as follows: You push the arguments on the stack(s), and
+then call the word for the C function.  The arguments have to be
+pushed in the same order as the arguments appear in the C
+documentation (i.e., the first argument is deepest on the stack). 
+Integer and pointer arguments have to be pushed on the data stack,
+floating-point arguments on the FP stack; these arguments are consumed
+by the called C function.
+
+   <p>On returning from the C function, the return value, if any, resides on
+the appropriate stack: an integer return value is pushed on the data
+stack, an FP return value on the FP stack, and a void return value
+results in not pushing anything.  Note that most C functions have a
+return value, even if that is often not used in C; in Forth, you have
+to <code>drop</code> this return value explicitly if you do not use it.
+
+   <p>The C interface automatically converts between the C type and the
+Forth type as necessary, on a best-effort basis (in some cases, there
+may be some loss).
+
+   <p>As an example, consider the POSIX function <code>lseek()</code>:
+
+<pre class="example">     off_t lseek(int fd, off_t offset, int whence);
+</pre>
+   <p>This function takes three integer arguments, and returns an integer
+argument, so a Forth call for setting the current file offset to the
+start of the file could look like this:
+
+<pre class="example">     fd @ 0 SEEK_SET lseek -1 = if
+       ... \ error handling
+     then
+</pre>
+   <p>You might be worried that an <code>off_t</code> does not fit into a cell, so
+you could not pass larger offsets to lseek, and might get only a part
+of the return values.  In that case, in your declaration of the
+function (see <a href="Declaring-C-Functions.html#Declaring-C-Functions">Declaring C Functions</a>) you should declare it to use
+double-cells for the off_t argument and return value, and maybe give
+the resulting Forth word a different name, like <code>dlseek</code>; the
+result could be called like this:
+
+<pre class="example">     fd @ 0. SEEK_SET dlseek -1. d= if
+       ... \ error handling
+     then
+</pre>
+   <p>Passing and returning structs or unions is currently not supported by
+our interface<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>.
+
+   <p>Calling functions with a variable number of arguments (<em>variadic</em>
+functions, e.g., <code>printf()</code>) is only supported by having you
+declare one function-calling word for each argument pattern, and
+calling the appropriate word for the desired pattern.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> If you know the calling convention of your C
+compiler, you usually can call such functions in some way, but that
+way is usually not portable between platforms, and sometimes not even
+between C compilers.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

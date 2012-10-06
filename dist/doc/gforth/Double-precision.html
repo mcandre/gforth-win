@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+<title>Double precision - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Arithmetic.html#Arithmetic" title="Arithmetic">
+<link rel="prev" href="Single-precision.html#Single-precision" title="Single precision">
+<link rel="next" href="Bitwise-operations.html#Bitwise-operations" title="Bitwise operations">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Double-precision"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Bitwise-operations.html#Bitwise-operations">Bitwise operations</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Single-precision.html#Single-precision">Single precision</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Arithmetic.html#Arithmetic">Arithmetic</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.5.2 Double precision</h4>
+
+<p><a name="index-double-precision-arithmetic-words-262"></a>
+For the rules used by the text interpreter for
+recognising double-precision integers, see <a href="Number-Conversion.html#Number-Conversion">Number Conversion</a>.
+
+   <p>A double precision number is represented by a cell pair, with the most
+significant cell at the TOS. It is trivial to convert an unsigned single
+to a double: simply push a <code>0</code> onto the TOS. Since numbers are
+represented by Gforth using 2's complement arithmetic, converting a
+signed single to a (signed) double requires sign-extension across the
+most significant cell. This can be achieved using <code>s&gt;d</code>. The moral
+of the story is that you cannot convert a number without knowing whether
+it represents an unsigned or a signed number.
+
+   <p>These words are all defined for signed operands, but some of them also
+work for unsigned numbers: <code>d+</code>, <code>d-</code>.
+
+   <p><a name="index-s_003ed-_0040var_007b-n-_002d_002d-d---_007d--core-263"></a><a name="index-g_t_0040code_007bs_003ed_007d-264"></a><a name="index-s_003ed-265"></a>
+<pre class="format"><code>s&gt;d</code>       <i>n &ndash; d  </i>       core       &ldquo;s-to-d&rdquo;
+</pre>
+   <p><a name="index-d_003es-_0040var_007b-d-_002d_002d-n---_007d--double-266"></a><a name="index-g_t_0040code_007bd_003es_007d-267"></a><a name="index-d_003es-268"></a>
+<pre class="format"><code>d&gt;s</code>       <i>d &ndash; n  </i>       double       &ldquo;d-to-s&rdquo;
+</pre>
+   <p><a name="index-d_002b-_0040var_007b-d1-d2-_002d_002d-d--_007d--double-269"></a><a name="index-g_t_0040code_007bd_002b_007d-270"></a><a name="index-d_002b-271"></a>
+<pre class="format"><code>d+</code>       <i>d1 d2 &ndash; d </i>       double       &ldquo;d-plus&rdquo;
+</pre>
+   <p><a name="index-d_002d-_0040var_007b-d1-d2-_002d_002d-d--_007d--double-272"></a><a name="index-g_t_0040code_007bd_002d_007d-273"></a><a name="index-d_002d-274"></a>
+<pre class="format"><code>d-</code>       <i>d1 d2 &ndash; d </i>       double       &ldquo;d-minus&rdquo;
+</pre>
+   <p><a name="index-dnegate-_0040var_007b-d1-_002d_002d-d2--_007d--double-275"></a><a name="index-g_t_0040code_007bdnegate_007d-276"></a><a name="index-dnegate-277"></a>
+<pre class="format"><code>dnegate</code>       <i>d1 &ndash; d2 </i>       double       &ldquo;d-negate&rdquo;
+</pre>
+   <p><a name="index-dabs-_0040var_007b-d-_002d_002d-ud---_007d--double-278"></a><a name="index-g_t_0040code_007bdabs_007d-279"></a><a name="index-dabs-280"></a>
+<pre class="format"><code>dabs</code>       <i>d &ndash; ud  </i>       double       &ldquo;d-abs&rdquo;
+</pre>
+   <p><a name="index-dmin-_0040var_007b-d1-d2-_002d_002d-d---_007d--double-281"></a><a name="index-g_t_0040code_007bdmin_007d-282"></a><a name="index-dmin-283"></a>
+<pre class="format"><code>dmin</code>       <i>d1 d2 &ndash; d  </i>       double       &ldquo;d-min&rdquo;
+</pre>
+   <p><a name="index-dmax-_0040var_007b-d1-d2-_002d_002d-d---_007d--double-284"></a><a name="index-g_t_0040code_007bdmax_007d-285"></a><a name="index-dmax-286"></a>
+<pre class="format"><code>dmax</code>       <i>d1 d2 &ndash; d  </i>       double       &ldquo;d-max&rdquo;
+</pre>
+   </body></html>
+

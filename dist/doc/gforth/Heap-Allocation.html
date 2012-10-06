@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+<title>Heap Allocation - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Memory.html#Memory" title="Memory">
+<link rel="prev" href="Dictionary-allocation.html#Dictionary-allocation" title="Dictionary allocation">
+<link rel="next" href="Memory-Access.html#Memory-Access" title="Memory Access">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Heap-Allocation"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Memory-Access.html#Memory-Access">Memory Access</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Dictionary-allocation.html#Dictionary-allocation">Dictionary allocation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Memory.html#Memory">Memory</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.7.3 Heap allocation</h4>
+
+<p><a name="index-heap-allocation-819"></a><a name="index-dynamic-allocation-of-memory-820"></a><a name="index-memory_002dallocation-word-set-821"></a>
+<a name="index-contiguous-regions-and-heap-allocation-822"></a>Heap allocation supports deallocation of allocated memory in any
+order. Dictionary allocation is not affected by it (i.e., it does not
+end a contiguous region). In Gforth, these words are implemented using
+the standard C library calls malloc(), free() and resize().
+
+   <p>The memory region produced by one invocation of <code>allocate</code> or
+<code>resize</code> is internally contiguous.  There is no contiguity between
+such a region and any other region (including others allocated from the
+heap).
+
+   <p><a name="index-allocate-_0040var_007b-u-_002d_002d-a_002daddr-wior--_007d--memory-823"></a><a name="index-g_t_0040code_007ballocate_007d-824"></a><a name="index-allocate-825"></a>
+<pre class="format"><code>allocate</code>       <i>u &ndash; a-addr wior </i>       memory       &ldquo;allocate&rdquo;
+</pre>
+   <p>Allocate <i>u</i> address units of contiguous data space. The initial
+contents of the data space is undefined. If the allocation is successful,
+<i>a-addr</i> is the start address of the allocated region and <i>wior</i>
+is 0. If the allocation fails, <i>a-addr</i> is undefined and <i>wior</i>
+is a non-zero I/O result code.
+
+   <p><a name="index-free-_0040var_007b-a_002daddr-_002d_002d-wior--_007d--memory-826"></a><a name="index-g_t_0040code_007bfree_007d-827"></a><a name="index-free-828"></a>
+<pre class="format"><code>free</code>       <i>a-addr &ndash; wior </i>       memory       &ldquo;free&rdquo;
+</pre>
+   <p>Return the region of data space starting at <i>a-addr</i> to the system. 
+The region must originally have been obtained using <code>allocate</code> or
+<code>resize</code>. If the operational is successful, <i>wior</i> is 0. 
+If the operation fails, <i>wior</i> is a non-zero I/O result code.
+
+   <p><a name="index-resize-_0040var_007b-a_002daddr1-u-_002d_002d-a_002daddr2-wior--_007d--memory-829"></a><a name="index-g_t_0040code_007bresize_007d-830"></a><a name="index-resize-831"></a>
+<pre class="format"><code>resize</code>       <i>a-addr1 u &ndash; a-addr2 wior </i>       memory       &ldquo;resize&rdquo;
+</pre>
+   <p>Change the size of the allocated area at <i>a-addr1</i> to <i>u</i>
+address units, possibly moving the contents to a different
+area. <i>a-addr2</i> is the address of the resulting area. 
+If the operation is successful, <i>wior</i> is 0. 
+If the operation fails, <i>wior</i> is a non-zero
+I/O result code. If <i>a-addr1</i> is 0, Gforth's (but not the Standard)
+<code>resize</code> <code>allocate</code>s <i>u</i> address units.
+
+   </body></html>
+

@@ -1,0 +1,75 @@
+<html lang="en">
+<head>
+<title>Colon Definitions - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Defining-Words.html#Defining-Words" title="Defining Words">
+<link rel="prev" href="Values.html#Values" title="Values">
+<link rel="next" href="Anonymous-Definitions.html#Anonymous-Definitions" title="Anonymous Definitions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Colon-Definitions"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Anonymous-Definitions.html#Anonymous-Definitions">Anonymous Definitions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Values.html#Values">Values</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Defining-Words.html#Defining-Words">Defining Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.9.5 Colon Definitions</h4>
+
+<p><a name="index-colon-definitions-1228"></a>
+<pre class="example">     : name ( ... -- ... )
+         word1 word2 word3 ;
+</pre>
+   <p class="noindent">Creates a word called <code>name</code> that, upon execution, executes
+<code>word1 word2 word3</code>. <code>name</code> is a <dfn>(colon) definition</dfn>.
+
+   <p>The explanation above is somewhat superficial. For simple examples of
+colon definitions see <a href="Your-first-definition.html#Your-first-definition">Your first definition</a>.  For an in-depth
+discussion of some of the issues involved, See <a href="Interpretation-and-Compilation-Semantics.html#Interpretation-and-Compilation-Semantics">Interpretation and Compilation Semantics</a>.
+
+   <p><a name="index-g_t_003a-_0040var_007b-_0022name_0022-_002d_002d-colon_002dsys---_007d--core-1229"></a><a name="index-g_t_0040code_007b_003a_007d-1230"></a>
+<pre class="format"><code>:</code>       <i>"name" &ndash; colon-sys  </i>       core       &ldquo;colon&rdquo;
+</pre>
+   <p><a name="index-g_t_003b-_0040var_007b-compilation-colon_002dsys-_002d_002d-_003b-run_002dtime-nest_002dsys---_007d--core-1231"></a><a name="index-g_t_0040code_007b_003b_007d-1232"></a><a name="index-g_t_003b-1233"></a>
+<pre class="format"><code>;</code>       <i>compilation colon-sys &ndash; ; run-time nest-sys  </i>       core       &ldquo;semicolon&rdquo;
+</pre>
+   </body></html>
+

@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+<title>Emacs Tags - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Emacs-and-Gforth.html#Emacs-and-Gforth" title="Emacs and Gforth">
+<link rel="prev" href="Installing-gforth_002eel.html#Installing-gforth_002eel" title="Installing gforth.el">
+<link rel="next" href="Hilighting.html#Hilighting" title="Hilighting">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Emacs-Tags"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Hilighting.html#Hilighting">Hilighting</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Installing-gforth_002eel.html#Installing-gforth_002eel">Installing gforth.el</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Emacs-and-Gforth.html#Emacs-and-Gforth">Emacs and Gforth</a>
+<hr>
+</div>
+
+<h3 class="section">12.2 Emacs Tags</h3>
+
+<p><a name="index-g_t_0040file_007bTAGS_007d-file-3376"></a><a name="index-g_t_0040file_007betags_002efs_007d-3377"></a><a name="index-viewing-the-source-of-a-word-in-Emacs-3378"></a><a name="index-g_t_0040code_007brequire_007d_002c-placement-in-files-3379"></a><a name="index-g_t_0040code_007binclude_007d_002c-placement-in-files-3380"></a>If you <code>require</code> <samp><span class="file">etags.fs</span></samp>, a new <samp><span class="file">TAGS</span></samp> file will be
+produced (see <a href="../emacs/Tags.html#Tags">Tags Tables</a>) that
+contains the definitions of all words defined afterwards. You can then
+find the source for a word using <kbd>M-.</kbd>. Note that Emacs can use
+several tags files at the same time (e.g., one for the Gforth sources
+and one for your program, see <a href="../emacs/Select-Tags-Table.html#Select-Tags-Table">Selecting a Tags Table</a>). The TAGS file for the preloaded words is
+<samp><span class="file">$(datadir)/gforth/$(VERSION)/TAGS</span></samp> (e.g.,
+<samp><span class="file">/usr/local/share/gforth/0.2.0/TAGS</span></samp>).  To get the best behaviour
+with <samp><span class="file">etags.fs</span></samp>, you should avoid putting definitions both before
+and after <code>require</code> etc., otherwise you will see the same file
+visited several times by commands like <code>tags-search</code>.
+
+<!--  -->
+</body></html>
+

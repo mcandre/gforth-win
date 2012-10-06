@@ -1,0 +1,175 @@
+<html lang="en">
+<head>
+<title>Numeric comparison - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Arithmetic.html#Arithmetic" title="Arithmetic">
+<link rel="prev" href="Bitwise-operations.html#Bitwise-operations" title="Bitwise operations">
+<link rel="next" href="Mixed-precision.html#Mixed-precision" title="Mixed precision">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Numeric-comparison"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Mixed-precision.html#Mixed-precision">Mixed precision</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Bitwise-operations.html#Bitwise-operations">Bitwise operations</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Arithmetic.html#Arithmetic">Arithmetic</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.5.4 Numeric comparison</h4>
+
+<p><a name="index-numeric-comparison-words-318"></a>
+Note that the words that compare for equality (<code>= &lt;&gt; 0= 0&lt;&gt; d= d&lt;&gt;
+d0= d0&lt;&gt;</code>) work for for both signed and unsigned numbers.
+
+   <p><a name="index-g_t_003c-_0040var_007b-n1-n2-_002d_002d-f--_007d--core-319"></a><a name="index-g_t_0040code_007b_003c_007d-320"></a><a name="index-g_t_003c-321"></a>
+<pre class="format"><code>&lt;</code>       <i>n1 n2 &ndash; f </i>       core       &ldquo;less-than&rdquo;
+</pre>
+   <p><a name="index-g_t_003c_003d-_0040var_007b-n1-n2-_002d_002d-f--_007d--gforth-322"></a><a name="index-g_t_0040code_007b_003c_003d_007d-323"></a><a name="index-g_t_003c_003d-324"></a>
+<pre class="format"><code>&lt;=</code>       <i>n1 n2 &ndash; f </i>       gforth       &ldquo;less-or-equal&rdquo;
+</pre>
+   <p><a name="index-g_t_003c_003e-_0040var_007b-n1-n2-_002d_002d-f--_007d--core_002dext-325"></a><a name="index-g_t_0040code_007b_003c_003e_007d-326"></a><a name="index-g_t_003c_003e-327"></a>
+<pre class="format"><code>&lt;&gt;</code>       <i>n1 n2 &ndash; f </i>       core-ext       &ldquo;not-equals&rdquo;
+</pre>
+   <p><a name="index-g_t_003d-_0040var_007b-n1-n2-_002d_002d-f--_007d--core-328"></a><a name="index-g_t_0040code_007b_003d_007d-329"></a><a name="index-g_t_003d-330"></a>
+<pre class="format"><code>=</code>       <i>n1 n2 &ndash; f </i>       core       &ldquo;equals&rdquo;
+</pre>
+   <p><a name="index-g_t_003e-_0040var_007b-n1-n2-_002d_002d-f--_007d--core-331"></a><a name="index-g_t_0040code_007b_003e_007d-332"></a><a name="index-g_t_003e-333"></a>
+<pre class="format"><code>&gt;</code>       <i>n1 n2 &ndash; f </i>       core       &ldquo;greater-than&rdquo;
+</pre>
+   <p><a name="index-g_t_003e_003d-_0040var_007b-n1-n2-_002d_002d-f--_007d--gforth-334"></a><a name="index-g_t_0040code_007b_003e_003d_007d-335"></a><a name="index-g_t_003e_003d-336"></a>
+<pre class="format"><code>&gt;=</code>       <i>n1 n2 &ndash; f </i>       gforth       &ldquo;greater-or-equal&rdquo;
+</pre>
+   <p><a name="index-g_t0_003c-_0040var_007b-n-_002d_002d-f--_007d--core-337"></a><a name="index-g_t_0040code_007b0_003c_007d-338"></a><a name="index-g_t0_003c-339"></a>
+<pre class="format"><code>0&lt;</code>       <i>n &ndash; f </i>       core       &ldquo;zero-less-than&rdquo;
+</pre>
+   <p><a name="index-g_t0_003c_003d-_0040var_007b-n-_002d_002d-f--_007d--gforth-340"></a><a name="index-g_t_0040code_007b0_003c_003d_007d-341"></a><a name="index-g_t0_003c_003d-342"></a>
+<pre class="format"><code>0&lt;=</code>       <i>n &ndash; f </i>       gforth       &ldquo;zero-less-or-equal&rdquo;
+</pre>
+   <p><a name="index-g_t0_003c_003e-_0040var_007b-n-_002d_002d-f--_007d--core_002dext-343"></a><a name="index-g_t_0040code_007b0_003c_003e_007d-344"></a><a name="index-g_t0_003c_003e-345"></a>
+<pre class="format"><code>0&lt;&gt;</code>       <i>n &ndash; f </i>       core-ext       &ldquo;zero-not-equals&rdquo;
+</pre>
+   <p><a name="index-g_t0_003d-_0040var_007b-n-_002d_002d-f--_007d--core-346"></a><a name="index-g_t_0040code_007b0_003d_007d-347"></a><a name="index-g_t0_003d-348"></a>
+<pre class="format"><code>0=</code>       <i>n &ndash; f </i>       core       &ldquo;zero-equals&rdquo;
+</pre>
+   <p><a name="index-g_t0_003e-_0040var_007b-n-_002d_002d-f--_007d--core_002dext-349"></a><a name="index-g_t_0040code_007b0_003e_007d-350"></a><a name="index-g_t0_003e-351"></a>
+<pre class="format"><code>0&gt;</code>       <i>n &ndash; f </i>       core-ext       &ldquo;zero-greater-than&rdquo;
+</pre>
+   <p><a name="index-g_t0_003e_003d-_0040var_007b-n-_002d_002d-f--_007d--gforth-352"></a><a name="index-g_t_0040code_007b0_003e_003d_007d-353"></a><a name="index-g_t0_003e_003d-354"></a>
+<pre class="format"><code>0&gt;=</code>       <i>n &ndash; f </i>       gforth       &ldquo;zero-greater-or-equal&rdquo;
+</pre>
+   <p><a name="index-u_003c-_0040var_007b-u1-u2-_002d_002d-f--_007d--core-355"></a><a name="index-g_t_0040code_007bu_003c_007d-356"></a><a name="index-u_003c-357"></a>
+<pre class="format"><code>u&lt;</code>       <i>u1 u2 &ndash; f </i>       core       &ldquo;u-less-than&rdquo;
+</pre>
+   <p><a name="index-u_003c_003d-_0040var_007b-u1-u2-_002d_002d-f--_007d--gforth-358"></a><a name="index-g_t_0040code_007bu_003c_003d_007d-359"></a><a name="index-u_003c_003d-360"></a>
+<pre class="format"><code>u&lt;=</code>       <i>u1 u2 &ndash; f </i>       gforth       &ldquo;u-less-or-equal&rdquo;
+</pre>
+   <!-- u<> and u= exist but are the same as <> and = -->
+<!-- doc-u<> -->
+<!-- doc-u= -->
+<p><a name="index-u_003e-_0040var_007b-u1-u2-_002d_002d-f--_007d--core_002dext-361"></a><a name="index-g_t_0040code_007bu_003e_007d-362"></a><a name="index-u_003e-363"></a>
+<pre class="format"><code>u&gt;</code>       <i>u1 u2 &ndash; f </i>       core-ext       &ldquo;u-greater-than&rdquo;
+</pre>
+   <p><a name="index-u_003e_003d-_0040var_007b-u1-u2-_002d_002d-f--_007d--gforth-364"></a><a name="index-g_t_0040code_007bu_003e_003d_007d-365"></a><a name="index-u_003e_003d-366"></a>
+<pre class="format"><code>u&gt;=</code>       <i>u1 u2 &ndash; f </i>       gforth       &ldquo;u-greater-or-equal&rdquo;
+</pre>
+   <p><a name="index-within-_0040var_007b-u1-u2-u3-_002d_002d-f--_007d--core_002dext-367"></a><a name="index-g_t_0040code_007bwithin_007d-368"></a><a name="index-within-369"></a>
+<pre class="format"><code>within</code>       <i>u1 u2 u3 &ndash; f </i>       core-ext       &ldquo;within&rdquo;
+</pre>
+   <p>u2=&lt;u1&lt;u3 or: u3=&lt;u2 and u1 is not in [u3,u2).  This works for
+unsigned and signed numbers (but not a mixture).  Another way to think
+about this word is to consider the numbers as a circle (wrapping
+around from <code>max-u</code> to 0 for unsigned, and from <code>max-n</code> to
+min-n for signed numbers); now consider the range from u2 towards
+increasing numbers up to and excluding u3 (giving an empty range if
+u2=u3); if u1 is in this range, <code>within</code> returns true.
+
+   <p><a name="index-d_003c-_0040var_007b-d1-d2-_002d_002d-f--_007d--double-370"></a><a name="index-g_t_0040code_007bd_003c_007d-371"></a><a name="index-d_003c-372"></a>
+<pre class="format"><code>d&lt;</code>       <i>d1 d2 &ndash; f </i>       double       &ldquo;d-less-than&rdquo;
+</pre>
+   <p><a name="index-d_003c_003d-_0040var_007b-d1-d2-_002d_002d-f--_007d--gforth-373"></a><a name="index-g_t_0040code_007bd_003c_003d_007d-374"></a><a name="index-d_003c_003d-375"></a>
+<pre class="format"><code>d&lt;=</code>       <i>d1 d2 &ndash; f </i>       gforth       &ldquo;d-less-or-equal&rdquo;
+</pre>
+   <p><a name="index-d_003c_003e-_0040var_007b-d1-d2-_002d_002d-f--_007d--gforth-376"></a><a name="index-g_t_0040code_007bd_003c_003e_007d-377"></a><a name="index-d_003c_003e-378"></a>
+<pre class="format"><code>d&lt;&gt;</code>       <i>d1 d2 &ndash; f </i>       gforth       &ldquo;d-not-equals&rdquo;
+</pre>
+   <p><a name="index-d_003d-_0040var_007b-d1-d2-_002d_002d-f--_007d--double-379"></a><a name="index-g_t_0040code_007bd_003d_007d-380"></a><a name="index-d_003d-381"></a>
+<pre class="format"><code>d=</code>       <i>d1 d2 &ndash; f </i>       double       &ldquo;d-equals&rdquo;
+</pre>
+   <p><a name="index-d_003e-_0040var_007b-d1-d2-_002d_002d-f--_007d--gforth-382"></a><a name="index-g_t_0040code_007bd_003e_007d-383"></a><a name="index-d_003e-384"></a>
+<pre class="format"><code>d&gt;</code>       <i>d1 d2 &ndash; f </i>       gforth       &ldquo;d-greater-than&rdquo;
+</pre>
+   <p><a name="index-d_003e_003d-_0040var_007b-d1-d2-_002d_002d-f--_007d--gforth-385"></a><a name="index-g_t_0040code_007bd_003e_003d_007d-386"></a><a name="index-d_003e_003d-387"></a>
+<pre class="format"><code>d&gt;=</code>       <i>d1 d2 &ndash; f </i>       gforth       &ldquo;d-greater-or-equal&rdquo;
+</pre>
+   <p><a name="index-d0_003c-_0040var_007b-d-_002d_002d-f--_007d--double-388"></a><a name="index-g_t_0040code_007bd0_003c_007d-389"></a><a name="index-d0_003c-390"></a>
+<pre class="format"><code>d0&lt;</code>       <i>d &ndash; f </i>       double       &ldquo;d-zero-less-than&rdquo;
+</pre>
+   <p><a name="index-d0_003c_003d-_0040var_007b-d-_002d_002d-f--_007d--gforth-391"></a><a name="index-g_t_0040code_007bd0_003c_003d_007d-392"></a><a name="index-d0_003c_003d-393"></a>
+<pre class="format"><code>d0&lt;=</code>       <i>d &ndash; f </i>       gforth       &ldquo;d-zero-less-or-equal&rdquo;
+</pre>
+   <p><a name="index-d0_003c_003e-_0040var_007b-d-_002d_002d-f--_007d--gforth-394"></a><a name="index-g_t_0040code_007bd0_003c_003e_007d-395"></a><a name="index-d0_003c_003e-396"></a>
+<pre class="format"><code>d0&lt;&gt;</code>       <i>d &ndash; f </i>       gforth       &ldquo;d-zero-not-equals&rdquo;
+</pre>
+   <p><a name="index-d0_003d-_0040var_007b-d-_002d_002d-f--_007d--double-397"></a><a name="index-g_t_0040code_007bd0_003d_007d-398"></a><a name="index-d0_003d-399"></a>
+<pre class="format"><code>d0=</code>       <i>d &ndash; f </i>       double       &ldquo;d-zero-equals&rdquo;
+</pre>
+   <p><a name="index-d0_003e-_0040var_007b-d-_002d_002d-f--_007d--gforth-400"></a><a name="index-g_t_0040code_007bd0_003e_007d-401"></a><a name="index-d0_003e-402"></a>
+<pre class="format"><code>d0&gt;</code>       <i>d &ndash; f </i>       gforth       &ldquo;d-zero-greater-than&rdquo;
+</pre>
+   <p><a name="index-d0_003e_003d-_0040var_007b-d-_002d_002d-f--_007d--gforth-403"></a><a name="index-g_t_0040code_007bd0_003e_003d_007d-404"></a><a name="index-d0_003e_003d-405"></a>
+<pre class="format"><code>d0&gt;=</code>       <i>d &ndash; f </i>       gforth       &ldquo;d-zero-greater-or-equal&rdquo;
+</pre>
+   <p><a name="index-du_003c-_0040var_007b-ud1-ud2-_002d_002d-f--_007d--double_002dext-406"></a><a name="index-g_t_0040code_007bdu_003c_007d-407"></a><a name="index-du_003c-408"></a>
+<pre class="format"><code>du&lt;</code>       <i>ud1 ud2 &ndash; f </i>       double-ext       &ldquo;d-u-less-than&rdquo;
+</pre>
+   <p><a name="index-du_003c_003d-_0040var_007b-ud1-ud2-_002d_002d-f--_007d--gforth-409"></a><a name="index-g_t_0040code_007bdu_003c_003d_007d-410"></a><a name="index-du_003c_003d-411"></a>
+<pre class="format"><code>du&lt;=</code>       <i>ud1 ud2 &ndash; f </i>       gforth       &ldquo;d-u-less-or-equal&rdquo;
+</pre>
+   <!-- du<> and du= exist but are the same as d<> and d= -->
+<!-- doc-du<> -->
+<!-- doc-du= -->
+<p><a name="index-du_003e-_0040var_007b-ud1-ud2-_002d_002d-f--_007d--gforth-412"></a><a name="index-g_t_0040code_007bdu_003e_007d-413"></a><a name="index-du_003e-414"></a>
+<pre class="format"><code>du&gt;</code>       <i>ud1 ud2 &ndash; f </i>       gforth       &ldquo;d-u-greater-than&rdquo;
+</pre>
+   <p><a name="index-du_003e_003d-_0040var_007b-ud1-ud2-_002d_002d-f--_007d--gforth-415"></a><a name="index-g_t_0040code_007bdu_003e_003d_007d-416"></a><a name="index-du_003e_003d-417"></a>
+<pre class="format"><code>du&gt;=</code>       <i>ud1 ud2 &ndash; f </i>       gforth       &ldquo;d-u-greater-or-equal&rdquo;
+</pre>
+   </body></html>
+

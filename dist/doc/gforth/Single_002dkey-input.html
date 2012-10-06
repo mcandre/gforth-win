@@ -1,0 +1,230 @@
+<html lang="en">
+<head>
+<title>Single-key input - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-I_002fO.html#Other-I_002fO" title="Other I/O">
+<link rel="prev" href="Terminal-output.html#Terminal-output" title="Terminal output">
+<link rel="next" href="Line-input-and-conversion.html#Line-input-and-conversion" title="Line input and conversion">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Single-key-input"></a>
+<a name="Single_002dkey-input"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Line-input-and-conversion.html#Line-input-and-conversion">Line input and conversion</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Terminal-output.html#Terminal-output">Terminal output</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-I_002fO.html#Other-I_002fO">Other I/O</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.19.6 Single-key input</h4>
+
+<p><a name="index-single_002dkey-input-2055"></a><a name="index-input_002c-single_002dkey-2056"></a>
+If you want to get a single printable character, you can use
+<code>key</code>; to check whether a character is available for <code>key</code>,
+you can use <code>key?</code>.
+
+   <p><a name="index-key-_0040var_007b-_002d_002d-char---_007d--core-2057"></a><a name="index-g_t_0040code_007bkey_007d-2058"></a><a name="index-key-2059"></a>
+<pre class="format"><code>key</code>       <i>&ndash; char  </i>       core       &ldquo;key&rdquo;
+</pre>
+   <p>Receive (but do not display) one character, <var>char</var>.
+
+   <p><a name="index-key_003f-_0040var_007b-_002d_002d-flag---_007d--facility-2060"></a><a name="index-g_t_0040code_007bkey_003f_007d-2061"></a><a name="index-key_003f-2062"></a>
+<pre class="format"><code>key?</code>       <i>&ndash; flag  </i>       facility       &ldquo;key-question&rdquo;
+</pre>
+   <p>Determine whether a character is available. If a character is
+available, <var>flag</var> is true; the next call to <code>key</code> will
+yield the character. Once <code>key?</code> returns true, subsequent
+calls to <code>key?</code> before calling <code>key</code> or <code>ekey</code> will
+also return true.
+
+   <p>If you want to process a mix of printable and non-printable
+characters, you can do that with <code>ekey</code> and friends.  <code>Ekey</code>
+produces a keyboard event that you have to convert into a character
+with <code>ekey&gt;char</code> or into a key identifier with <code>ekey&gt;fkey</code>.
+
+   <p>Typical code for using EKEY looks like this:
+
+<pre class="example">     ekey ekey&gt;char if ( c )
+       ... \ do something with the character
+     else ekey&gt;fkey if ( key-id )
+       case
+         k-up                                  of ... endof
+         k-f1                                  of ... endof
+         k-left k-shift-mask or k-ctrl-mask or of ... endof
+         ...
+       endcase
+     else ( keyboard-event )
+       drop \ just ignore an unknown keyboard event type
+     then then
+</pre>
+   <p><a name="index-ekey-_0040var_007b-_002d_002d-u---_007d--facility_002dext-2063"></a><a name="index-g_t_0040code_007bekey_007d-2064"></a><a name="index-ekey-2065"></a>
+<pre class="format"><code>ekey</code>       <i>&ndash; u  </i>       facility-ext       &ldquo;e-key&rdquo;
+</pre>
+   <p>Receive a keyboard event <var>u</var> (encoding implementation-defined).
+
+   <p><a name="index-ekey_003echar-_0040var_007b-u-_002d_002d-u-false-_007c-c-true---_007d--facility_002dext-2066"></a><a name="index-g_t_0040code_007bekey_003echar_007d-2067"></a><a name="index-ekey_003echar-2068"></a>
+<pre class="format"><code>ekey&gt;char</code>       <i>u &ndash; u false | c true  </i>       facility-ext       &ldquo;e-key-to-char&rdquo;
+</pre>
+   <p>Convert keyboard event <var>u</var> into character <code>c</code> if possible.
+
+   <p><a name="index-ekey_003efkey-_0040var_007b-u1-_002d_002d-u2-f---_007d--X_003aekeys-2069"></a><a name="index-g_t_0040code_007bekey_003efkey_007d-2070"></a><a name="index-ekey_003efkey-2071"></a>
+<pre class="format"><code>ekey&gt;fkey</code>       <i>u1 &ndash; u2 f  </i>       X:ekeys       &ldquo;ekey&gt;fkey&rdquo;
+</pre>
+   <p>If u1 is a keyboard event in the special key set, convert
+keyboard event <var>u1</var> into key id <var>u2</var> and return true;
+otherwise return <var>u1</var> and false.
+
+   <p><a name="index-ekey_003f-_0040var_007b-_002d_002d-flag---_007d--facility_002dext-2072"></a><a name="index-g_t_0040code_007bekey_003f_007d-2073"></a><a name="index-ekey_003f-2074"></a>
+<pre class="format"><code>ekey?</code>       <i>&ndash; flag  </i>       facility-ext       &ldquo;e-key-question&rdquo;
+</pre>
+   <p>True if a keyboard event is available.
+
+   <p>The key identifiers for cursor keys are:
+
+   <p><a name="index-k_002dleft-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2075"></a><a name="index-g_t_0040code_007bk_002dleft_007d-2076"></a><a name="index-k_002dleft-2077"></a>
+<pre class="format"><code>k-left</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-left&rdquo;
+</pre>
+   <p><a name="index-k_002dright-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2078"></a><a name="index-g_t_0040code_007bk_002dright_007d-2079"></a><a name="index-k_002dright-2080"></a>
+<pre class="format"><code>k-right</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-right&rdquo;
+</pre>
+   <p><a name="index-k_002dup-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2081"></a><a name="index-g_t_0040code_007bk_002dup_007d-2082"></a><a name="index-k_002dup-2083"></a>
+<pre class="format"><code>k-up</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-up&rdquo;
+</pre>
+   <p><a name="index-k_002ddown-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2084"></a><a name="index-g_t_0040code_007bk_002ddown_007d-2085"></a><a name="index-k_002ddown-2086"></a>
+<pre class="format"><code>k-down</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-down&rdquo;
+</pre>
+   <p><a name="index-k_002dhome-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2087"></a><a name="index-g_t_0040code_007bk_002dhome_007d-2088"></a><a name="index-k_002dhome-2089"></a>
+<pre class="format"><code>k-home</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-home&rdquo;
+</pre>
+   <p>aka Pos1
+
+   <p><a name="index-k_002dend-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2090"></a><a name="index-g_t_0040code_007bk_002dend_007d-2091"></a><a name="index-k_002dend-2092"></a>
+<pre class="format"><code>k-end</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-end&rdquo;
+</pre>
+   <p><a name="index-k_002dprior-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2093"></a><a name="index-g_t_0040code_007bk_002dprior_007d-2094"></a><a name="index-k_002dprior-2095"></a>
+<pre class="format"><code>k-prior</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-prior&rdquo;
+</pre>
+   <p>aka PgUp
+
+   <p><a name="index-k_002dnext-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2096"></a><a name="index-g_t_0040code_007bk_002dnext_007d-2097"></a><a name="index-k_002dnext-2098"></a>
+<pre class="format"><code>k-next</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-next&rdquo;
+</pre>
+   <p>aka PgDn
+
+   <p><a name="index-k_002dinsert-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2099"></a><a name="index-g_t_0040code_007bk_002dinsert_007d-2100"></a><a name="index-k_002dinsert-2101"></a>
+<pre class="format"><code>k-insert</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-insert&rdquo;
+</pre>
+   <p><a name="index-k_002ddelete-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2102"></a><a name="index-g_t_0040code_007bk_002ddelete_007d-2103"></a><a name="index-k_002ddelete-2104"></a>
+<pre class="format"><code>k-delete</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-delete&rdquo;
+</pre>
+   <p>The key identifiers for function keys (aka keypad keys) are:
+
+   <p><a name="index-k_002df1-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2105"></a><a name="index-g_t_0040code_007bk_002df1_007d-2106"></a><a name="index-k_002df1-2107"></a>
+<pre class="format"><code>k-f1</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-f1&rdquo;
+</pre>
+   <p><a name="index-k_002df2-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2108"></a><a name="index-g_t_0040code_007bk_002df2_007d-2109"></a><a name="index-k_002df2-2110"></a>
+<pre class="format"><code>k-f2</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-f2&rdquo;
+</pre>
+   <p><a name="index-k_002df3-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2111"></a><a name="index-g_t_0040code_007bk_002df3_007d-2112"></a><a name="index-k_002df3-2113"></a>
+<pre class="format"><code>k-f3</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-f3&rdquo;
+</pre>
+   <p><a name="index-k_002df4-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2114"></a><a name="index-g_t_0040code_007bk_002df4_007d-2115"></a><a name="index-k_002df4-2116"></a>
+<pre class="format"><code>k-f4</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-f4&rdquo;
+</pre>
+   <p><a name="index-k_002df5-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2117"></a><a name="index-g_t_0040code_007bk_002df5_007d-2118"></a><a name="index-k_002df5-2119"></a>
+<pre class="format"><code>k-f5</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-f5&rdquo;
+</pre>
+   <p><a name="index-k_002df6-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2120"></a><a name="index-g_t_0040code_007bk_002df6_007d-2121"></a><a name="index-k_002df6-2122"></a>
+<pre class="format"><code>k-f6</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-f6&rdquo;
+</pre>
+   <p><a name="index-k_002df7-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2123"></a><a name="index-g_t_0040code_007bk_002df7_007d-2124"></a><a name="index-k_002df7-2125"></a>
+<pre class="format"><code>k-f7</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-f7&rdquo;
+</pre>
+   <p><a name="index-k_002df8-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2126"></a><a name="index-g_t_0040code_007bk_002df8_007d-2127"></a><a name="index-k_002df8-2128"></a>
+<pre class="format"><code>k-f8</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-f8&rdquo;
+</pre>
+   <p><a name="index-k_002df9-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2129"></a><a name="index-g_t_0040code_007bk_002df9_007d-2130"></a><a name="index-k_002df9-2131"></a>
+<pre class="format"><code>k-f9</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-f9&rdquo;
+</pre>
+   <p><a name="index-k_002df10-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2132"></a><a name="index-g_t_0040code_007bk_002df10_007d-2133"></a><a name="index-k_002df10-2134"></a>
+<pre class="format"><code>k-f10</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-f10&rdquo;
+</pre>
+   <p><a name="index-k_002df11-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2135"></a><a name="index-g_t_0040code_007bk_002df11_007d-2136"></a><a name="index-k_002df11-2137"></a>
+<pre class="format"><code>k-f11</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-f11&rdquo;
+</pre>
+   <p><a name="index-k_002df12-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2138"></a><a name="index-g_t_0040code_007bk_002df12_007d-2139"></a><a name="index-k_002df12-2140"></a>
+<pre class="format"><code>k-f12</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-f12&rdquo;
+</pre>
+   <p>Note that <code>k-f11</code> and <code>k-f12</code> are not as widely available.
+
+   <p>You can combine these key identifiers with masks for various shift keys:
+
+   <p><a name="index-k_002dshift_002dmask-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2141"></a><a name="index-g_t_0040code_007bk_002dshift_002dmask_007d-2142"></a><a name="index-k_002dshift_002dmask-2143"></a>
+<pre class="format"><code>k-shift-mask</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-shift-mask&rdquo;
+</pre>
+   <p><a name="index-k_002dctrl_002dmask-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2144"></a><a name="index-g_t_0040code_007bk_002dctrl_002dmask_007d-2145"></a><a name="index-k_002dctrl_002dmask-2146"></a>
+<pre class="format"><code>k-ctrl-mask</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-ctrl-mask&rdquo;
+</pre>
+   <p><a name="index-k_002dalt_002dmask-_0040var_007b-_002d_002d-u---_007d--X_003aekeys-2147"></a><a name="index-g_t_0040code_007bk_002dalt_002dmask_007d-2148"></a><a name="index-k_002dalt_002dmask-2149"></a>
+<pre class="format"><code>k-alt-mask</code>       <i>&ndash; u  </i>       X:ekeys       &ldquo;k-alt-mask&rdquo;
+</pre>
+   <p>Note that, even if a Forth system has <code>ekey&gt;fkey</code> and the key
+identifier words, the keys are not necessarily available or it may not
+necessarily be able to report all the keys and all the possible
+combinations with shift masks.  Therefore, write your programs in such
+a way that they are still useful even if the keys and key combinations
+cannot be pressed or are not recognized.
+
+   <p>Examples: Older keyboards often do not have an F11 and F12 key.  If
+you run Gforth in an xterm, the xterm catches a number of combinations
+(e.g., &lt;Shift-Up&gt;), and never passes it to Gforth.  Finally,
+Gforth currently does not recognize and report combinations with
+multiple shift keys (so the &lt;shift-ctrl-left&gt; case in the example
+above would never be entered).
+
+   <p>Gforth recognizes various keys available on ANSI terminals (in MS-DOS
+you need the ANSI.SYS driver to get that behaviour); it works by
+recognizing the escape sequences that ANSI terminals send when such a
+key is pressed.  If you have a terminal that sends other escape
+sequences, you will not get useful results on Gforth.  Other Forth
+systems may work in a different way.
+
+   </body></html>
+

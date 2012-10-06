@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+<title>Vocabularies - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Word-Lists.html#Word-Lists" title="Word Lists">
+<link rel="prev" href="Word-Lists.html#Word-Lists" title="Word Lists">
+<link rel="next" href="Why-use-word-lists_003f.html#Why-use-word-lists_003f" title="Why use word lists?">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Vocabularies"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Why-use-word-lists_003f.html#Why-use-word-lists_003f">Why use word lists?</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Word-Lists.html#Word-Lists">Word Lists</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Word-Lists.html#Word-Lists">Word Lists</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.15.1 Vocabularies</h4>
+
+<p><a name="index-Vocabularies_002c-detailed-explanation-1658"></a>
+Here is an example of creating and using a new wordlist using ANS
+Forth words:
+
+<pre class="example">     wordlist constant my-new-words-wordlist
+     : my-new-words get-order nip my-new-words-wordlist swap set-order ;
+     
+     \ add it to the search order
+     also my-new-words
+     
+     \ alternatively, add it to the search order and make it
+     \ the compilation word list
+     also my-new-words definitions
+     \ type "order" to see the problem
+</pre>
+   <p>The problem with this example is that <code>order</code> has no way to
+associate the name <code>my-new-words</code> with the wid of the word list (in
+Gforth, <code>order</code> and <code>vocs</code> will display <code>???</code>  for a wid
+that has no associated name). There is no Standard way of associating a
+name with a wid.
+
+   <p>In Gforth, this example can be re-coded using <code>vocabulary</code>, which
+associates a name with a wid:
+
+<pre class="example">     vocabulary my-new-words
+     
+     \ add it to the search order
+     also my-new-words
+     
+     \ alternatively, add it to the search order and make it
+     \ the compilation word list
+     my-new-words definitions
+     \ type "order" to see that the problem is solved
+</pre>
+   </body></html>
+

@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+<title>floating-idef - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-optional-Floating_002dPoint-word-set.html#The-optional-Floating_002dPoint-word-set" title="The optional Floating-Point word set">
+<link rel="prev" href="The-optional-Floating_002dPoint-word-set.html#The-optional-Floating_002dPoint-word-set" title="The optional Floating-Point word set">
+<link rel="next" href="floating_002dambcond.html#floating_002dambcond" title="floating-ambcond">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="floating-idef"></a>
+<a name="floating_002didef"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="floating_002dambcond.html#floating_002dambcond">floating-ambcond</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="The-optional-Floating_002dPoint-word-set.html#The-optional-Floating_002dPoint-word-set">The optional Floating-Point word set</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-optional-Floating_002dPoint-word-set.html#The-optional-Floating_002dPoint-word-set">The optional Floating-Point word set</a>
+<hr>
+</div>
+
+<h4 class="subsection">8.7.1 Implementation Defined Options</h4>
+
+<!--  -->
+<p><a name="index-implementation_002ddefined-options_002c-floating_002dpoint-words-3260"></a><a name="index-floating_002dpoint-words_002c-implementation_002ddefined-options-3261"></a>
+     <dl>
+<dt><i>format and range of floating point numbers:</i><dd><a name="index-format-and-range-of-floating-point-numbers-3262"></a><a name="index-floating-point-numbers_002c-format-and-range-3263"></a>System-dependent; the <code>double</code> type of C.
+
+     <br><dt><i>results of </i><code>REPRESENT</code><i> when float is out of range:</i><dd><a name="index-g_t_0040code_007bREPRESENT_007d_002c-results-when-_0040i_007bfloat_007d-is-out-of-range-3264"></a>System dependent; <code>REPRESENT</code> is implemented using the C library
+function <code>ecvt()</code> and inherits its behaviour in this respect.
+
+     <br><dt><i>rounding or truncation of floating-point numbers:</i><dd><a name="index-rounding-of-floating_002dpoint-numbers-3265"></a><a name="index-truncation-of-floating_002dpoint-numbers-3266"></a><a name="index-floating_002dpoint-numbers_002c-rounding-or-truncation-3267"></a>System dependent; the rounding behaviour is inherited from the hosting C
+compiler. IEEE-FP-based (i.e., most) systems by default round to
+nearest, and break ties by rounding to even (i.e., such that the last
+bit of the mantissa is 0).
+
+     <br><dt><i>size of floating-point stack:</i><dd><a name="index-floating_002dpoint-stack-size-3268"></a><code>s" FLOATING-STACK" environment? drop .</code> gives the total size of
+the floating-point stack (in floats). You can specify this on startup
+with the command-line option <code>-f</code> (see <a href="Invoking-Gforth.html#Invoking-Gforth">Invoking Gforth</a>).
+
+     <br><dt><i>width of floating-point stack:</i><dd><a name="index-floating_002dpoint-stack-width-3269"></a><code>1 floats</code>.
+
+   </dl>
+
+<!--  -->
+</body></html>
+

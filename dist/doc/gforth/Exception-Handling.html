@@ -1,0 +1,298 @@
+<html lang="en">
+<head>
+<title>Exception Handling - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Control-Structures.html#Control-Structures" title="Control Structures">
+<link rel="prev" href="Calls-and-returns.html#Calls-and-returns" title="Calls and returns">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Exception-Handling"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Calls-and-returns.html#Calls-and-returns">Calls and returns</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Control-Structures.html#Control-Structures">Control Structures</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.8.6 Exception Handling</h4>
+
+<p><a name="index-exceptions-1152"></a>
+<!-- quit is a very bad idea for error handling, -->
+<!-- because it does not translate into a THROW -->
+<!-- it also does not belong into this chapter -->
+
+   <p>If a word detects an error condition that it cannot handle, it can
+<code>throw</code> an exception.  In the simplest case, this will terminate
+your program, and report an appropriate error.
+
+   <p><a name="index-throw-_0040var_007b-y1-_002e_002e-ym-nerror-_002d_002d-y1-_002e_002e-ym-_002f-z1-_002e_002e-zn-error---_007d--exception-1153"></a><a name="index-g_t_0040code_007bthrow_007d-1154"></a><a name="index-throw-1155"></a>
+<pre class="format"><code>throw</code>       <i>y1 .. ym nerror &ndash; y1 .. ym / z1 .. zn error  </i>       exception       &ldquo;throw&rdquo;
+</pre>
+   <p>If <i>nerror</i> is 0, drop it and continue.  Otherwise, transfer
+control to the next dynamically enclosing exception handler, reset
+the stacks accordingly, and push <i>nerror</i>.
+
+   <p><code>Throw</code> consumes a cell-sized error number on the stack. There are
+some predefined error numbers in ANS Forth (see <samp><span class="file">errors.fs</span></samp>).  In
+Gforth (and most other systems) you can use the iors produced by various
+words as error numbers (e.g., a typical use of <code>allocate</code> is
+<code>allocate throw</code>).  Gforth also provides the word <code>exception</code>
+to define your own error numbers (with decent error reporting); an ANS
+Forth version of this word (but without the error messages) is available
+in <code>compat/except.fs</code>.  And finally, you can use your own error
+numbers (anything outside the range -4095..0), but won't get nice error
+messages, only numbers.  For example, try:
+
+<pre class="example">     -10 throw                    \ ANS defined
+     -267 throw                   \ system defined
+     s" my error" exception throw \ user defined
+     7 throw                      \ arbitrary number
+</pre>
+   <p><a name="index-exception-_0040var_007b-addr-u-_002d_002d-n---_007d--gforth-1156"></a><a name="index-g_t_0040code_007bexception_007d-1157"></a><a name="index-exception-1158"></a>
+<pre class="format"><code>exception</code>       <i>addr u &ndash; n  </i>       gforth       &ldquo;exception&rdquo;
+</pre>
+   <p><var>n</var> is a previously unused <code>throw</code> value in the range
+(-4095...-256). Consecutive calls to <code>exception</code> return
+consecutive decreasing numbers. Gforth uses the string
+<var>addr u</var> as an error message.
+
+   <p>A common idiom to <code>THROW</code> a specific error if a flag is true is
+this:
+
+<pre class="example">     <code>( flag ) 0&lt;&gt; </code><i>errno</i><code> and throw</code>
+</pre>
+   <p>Your program can provide exception handlers to catch exceptions.  An
+exception handler can be used to correct the problem, or to clean up
+some data structures and just throw the exception to the next exception
+handler.  Note that <code>throw</code> jumps to the dynamically innermost
+exception handler.  The system's exception handler is outermost, and just
+prints an error and restarts command-line interpretation (or, in batch
+mode (i.e., while processing the shell command line), leaves Gforth).
+
+   <p>The ANS Forth way to catch exceptions is <code>catch</code>:
+
+   <p><a name="index-catch-_0040var_007b-_002e_002e_002e-xt-_002d_002d-_002e_002e_002e-n---_007d--exception-1159"></a><a name="index-g_t_0040code_007bcatch_007d-1160"></a><a name="index-catch-1161"></a>
+<pre class="format"><code>catch</code>       <i>... xt &ndash; ... n  </i>       exception       &ldquo;catch&rdquo;
+</pre>
+   <p><a name="index-nothrow-_0040var_007b-_002d_002d---_007d--gforth-1162"></a><a name="index-g_t_0040code_007bnothrow_007d-1163"></a><a name="index-nothrow-1164"></a>
+<pre class="format"><code>nothrow</code>       <i>&ndash;  </i>       gforth       &ldquo;nothrow&rdquo;
+</pre>
+   <p>Use this (or the standard sequence <code>['] false catch drop</code>)
+after a <code>catch</code> or <code>endtry</code> that does not rethrow;
+this ensures that the next <code>throw</code> will record a
+backtrace.
+
+   <p>The most common use of exception handlers is to clean up the state when
+an error happens.  E.g.,
+
+<pre class="example">     base  &gt;r hex \ actually the hex should be inside foo, or we h
+     ['] foo catch ( nerror|0 )
+     r&gt; base !
+     ( nerror|0 ) throw \ pass it on
+</pre>
+   <p>A use of <code>catch</code> for handling the error <code>myerror</code> might look
+like this:
+
+<pre class="example">     ['] foo catch
+     CASE
+       myerror OF ... ( do something about it ) nothrow ENDOF
+       dup throw \ default: pass other errors on, do nothing on non-errors
+     ENDCASE
+</pre>
+   <p>Having to wrap the code into a separate word is often cumbersome,
+therefore Gforth provides an alternative syntax:
+
+<pre class="example">     TRY
+       <i>code1</i>
+       IFERROR
+         <i>code2</i>
+       THEN
+       <i>code3</i>
+     ENDTRY
+</pre>
+   <p>This performs <i>code1</i>.  If <i>code1</i> completes normally, execution
+continues with <i>code3</i>.  If <i>code1</i> or there is an exception
+before <code>endtry</code>, the stacks are reset to the state during
+<code>try</code>, the throw value is pushed on the data stack, and execution
+constinues at <i>code2</i>, and finally falls through the <i>code3</i>.
+
+   <p><a name="index-try-_0040var_007b-compilation--_002d_002d-orig-_003b-run_002dtime--_002d_002d-R_003asys1---_007d--gforth-1165"></a><a name="index-g_t_0040code_007btry_007d-1166"></a><a name="index-try-1167"></a>
+<pre class="format"><code>try</code>       <i>compilation  &ndash; orig ; run-time  &ndash; R:sys1  </i>       gforth       &ldquo;try&rdquo;
+</pre>
+   <p>Start an exception-catching region.
+
+   <p><a name="index-endtry-_0040var_007b-compilation--_002d_002d-_003b-run_002dtime--R_003asys1-_002d_002d---_007d--gforth-1168"></a><a name="index-g_t_0040code_007bendtry_007d-1169"></a><a name="index-endtry-1170"></a>
+<pre class="format"><code>endtry</code>       <i>compilation  &ndash; ; run-time  R:sys1 &ndash;  </i>       gforth       &ldquo;endtry&rdquo;
+</pre>
+   <p>End an exception-catching region.
+
+   <p><a name="index-iferror-_0040var_007b-compilation--orig1-_002d_002d-orig2-_003b-run_002dtime--_002d_002d---_007d--gforth-1171"></a><a name="index-g_t_0040code_007biferror_007d-1172"></a><a name="index-iferror-1173"></a>
+<pre class="format"><code>iferror</code>       <i>compilation  orig1 &ndash; orig2 ; run-time  &ndash;  </i>       gforth       &ldquo;iferror&rdquo;
+</pre>
+   <p>Starts the exception handling code (executed if there is an
+exception between <code>try</code> and <code>endtry</code>).  This part has
+to be finished with <code>then</code>.
+
+   <p>If you don't need <i>code2</i>, you can write <code>restore</code> instead of
+<code>iferror then</code>:
+
+<pre class="example">     TRY
+       <i>code1</i>
+     RESTORE
+       <i>code3</i>
+     ENDTRY
+</pre>
+   <p><a name="index-unwind_002dprotect-1174"></a>The cleanup example from above in this syntax:
+
+<pre class="example">     base @ { oldbase }
+     TRY
+       hex foo \ now the hex is placed correctly
+       0       \ value for throw
+     RESTORE
+       oldbase base !
+     ENDTRY
+     throw
+</pre>
+   <p>An additional advantage of this variant is that an exception between
+<code>restore</code> and <code>endtry</code> (e.g., from the user pressing
+<kbd>Ctrl-C</kbd>) restarts the execution of the code after <code>restore</code>,
+so the base will be restored under all circumstances.
+
+   <p>However, you have to ensure that this code does not cause an exception
+itself, otherwise the <code>iferror</code>/<code>restore</code> code will loop. 
+Moreover, you should also make sure that the stack contents needed by
+the <code>iferror</code>/<code>restore</code> code exist everywhere between
+<code>try</code> and <code>endtry</code>; in our example this is achived by
+putting the data in a local before the <code>try</code> (you cannot use the
+return stack because the exception frame (<i>sys1</i>) is in the way
+there).
+
+   <p>This kind of usage corresponds to Lisp's <code>unwind-protect</code>.
+
+   <p><a name="index-g_t_0040code_007brecover_007d-_0028old-Gforth-versions_0029-1175"></a>If you do not want this exception-restarting behaviour, you achieve
+this as follows:
+
+<pre class="example">     TRY
+       <i>code1</i>
+     ENDTRY-IFERROR
+       <i>code2</i>
+     THEN
+</pre>
+   <p>If there is an exception in <i>code1</i>, then <i>code2</i> is executed,
+otherwise execution continues behind the <code>then</code> (or in a possible
+<code>else</code> branch).  This corresponds to the construct
+
+<pre class="example">     TRY
+       <i>code1</i>
+     RECOVER
+       <i>code2</i>
+     ENDTRY
+</pre>
+   <p>in Gforth before version 0.7.  So you can directly replace
+<code>recover</code>-using code; however, we recommend that you check if it
+would not be better to use one of the other <code>try</code> variants while
+you are at it.
+
+   <p>To ease the transition, Gforth provides two compatibility files:
+<samp><span class="file">endtry-iferror.fs</span></samp> provides the <code>try ... endtry-iferror
+... then</code> syntax (but not <code>iferror</code> or <code>restore</code>) for old
+systems; <samp><span class="file">recover-endtry.fs</span></samp> provides the <code>try ... recover
+... endtry</code> syntax on new systems, so you can use that file as a
+stopgap to run old programs.  Both files work on any system (they just
+do nothing if the system already has the syntax it implements), so you
+can unconditionally <code>require</code> one of these files, even if you use
+a mix old and new systems.
+
+   <p><a name="index-restore-_0040var_007b-compilation--orig1-_002d_002d-_003b-run_002dtime--_002d_002d---_007d--gforth-1176"></a><a name="index-g_t_0040code_007brestore_007d-1177"></a><a name="index-restore-1178"></a>
+<pre class="format"><code>restore</code>       <i>compilation  orig1 &ndash; ; run-time  &ndash;  </i>       gforth       &ldquo;restore&rdquo;
+</pre>
+   <p>Starts restoring code, that is executed if there is an
+exception, and if there is no exception.
+
+   <p><a name="index-endtry_002diferror-_0040var_007b-compilation--orig1-_002d_002d-orig2-_003b-run_002dtime--R_003asys1-_002d_002d---_007d--gforth-1179"></a><a name="index-g_t_0040code_007bendtry_002diferror_007d-1180"></a><a name="index-endtry_002diferror-1181"></a>
+<pre class="format"><code>endtry-iferror</code>       <i>compilation  orig1 &ndash; orig2 ; run-time  R:sys1 &ndash;  </i>       gforth       &ldquo;endtry-iferror&rdquo;
+</pre>
+   <p>End an exception-catching region while starting
+exception-handling code outside that region (executed if there
+is an exception between <code>try</code> and <code>endtry-iferror</code>). 
+This part has to be finished with <code>then</code> (or
+<code>else</code>...<code>then</code>).
+
+   <p>Here's the error handling example:
+
+<pre class="example">     TRY
+       foo
+     ENDTRY-IFERROR
+       CASE
+         myerror OF ... ( do something about it ) nothrow ENDOF
+         throw \ pass other errors on
+       ENDCASE
+     THEN
+</pre>
+   <p>Programming style note:
+As usual, you should ensure that the stack depth is statically known at
+the end: either after the <code>throw</code> for passing on errors, or after
+the <code>ENDTRY</code> (or, if you use <code>catch</code>, after the end of the
+selection construct for handling the error).
+
+   <p>There are two alternatives to <code>throw</code>: <code>Abort"</code> is conditional
+and you can provide an error message.  <code>Abort</code> just produces an
+&ldquo;Aborted&rdquo; error.
+
+   <p>The problem with these words is that exception handlers cannot
+differentiate between different <code>abort"</code>s; they just look like
+<code>-2 throw</code> to them (the error message cannot be accessed by
+standard programs).  Similar <code>abort</code> looks like <code>-1 throw</code> to
+exception handlers.
+
+   <p><a name="index-ABORT_0022-_0040var_007b-compilation-_0027ccc_0022_0027-_002d_002d-_003b-run_002dtime-f-_002d_002d---_007d--core_002cexception_002dext-1182"></a><a name="index-g_t_0040code_007bABORT_0022_007d-1183"></a><a name="index-ABORT_0022-1184"></a>
+<pre class="format"><code>ABORT"</code>       <i>compilation 'ccc"' &ndash; ; run-time f &ndash;  </i>       core,exception-ext       &ldquo;abort-quote&rdquo;
+</pre>
+   <p>If any bit of <i>f</i> is non-zero, perform the function of <code>-2 throw</code>,
+displaying the string <i>ccc</i> if there is no exception frame on the
+exception stack.
+
+   <p><a name="index-abort-_0040var_007b-_003f_003f-_002d_002d-_003f_003f---_007d--core_002cexception_002dext-1185"></a><a name="index-g_t_0040code_007babort_007d-1186"></a><a name="index-abort-1187"></a>
+<pre class="format"><code>abort</code>       <i>?? &ndash; ??  </i>       core,exception-ext       &ldquo;abort&rdquo;
+</pre>
+   <p><code>-1 throw</code>.
+
+<!--  -->
+</body></html>
+

@@ -1,0 +1,104 @@
+<html lang="en">
+<head>
+<title>Conditional execution Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Local-Variables-Tutorial.html#Local-Variables-Tutorial" title="Local Variables Tutorial">
+<link rel="next" href="Flags-and-Comparisons-Tutorial.html#Flags-and-Comparisons-Tutorial" title="Flags and Comparisons Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Conditional-execution-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Flags-and-Comparisons-Tutorial.html#Flags-and-Comparisons-Tutorial">Flags and Comparisons Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Local-Variables-Tutorial.html#Local-Variables-Tutorial">Local Variables Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.16 Conditional execution</h3>
+
+<p><a name="index-conditionals_002c-tutorial-97"></a><a name="index-if_002c-tutorial-98"></a>
+In Forth you can use control structures only inside colon definitions. 
+An <code>if</code>-structure looks like this:
+
+<pre class="example">     : abs ( n1 -- +n2 )
+         dup 0 &lt; if
+             negate
+         endif ;
+     5 abs .
+     -5 abs .
+</pre>
+   <p><code>if</code> takes a flag from the stack.  If the flag is non-zero (true),
+the following code is performed, otherwise execution continues after the
+<code>endif</code> (or <code>else</code>).  <code>&lt;</code> compares the top two stack
+elements and produces a flag:
+
+<pre class="example">     1 2 &lt; .
+     2 1 &lt; .
+     1 1 &lt; .
+</pre>
+   <p>Actually the standard name for <code>endif</code> is <code>then</code>.  This
+tutorial presents the examples using <code>endif</code>, because this is often
+less confusing for people familiar with other programming languages
+where <code>then</code> has a different meaning.  If your system does not have
+<code>endif</code>, define it with
+
+<pre class="example">     : endif postpone then ; immediate
+</pre>
+   <p>You can optionally use an <code>else</code>-part:
+
+<pre class="example">     : min ( n1 n2 -- n )
+       2dup &lt; if
+         drop
+       else
+         nip
+       endif ;
+     2 3 min .
+     3 2 min .
+</pre>
+   <blockquote>
+<b>Assignment:</b> Write <code>min</code> without <code>else</code>-part (hint: what's the definition
+of <code>nip</code>?). 
+</blockquote>
+
+   <p>Reference: <a href="Selection.html#Selection">Selection</a>.
+
+   </body></html>
+

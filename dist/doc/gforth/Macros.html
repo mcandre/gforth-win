@@ -1,0 +1,198 @@
+<html lang="en">
+<head>
+<title>Macros - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Compiling-words.html#Compiling-words" title="Compiling words">
+<link rel="prev" href="Literals.html#Literals" title="Literals">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Macros"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Literals.html#Literals">Literals</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Compiling-words.html#Compiling-words">Compiling words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.12.2 Macros</h4>
+
+<p><a name="index-Macros-1419"></a><a name="index-compiling-compilation-semantics-1420"></a>
+<code>Literal</code> and friends compile data values into the current
+definition.  You can also write words that compile other words into the
+current definition.  E.g.,
+
+<pre class="example">     : compile-+ ( -- ) \ compiled code: ( n1 n2 -- n )
+       POSTPONE + ;
+     
+     : foo ( n1 n2 -- n )
+       [ compile-+ ] ;
+     1 2 foo .
+</pre>
+   <p>This is equivalent to <code>: foo + ;</code> (<code>see foo</code> to check this). 
+What happens in this example?  <code>Postpone</code> compiles the compilation
+semantics of <code>+</code> into <code>compile-+</code>; later the text interpreter
+executes <code>compile-+</code> and thus the compilation semantics of +, which
+compile (the execution semantics of) <code>+</code> into
+<code>foo</code>.<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>
+
+   <p><a name="index-postpone-_0040var_007b-_0022name_0022-_002d_002d---_007d--core-1421"></a><a name="index-g_t_0040code_007bpostpone_007d-1422"></a><a name="index-postpone-1423"></a>
+<pre class="format"><code>postpone</code>       <i>"name" &ndash;  </i>       core       &ldquo;postpone&rdquo;
+</pre>
+   <p>Compiles the compilation semantics of <i>name</i>.
+
+   <p><a name="index-g_t_005bcompile_005d-_0040var_007b-compilation-_0022name_0022-_002d_002d-_003b-run_002dtime-_003f-_002d_002d-_003f---_007d--core_002dext-1424"></a><a name="index-g_t_0040code_007b_005bcompile_005d_007d-1425"></a><a name="index-g_t_005bcompile_005d-1426"></a>
+<pre class="format"><code>[compile]</code>       <i>compilation "name" &ndash; ; run-time ? &ndash; ?  </i>       core-ext       &ldquo;bracket-compile&rdquo;
+</pre>
+   <p>Compiling words like <code>compile-+</code> are usually immediate (or similar)
+so you do not have to switch to interpret state to execute them;
+mopifying the last example accordingly produces:
+
+<pre class="example">     : [compile-+] ( compilation: --; interpretation: -- )
+       \ compiled code: ( n1 n2 -- n )
+       POSTPONE + ; immediate
+     
+     : foo ( n1 n2 -- n )
+       [compile-+] ;
+     1 2 foo .
+</pre>
+   <p>Immediate compiling words are similar to macros in other languages (in
+particular, Lisp).  The important differences to macros in, e.g., C are:
+
+     <ul>
+<li>You use the same language for defining and processing macros, not a
+separate preprocessing language and processor.
+
+     <li>Consequently, the full power of Forth is available in macro definitions. 
+E.g., you can perform arbitrarily complex computations, or generate
+different code conditionally or in a loop (e.g., see <a href="Advanced-macros-Tutorial.html#Advanced-macros-Tutorial">Advanced macros Tutorial</a>).  This power is very useful when writing a parser generators
+or other code-generating software.
+
+     <li>Macros defined using <code>postpone</code> etc. deal with the language at a
+higher level than strings; name binding happens at macro definition
+time, so you can avoid the pitfalls of name collisions that can happen
+in C macros.  Of course, Forth is a liberal language and also allows to
+shoot yourself in the foot with text-interpreted macros like
+
+     <pre class="example">          : [compile-+] s" +" evaluate ; immediate
+     </pre>
+     <p>Apart from binding the name at macro use time, using <code>evaluate</code>
+also makes your definition <code>state</code>-smart (see <a href="state_002dsmartness.html#state_002dsmartness">state-smartness</a>). 
+</ul>
+
+   <p>You may want the macro to compile a number into a word.  The word to do
+it is <code>literal</code>, but you have to <code>postpone</code> it, so its
+compilation semantics take effect when the macro is executed, not when
+it is compiled:
+
+<pre class="example">     : [compile-5] ( -- ) \ compiled code: ( -- n )
+       5 POSTPONE literal ; immediate
+     
+     : foo [compile-5] ;
+     foo .
+</pre>
+   <p>You may want to pass parameters to a macro, that the macro should
+compile into the current definition.  If the parameter is a number, then
+you can use <code>postpone literal</code> (similar for other values).
+
+   <p>If you want to pass a word that is to be compiled, the usual way is to
+pass an execution token and <code>compile,</code> it:
+
+<pre class="example">     : twice1 ( xt -- ) \ compiled code: ... -- ...
+       dup compile, compile, ;
+     
+     : 2+ ( n1 -- n2 )
+       [ ' 1+ twice1 ] ;
+</pre>
+   <p><a name="index-compile_002c-_0040var_007b-xt-_002d_002d---_007d--core_002dext-1427"></a><a name="index-g_t_0040code_007bcompile_002c_007d-1428"></a><a name="index-compile_002c-1429"></a>
+<pre class="format"><code>compile,</code>       <i>xt &ndash;  </i>       core-ext       &ldquo;compile-comma&rdquo;
+</pre>
+   <p>Compile the word represented by the execution token <i>xt</i>
+ into the current definition.
+
+   <p>An alternative available in Gforth, that allows you to pass compile-only
+words as parameters is to use the compilation token (see <a href="Compilation-token.html#Compilation-token">Compilation token</a>).  The same example in this technique:
+
+<pre class="example">     : twice ( ... ct -- ... ) \ compiled code: ... -- ...
+       2dup 2&gt;r execute 2r&gt; execute ;
+     
+     : 2+ ( n1 -- n2 )
+       [ comp' 1+ twice ] ;
+</pre>
+   <p>In the example above <code>2&gt;r</code> and <code>2r&gt;</code> ensure that <code>twice</code>
+works even if the executed compilation semantics has an effect on the
+data stack.
+
+   <p>You can also define complete definitions with these words; this provides
+an alternative to using <code>does&gt;</code> (see <a href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">User-defined Defining Words</a>).  E.g., instead of
+
+<pre class="example">     : curry+ ( n1 "name" -- )
+         CREATE ,
+     DOES&gt; ( n2 -- n1+n2 )
+         @ + ;
+</pre>
+   <p>you could define
+
+<pre class="example">     : curry+ ( n1 "name" -- )
+       \ name execution: ( n2 -- n1+n2 )
+       &gt;r : r&gt; POSTPONE literal POSTPONE + POSTPONE ; ;
+     
+     -3 curry+ 3-
+     see 3-
+</pre>
+   <p>The sequence <code>&gt;r : r&gt;</code> is necessary, because <code>:</code> puts a
+colon-sys on the data stack that makes everything below it unaccessible.
+
+   <p>This way of writing defining words is sometimes more, sometimes less
+convenient than using <code>does&gt;</code> (see <a href="Advanced-does_003e-usage-example.html#Advanced-does_003e-usage-example">Advanced does&gt; usage example</a>).  One advantage of this method is that it can be optimized
+better, because the compiler knows that the value compiled with
+<code>literal</code> is fixed, whereas the data associated with a
+<code>create</code>d word can be changed.
+
+<!--  -->
+<div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> A recent RFI answer requires that compiling words
+should only be executed in compile state, so this example is not
+guaranteed to work on all standard systems, but on any decent system it
+will work.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

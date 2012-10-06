@@ -1,0 +1,86 @@
+<html lang="en">
+<head>
+<title>Boolean Flags - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Comments.html#Comments" title="Comments">
+<link rel="next" href="Arithmetic.html#Arithmetic" title="Arithmetic">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Boolean-Flags"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Arithmetic.html#Arithmetic">Arithmetic</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Comments.html#Comments">Comments</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.4 Boolean Flags</h3>
+
+<p><a name="index-Boolean-flags-204"></a>
+A Boolean flag is cell-sized. A cell with all bits clear represents the
+flag <code>false</code> and a flag with all bits set represents the flag
+<code>true</code>. Words that check a flag (for example, <code>IF</code>) will treat
+a cell that has <i>any</i> bit set as <code>true</code>. 
+<!-- on and off to Memory? -->
+<!-- true and false to "Bitwise operations" or "Numeric comparison"? -->
+
+   <p><a name="index-true-_0040var_007b-_002d_002d-f---_007d--core_002dext-205"></a><a name="index-g_t_0040code_007btrue_007d-206"></a><a name="index-true-207"></a>
+<pre class="format"><code>true</code>       <i>&ndash; f  </i>       core-ext       &ldquo;true&rdquo;
+</pre>
+   <p><code>Constant</code> &ndash; <i>f</i> is a cell with all bits set.
+
+   <p><a name="index-false-_0040var_007b-_002d_002d-f---_007d--core_002dext-208"></a><a name="index-g_t_0040code_007bfalse_007d-209"></a><a name="index-false-210"></a>
+<pre class="format"><code>false</code>       <i>&ndash; f  </i>       core-ext       &ldquo;false&rdquo;
+</pre>
+   <p><code>Constant</code> &ndash; <i>f</i> is a cell with all bits clear.
+
+   <p><a name="index-on-_0040var_007b-a_002daddr-_002d_002d---_007d--gforth-211"></a><a name="index-g_t_0040code_007bon_007d-212"></a><a name="index-on-213"></a>
+<pre class="format"><code>on</code>       <i>a-addr &ndash;  </i>       gforth       &ldquo;on&rdquo;
+</pre>
+   <p>Set the (value of the) variable  at <i>a-addr</i> to <code>true</code>.
+
+   <p><a name="index-off-_0040var_007b-a_002daddr-_002d_002d---_007d--gforth-214"></a><a name="index-g_t_0040code_007boff_007d-215"></a><a name="index-off-216"></a>
+<pre class="format"><code>off</code>       <i>a-addr &ndash;  </i>       gforth       &ldquo;off&rdquo;
+</pre>
+   <p>Set the (value of the) variable at <i>a-addr</i> to <code>false</code>.
+
+   </body></html>
+

@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+<title>Front end and VM interpreter - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Concepts.html#Concepts" title="Concepts">
+<link rel="prev" href="Concepts.html#Concepts" title="Concepts">
+<link rel="next" href="Data-handling.html#Data-handling" title="Data handling">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Front-end-and-VM-interpreter"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Data-handling.html#Data-handling">Data handling</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Concepts.html#Concepts">Concepts</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Concepts.html#Concepts">Concepts</a>
+<hr>
+</div>
+
+<h3 class="section">3.1 Front end and VM interpreter</h3>
+
+<p><a name="index-modularization-of-interpreters-8"></a>
+<a name="index-front_002dend-9"></a>Interpretive systems are typically divided into a <em>front end</em> that
+parses the input language and produces an intermediate representation
+for the program, and an interpreter that executes the intermediate
+representation of the program.
+
+   <p><a name="index-virtual-machine-10"></a><a name="index-VM-11"></a><a name="index-VM-instruction-12"></a><a name="index-instruction_002c-VM-13"></a><a name="index-VM-branch-instruction-14"></a><a name="index-branch-instruction_002c-VM-15"></a><a name="index-VM-register-16"></a><a name="index-register_002c-VM-17"></a><a name="index-opcode_002c-VM-instruction-18"></a><a name="index-immediate-argument_002c-VM-instruction-19"></a>For efficient interpreters the intermediate representation of choice is
+virtual machine code (rather than, e.g., an abstract syntax tree). 
+<em>Virtual machine</em> (VM) code consists of VM instructions arranged
+sequentially in memory; they are executed in sequence by the VM
+interpreter, but VM branch instructions can change the control flow and
+are used for implementing control structures.  The conceptual similarity
+to real machine code results in the name <em>virtual machine</em>. 
+Various terms similar to terms for real machines are used; e.g., there
+are <em>VM registers</em> (like the instruction pointer and stack
+pointer(s)), and the VM instruction consists of an <em>opcode</em> and
+<em>immediate arguments</em>.
+
+   <p>In this framework, Vmgen supports building the VM interpreter and any
+other component dealing with VM instructions.  It does not have any
+support for the front end, apart from VM code generation support.  The
+front end can be implemented with classical compiler front-end
+techniques, supported by tools like <samp><span class="command">flex</span></samp> and <samp><span class="command">bison</span></samp>.
+
+   <p>The intermediate representation is usually just internal to the
+interpreter, but some systems also support saving it to a file, either
+as an image file, or in a full-blown linkable file format (e.g., JVM). 
+Vmgen currently has no special support for such features, but the
+information in the instruction descriptions can be helpful, and we are
+open to feature requests and suggestions.
+
+<!--  -->
+</body></html>
+

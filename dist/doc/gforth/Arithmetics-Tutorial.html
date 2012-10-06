@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+<title>Arithmetics Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Stack-Tutorial.html#Stack-Tutorial" title="Stack Tutorial">
+<link rel="next" href="Stack-Manipulation-Tutorial.html#Stack-Manipulation-Tutorial" title="Stack Manipulation Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Arithmetics-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Stack-Manipulation-Tutorial.html#Stack-Manipulation-Tutorial">Stack Manipulation Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Stack-Tutorial.html#Stack-Tutorial">Stack Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.5 Arithmetics</h3>
+
+<p><a name="index-arithmetics-tutorial-79"></a>
+The words <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, and <code>mod</code> always
+operate on the top two stack items:
+
+<pre class="example">     2 2 .s
+     + .s
+     .
+     2 1 - .
+     7 3 mod .
+</pre>
+   <p>The operands of <code>-</code>, <code>/</code>, and <code>mod</code> are in the same order
+as in the corresponding infix expression (this is generally the case in
+Forth).
+
+   <p>Parentheses are superfluous (and not available), because the order of
+the words unambiguously determines the order of evaluation and the
+operands:
+
+<pre class="example">     3 4 + 5 * .
+     3 4 5 * + .
+</pre>
+   <blockquote>
+<b>Assignment:</b> What are the infix expressions corresponding to the Forth code above? 
+Write <code>6-7*8+9</code> in Forth notation<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>. 
+</blockquote>
+
+   <p>To change the sign, use <code>negate</code>:
+
+<pre class="example">     2 negate .
+</pre>
+   <blockquote>
+<b>Assignment:</b> Convert -(-3)*4-5 to Forth. 
+</blockquote>
+
+   <p><code>/mod</code> performs both <code>/</code> and <code>mod</code>.
+
+<pre class="example">     7 3 /mod . .
+</pre>
+   <p>Reference: <a href="Arithmetic.html#Arithmetic">Arithmetic</a>.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> This notation is also
+known as Postfix or RPN (Reverse Polish Notation).</p>
+
+   <p><hr></div>
+
+   </body></html>
+

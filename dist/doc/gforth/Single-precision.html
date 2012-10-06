@@ -1,0 +1,116 @@
+<html lang="en">
+<head>
+<title>Single precision - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Arithmetic.html#Arithmetic" title="Arithmetic">
+<link rel="prev" href="Arithmetic.html#Arithmetic" title="Arithmetic">
+<link rel="next" href="Double-precision.html#Double-precision" title="Double precision">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Single-precision"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Double-precision.html#Double-precision">Double precision</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Arithmetic.html#Arithmetic">Arithmetic</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Arithmetic.html#Arithmetic">Arithmetic</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.5.1 Single precision</h4>
+
+<p><a name="index-single-precision-arithmetic-words-219"></a>
+<!-- !! cell undefined -->
+
+   <p>By default, numbers in Forth are single-precision integers that are one
+cell in size. They can be signed or unsigned, depending upon how you
+treat them. For the rules used by the text interpreter for recognising
+single-precision integers see <a href="Number-Conversion.html#Number-Conversion">Number Conversion</a>.
+
+   <p>These words are all defined for signed operands, but some of them also
+work for unsigned numbers: <code>+</code>, <code>1+</code>, <code>-</code>, <code>1-</code>,
+<code>*</code>.
+
+   <p><a name="index-g_t_002b-_0040var_007b-n1-n2-_002d_002d-n--_007d--core-220"></a><a name="index-g_t_0040code_007b_002b_007d-221"></a><a name="index-g_t_002b-222"></a>
+<pre class="format"><code>+</code>       <i>n1 n2 &ndash; n </i>       core       &ldquo;plus&rdquo;
+</pre>
+   <p><a name="index-g_t1_002b-_0040var_007b-n1-_002d_002d-n2--_007d--core-223"></a><a name="index-g_t_0040code_007b1_002b_007d-224"></a><a name="index-g_t1_002b-225"></a>
+<pre class="format"><code>1+</code>       <i>n1 &ndash; n2 </i>       core       &ldquo;one-plus&rdquo;
+</pre>
+   <p><a name="index-under_002b-_0040var_007b-n1-n2-n3-_002d_002d-n-n2--_007d--gforth-226"></a><a name="index-g_t_0040code_007bunder_002b_007d-227"></a><a name="index-under_002b-228"></a>
+<pre class="format"><code>under+</code>       <i>n1 n2 n3 &ndash; n n2 </i>       gforth       &ldquo;under-plus&rdquo;
+</pre>
+   <p>add <i>n3</i> to <i>n1</i> (giving <i>n</i>)
+
+   <p><a name="index-g_t_002d-_0040var_007b-n1-n2-_002d_002d-n--_007d--core-229"></a><a name="index-g_t_0040code_007b_002d_007d-230"></a><a name="index-g_t_002d-231"></a>
+<pre class="format"><code>-</code>       <i>n1 n2 &ndash; n </i>       core       &ldquo;minus&rdquo;
+</pre>
+   <p><a name="index-g_t1_002d-_0040var_007b-n1-_002d_002d-n2--_007d--core-232"></a><a name="index-g_t_0040code_007b1_002d_007d-233"></a><a name="index-g_t1_002d-234"></a>
+<pre class="format"><code>1-</code>       <i>n1 &ndash; n2 </i>       core       &ldquo;one-minus&rdquo;
+</pre>
+   <p><a name="index-g_t_002a-_0040var_007b-n1-n2-_002d_002d-n--_007d--core-235"></a><a name="index-g_t_0040code_007b_002a_007d-236"></a><a name="index-g_t_002a-237"></a>
+<pre class="format"><code>*</code>       <i>n1 n2 &ndash; n </i>       core       &ldquo;star&rdquo;
+</pre>
+   <p><a name="index-g_t_002f-_0040var_007b-n1-n2-_002d_002d-n--_007d--core-238"></a><a name="index-g_t_0040code_007b_002f_007d-239"></a><a name="index-g_t_002f-240"></a>
+<pre class="format"><code>/</code>       <i>n1 n2 &ndash; n </i>       core       &ldquo;slash&rdquo;
+</pre>
+   <p><a name="index-mod-_0040var_007b-n1-n2-_002d_002d-n--_007d--core-241"></a><a name="index-g_t_0040code_007bmod_007d-242"></a><a name="index-mod-243"></a>
+<pre class="format"><code>mod</code>       <i>n1 n2 &ndash; n </i>       core       &ldquo;mod&rdquo;
+</pre>
+   <p><a name="index-g_t_002fmod-_0040var_007b-n1-n2-_002d_002d-n3-n4--_007d--core-244"></a><a name="index-g_t_0040code_007b_002fmod_007d-245"></a><a name="index-g_t_002fmod-246"></a>
+<pre class="format"><code>/mod</code>       <i>n1 n2 &ndash; n3 n4 </i>       core       &ldquo;slash-mod&rdquo;
+</pre>
+   <p><a name="index-negate-_0040var_007b-n1-_002d_002d-n2--_007d--core-247"></a><a name="index-g_t_0040code_007bnegate_007d-248"></a><a name="index-negate-249"></a>
+<pre class="format"><code>negate</code>       <i>n1 &ndash; n2 </i>       core       &ldquo;negate&rdquo;
+</pre>
+   <p><a name="index-abs-_0040var_007b-n-_002d_002d-u--_007d--core-250"></a><a name="index-g_t_0040code_007babs_007d-251"></a><a name="index-abs-252"></a>
+<pre class="format"><code>abs</code>       <i>n &ndash; u </i>       core       &ldquo;abs&rdquo;
+</pre>
+   <p><a name="index-min-_0040var_007b-n1-n2-_002d_002d-n--_007d--core-253"></a><a name="index-g_t_0040code_007bmin_007d-254"></a><a name="index-min-255"></a>
+<pre class="format"><code>min</code>       <i>n1 n2 &ndash; n </i>       core       &ldquo;min&rdquo;
+</pre>
+   <p><a name="index-max-_0040var_007b-n1-n2-_002d_002d-n--_007d--core-256"></a><a name="index-g_t_0040code_007bmax_007d-257"></a><a name="index-max-258"></a>
+<pre class="format"><code>max</code>       <i>n1 n2 &ndash; n </i>       core       &ldquo;max&rdquo;
+</pre>
+   <p><a name="index-FLOORED-_0040var_007b-_002d_002d-f---_007d--environment-259"></a><a name="index-g_t_0040code_007bFLOORED_007d-260"></a><a name="index-FLOORED-261"></a>
+<pre class="format"><code>FLOORED</code>       <i>&ndash; f  </i>       environment       &ldquo;FLOORED&rdquo;
+</pre>
+   <p>True if <code>/</code> etc. perform floored division
+
+   </body></html>
+

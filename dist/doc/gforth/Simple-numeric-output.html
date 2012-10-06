@@ -1,0 +1,167 @@
+<html lang="en">
+<head>
+<title>Simple numeric output - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-I_002fO.html#Other-I_002fO" title="Other I/O">
+<link rel="prev" href="Other-I_002fO.html#Other-I_002fO" title="Other I/O">
+<link rel="next" href="Formatted-numeric-output.html#Formatted-numeric-output" title="Formatted numeric output">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Simple-numeric-output"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Formatted-numeric-output.html#Formatted-numeric-output">Formatted numeric output</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Other-I_002fO.html#Other-I_002fO">Other I/O</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-I_002fO.html#Other-I_002fO">Other I/O</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.19.1 Simple numeric output</h4>
+
+<p><a name="index-numeric-output-_002d-simple_002ffree_002dformat-1902"></a>
+The simplest output functions are those that display numbers from the
+data or floating-point stacks. Floating-point output is always displayed
+using base 10. Numbers displayed from the data stack use the value stored
+in <code>base</code>.
+
+   <p><a name="index-g_t_002e-_0040var_007b-n-_002d_002d---_007d--core-1903"></a><a name="index-g_t_0040code_007b_002e_007d-1904"></a><a name="index-g_t_002e-1905"></a>
+<pre class="format"><code>.</code>       <i>n &ndash;  </i>       core       &ldquo;dot&rdquo;
+</pre>
+   <p>Display (the signed single number) <var>n</var> in free-format, followed by a space.
+
+   <p><a name="index-dec_002e-_0040var_007b-n-_002d_002d---_007d--gforth-1906"></a><a name="index-g_t_0040code_007bdec_002e_007d-1907"></a><a name="index-dec_002e-1908"></a>
+<pre class="format"><code>dec.</code>       <i>n &ndash;  </i>       gforth       &ldquo;dec.&rdquo;
+</pre>
+   <p>Display <i>n</i> as a signed decimal number, followed by a space.
+
+   <p><a name="index-hex_002e-_0040var_007b-u-_002d_002d---_007d--gforth-1909"></a><a name="index-g_t_0040code_007bhex_002e_007d-1910"></a><a name="index-hex_002e-1911"></a>
+<pre class="format"><code>hex.</code>       <i>u &ndash;  </i>       gforth       &ldquo;hex.&rdquo;
+</pre>
+   <p>Display <i>u</i> as an unsigned hex number, prefixed with a "$" and
+followed by a space.
+
+   <p><a name="index-u_002e-_0040var_007b-u-_002d_002d---_007d--core-1912"></a><a name="index-g_t_0040code_007bu_002e_007d-1913"></a><a name="index-u_002e-1914"></a>
+<pre class="format"><code>u.</code>       <i>u &ndash;  </i>       core       &ldquo;u-dot&rdquo;
+</pre>
+   <p>Display (the unsigned single number) <var>u</var> in free-format, followed by a space.
+
+   <p><a name="index-g_t_002er-_0040var_007b-n1-n2-_002d_002d---_007d--core_002dext-1915"></a><a name="index-g_t_0040code_007b_002er_007d-1916"></a><a name="index-g_t_002er-1917"></a>
+<pre class="format"><code>.r</code>       <i>n1 n2 &ndash;  </i>       core-ext       &ldquo;dot-r&rdquo;
+</pre>
+   <p>Display <var>n1</var> right-aligned in a field <var>n2</var> characters wide. If more than
+<var>n2</var> characters are needed to display the number, all digits are displayed. 
+If appropriate, <var>n2</var> must include a character for a leading &ldquo;-&rdquo;.
+
+   <p><a name="index-u_002er-_0040var_007b-u-n-_002d_002d---_007d--core_002dext-1918"></a><a name="index-g_t_0040code_007bu_002er_007d-1919"></a><a name="index-u_002er-1920"></a>
+<pre class="format"><code>u.r</code>       <i>u n &ndash;  </i>       core-ext       &ldquo;u-dot-r&rdquo;
+</pre>
+   <p>Display <var>u</var> right-aligned in a field <var>n</var> characters wide. If more than
+<var>n</var> characters are needed to display the number, all digits are displayed.
+
+   <p><a name="index-d_002e-_0040var_007b-d-_002d_002d---_007d--double-1921"></a><a name="index-g_t_0040code_007bd_002e_007d-1922"></a><a name="index-d_002e-1923"></a>
+<pre class="format"><code>d.</code>       <i>d &ndash;  </i>       double       &ldquo;d-dot&rdquo;
+</pre>
+   <p>Display (the signed double number) <var>d</var> in free-format. followed by a space.
+
+   <p><a name="index-ud_002e-_0040var_007b-ud-_002d_002d---_007d--gforth-1924"></a><a name="index-g_t_0040code_007bud_002e_007d-1925"></a><a name="index-ud_002e-1926"></a>
+<pre class="format"><code>ud.</code>       <i>ud &ndash;  </i>       gforth       &ldquo;u-d-dot&rdquo;
+</pre>
+   <p>Display (the signed double number) <var>ud</var> in free-format, followed by a space.
+
+   <p><a name="index-d_002er-_0040var_007b-d-n-_002d_002d---_007d--double-1927"></a><a name="index-g_t_0040code_007bd_002er_007d-1928"></a><a name="index-d_002er-1929"></a>
+<pre class="format"><code>d.r</code>       <i>d n &ndash;  </i>       double       &ldquo;d-dot-r&rdquo;
+</pre>
+   <p>Display <var>d</var> right-aligned in a field <var>n</var> characters wide. If more than
+<var>n</var> characters are needed to display the number, all digits are displayed. 
+If appropriate, <var>n</var> must include a character for a leading &ldquo;-&rdquo;.
+
+   <p><a name="index-ud_002er-_0040var_007b-ud-n-_002d_002d---_007d--gforth-1930"></a><a name="index-g_t_0040code_007bud_002er_007d-1931"></a><a name="index-ud_002er-1932"></a>
+<pre class="format"><code>ud.r</code>       <i>ud n &ndash;  </i>       gforth       &ldquo;u-d-dot-r&rdquo;
+</pre>
+   <p>Display <var>ud</var> right-aligned in a field <var>n</var> characters wide. If more than
+<var>n</var> characters are needed to display the number, all digits are displayed.
+
+   <p><a name="index-f_002e-_0040var_007b-r-_002d_002d---_007d--float_002dext-1933"></a><a name="index-g_t_0040code_007bf_002e_007d-1934"></a><a name="index-f_002e-1935"></a>
+<pre class="format"><code>f.</code>       <i>r &ndash;  </i>       float-ext       &ldquo;f-dot&rdquo;
+</pre>
+   <p>Display (the floating-point number) <i>r</i> without exponent,
+followed by a space.
+
+   <p><a name="index-fe_002e-_0040var_007b-r-_002d_002d---_007d--float_002dext-1936"></a><a name="index-g_t_0040code_007bfe_002e_007d-1937"></a><a name="index-fe_002e-1938"></a>
+<pre class="format"><code>fe.</code>       <i>r &ndash;  </i>       float-ext       &ldquo;f-e-dot&rdquo;
+</pre>
+   <p>Display <i>r</i> using engineering notation (with exponent dividable
+by 3), followed by a space.
+
+   <p><a name="index-fs_002e-_0040var_007b-r-_002d_002d---_007d--float_002dext-1939"></a><a name="index-g_t_0040code_007bfs_002e_007d-1940"></a><a name="index-fs_002e-1941"></a>
+<pre class="format"><code>fs.</code>       <i>r &ndash;  </i>       float-ext       &ldquo;f-s-dot&rdquo;
+</pre>
+   <p>Display <i>r</i> using scientific notation (with exponent), followed
+by a space.
+
+   <p><a name="index-f_002erdp-_0040var_007b-rf-_002bnr-_002bnd-_002bnp-_002d_002d---_007d--gforth-1942"></a><a name="index-g_t_0040code_007bf_002erdp_007d-1943"></a><a name="index-f_002erdp-1944"></a>
+<pre class="format"><code>f.rdp</code>       <i>rf +nr +nd +np &ndash;  </i>       gforth       &ldquo;f.rdp&rdquo;
+</pre>
+   <p>Print float <i>rf</i> formatted.  The total width of the output is
+<i>nr</i>.  For fixed-point notation, the number of digits after the
+decimal point is <i>+nd</i> and the minimum number of significant
+digits is <i>np</i>.  <code>Set-precision</code> has no effect on
+<code>f.rdp</code>.  Fixed-point notation is used if the number of
+siginicant digits would be at least <i>np</i> and if the number of
+digits before the decimal point would fit.  If fixed-point notation
+is not used, exponential notation is used, and if that does not
+fit, asterisks are printed.  We recommend using <i>nr</i>&gt;=7 to avoid
+the risk of numbers not fitting at all.  We recommend
+<i>nr</i>&gt;=<i>np</i>+5 to avoid cases where <code>f.rdp</code> switches to
+exponential notation because fixed-point notation would have too
+few significant digits, yet exponential notation offers fewer
+significant digits.  We recommend <i>nr</i>&gt;=<i>nd</i>+2, if you want to
+have fixed-point notation for some numbers.  We recommend
+<i>np</i>&gt;<i>nr</i>, if you want to have exponential notation for all
+numbers.
+
+   <p>Examples of printing the number 1234.5678E23 in the different floating-point output
+formats are shown below:
+
+<pre class="example">     f. 123456779999999000000000000.
+     fe. 123.456779999999E24
+     fs. 1.23456779999999E26
+</pre>
+   </body></html>
+

@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+<title>Stack growth direction - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Simple-instructions.html#Simple-instructions" title="Simple instructions">
+<link rel="prev" href="C-Code-restrictions.html#C-Code-restrictions" title="C Code restrictions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Stack-growth-direction"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="C-Code-restrictions.html#C-Code-restrictions">C Code restrictions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Simple-instructions.html#Simple-instructions">Simple instructions</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.2.4 Stack growth direction</h4>
+
+<p><a name="index-stack-growth-direction-99"></a>
+<a name="index-g_t_0040code_007bstack_002daccess_002dtransform_007d-100"></a>By default, the stacks grow towards lower addresses.  You can change
+this for a stack by setting the <code>stack-access-transform</code> field of
+the stack to an xt <code>( itemnum -- index )</code> that performs the
+appropriate index transformation.
+
+   <p>E.g., if you want to let <code>data-stack</code> grow towards higher
+addresses, with the stack pointer always pointing just beyond the
+top-of-stack, use this right after defining <code>data-stack</code>:
+
+<pre class="example">     \E : sp-access-transform ( itemnum -- index ) negate 1- ;
+     \E ' sp-access-transform ' data-stack &gt;body stack-access-transform !
+</pre>
+   <p>This means that <code>sp-access-transform</code> will be used to generate
+indexes for accessing <code>data-stack</code>.  The definition of
+<code>sp-access-transform</code> above transforms n into -n-1, e.g, 1 into -2. 
+This will access the 0th data-stack element (top-of-stack) at sp[-1],
+the 1st at sp[-2], etc., which is the typical way upward-growing
+stacks are used.  If you need a different transform and do not know
+enough Forth to program it, let me know.
+
+<!--  -->
+</body></html>
+

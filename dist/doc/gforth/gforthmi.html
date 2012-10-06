@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+<title>gforthmi - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Fully-Relocatable-Image-Files.html#Fully-Relocatable-Image-Files" title="Fully Relocatable Image Files">
+<link rel="prev" href="Fully-Relocatable-Image-Files.html#Fully-Relocatable-Image-Files" title="Fully Relocatable Image Files">
+<link rel="next" href="cross_002efs.html#cross_002efs" title="cross.fs">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="gforthmi"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="cross_002efs.html#cross_002efs">cross.fs</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Fully-Relocatable-Image-Files.html#Fully-Relocatable-Image-Files">Fully Relocatable Image Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Fully-Relocatable-Image-Files.html#Fully-Relocatable-Image-Files">Fully Relocatable Image Files</a>
+<hr>
+</div>
+
+<h4 class="subsection">13.5.1 <samp><span class="file">gforthmi</span></samp></h4>
+
+<p><a name="index-g_t_0040file_007bcomp_002di_002efs_007d-3410"></a><a name="index-g_t_0040file_007bgforthmi_007d-3411"></a>
+You will usually use <samp><span class="file">gforthmi</span></samp>. If you want to create an
+image <i>file</i> that contains everything you would load by invoking
+Gforth with <code>gforth </code><i>options</i>, you simply say:
+<pre class="example">     gforthmi <i>file</i> <i>options</i>
+</pre>
+   <p>E.g., if you want to create an image <samp><span class="file">asm.fi</span></samp> that has the file
+<samp><span class="file">asm.fs</span></samp> loaded in addition to the usual stuff, you could do it
+like this:
+
+<pre class="example">     gforthmi asm.fi asm.fs
+</pre>
+   <p><samp><span class="file">gforthmi</span></samp> is implemented as a sh script and works like this: It
+produces two non-relocatable images for different addresses and then
+compares them. Its output reflects this: first you see the output (if
+any) of the two Gforth invocations that produce the non-relocatable image
+files, then you see the output of the comparing program: It displays the
+offset used for data addresses and the offset used for code addresses;
+moreover, for each cell that cannot be represented correctly in the
+image files, it displays a line like this:
+
+<pre class="example">          78DC         BFFFFA50         BFFFFA40
+</pre>
+   <p>This means that at offset $78dc from <code>forthstart</code>, one input image
+contains $bffffa50, and the other contains $bffffa40. Since these cells
+cannot be represented correctly in the output image, you should examine
+these places in the dictionary and verify that these cells are dead
+(i.e., not read before they are written).
+
+   <p><a name="index-g_t_002d_002dapplication_002c-_0040code_007bgforthmi_007d-option-3412"></a>If you insert the option <code>--application</code> in front of the image file
+name, you will get an image that uses the <code>--appl-image</code> option
+instead of the <code>--image-file</code> option (see <a href="Invoking-Gforth.html#Invoking-Gforth">Invoking Gforth</a>). When you execute such an image on Unix (by typing the image
+name as command), the Gforth engine will pass all options to the image
+instead of trying to interpret them as engine options.
+
+   <p>If you type <samp><span class="file">gforthmi</span></samp> with no arguments, it prints some usage
+instructions.
+
+   <p><a name="index-g_t_0040code_007bsavesystem_007d-during-_0040file_007bgforthmi_007d-3413"></a><a name="index-g_t_0040code_007bbye_007d-during-_0040file_007bgforthmi_007d-3414"></a><a name="index-doubly-indirect-threaded-code-3415"></a><a name="index-environment-variables-3416"></a><a name="index-g_t_0040code_007bGFORTHD_007d-_002d_002d-environment-variable-3417"></a><a name="index-g_t_0040code_007bGFORTH_007d-_002d_002d-environment-variable-3418"></a><a name="index-g_t_0040code_007bgforth_002dditc_007d-3419"></a>There are a few wrinkles: After processing the passed <i>options</i>, the
+words <code>savesystem</code> and <code>bye</code> must be visible. A special doubly
+indirect threaded version of the <samp><span class="file">gforth</span></samp> executable is used for
+creating the non-relocatable images; you can pass the exact filename of
+this executable through the environment variable <code>GFORTHD</code>
+(default: <samp><span class="file">gforth-ditc</span></samp>); if you pass a version that is not doubly
+indirect threaded, you will not get a fully relocatable image, but a
+data-relocatable image (because there is no code address offset). The
+normal <samp><span class="file">gforth</span></samp> executable is used for creating the relocatable
+image; you can pass the exact filename of this executable through the
+environment variable <code>GFORTH</code>.
+
+   </body></html>
+

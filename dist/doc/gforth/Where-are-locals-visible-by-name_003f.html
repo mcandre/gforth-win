@@ -1,0 +1,219 @@
+<html lang="en">
+<head>
+<title>Where are locals visible by name? - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Gforth-locals.html#Gforth-locals" title="Gforth locals">
+<link rel="prev" href="Gforth-locals.html#Gforth-locals" title="Gforth locals">
+<link rel="next" href="How-long-do-locals-live_003f.html#How-long-do-locals-live_003f" title="How long do locals live?">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Where-are-locals-visible-by-name%3f"></a>
+<a name="Where-are-locals-visible-by-name_003f"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="How-long-do-locals-live_003f.html#How-long-do-locals-live_003f">How long do locals live?</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Gforth-locals.html#Gforth-locals">Gforth locals</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Gforth-locals.html#Gforth-locals">Gforth locals</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.21.1.1 Where are locals visible by name?</h5>
+
+<p><a name="index-locals-visibility-2259"></a><a name="index-visibility-of-locals-2260"></a><a name="index-scope-of-locals-2261"></a>
+Basically, the answer is that locals are visible where you would expect
+it in block-structured languages, and sometimes a little longer. If you
+want to restrict the scope of a local, enclose its definition in
+<code>SCOPE</code>...<code>ENDSCOPE</code>.
+
+   <p><a name="index-scope-_0040var_007b-compilation--_002d_002d-scope-_003b-run_002dtime--_002d_002d---_007d--gforth-2262"></a><a name="index-g_t_0040code_007bscope_007d-2263"></a><a name="index-scope-2264"></a>
+<pre class="format"><code>scope</code>       <i>compilation  &ndash; scope ; run-time  &ndash;  </i>       gforth       &ldquo;scope&rdquo;
+</pre>
+   <p><a name="index-endscope-_0040var_007b-compilation-scope-_002d_002d-_003b-run_002dtime--_002d_002d---_007d--gforth-2265"></a><a name="index-g_t_0040code_007bendscope_007d-2266"></a><a name="index-endscope-2267"></a>
+<pre class="format"><code>endscope</code>       <i>compilation scope &ndash; ; run-time  &ndash;  </i>       gforth       &ldquo;endscope&rdquo;
+</pre>
+   <p>These words behave like control structure words, so you can use them
+with <code>CS-PICK</code> and <code>CS-ROLL</code> to restrict the scope in
+arbitrary ways.
+
+   <p>If you want a more exact answer to the visibility question, here's the
+basic principle: A local is visible in all places that can only be
+reached through the definition of the local<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>. In other words, it is not visible in places that can be reached
+without going through the definition of the local. E.g., locals defined
+in <code>IF</code>...<code>ENDIF</code> are visible until the <code>ENDIF</code>, locals
+defined in <code>BEGIN</code>...<code>UNTIL</code> are visible after the
+<code>UNTIL</code> (until, e.g., a subsequent <code>ENDSCOPE</code>).
+
+   <p>The reasoning behind this solution is: We want to have the locals
+visible as long as it is meaningful. The user can always make the
+visibility shorter by using explicit scoping. In a place that can
+only be reached through the definition of a local, the meaning of a
+local name is clear. In other places it is not: How is the local
+initialized at the control flow path that does not contain the
+definition? Which local is meant, if the same name is defined twice in
+two independent control flow paths?
+
+   <p>This should be enough detail for nearly all users, so you can skip the
+rest of this section. If you really must know all the gory details and
+options, read on.
+
+   <p>In order to implement this rule, the compiler has to know which places
+are unreachable. It knows this automatically after <code>AHEAD</code>,
+<code>AGAIN</code>, <code>EXIT</code> and <code>LEAVE</code>; in other cases (e.g., after
+most <code>THROW</code>s), you can use the word <code>UNREACHABLE</code> to tell the
+compiler that the control flow never reaches that place. If
+<code>UNREACHABLE</code> is not used where it could, the only consequence is
+that the visibility of some locals is more limited than the rule above
+says. If <code>UNREACHABLE</code> is used where it should not (i.e., if you
+lie to the compiler), buggy code will be produced.
+
+   <p><a name="index-UNREACHABLE-_0040var_007b-_002d_002d---_007d--gforth-2268"></a><a name="index-g_t_0040code_007bUNREACHABLE_007d-2269"></a><a name="index-UNREACHABLE-2270"></a>
+<pre class="format"><code>UNREACHABLE</code>       <i>&ndash;  </i>       gforth       &ldquo;UNREACHABLE&rdquo;
+</pre>
+   <p>Another problem with this rule is that at <code>BEGIN</code>, the compiler
+does not know which locals will be visible on the incoming
+back-edge. All problems discussed in the following are due to this
+ignorance of the compiler (we discuss the problems using <code>BEGIN</code>
+loops as examples; the discussion also applies to <code>?DO</code> and other
+loops). Perhaps the most insidious example is:
+<pre class="example">     AHEAD
+     BEGIN
+       x
+     [ 1 CS-ROLL ] THEN
+       { x }
+       ...
+     UNTIL
+</pre>
+   <p>This should be legal according to the visibility rule. The use of
+<code>x</code> can only be reached through the definition; but that appears
+textually below the use.
+
+   <p>From this example it is clear that the visibility rules cannot be fully
+implemented without major headaches. Our implementation treats common
+cases as advertised and the exceptions are treated in a safe way: The
+compiler makes a reasonable guess about the locals visible after a
+<code>BEGIN</code>; if it is too pessimistic, the
+user will get a spurious error about the local not being defined; if the
+compiler is too optimistic, it will notice this later and issue a
+warning. In the case above the compiler would complain about <code>x</code>
+being undefined at its use. You can see from the obscure examples in
+this section that it takes quite unusual control structures to get the
+compiler into trouble, and even then it will often do fine.
+
+   <p>If the <code>BEGIN</code> is reachable from above, the most optimistic guess
+is that all locals visible before the <code>BEGIN</code> will also be
+visible after the <code>BEGIN</code>. This guess is valid for all loops that
+are entered only through the <code>BEGIN</code>, in particular, for normal
+<code>BEGIN</code>...<code>WHILE</code>...<code>REPEAT</code> and
+<code>BEGIN</code>...<code>UNTIL</code> loops and it is implemented in our
+compiler. When the branch to the <code>BEGIN</code> is finally generated by
+<code>AGAIN</code> or <code>UNTIL</code>, the compiler checks the guess and
+warns the user if it was too optimistic:
+<pre class="example">     IF
+       { x }
+     BEGIN
+       \ x ?
+     [ 1 cs-roll ] THEN
+       ...
+     UNTIL
+</pre>
+   <p>Here, <code>x</code> lives only until the <code>BEGIN</code>, but the compiler
+optimistically assumes that it lives until the <code>THEN</code>. It notices
+this difference when it compiles the <code>UNTIL</code> and issues a
+warning. The user can avoid the warning, and make sure that <code>x</code>
+is not used in the wrong area by using explicit scoping:
+<pre class="example">     IF
+       SCOPE
+       { x }
+       ENDSCOPE
+     BEGIN
+     [ 1 cs-roll ] THEN
+       ...
+     UNTIL
+</pre>
+   <p>Since the guess is optimistic, there will be no spurious error messages
+about undefined locals.
+
+   <p>If the <code>BEGIN</code> is not reachable from above (e.g., after
+<code>AHEAD</code> or <code>EXIT</code>), the compiler cannot even make an
+optimistic guess, as the locals visible after the <code>BEGIN</code> may be
+defined later. Therefore, the compiler assumes that no locals are
+visible after the <code>BEGIN</code>. However, the user can use
+<code>ASSUME-LIVE</code> to make the compiler assume that the same locals are
+visible at the BEGIN as at the point where the top control-flow stack
+item was created.
+
+   <p><a name="index-ASSUME_002dLIVE-_0040var_007b-orig-_002d_002d-orig---_007d--gforth-2271"></a><a name="index-g_t_0040code_007bASSUME_002dLIVE_007d-2272"></a><a name="index-ASSUME_002dLIVE-2273"></a>
+<pre class="format"><code>ASSUME-LIVE</code>       <i>orig &ndash; orig  </i>       gforth       &ldquo;ASSUME-LIVE&rdquo;
+</pre>
+   <p class="noindent">E.g.,
+<pre class="example">     { x }
+     AHEAD
+     ASSUME-LIVE
+     BEGIN
+       x
+     [ 1 CS-ROLL ] THEN
+       ...
+     UNTIL
+</pre>
+   <p>Other cases where the locals are defined before the <code>BEGIN</code> can be
+handled by inserting an appropriate <code>CS-ROLL</code> before the
+<code>ASSUME-LIVE</code> (and changing the control-flow stack manipulation
+behind the <code>ASSUME-LIVE</code>).
+
+   <p>Cases where locals are defined after the <code>BEGIN</code> (but should be
+visible immediately after the <code>BEGIN</code>) can only be handled by
+rearranging the loop. E.g., the &ldquo;most insidious&rdquo; example above can be
+arranged into:
+<pre class="example">     BEGIN
+       { x }
+       ... 0=
+     WHILE
+       x
+     REPEAT
+</pre>
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> In compiler
+construction terminology, all places dominated by the definition of the
+local.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

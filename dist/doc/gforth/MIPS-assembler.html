@@ -1,0 +1,104 @@
+<html lang="en">
+<head>
+<title>MIPS assembler - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words" title="Assembler and Code Words">
+<link rel="prev" href="Alpha-Assembler.html#Alpha-Assembler" title="Alpha Assembler">
+<link rel="next" href="PowerPC-assembler.html#PowerPC-assembler" title="PowerPC assembler">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="MIPS-assembler"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="PowerPC-assembler.html#PowerPC-assembler">PowerPC assembler</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Alpha-Assembler.html#Alpha-Assembler">Alpha Assembler</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words">Assembler and Code Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.26.6 MIPS assembler</h4>
+
+<p>The MIPS assembler was originally written by Christian Pirker.
+
+   <p>Currently the assembler and disassembler only cover the MIPS-I
+architecture (R3000), and don't support FP instructions.
+
+   <p>The register names <code>$a0</code>&ndash;<code>$a3</code> are not available to avoid
+shadowing hex numbers.
+
+   <p>Because there is no way to distinguish registers from immediate values,
+you have to explicitly use the immediate forms of instructions, i.e.,
+<code>addiu,</code>, not just <code>addu,</code> (<samp><span class="command">as</span></samp> does this
+implicitly).
+
+   <p>If the architecture manual specifies several formats for the instruction
+(e.g., for <code>jalr,</code>), you usually have to use the one with more
+arguments (i.e., two for <code>jalr,</code>).  When in doubt, see
+<code>arch/mips/testasm.fs</code> for an example of correct use.
+
+   <p>Branches and jumps in the MIPS architecture have a delay slot.  You have
+to fill it yourself (the simplest way is to use <code>nop,</code>), the
+assembler does not do it for you (unlike <samp><span class="command">as</span></samp>).  Even
+<code>if,</code>, <code>ahead,</code>, <code>until,</code>, <code>again,</code>, <code>while,</code>,
+<code>else,</code> and <code>repeat,</code> need a delay slot.  Since <code>begin,</code>
+and <code>then,</code> just specify branch targets, they are not affected.
+
+   <p>Note that you must not put branches, jumps, or <code>li,</code> into the delay
+slot: <code>li,</code> may expand to several instructions, and control flow
+instructions may not be put into the branch delay slot in any case.
+
+   <p>For branches the argument specifying the target is a relative address;
+You have to add the address of the delay slot to get the absolute
+address.
+
+   <p>The MIPS architecture also has load delay slots and restrictions on
+using <code>mfhi,</code> and <code>mflo,</code>; you have to order the instructions
+yourself to satisfy these restrictions, the assembler does not do it for
+you.
+
+   <p>You can specify the conditions for <code>if,</code> etc. by taking a
+conditional branch and leaving away the <code>b</code> at the start and the
+<code>,</code> at the end.  E.g.,
+
+<pre class="example">     4 5 eq if,
+       ... \ do something if $4 equals $5
+     then,
+</pre>
+   </body></html>
+

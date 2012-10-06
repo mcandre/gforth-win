@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+<title>Stack depth changes - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tools.html#Tools" title="Tools">
+<link rel="prev" href="ANS-Report.html#ANS-Report" title="ANS Report">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Stack-depth-changes"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="ANS-Report.html#ANS-Report">ANS Report</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tools.html#Tools">Tools</a>
+<hr>
+</div>
+
+<h3 class="section">7.2 Stack depth changes during interpretation</h3>
+
+<p><a name="index-g_t_0040file_007bdepth_002dchanges_002efs_007d-3051"></a><a name="index-depth-changes-during-interpretation-3052"></a><a name="index-stack-depth-changes-during-interpretation-3053"></a><a name="index-items-on-the-stack-after-interpretation-3054"></a>
+Sometimes you notice that, after loading a file, there are items left
+on the stack.  The tool <samp><span class="file">depth-changes.fs</span></samp> helps you find out
+quickly where in the file these stack items are coming from.
+
+   <p>The simplest way of using <samp><span class="file">depth-changes.fs</span></samp> is to include it
+before the file(s) you want to check, e.g.:
+
+<pre class="example">     gforth depth-changes.fs my-file.fs
+</pre>
+   <p>This will compare the stack depths of the data and FP stack at every
+empty line (in interpretation state) against these depths at the last
+empty line (in interpretation state).  If the depths are not equal,
+the position in the file and the stack contents are printed with
+<code>~~</code> (see <a href="Debugging.html#Debugging">Debugging</a>).  This indicates that a stack depth
+change has occured in the paragraph of non-empty lines before the
+indicated line.  It is a good idea to leave an empty line at the end
+of the file, so the last paragraph is checked, too.
+
+   <p>Checking only at empty lines usually works well, but sometimes you
+have big blocks of non-empty lines (e.g., when building a big table),
+and you want to know where in this block the stack depth changed.  You
+can check all interpreted lines with
+
+<pre class="example">     gforth depth-changes.fs -e "' all-lines is depth-changes-filter" my-file.fs
+</pre>
+   <p>This checks the stack depth at every end-of-line.  So the depth change
+occured in the line reported by the <code>~~</code> (not in the line
+before).
+
+   <p>Note that, while this offers better accuracy in indicating where the
+stack depth changes, it will often report many intentional stack depth
+changes (e.g., when an interpreted computation stretches across
+several lines).  You can suppress the checking of some lines by
+putting backslashes at the end of these lines (not followed by white
+space), and using
+
+<pre class="example">     gforth depth-changes.fs -e "' most-lines is depth-changes-filter" my-file.fs
+</pre>
+   <!-- ****************************************************************** -->
+</body></html>
+

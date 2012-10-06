@@ -1,0 +1,123 @@
+<html lang="en">
+<head>
+<title>Selection - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Control-Structures.html#Control-Structures" title="Control Structures">
+<link rel="prev" href="Control-Structures.html#Control-Structures" title="Control Structures">
+<link rel="next" href="Simple-Loops.html#Simple-Loops" title="Simple Loops">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Selection"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Simple-Loops.html#Simple-Loops">Simple Loops</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Control-Structures.html#Control-Structures">Control Structures</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Control-Structures.html#Control-Structures">Control Structures</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.8.1 Selection</h4>
+
+<p><a name="index-selection-control-structures-1007"></a><a name="index-control-structures-for-selection-1008"></a>
+<a name="index-g_t_0040code_007bIF_007d-control-structure-1009"></a>
+<pre class="example">     <i>flag</i>
+     IF
+       <i>code</i>
+     ENDIF
+</pre>
+   <p class="noindent">If <i>flag</i> is non-zero (as far as <code>IF</code> etc. are concerned, a cell
+with any bit set represents truth) <i>code</i> is executed.
+
+<pre class="example">     <i>flag</i>
+     IF
+       <i>code1</i>
+     ELSE
+       <i>code2</i>
+     ENDIF
+</pre>
+   <p>If <var>flag</var> is true, <i>code1</i> is executed, otherwise <i>code2</i> is
+executed.
+
+   <p>You can use <code>THEN</code> instead of <code>ENDIF</code>. Indeed, <code>THEN</code> is
+standard, and <code>ENDIF</code> is not, although it is quite popular. We
+recommend using <code>ENDIF</code>, because it is less confusing for people
+who also know other languages (and is not prone to reinforcing negative
+prejudices against Forth in these people). Adding <code>ENDIF</code> to a
+system that only supplies <code>THEN</code> is simple:
+<pre class="example">     : ENDIF   POSTPONE then ; immediate
+</pre>
+   <p>[According to <cite>Webster's New Encyclopedic Dictionary</cite>, <dfn>then
+(adv.)</dfn>  has the following meanings:
+<blockquote>
+... 2b: following next after in order ... 3d: as a necessary consequence
+(if you were there, then you saw them). 
+</blockquote>
+   Forth's <code>THEN</code> has the meaning 2b, whereas <code>THEN</code> in Pascal
+and many other programming languages has the meaning 3d.]
+
+   <p>Gforth also provides the words <code>?DUP-IF</code> and <code>?DUP-0=-IF</code>, so
+you can avoid using <code>?dup</code>. Using these alternatives is also more
+efficient than using <code>?dup</code>. Definitions in ANS Forth
+for <code>ENDIF</code>, <code>?DUP-IF</code> and <code>?DUP-0=-IF</code> are provided in
+<samp><span class="file">compat/control.fs</span></samp>.
+
+   <p><a name="index-g_t_0040code_007bCASE_007d-control-structure-1010"></a>
+<pre class="example">     <i>n</i>
+     CASE
+       <i>n1</i> OF <i>code1</i> ENDOF
+       <i>n2</i> OF <i>code2</i> ENDOF
+       ...
+       ( n ) <i>default-code</i> ( n )
+     ENDCASE ( )
+</pre>
+   <p>Executes the first <i>codei</i>, where the <i>ni</i> is equal to <i>n</i>.  If
+no <i>ni</i> matches, the optional <i>default-code</i> is executed. The
+optional default case can be added by simply writing the code after
+the last <code>ENDOF</code>. It may use <i>n</i>, which is on top of the stack,
+but must not consume it.  The value <i>n</i> is consumed by this
+construction (either by a OF that matches, or by the ENDCASE, if no OF
+matches).
+
+   <p>Programming style note:
+To keep the code understandable, you should ensure that you change the
+stack in the same way (wrt. number and types of stack items consumed
+and pushed) on all paths through a selection construct.
+
+   </body></html>
+

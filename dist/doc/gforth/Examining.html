@@ -1,0 +1,154 @@
+<html lang="en">
+<head>
+<title>Examining - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Programming-Tools.html#Programming-Tools" title="Programming Tools">
+<link rel="prev" href="Programming-Tools.html#Programming-Tools" title="Programming Tools">
+<link rel="next" href="Forgetting-words.html#Forgetting-words" title="Forgetting words">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Examining"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Forgetting-words.html#Forgetting-words">Forgetting words</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Programming-Tools.html#Programming-Tools">Programming Tools</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Programming-Tools.html#Programming-Tools">Programming Tools</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.24.1 Examining data and code</h4>
+
+<p><a name="index-examining-data-and-code-2784"></a><a name="index-data-examination-2785"></a><a name="index-code-examination-2786"></a>
+The following words inspect the stack non-destructively:
+
+   <p><a name="index-g_t_002es-_0040var_007b-_002d_002d---_007d--tools-2787"></a><a name="index-g_t_0040code_007b_002es_007d-2788"></a><a name="index-g_t_002es-2789"></a>
+<pre class="format"><code>.s</code>       <i>&ndash;  </i>       tools       &ldquo;dot-s&rdquo;
+</pre>
+   <p>Display the number of items on the data stack, followed by a list
+of the items (but not more than specified by <code>maxdepth-.s</code>;
+TOS is the right-most item.
+
+   <p><a name="index-f_002es-_0040var_007b-_002d_002d---_007d--gforth-2790"></a><a name="index-g_t_0040code_007bf_002es_007d-2791"></a><a name="index-f_002es-2792"></a>
+<pre class="format"><code>f.s</code>       <i>&ndash;  </i>       gforth       &ldquo;f-dot-s&rdquo;
+</pre>
+   <p>Display the number of items on the floating-point stack, followed
+by a list of the items (but not more than specified by
+<code>maxdepth-.s</code>; TOS is the right-most item.
+
+   <p><a name="index-maxdepth_002d_002es-_0040var_007b-_002d_002d-addr---_007d--gforth-2793"></a><a name="index-g_t_0040code_007bmaxdepth_002d_002es_007d-2794"></a><a name="index-maxdepth_002d_002es-2795"></a>
+<pre class="format"><code>maxdepth-.s</code>       <i>&ndash; addr  </i>       gforth       &ldquo;maxdepth-dot-s&rdquo;
+</pre>
+   <p>A variable containing 9 by default.  <code>.s</code> and <code>f.s</code>
+display at most that many stack items.
+
+   <p>There is a word <code>.r</code> but it does <i>not</i> display the return stack! 
+It is used for formatted numeric output (see <a href="Simple-numeric-output.html#Simple-numeric-output">Simple numeric output</a>).
+
+   <p><a name="index-depth-_0040var_007b-_002d_002d-_002bn---_007d--core-2796"></a><a name="index-g_t_0040code_007bdepth_007d-2797"></a><a name="index-depth-2798"></a>
+<pre class="format"><code>depth</code>       <i>&ndash; +n  </i>       core       &ldquo;depth&rdquo;
+</pre>
+   <p><var>+n</var> is the number of values that were on the data stack before
+<var>+n</var> itself was placed on the stack.
+
+   <p><a name="index-fdepth-_0040var_007b-_002d_002d-_002bn---_007d--float-2799"></a><a name="index-g_t_0040code_007bfdepth_007d-2800"></a><a name="index-fdepth-2801"></a>
+<pre class="format"><code>fdepth</code>       <i>&ndash; +n  </i>       float       &ldquo;f-depth&rdquo;
+</pre>
+   <p><i>+n</i> is the current number of (floating-point) values on the
+floating-point stack.
+
+   <p><a name="index-clearstack-_0040var_007b-_002e_002e_002e-_002d_002d---_007d--gforth-2802"></a><a name="index-g_t_0040code_007bclearstack_007d-2803"></a><a name="index-clearstack-2804"></a>
+<pre class="format"><code>clearstack</code>       <i>... &ndash;  </i>       gforth       &ldquo;clear-stack&rdquo;
+</pre>
+   <p>remove and discard all/any items from the data stack.
+
+   <p><a name="index-clearstacks-_0040var_007b-_002e_002e_002e-_002d_002d---_007d--gforth-2805"></a><a name="index-g_t_0040code_007bclearstacks_007d-2806"></a><a name="index-clearstacks-2807"></a>
+<pre class="format"><code>clearstacks</code>       <i>... &ndash;  </i>       gforth       &ldquo;clear-stacks&rdquo;
+</pre>
+   <p>empty data and FP stack
+
+   <p>The following words inspect memory.
+
+   <p><a name="index-g_t_003f-_0040var_007b-a_002daddr-_002d_002d---_007d--tools-2808"></a><a name="index-g_t_0040code_007b_003f_007d-2809"></a><a name="index-g_t_003f-2810"></a>
+<pre class="format"><code>?</code>       <i>a-addr &ndash;  </i>       tools       &ldquo;question&rdquo;
+</pre>
+   <p>Display the contents of address <var>a-addr</var> in the current number base.
+
+   <p><a name="index-dump-_0040var_007b-addr-u-_002d_002d---_007d--tools-2811"></a><a name="index-g_t_0040code_007bdump_007d-2812"></a><a name="index-dump-2813"></a>
+<pre class="format"><code>dump</code>       <i>addr u &ndash;  </i>       tools       &ldquo;dump&rdquo;
+</pre>
+   <p>Display <var>u</var> lines of memory starting at address <var>addr</var>. Each line
+displays the contents of 16 bytes. When Gforth is running under
+an operating system you may get <samp><span class="file">Invalid memory address</span></samp> errors
+if you attempt to access arbitrary locations.
+
+   <p>And finally, <code>see</code> allows to inspect code:
+
+   <p><a name="index-see-_0040var_007b-_0022_003cspaces_003ename_0022-_002d_002d---_007d--tools-2814"></a><a name="index-g_t_0040code_007bsee_007d-2815"></a><a name="index-see-2816"></a>
+<pre class="format"><code>see</code>       <i>"&lt;spaces&gt;name" &ndash;  </i>       tools       &ldquo;see&rdquo;
+</pre>
+   <p>Locate <var>name</var> using the current search order. Display the
+definition of <var>name</var>. Since this is achieved by decompiling
+the definition, the formatting is mechanised and some source
+information (comments, interpreted sequences within definitions
+etc.) is lost.
+
+   <p><a name="index-xt_002dsee-_0040var_007b-xt-_002d_002d---_007d--gforth-2817"></a><a name="index-g_t_0040code_007bxt_002dsee_007d-2818"></a><a name="index-xt_002dsee-2819"></a>
+<pre class="format"><code>xt-see</code>       <i>xt &ndash;  </i>       gforth       &ldquo;xt-see&rdquo;
+</pre>
+   <p>Decompile the definition represented by <i>xt</i>.
+
+   <p><a name="index-simple_002dsee-_0040var_007b-_0022name_0022-_002d_002d---_007d--gforth-2820"></a><a name="index-g_t_0040code_007bsimple_002dsee_007d-2821"></a><a name="index-simple_002dsee-2822"></a>
+<pre class="format"><code>simple-see</code>       <i>"name" &ndash;  </i>       gforth       &ldquo;simple-see&rdquo;
+</pre>
+   <p>a simple decompiler that's closer to <code>dump</code> than <code>see</code>.
+
+   <p><a name="index-simple_002dsee_002drange-_0040var_007b-addr1-addr2-_002d_002d---_007d--gforth-2823"></a><a name="index-g_t_0040code_007bsimple_002dsee_002drange_007d-2824"></a><a name="index-simple_002dsee_002drange-2825"></a>
+<pre class="format"><code>simple-see-range</code>       <i>addr1 addr2 &ndash;  </i>       gforth       &ldquo;simple-see-range&rdquo;
+</pre>
+   <p><a name="index-see_002dcode-_0040var_007b-_0022name_0022-_002d_002d---_007d--gforth-2826"></a><a name="index-g_t_0040code_007bsee_002dcode_007d-2827"></a><a name="index-see_002dcode-2828"></a>
+<pre class="format"><code>see-code</code>       <i>"name" &ndash;  </i>       gforth       &ldquo;see-code&rdquo;
+</pre>
+   <p>like <code>simple-see</code>, but also shows the dynamic native code for
+the inlined primitives (except for the last).
+
+   <p><a name="index-see_002dcode_002drange-_0040var_007b-addr1-addr2-_002d_002d---_007d--gforth-2829"></a><a name="index-g_t_0040code_007bsee_002dcode_002drange_007d-2830"></a><a name="index-see_002dcode_002drange-2831"></a>
+<pre class="format"><code>see-code-range</code>       <i>addr1 addr2 &ndash;  </i>       gforth       &ldquo;see-code-range&rdquo;
+</pre>
+   </body></html>
+

@@ -1,0 +1,76 @@
+<html lang="en">
+<head>
+<title>DOES&gt; - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Threading.html#Threading" title="Threading">
+<link rel="prev" href="Dynamic-Superinstructions.html#Dynamic-Superinstructions" title="Dynamic Superinstructions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="DOES%3e"></a>
+<a name="DOES_003e"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Dynamic-Superinstructions.html#Dynamic-Superinstructions">Dynamic Superinstructions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Threading.html#Threading">Threading</a>
+<hr>
+</div>
+
+<h4 class="subsection">14.2.4 DOES&gt;</h4>
+
+<p><a name="index-g_t_0040code_007bDOES_003e_007d-implementation-3483"></a>
+<a name="index-g_t_0040code_007bdodoes_007d-routine-3484"></a><a name="index-g_t_0040code_007bDOES_003e_007d_002dcode-3485"></a>One of the most complex parts of a Forth engine is <code>dodoes</code>, i.e.,
+the chunk of code executed by every word defined by a
+<code>CREATE</code>...<code>DOES&gt;</code> pair; actually with primitive-centric code,
+this is only needed if the xt of the word is <code>execute</code>d. The main
+problem here is: How to find the Forth code to be executed, i.e. the
+code after the <code>DOES&gt;</code> (the <code>DOES&gt;</code>-code)? There are two
+solutions:
+
+   <p>In fig-Forth the code field points directly to the <code>dodoes</code> and the
+<code>DOES&gt;</code>-code address is stored in the cell after the code address
+(i.e. at <i>CFA</i><code> cell+</code>). It may seem that this solution is
+illegal in the Forth-79 and all later standards, because in fig-Forth
+this address lies in the body (which is illegal in these
+standards). However, by making the code field larger for all words this
+solution becomes legal again.  We use this approach.  Leaving a cell
+unused in most words is a bit wasteful, but on the machines we are
+targeting this is hardly a problem.
+
+   </body></html>
+

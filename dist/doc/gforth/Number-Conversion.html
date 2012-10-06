@@ -1,0 +1,204 @@
+<html lang="en">
+<head>
+<title>Number Conversion - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-Text-Interpreter.html#The-Text-Interpreter" title="The Text Interpreter">
+<link rel="prev" href="Input-Sources.html#Input-Sources" title="Input Sources">
+<link rel="next" href="Interpret_002fCompile-states.html#Interpret_002fCompile-states" title="Interpret/Compile states">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Number-Conversion"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Interpret_002fCompile-states.html#Interpret_002fCompile-states">Interpret/Compile states</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Input-Sources.html#Input-Sources">Input Sources</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-Text-Interpreter.html#The-Text-Interpreter">The Text Interpreter</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.13.2 Number Conversion</h4>
+
+<p><a name="index-number-conversion-1473"></a><a name="index-double_002dcell-numbers_002c-input-format-1474"></a><a name="index-input-format-for-double_002dcell-numbers-1475"></a><a name="index-single_002dcell-numbers_002c-input-format-1476"></a><a name="index-input-format-for-single_002dcell-numbers-1477"></a><a name="index-floating_002dpoint-numbers_002c-input-format-1478"></a><a name="index-input-format-for-floating_002dpoint-numbers-1479"></a>
+This section describes the rules that the text interpreter uses when it
+tries to convert a string into a number.
+
+   <p>Let &lt;digit&gt; represent any character that is a legal digit in the current
+number base<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>.
+
+   <p>Let &lt;decimal digit&gt; represent any character in the range 0-9.
+
+   <p>Let {<i>a b</i>} represent the <i>optional</i> presence of any of the characters
+in the braces (<i>a</i> or <i>b</i> or neither).
+
+   <p>Let * represent any number of instances of the previous character
+(including none).
+
+   <p>Let any other character represent itself.
+
+<p class="noindent">Now, the conversion rules are:
+
+     <ul>
+<li>A string of the form &lt;digit&gt;&lt;digit&gt;* is treated as a single-precision
+(cell-sized) positive integer. Examples are 0 123 6784532 32343212343456 42
+<li>A string of the form -&lt;digit&gt;&lt;digit&gt;* is treated as a single-precision
+(cell-sized) negative integer, and is represented using 2's-complement
+arithmetic. Examples are -45 -5681 -0
+<li>A string of the form &lt;digit&gt;&lt;digit&gt;*.&lt;digit&gt;* is treated as a double-precision
+(double-cell-sized) positive integer. Examples are 3465. 3.465 34.65
+(all three of these represent the same number). 
+<li>A string of the form -&lt;digit&gt;&lt;digit&gt;*.&lt;digit&gt;* is treated as a
+double-precision (double-cell-sized) negative integer, and is
+represented using 2's-complement arithmetic. Examples are -3465. -3.465
+-34.65 (all three of these represent the same number). 
+<li>A string of the form {+ -}&lt;decimal digit&gt;{.}&lt;decimal digit&gt;*{e
+E}{+ -}&lt;decimal digit&gt;&lt;decimal digit&gt;* is treated as a floating-point
+number. Examples are 1e 1e0 1.e 1.e0 +1e+0 (which all represent the same
+number) +12.E-4
+</ul>
+
+   <p>By default, the number base used for integer number conversion is
+given by the contents of the variable <code>base</code>.  Note that a lot of
+confusion can result from unexpected values of <code>base</code>.  If you
+change <code>base</code> anywhere, make sure to save the old value and
+restore it afterwards; better yet, use <code>base-execute</code>, which does
+this for you.  In general I recommend keeping <code>base</code> decimal, and
+using the prefixes described below for the popular non-decimal bases.
+
+   <p><a name="index-dpl-_0040var_007b-_002d_002d-a_002daddr---_007d--gforth-1480"></a><a name="index-g_t_0040code_007bdpl_007d-1481"></a><a name="index-dpl-1482"></a>
+<pre class="format"><code>dpl</code>       <i>&ndash; a-addr  </i>       gforth       &ldquo;dpl&rdquo;
+</pre>
+   <p><code>User</code> variable &ndash; <i>a-addr</i> is the address of a cell that stores the
+position of the decimal point in the most recent numeric conversion. 
+Initialised to -1. After the conversion of a number containing no
+decimal point, <code>dpl</code> is -1. After the conversion of <code>2.</code> it holds
+0. After the conversion of 234123.9 it contains 1, and so forth.
+
+   <p><a name="index-base_002dexecute-_0040var_007b-i_002ax-xt-u-_002d_002d-j_002ax---_007d--gforth-1483"></a><a name="index-g_t_0040code_007bbase_002dexecute_007d-1484"></a><a name="index-base_002dexecute-1485"></a>
+<pre class="format"><code>base-execute</code>       <i>i*x xt u &ndash; j*x  </i>       gforth       &ldquo;base-execute&rdquo;
+</pre>
+   <p>execute <i>xt</i> with the content of <code>BASE</code> being <i>u</i>, and
+restoring the original <code>BASE</code> afterwards.
+
+   <p><a name="index-base-_0040var_007b-_002d_002d-a_002daddr---_007d--core-1486"></a><a name="index-g_t_0040code_007bbase_007d-1487"></a><a name="index-base-1488"></a>
+<pre class="format"><code>base</code>       <i>&ndash; a-addr  </i>       core       &ldquo;base&rdquo;
+</pre>
+   <p><code>User</code> variable &ndash; <i>a-addr</i> is the address of a cell that
+stores the number base used by default for number conversion during
+input and output.  Don't store to <code>base</code>, use
+<code>base-execute</code> instead.
+
+   <p><a name="index-hex-_0040var_007b-_002d_002d---_007d--core_002dext-1489"></a><a name="index-g_t_0040code_007bhex_007d-1490"></a><a name="index-hex-1491"></a>
+<pre class="format"><code>hex</code>       <i>&ndash;  </i>       core-ext       &ldquo;hex&rdquo;
+</pre>
+   <p>Set <code>base</code> to &amp;16 (hexadecimal).  Don't use <code>hex</code>,
+use <code>base-execute</code> instead.
+
+   <p><a name="index-decimal-_0040var_007b-_002d_002d---_007d--core-1492"></a><a name="index-g_t_0040code_007bdecimal_007d-1493"></a><a name="index-decimal-1494"></a>
+<pre class="format"><code>decimal</code>       <i>&ndash;  </i>       core       &ldquo;decimal&rdquo;
+</pre>
+   <p>Set <code>base</code> to &amp;10 (decimal).  Don't use <code>hex</code>, use
+<code>base-execute</code> instead.
+
+   <p><a name="index-g_t_0027_002dprefix-for-character-strings-1495"></a><a name="index-g_t_0026_002dprefix-for-decimal-numbers-1496"></a><a name="index-g_t_0023_002dprefix-for-decimal-numbers-1497"></a><a name="index-g_t_0025_002dprefix-for-binary-numbers-1498"></a><a name="index-g_t_0024_002dprefix-for-hexadecimal-numbers-1499"></a><a name="index-g_t0x_002dprefix-for-hexadecimal-numbers-1500"></a>Gforth allows you to override the value of <code>base</code> by using a
+prefix<a rel="footnote" href="#fn-2" name="fnd-2"><sup>2</sup></a> before the first digit
+of an (integer) number. The following prefixes are supported:
+
+     <ul>
+<li><code>&amp;</code> &ndash; decimal
+<li><code>#</code> &ndash; decimal
+<li><code>%</code> &ndash; binary
+<li><code>$</code> &ndash; hexadecimal
+<li><code>0x</code> &ndash; hexadecimal, if base&lt;33. 
+<li><code>'</code> &ndash; numeric value (e.g., ASCII code) of next character; an
+optional <code>'</code> may be present after the character. 
+</ul>
+
+   <p>Here are some examples, with the equivalent decimal number shown after
+in braces:
+
+   <p>-$41 (-65), %1001101 (205), %1001.0001 (145 - a double-precision number),
+'A (65),
+-'a' (-97),
+&amp;905 (905), $abc (2478), $ABC (2478).
+
+   <p><a name="index-number-conversion-_002d-traps-for-the-unwary-1501"></a>Number conversion has a number of traps for the unwary:
+
+     <ul>
+<li>You cannot determine the current number base using the code sequence
+<code>base @ .</code> &ndash; the number base is always 10 in the current number
+base. Instead, use something like <code>base @ dec.</code>
+<li>If the number base is set to a value greater than 14 (for example,
+hexadecimal), the number 123E4 is ambiguous; the conversion rules allow
+it to be intepreted as either a single-precision integer or a
+floating-point number (Gforth treats it as an integer). The ambiguity
+can be resolved by explicitly stating the sign of the mantissa and/or
+exponent: 123E+4 or +123E4 &ndash; if the number base is decimal, no
+ambiguity arises; either representation will be treated as a
+floating-point number. 
+<li>There is a word <code>bin</code> but it does <i>not</i> set the number base! 
+It is used to specify file types. 
+<li>ANS Forth requires the <code>.</code> of a double-precision number to be the
+final character in the string.  Gforth allows the <code>.</code> to be
+anywhere after the first digit. 
+<li>The number conversion process does not check for overflow. 
+<li>In an ANS Forth program <code>base</code> is required to be decimal when
+converting floating-point numbers.  In Gforth, number conversion to
+floating-point numbers always uses base &amp;10, irrespective of the value
+of <code>base</code>. 
+</ul>
+
+   <p>You can read numbers into your programs with the words described in
+<a href="Line-input-and-conversion.html#Line-input-and-conversion">Line input and conversion</a>.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> For example, 0-9 when the number base is decimal or
+0-9, A-F when the number base is hexadecimal.</p>
+
+   <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> Some Forth implementations provide a similar scheme by
+implementing <code>$</code> etc. as parsing words that process the subsequent
+number in the input stream and push it onto the stack. For example, see
+<cite>Number Conversion and Literals</cite>, by Wil Baden; Forth Dimensions
+20(3) pages 26&ndash;27. In such implementations, unlike in Gforth, a space
+is required between the prefix and the number.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

@@ -1,0 +1,148 @@
+<html lang="en">
+<head>
+<title>Introduction - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="index.html#Top" title="Top">
+<link rel="next" href="Why-interpreters_003f.html#Why-interpreters_003f" title="Why interpreters?">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Introduction"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Why-interpreters_003f.html#Why-interpreters_003f">Why interpreters?</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="index.html#Top">Top</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">1 Introduction</h2>
+
+<p>Vmgen is a tool for writing efficient interpreters.  It takes a simple
+virtual machine description and generates efficient C code for dealing
+with the virtual machine code in various ways (in particular, executing
+it).  The run-time efficiency of the resulting interpreters is usually
+within a factor of 10 of machine code produced by an optimizing
+compiler.
+
+   <p>The interpreter design strategy supported by Vmgen is to divide the
+interpreter into two parts:
+
+     <ul>
+<li>The <em>front end</em> takes the source code of the language to be
+implemented, and translates it into virtual machine code.  This is
+similar to an ordinary compiler front end; typically an interpreter
+front-end performs no optimization, so it is relatively simple to
+implement and runs fast.
+
+     <li>The <em>virtual machine interpreter</em> executes the virtual
+machine code.
+
+   </ul>
+
+   <p>Such a division is usually used in interpreters, for modularity as well
+as for efficiency.  The virtual machine code is typically passed between
+front end and virtual machine interpreter in memory, like in a
+load-and-go compiler; this avoids the complexity and time cost of
+writing the code to a file and reading it again.
+
+   <p>A <em>virtual machine</em> (VM) represents the program as a sequence of
+<em>VM instructions</em>, following each other in memory, similar to real
+machine code.  Control flow occurs through VM branch instructions, like
+in a real machine.
+
+   <p><a name="index-functionality-features-overview-1"></a>In this setup, Vmgen can generate most of the code dealing with virtual
+machine instructions from a simple description of the virtual machine
+instructions (see <a href="Input-File-Format.html#Input-File-Format">Input File Format</a>), in particular:
+
+     <dl>
+<dt><strong>VM instruction execution</strong>
+<br><dt><strong>VM code generation</strong><dd>Useful in the front end.
+
+     <br><dt><strong>VM code decompiler</strong><dd>Useful for debugging the front end.
+
+     <br><dt><strong>VM code tracing</strong><dd>Useful for debugging the front end and the VM interpreter.  You will
+typically provide other means for debugging the user's programs at the
+source level.
+
+     <br><dt><strong>VM code profiling</strong><dd>Useful for optimizing the VM interpreter with superinstructions
+(see <a href="VM-profiler.html#VM-profiler">VM profiler</a>).
+
+   </dl>
+
+   <p>To create parts of the interpretive system that do not deal with VM
+instructions, you have to use other tools (e.g., <samp><span class="command">bison</span></samp>) and/or
+hand-code them.
+
+   <p><a name="index-efficiency-features-overview-2"></a>Vmgen supports efficient interpreters though various optimizations, in
+particular
+
+     <ul>
+<li>Threaded code
+
+     <li>Caching the top-of-stack in a register
+
+     <li>Combining VM instructions into superinstructions
+
+     <li>Replicating VM (super)instructions for better BTB prediction accuracy
+(not yet in vmgen-ex, but already in Gforth).
+
+   </ul>
+
+   <p><a name="index-speed-for-JVM-3"></a>As a result, Vmgen-based interpreters are only about an order of
+magnitude slower than native code from an optimizing C compiler on small
+benchmarks; on large benchmarks, which spend more time in the run-time
+system, the slowdown is often less (e.g., the slowdown of a
+Vmgen-generated JVM interpreter over the best JVM JIT compiler we
+measured is only a factor of 2-3 for large benchmarks; some other JITs
+and all other interpreters we looked at were slower than our
+interpreter).
+
+   <p>VMs are usually designed as stack machines (passing data between VM
+instructions on a stack), and Vmgen supports such designs especially
+well; however, you can also use Vmgen for implementing a register VM
+(see <a href="Register-Machines.html#Register-Machines">Register Machines</a>) and still benefit from most of the advantages
+offered by Vmgen.
+
+   <p>There are many potential uses of the instruction descriptions that are
+not implemented at the moment, but we are open for feature requests, and
+we will consider new features if someone asks for them; so the feature
+list above is not exhaustive.
+
+<!-- ********************************************************************* -->
+</body></html>
+

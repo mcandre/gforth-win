@@ -1,0 +1,132 @@
+<html lang="en">
+<head>
+<title>Simple instructions - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Input-File-Format.html#Input-File-Format" title="Input File Format">
+<link rel="prev" href="Input-File-Grammar.html#Input-File-Grammar" title="Input File Grammar">
+<link rel="next" href="Superinstructions.html#Superinstructions" title="Superinstructions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Simple-instructions"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Superinstructions.html#Superinstructions">Superinstructions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Input-File-Format.html#Input-File-Format">Input File Format</a>
+<hr>
+</div>
+
+<h3 class="section">6.2 Simple instructions</h3>
+
+<p><a name="index-simple-VM-instruction-67"></a><a name="index-instruction_002c-simple-VM-68"></a>
+We will use the following simple VM instruction description as example:
+
+<pre class="example">     sub ( i1 i2 -- i )
+     i = i1-i2;
+</pre>
+   <p>The first line specifies the name of the VM instruction (<code>sub</code>) and
+its stack effect (<code>i1 i2 -- i</code>).  The rest of the description is
+just plain C code.
+
+   <p><a name="index-stack-effect-69"></a><a name="index-effect_002c-stack-70"></a>The stack effect specifies that <code>sub</code> pulls two integers from the
+data stack and puts them in the C variables <code>i1</code> and <code>i2</code>
+(with the rightmost item (<code>i2</code>) taken from the top of stack;
+intuition: if you push <code>i1</code>, then <code>i2</code> on the stack, the
+resulting stack picture is <code>i1 i2</code>) and later pushes one integer
+(<code>i</code>) on the data stack (the rightmost item is on the top
+afterwards).
+
+   <p><a name="index-prefix_002c-type-71"></a><a name="index-type-prefix-72"></a><a name="index-default-stack-of-a-type-prefix-73"></a>How do we know the type and stack of the stack items?  Vmgen uses
+prefixes, similar to Fortran; in contrast to Fortran, you have to
+define the prefix first:
+
+<pre class="example">     \E s" Cell"   single data-stack type-prefix i
+</pre>
+   <p>This defines the prefix <code>i</code> to refer to the type <code>Cell</code>
+(defined as <code>long</code> in <samp><span class="file">mini.h</span></samp>) and, by default, to the
+<code>data-stack</code>.  It also specifies that this type takes one stack
+item (<code>single</code>).  The type prefix is part of the variable name.
+
+   <p><a name="index-stack-definition-74"></a><a name="index-defining-a-stack-75"></a>Before we can use <code>data-stack</code> in this way, we have to define it:
+
+<pre class="example">     \E stack data-stack sp Cell
+</pre>
+   <!-- !! use something other than Cell -->
+<p><a name="index-stack-basic-type-76"></a><a name="index-basic-type-of-a-stack-77"></a><a name="index-type-of-a-stack_002c-basic-78"></a>This line defines the stack <code>data-stack</code>, which uses the stack
+pointer <code>sp</code>, and each item has the basic type <code>Cell</code>; other
+types have to fit into one or two <code>Cell</code>s (depending on whether the
+type is <code>single</code> or <code>double</code> wide), and are cast from and to
+Cells on accessing the <code>data-stack</code> with type cast macros
+(see <a href="VM-engine.html#VM-engine">VM engine</a>).  By default, stacks grow towards lower addresses in
+Vmgen-erated interpreters (see <a href="Stack-growth-direction.html#Stack-growth-direction">Stack growth direction</a>).
+
+   <p><a name="index-stack-prefix-79"></a><a name="index-prefix_002c-stack-80"></a>We can override the default stack of a stack item by using a stack
+prefix.  E.g., consider the following instruction:
+
+<pre class="example">     lit ( #i -- i )
+</pre>
+   <p>The VM instruction <code>lit</code> takes the item <code>i</code> from the
+instruction stream (indicated by the prefix <code>#</code>), and pushes it on
+the (default) data stack.  The stack prefix is not part of the variable
+name.  Stack prefixes are defined like this:
+
+<pre class="example">     \E inst-stream stack-prefix #
+     \E data-stack  stack-prefix S:
+</pre>
+   <p>This definition defines that the stack prefix <code>#</code> specifies the
+&ldquo;stack&rdquo; <code>inst-stream</code>.  Since the instruction stream behaves a
+little differently than an ordinary stack, it is predefined, and you do
+not need to define it.
+
+   <p><a name="index-instruction-stream-81"></a>The instruction stream contains instructions and their immediate
+arguments, so specifying that an argument comes from the instruction
+stream indicates an immediate argument.  Of course, instruction stream
+arguments can only appear to the left of <code>--</code> in the stack effect. 
+If there are multiple instruction stream arguments, the leftmost is the
+first one (just as the intuition suggests).
+
+<ul class="menu">
+<li><a accesskey="1" href="Explicit-stack-access.html#Explicit-stack-access">Explicit stack access</a>:        If the C code accesses a stack pointer
+<li><a accesskey="2" href="C-Code-Macros.html#C-Code-Macros">C Code Macros</a>:                Macros recognized by Vmgen
+<li><a accesskey="3" href="C-Code-restrictions.html#C-Code-restrictions">C Code restrictions</a>:          Vmgen makes assumptions about C code
+<li><a accesskey="4" href="Stack-growth-direction.html#Stack-growth-direction">Stack growth direction</a>:       is configurable per stack
+</ul>
+
+<!--  -->
+</body></html>
+

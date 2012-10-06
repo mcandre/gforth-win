@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+<title>Mini-OOF Example - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Mini_002dOOF.html#Mini_002dOOF" title="Mini-OOF">
+<link rel="prev" href="Basic-Mini_002dOOF-Usage.html#Basic-Mini_002dOOF-Usage" title="Basic Mini-OOF Usage">
+<link rel="next" href="Mini_002dOOF-Implementation.html#Mini_002dOOF-Implementation" title="Mini-OOF Implementation">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Mini-OOF-Example"></a>
+<a name="Mini_002dOOF-Example"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Mini_002dOOF-Implementation.html#Mini_002dOOF-Implementation">Mini-OOF Implementation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Basic-Mini_002dOOF-Usage.html#Basic-Mini_002dOOF-Usage">Basic Mini-OOF Usage</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Mini_002dOOF.html#Mini_002dOOF">Mini-OOF</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.23.5.2 Mini-OOF Example</h5>
+
+<p><a name="index-mini_002doof-example-2775"></a>
+A short example shows how to use this package. This example, in slightly
+extended form, is supplied as <samp><span class="file">moof-exm.fs</span></samp>
+<!-- TODO could flesh this out with some comments from the Forthwrite article -->
+
+<pre class="example">     object class
+       method init
+       method draw
+     end-class graphical
+</pre>
+   <p>This code defines a class <code>graphical</code> with an
+operation <code>draw</code>.  We can perform the operation
+<code>draw</code> on any <code>graphical</code> object, e.g.:
+
+<pre class="example">     100 100 t-rex draw
+</pre>
+   <p>where <code>t-rex</code> is an object or object pointer, created with e.g. 
+<code>graphical new Constant t-rex</code>.
+
+   <p>For concrete graphical objects, we define child classes of the
+class <code>graphical</code>, e.g.:
+
+<pre class="example">     graphical class
+       cell var circle-radius
+     end-class circle \ "graphical" is the parent class
+     
+     :noname ( x y -- )
+       circle-radius @ draw-circle ; circle defines draw
+     :noname ( r -- )
+       circle-radius ! ; circle defines init
+</pre>
+   <p>There is no implicit init method, so we have to define one. The creation
+code of the object now has to call init explicitely.
+
+<pre class="example">     circle new Constant my-circle
+     50 my-circle init
+</pre>
+   <p>It is also possible to add a function to create named objects with
+automatic call of <code>init</code>, given that all objects have <code>init</code>
+on the same place:
+
+<pre class="example">     : new: ( .. o "name" -- )
+         new dup Constant init ;
+     80 circle new: large-circle
+</pre>
+   <p>We can draw this new circle at (100,100) with:
+
+<pre class="example">     100 100 my-circle draw
+</pre>
+   </body></html>
+

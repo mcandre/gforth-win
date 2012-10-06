@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+<title>Calling C function pointers - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="C-Interface.html#C-Interface" title="C Interface">
+<link rel="prev" href="Declaring-C-Functions.html#Declaring-C-Functions" title="Declaring C Functions">
+<link rel="next" href="Defining-library-interfaces.html#Defining-library-interfaces" title="Defining library interfaces">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Calling-C-function-pointers"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Defining-library-interfaces.html#Defining-library-interfaces">Defining library interfaces</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Declaring-C-Functions.html#Declaring-C-Functions">Declaring C Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="C-Interface.html#C-Interface">C Interface</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.25.3 Calling C function pointers from Forth</h4>
+
+<p><a name="index-C-function-pointers_002c-calling-from-Forth-2896"></a>
+If you come across a C function pointer (e.g., in some C-constructed
+structure) and want to call it from your Forth program, you can also
+use the features explained until now to achieve that, as follows:
+
+   <p>Let us assume that there is a C function pointer type <code>func1</code>
+defined in some header file <samp><span class="file">func1.h</span></samp>, and you know that these
+functions take one integer argument and return an integer result; and
+you want to call functions through such pointers.  Just define
+
+<pre class="example">     \c #include &lt;func1.h&gt;
+     \c #define call_func1(par1,fptr) ((func1)fptr)(par1)
+     c-function call-func1 call_func1 n func -- n
+</pre>
+   <p>and then you can call a function pointed to by, say <code>func1a</code> as
+follows:
+
+<pre class="example">     -5 func1a call-func1 .
+</pre>
+   <p>In the C part, <code>call_func</code> is defined as a macro to avoid having
+to declare the exact parameter and return types, so the C compiler
+knows them from the declaration of <code>func1</code>.
+
+   <p>The Forth word <code>call-func1</code> is similar to <code>execute</code>, except
+that it takes a C <code>func1</code> pointer instead of a Forth execution
+token, and it is specific to <code>func1</code> pointers.  For each type of
+function pointer you want to call from Forth, you have to define
+a separate calling word.
+
+   </body></html>
+

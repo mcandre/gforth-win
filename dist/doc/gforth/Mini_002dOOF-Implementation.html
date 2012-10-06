@@ -1,0 +1,168 @@
+<html lang="en">
+<head>
+<title>Mini-OOF Implementation - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Mini_002dOOF.html#Mini_002dOOF" title="Mini-OOF">
+<link rel="prev" href="Mini_002dOOF-Example.html#Mini_002dOOF-Example" title="Mini-OOF Example">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Mini-OOF-Implementation"></a>
+<a name="Mini_002dOOF-Implementation"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Mini_002dOOF-Example.html#Mini_002dOOF-Example">Mini-OOF Example</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Mini_002dOOF.html#Mini_002dOOF">Mini-OOF</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.23.5.3 <samp><span class="file">mini-oof.fs</span></samp> Implementation</h5>
+
+<p>Object-oriented systems with late binding typically use a
+&ldquo;vtable&rdquo;-approach: the first variable in each object is a pointer to a
+table, which contains the methods as function pointers. The vtable
+may also contain other information.
+
+   <p>So first, let's declare selectors:
+
+<pre class="example">     : method ( m v "name" -- m' v ) Create  over , swap cell+ swap
+       DOES&gt; ( ... o -- ... ) @ over @ + @ execute ;
+</pre>
+   <p>During selector declaration, the number of selectors and instance
+variables is on the stack (in address units). <code>method</code> creates one
+selector and increments the selector number. To execute a selector, it
+takes the object, fetches the vtable pointer, adds the offset, and
+executes the method <i>xt</i> stored there. Each selector takes the object
+it is invoked with as top of stack parameter; it passes the parameters
+(including the object) unchanged to the appropriate method which should
+consume that object.
+
+   <p>Now, we also have to declare instance variables
+
+<pre class="example">     : var ( m v size "name" -- m v' ) Create  over , +
+       DOES&gt; ( o -- addr ) @ + ;
+</pre>
+   <p>As before, a word is created with the current offset. Instance
+variables can have different sizes (cells, floats, doubles, chars), so
+all we do is take the size and add it to the offset. If your machine
+has alignment restrictions, put the proper <code>aligned</code> or
+<code>faligned</code> before the variable, to adjust the variable
+offset. That's why it is on the top of stack.
+
+   <p>We need a starting point (the base object) and some syntactic sugar:
+
+<pre class="example">     Create object  1 cells , 2 cells ,
+     : class ( class -- class selectors vars ) dup 2@ ;
+</pre>
+   <p>For inheritance, the vtable of the parent object has to be
+copied when a new, derived class is declared. This gives all the
+methods of the parent class, which can be overridden, though.
+
+<pre class="example">     : end-class  ( class selectors vars "name" -- )
+       Create  here &gt;r , dup , 2 cells ?DO ['] noop , 1 cells +LOOP
+       cell+ dup cell+ r&gt; rot @ 2 cells /string move ;
+</pre>
+   <p>The first line creates the vtable, initialized with
+<code>noop</code>s. The second line is the inheritance mechanism, it
+copies the xts from the parent vtable.
+
+   <p>We still have no way to define new methods, let's do that now:
+
+<pre class="example">     : defines ( xt class "name" -- ) ' &gt;body @ + ! ;
+</pre>
+   <p>To allocate a new object, we need a word, too:
+
+<pre class="example">     : new ( class -- o )  here over @ allot swap over ! ;
+</pre>
+   <p>Sometimes derived classes want to access the method of the
+parent object. There are two ways to achieve this with Mini-OOF:
+first, you could use named words, and second, you could look up the
+vtable of the parent object.
+
+<pre class="example">     : :: ( class "name" -- ) ' &gt;body @ + @ compile, ;
+</pre>
+   <p>Nothing can be more confusing than a good example, so here is
+one. First let's declare a text object (called
+<code>button</code>), that stores text and position:
+
+<pre class="example">     object class
+       cell var text
+       cell var len
+       cell var x
+       cell var y
+       method init
+       method draw
+     end-class button
+</pre>
+   <p class="noindent">Now, implement the two methods, <code>draw</code> and <code>init</code>:
+
+<pre class="example">     :noname ( o -- )
+      &gt;r r@ x @ r@ y @ at-xy  r@ text @ r&gt; len @ type ;
+      button defines draw
+     :noname ( addr u o -- )
+      &gt;r 0 r@ x ! 0 r@ y ! r@ len ! r&gt; text ! ;
+      button defines init
+</pre>
+   <p class="noindent">To demonstrate inheritance, we define a class <code>bold-button</code>, with no
+new data and no new selectors:
+
+<pre class="example">     button class
+     end-class bold-button
+     
+     : bold   27 emit ." [1m" ;
+     : normal 27 emit ." [0m" ;
+</pre>
+   <p class="noindent">The class <code>bold-button</code> has a different draw method to
+<code>button</code>, but the new method is defined in terms of the draw method
+for <code>button</code>:
+
+<pre class="example">     :noname bold [ button :: draw ] normal ; bold-button defines draw
+</pre>
+   <p class="noindent">Finally, create two objects and apply selectors:
+
+<pre class="example">     button new Constant foo
+     s" thin foo" foo init
+     page
+     foo draw
+     bold-button new Constant bar
+     s" fat bar" bar init
+     1 bar y !
+     bar draw
+</pre>
+   </body></html>
+

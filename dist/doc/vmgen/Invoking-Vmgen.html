@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+<title>Invoking Vmgen - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Concepts.html#Concepts" title="Concepts">
+<link rel="next" href="Example.html#Example" title="Example">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Invoking-Vmgen"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Example.html#Example">Example</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Concepts.html#Concepts">Concepts</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">4 Invoking Vmgen</h2>
+
+<p><a name="index-Invoking-Vmgen-32"></a>
+The usual way to invoke Vmgen is as follows:
+
+<pre class="example">     vmgen <var>inputfile</var>
+</pre>
+   <p>Here <var>inputfile</var> is the VM instruction description file, which
+usually ends in <samp><span class="file">.vmg</span></samp>.  The output filenames are made by taking
+the basename of <samp><span class="file">inputfile</span></samp> (i.e., the output files will be created
+in the current working directory) and replacing <samp><span class="file">.vmg</span></samp> with
+<samp><span class="file">-vm.i</span></samp>, <samp><span class="file">-disasm.i</span></samp>, <samp><span class="file">-gen.i</span></samp>, <samp><span class="file">-labels.i</span></samp>,
+<samp><span class="file">-profile.i</span></samp>, and <samp><span class="file">-peephole.i</span></samp>.  E.g., <samp><span class="command">vmgen
+hack/foo.vmg</span></samp> will create <samp><span class="file">foo-vm.i</span></samp>, <samp><span class="file">foo-disasm.i</span></samp>,
+<samp><span class="file">foo-gen.i</span></samp>, <samp><span class="file">foo-labels.i</span></samp>, <samp><span class="file">foo-profile.i</span></samp> and
+<samp><span class="file">foo-peephole.i</span></samp>.
+
+   <p>The command-line options supported by Vmgen are
+
+     
+<a name="index-g_t_002dh_002c-command_002dline-option-33"></a>
+<a name="index-g_t_002d_002dhelp_002c-command_002dline-option-34"></a>
+<dl><dt><samp><span class="option">--help</span></samp><dt><samp><span class="option">-h</span></samp><dd>Print a message about the command-line options
+
+     <p><a name="index-g_t_002dv_002c-command_002dline-option-35"></a><a name="index-g_t_002d_002dversion_002c-command_002dline-option-36"></a><br><dt><samp><span class="option">--version</span></samp><dt><samp><span class="option">-v</span></samp><dd>Print version and exit
+</dl>
+
+<!-- env vars GFORTHDIR GFORTHDATADIR -->
+<!-- **************************************************************** -->
+</body></html>
+

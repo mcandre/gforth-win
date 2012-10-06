@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+<title>CREATE..DOES&gt; applications - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words" title="User-defined Defining Words">
+<link rel="prev" href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words" title="User-defined Defining Words">
+<link rel="next" href="CREATE_002e_002eDOES_003e-details.html#CREATE_002e_002eDOES_003e-details" title="CREATE..DOES> details">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="CREATE..DOES%3e-applications"></a>
+<a name="CREATE_002e_002eDOES_003e-applications"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="CREATE_002e_002eDOES_003e-details.html#CREATE_002e_002eDOES_003e-details">CREATE..DOES&gt; details</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">User-defined Defining Words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">User-defined Defining Words</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.9.8.1 Applications of <code>CREATE..DOES&gt;</code></h5>
+
+<p><a name="index-g_t_0040code_007bCREATE_007d-_002e_002e_002e-_0040code_007bDOES_003e_007d_002c-applications-1257"></a>
+You may wonder how to use this feature. Here are some usage patterns:
+
+   <p><a name="index-factoring-similar-colon-definitions-1258"></a>When you see a sequence of code occurring several times, and you can
+identify a meaning, you will factor it out as a colon definition. When
+you see similar colon definitions, you can factor them using
+<code>CREATE..DOES&gt;</code>. E.g., an assembler usually defines several words
+that look very similar:
+<pre class="example">     : ori, ( reg-target reg-source n -- )
+         0 asm-reg-reg-imm ;
+     : andi, ( reg-target reg-source n -- )
+         1 asm-reg-reg-imm ;
+</pre>
+   <p class="noindent">This could be factored with:
+<pre class="example">     : reg-reg-imm ( op-code -- )
+         CREATE ,
+     DOES&gt; ( reg-target reg-source n -- )
+         @ asm-reg-reg-imm ;
+     
+     0 reg-reg-imm ori,
+     1 reg-reg-imm andi,
+</pre>
+   <p><a name="index-currying-1259"></a>Another view of <code>CREATE..DOES&gt;</code> is to consider it as a crude way to
+supply a part of the parameters for a word (known as <dfn>currying</dfn> in
+the functional language community). E.g., <code>+</code> needs two
+parameters. Creating versions of <code>+</code> with one parameter fixed can
+be done like this:
+
+<pre class="example">     : curry+ ( n1 "name" -- )
+         CREATE ,
+     DOES&gt; ( n2 -- n1+n2 )
+         @ + ;
+     
+      3 curry+ 3+
+     -2 curry+ 2-
+</pre>
+   </body></html>
+

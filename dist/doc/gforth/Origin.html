@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+<title>Origin - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Bugs.html#Bugs" title="Bugs">
+<link rel="next" href="Forth_002drelated-information.html#Forth_002drelated-information" title="Forth-related information">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Origin"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Forth_002drelated-information.html#Forth_002drelated-information">Forth-related information</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Bugs.html#Bugs">Bugs</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="appendix">Appendix B Authors and Ancestors of Gforth</h2>
+
+<h3 class="section">B.1 Authors and Contributors</h3>
+
+<p><a name="index-authors-of-Gforth-3515"></a><a name="index-contributors-to-Gforth-3516"></a>
+The Gforth project was started in mid-1992 by Bernd Paysan and Anton
+Ertl. The third major author was Jens Wilke.  Neal Crook contributed a
+lot to the manual.  Assemblers and disassemblers were contributed by
+Andrew McKewan, Christian Pirker, Bernd Thallner, and Michal Revucky. 
+Lennart Benschop (who was one of Gforth's first users, in mid-1993)
+and Stuart Ramsden inspired us with their continuous feedback. Lennart
+Benshop contributed <samp><span class="file">glosgen.fs</span></samp>, while Stuart Ramsden has been
+working on automatic support for calling C libraries. Helpful comments
+also came from Paul Kleinrubatscher, Christian Pirker, Dirk Zoller,
+Marcel Hendrix, John Wavrik, Barrie Stott, Marc de Groot, Jorge
+Acerada, Bruce Hoyt, Robert Epprecht, Dennis Ruffer and David
+N. Williams. Since the release of Gforth-0.2.1 there were also helpful
+comments from many others; thank you all, sorry for not listing you
+here (but digging through my mailbox to extract your names is on my
+to-do list).
+
+   <p>Gforth also owes a lot to the authors of the tools we used (GCC, CVS,
+and autoconf, among others), and to the creators of the Internet: Gforth
+was developed across the Internet, and its authors did not meet
+physically for the first 4 years of development.
+
+<h3 class="section">B.2 Pedigree</h3>
+
+<p><a name="index-pedigree-of-Gforth-3517"></a>
+Gforth descends from bigFORTH (1993) and fig-Forth.  Of course, a
+significant part of the design of Gforth was prescribed by ANS Forth.
+
+   <p>Bernd Paysan wrote bigFORTH, a descendent from TurboForth, an unreleased
+32 bit native code version of VolksForth for the Atari ST, written
+mostly by Dietrich Weineck.
+
+   <p>VolksForth was written by Klaus Schleisiek, Bernd Pennemann, Georg
+Rehfeld and Dietrich Weineck for the C64 (called UltraForth there) in
+the mid-80s and ported to the Atari ST in 1986.  It descends from fig-Forth.
+
+<!-- Henry Laxen and Mike Perry wrote F83 as a model implementation of the -->
+<!-- Forth-83 standard. !! Pedigree? When? -->
+<p>A team led by Bill Ragsdale implemented fig-Forth on many processors in
+1979. Robert Selzer and Bill Ragsdale developed the original
+implementation of fig-Forth for the 6502 based on microForth.
+
+   <p>The principal architect of microForth was Dean Sanderson. microForth was
+FORTH, Inc.'s first off-the-shelf product. It was developed in 1976 for
+the 1802, and subsequently implemented on the 8080, the 6800 and the
+Z80.
+
+   <p>All earlier Forth systems were custom-made, usually by Charles Moore,
+who discovered (as he puts it) Forth during the late 60s. The first full
+Forth existed in 1971.
+
+   <p>A part of the information in this section comes from
+<cite><a href="http://www.forth.com/Content/History/History1.htm">The Evolution of Forth</a></cite> by Elizabeth D. Rather, Donald R. Colburn and
+Charles H. Moore, presented at the HOPL-II conference and preprinted
+in SIGPLAN Notices 28(3), 1993.  You can find more historical and
+genealogical information about Forth there.  For a more general (and
+graphical) Forth family tree look see
+<cite><a href="http://www.complang.tuwien.ac.at/forth/family-tree/">http://www.complang.tuwien.ac.at/forth/family-tree/</a>,
+Forth Family Tree and Timeline</cite>.
+
+<!--  -->
+</body></html>
+

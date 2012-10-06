@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+<title>Integrating Gforth - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Model.html#Model" title="Model">
+<link rel="next" href="Emacs-and-Gforth.html#Emacs-and-Gforth" title="Emacs and Gforth">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Integrating-Gforth"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Emacs-and-Gforth.html#Emacs-and-Gforth">Emacs and Gforth</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Model.html#Model">Model</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">11 Integrating Gforth into C programs</h2>
+
+<p>This is not yet implemented.
+
+   <p>Several people like to use Forth as scripting language for applications
+that are otherwise written in C, C++, or some other language.
+
+   <p>The Forth system ATLAST provides facilities for embedding it into
+applications; unfortunately it has several disadvantages: most
+importantly, it is not based on ANS Forth, and it is apparently dead
+(i.e., not developed further and not supported). The facilities
+provided by Gforth in this area are inspired by ATLAST's facilities, so
+making the switch should not be hard.
+
+   <p>We also tried to design the interface such that it can easily be
+implemented by other Forth systems, so that we may one day arrive at a
+standardized interface. Such a standard interface would allow you to
+replace the Forth system without having to rewrite C code.
+
+   <p>You embed the Gforth interpreter by linking with the library
+<code>libgforth.a</code> (give the compiler the option <code>-lgforth</code>).  All
+global symbols in this library that belong to the interface, have the
+prefix <code>forth_</code>. (Global symbols that are used internally have the
+prefix <code>gforth_</code>).
+
+   <p>You can include the declarations of Forth types and the functions and
+variables of the interface with <code>#include &lt;forth.h&gt;</code>.
+
+   <p>Types.
+
+   <p>Variables.
+
+   <p>Data and FP Stack pointer. Area sizes.
+
+   <p>functions.
+
+   <p>forth_init(imagefile)
+forth_evaluate(string) exceptions? 
+forth_goto(address) (or forth_execute(xt)?) 
+forth_continue() (a corountining mechanism)
+
+   <p>Adding primitives.
+
+   <p>No checking.
+
+   <p>Signals?
+
+   <p>Accessing the Stacks
+
+<!-- ****************************************************************** -->
+</body></html>
+

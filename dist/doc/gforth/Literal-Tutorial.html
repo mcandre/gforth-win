@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+<title>Literal Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="POSTPONE-Tutorial.html#POSTPONE-Tutorial" title="POSTPONE Tutorial">
+<link rel="next" href="Advanced-macros-Tutorial.html#Advanced-macros-Tutorial" title="Advanced macros Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Literal-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Advanced-macros-Tutorial.html#Advanced-macros-Tutorial">Advanced macros Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="POSTPONE-Tutorial.html#POSTPONE-Tutorial">POSTPONE Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.34 <code>Literal</code></h3>
+
+<p><a name="index-literal-tutorial-129"></a>
+You cannot <code>POSTPONE</code> numbers:
+
+<pre class="example">     : [FOO] POSTPONE 500 ; immediate
+</pre>
+   <p>Instead, you can use <code>LITERAL (compilation: n --; run-time: -- n )</code>:
+
+<pre class="example">     : [FOO] ( compilation: --; run-time: -- n )
+       500 POSTPONE literal ; immediate
+     
+     : flip [FOO] ;
+     flip .
+     see flip
+</pre>
+   <p><code>LITERAL</code> consumes a number at compile-time (when it's compilation
+semantics are executed) and pushes it at run-time (when the code it
+compiled is executed).  A frequent use of <code>LITERAL</code> is to compile a
+number computed at compile time into the current word:
+
+<pre class="example">     : bar ( -- n )
+       [ 2 2 + ] literal ;
+     see bar
+</pre>
+   <blockquote>
+<b>Assignment:</b> Write <code>]L</code> which allows writing the example above as <code>: bar (
+-- n ) [ 2 2 + ]L ;</code>
+</blockquote>
+
+<!-- !! @xref{Macros} for reference -->
+</body></html>
+

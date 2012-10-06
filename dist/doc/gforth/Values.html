@@ -1,0 +1,78 @@
+<html lang="en">
+<head>
+<title>Values - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Defining-Words.html#Defining-Words" title="Defining Words">
+<link rel="prev" href="Constants.html#Constants" title="Constants">
+<link rel="next" href="Colon-Definitions.html#Colon-Definitions" title="Colon Definitions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Values"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Colon-Definitions.html#Colon-Definitions">Colon Definitions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Constants.html#Constants">Constants</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Defining-Words.html#Defining-Words">Defining Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.9.4 Values</h4>
+
+<p><a name="index-values-1221"></a>
+A <code>Value</code> behaves like a <code>Constant</code>, but it can be changed. 
+<code>TO</code> is a parsing word that changes a <code>Values</code>.  In Gforth
+(not in ANS Forth) you can access (and change) a <code>value</code> also with
+<code>&gt;body</code>.
+
+   <p>Here are some
+examples:
+
+<pre class="example">     12 Value APPLES     \ Define APPLES with an initial value of 12
+     34 TO APPLES        \ Change the value of APPLES. TO is a parsing word
+     1 ' APPLES &gt;body +! \ Increment APPLES.  Non-standard usage.
+     APPLES              \ puts 35 on the top of the stack.
+</pre>
+   <p><a name="index-Value-_0040var_007b-w-_0022name_0022-_002d_002d---_007d--core_002dext-1222"></a><a name="index-g_t_0040code_007bValue_007d-1223"></a><a name="index-Value-1224"></a>
+<pre class="format"><code>Value</code>       <i>w "name" &ndash;  </i>       core-ext       &ldquo;Value&rdquo;
+</pre>
+   <p><a name="index-TO-_0040var_007b-c_007cw_007cd_007cr-_0022name_0022-_002d_002d---_007d--core_002dext_002clocal-1225"></a><a name="index-g_t_0040code_007bTO_007d-1226"></a><a name="index-TO-1227"></a>
+<pre class="format"><code>TO</code>       <i>c|w|d|r "name" &ndash;  </i>       core-ext,local       &ldquo;TO&rdquo;
+</pre>
+   </body></html>
+

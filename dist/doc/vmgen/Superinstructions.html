@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+<title>Superinstructions - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Input-File-Format.html#Input-File-Format" title="Input File Format">
+<link rel="prev" href="Simple-instructions.html#Simple-instructions" title="Simple instructions">
+<link rel="next" href="Store-Optimization.html#Store-Optimization" title="Store Optimization">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Superinstructions"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Store-Optimization.html#Store-Optimization">Store Optimization</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Simple-instructions.html#Simple-instructions">Simple instructions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Input-File-Format.html#Input-File-Format">Input File Format</a>
+<hr>
+</div>
+
+<h3 class="section">6.3 Superinstructions</h3>
+
+<p><a name="index-superinstructions_002c-defining-101"></a><a name="index-defining-superinstructions-102"></a>
+Note: don't invest too much work in (static) superinstructions; a future
+version of Vmgen will support dynamic superinstructions (see Ian
+Piumarta and Fabio Riccardi, <cite>Optimizing Direct Threaded Code by
+Selective Inlining</cite>, PLDI'98), and static superinstructions have much
+less benefit in that context (preliminary results indicate only a factor
+1.1 speedup).
+
+   <p>Here is an example of a superinstruction definition:
+
+<pre class="example">     lit_sub = lit sub
+</pre>
+   <p><code>lit_sub</code> is the name of the superinstruction, and <code>lit</code> and
+<code>sub</code> are its components.  This superinstruction performs the same
+action as the sequence <code>lit</code> and <code>sub</code>.  It is generated
+automatically by the VM code generation functions whenever that sequence
+occurs, so if you want to use this superinstruction, you just need to
+add this definition (and even that can be partially automatized,
+see <a href="VM-profiler.html#VM-profiler">VM profiler</a>).
+
+   <p><a name="index-prefixes-of-superinstructions-103"></a>Vmgen requires that the component instructions are simple instructions
+defined before superinstructions using the components.  Currently, Vmgen
+also requires that all the subsequences at the start of a
+superinstruction (prefixes) must be defined as superinstruction before
+the superinstruction.  I.e., if you want to define a superinstruction
+
+<pre class="example">     foo4 = load add sub mul
+</pre>
+   <p>you first have to define <code>load</code>, <code>add</code>, <code>sub</code> and
+<code>mul</code>, plus
+
+<pre class="example">     foo2 = load add
+     foo3 = load add sub
+</pre>
+   <p>Here, <code>sumof4</code> is the longest prefix of <code>sumof5</code>, and <code>sumof3</code>
+is the longest prefix of <code>sumof4</code>.
+
+   <p>Note that Vmgen assumes that only the code it generates accesses stack
+pointers, the instruction pointer, and various stack items, and it
+performs optimizations based on this assumption.  Therefore, VM
+instructions where your C code changes the instruction pointer should
+only be used as last component; a VM instruction where your C code
+accesses a stack pointer should not be used as component at all.  Vmgen
+does not check these restrictions, they just result in bugs in your
+interpreter.
+
+   <p><a name="index-include_002dskipped_002dinsts-104"></a>The Vmgen flag <code>include-skipped-insts</code> influences superinstruction
+code generation.  Currently there is no support in the peephole
+optimizer for both variations, so leave this flag alone for now.
+
+<!--  -->
+</body></html>
+

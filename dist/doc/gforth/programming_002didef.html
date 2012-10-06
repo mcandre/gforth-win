@@ -1,0 +1,78 @@
+<html lang="en">
+<head>
+<title>programming-idef - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-optional-Programming_002dTools-word-set.html#The-optional-Programming_002dTools-word-set" title="The optional Programming-Tools word set">
+<link rel="prev" href="The-optional-Programming_002dTools-word-set.html#The-optional-Programming_002dTools-word-set" title="The optional Programming-Tools word set">
+<link rel="next" href="programming_002dambcond.html#programming_002dambcond" title="programming-ambcond">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="programming-idef"></a>
+<a name="programming_002didef"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="programming_002dambcond.html#programming_002dambcond">programming-ambcond</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="The-optional-Programming_002dTools-word-set.html#The-optional-Programming_002dTools-word-set">The optional Programming-Tools word set</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-optional-Programming_002dTools-word-set.html#The-optional-Programming_002dTools-word-set">The optional Programming-Tools word set</a>
+<hr>
+</div>
+
+<h4 class="subsection">8.10.1 Implementation Defined Options</h4>
+
+<!--  -->
+<p><a name="index-implementation_002ddefined-options_002c-programming_002dtools-words-3322"></a><a name="index-programming_002dtools-words_002c-implementation_002ddefined-options-3323"></a>
+     <dl>
+<dt><i>ending sequence for input following </i><code>;CODE</code><i> and </i><code>CODE</code><i>:</i><dd><a name="index-g_t_0040code_007b_003bCODE_007d-ending-sequence-3324"></a><a name="index-g_t_0040code_007bCODE_007d-ending-sequence-3325"></a><code>END-CODE</code>
+
+     <br><dt><i>manner of processing input following </i><code>;CODE</code><i> and </i><code>CODE</code><i>:</i><dd><a name="index-g_t_0040code_007b_003bCODE_007d_002c-processing-input-3326"></a><a name="index-g_t_0040code_007bCODE_007d_002c-processing-input-3327"></a>The <code>ASSEMBLER</code> vocabulary is pushed on the search order stack, and
+the input is processed by the text interpreter, (starting) in interpret
+state.
+
+     <br><dt><i>search order capability for </i><code>EDITOR</code><i> and </i><code>ASSEMBLER</code><i>:</i><dd><a name="index-g_t_0040code_007bASSEMBLER_007d_002c-search-order-capability-3328"></a>The ANS Forth search order word set.
+
+     <br><dt><i>source and format of display by </i><code>SEE</code><i>:</i><dd><a name="index-g_t_0040code_007bSEE_007d_002c-source-and-format-of-output-3329"></a>The source for <code>see</code> is the executable code used by the inner
+interpreter.  The current <code>see</code> tries to output Forth source code
+(and on some platforms, assembly code for primitives) as well as
+possible.
+
+   </dl>
+
+<!--  -->
+</body></html>
+

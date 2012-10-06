@@ -1,0 +1,88 @@
+<html lang="en">
+<head>
+<title>Aliases - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Defining-Words.html#Defining-Words" title="Defining Words">
+<link rel="prev" href="Deferred-Words.html#Deferred-Words" title="Deferred Words">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Aliases"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Deferred-Words.html#Deferred-Words">Deferred Words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Defining-Words.html#Defining-Words">Defining Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.9.10 Aliases</h4>
+
+<p><a name="index-aliases-1291"></a>
+The defining word <code>Alias</code> allows you to define a word by name that
+has the same behaviour as some other word. Here are two situation where
+this can be useful:
+
+     <ul>
+<li>When you want access to a word's definition from a different word list
+(for an example of this, see the definition of the <code>Root</code> word list
+in the Gforth source). 
+<li>When you want to create a synonym; a definition that can be known by
+either of two names (for example, <code>THEN</code> and <code>ENDIF</code> are
+aliases). 
+</ul>
+
+   <p>Like deferred words, an alias has default compilation and interpretation
+semantics at the beginning (not the modifications of the other word),
+but you can change them in the usual ways (<code>immediate</code>,
+<code>compile-only</code>). For example:
+
+<pre class="example">     : foo ... ; immediate
+     
+     ' foo Alias bar \ bar is not an immediate word
+     ' foo Alias fooby immediate \ fooby is an immediate word
+</pre>
+   <p>Words that are aliases have the same xt, different headers in the
+dictionary, and consequently different name tokens (see <a href="Tokens-for-Words.html#Tokens-for-Words">Tokens for Words</a>) and possibly different immediate flags.  An alias can only have
+default or immediate compilation semantics; you can define aliases for
+combined words with <code>interpret/compile:</code> &ndash; see <a href="Combined-words.html#Combined-words">Combined words</a>.
+
+   <p><a name="index-Alias-_0040var_007b-xt-_0022name_0022-_002d_002d---_007d--gforth-1292"></a><a name="index-g_t_0040code_007bAlias_007d-1293"></a><a name="index-Alias-1294"></a>
+<pre class="format"><code>Alias</code>       <i>xt "name" &ndash;  </i>       gforth       &ldquo;Alias&rdquo;
+</pre>
+   </body></html>
+

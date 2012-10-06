@@ -1,0 +1,147 @@
+<html lang="en">
+<head>
+<title>Literals - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Compiling-words.html#Compiling-words" title="Compiling words">
+<link rel="prev" href="Compiling-words.html#Compiling-words" title="Compiling words">
+<link rel="next" href="Macros.html#Macros" title="Macros">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Literals"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Macros.html#Macros">Macros</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Compiling-words.html#Compiling-words">Compiling words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Compiling-words.html#Compiling-words">Compiling words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.12.1 Literals</h4>
+
+<p><a name="index-Literals-1395"></a>
+The simplest and most frequent example is to compute a literal during
+compilation.  E.g., the following definition prints an array of strings,
+one string per line:
+
+<pre class="example">     : .strings ( addr u -- ) \ gforth
+         2* cells bounds U+DO
+     	cr i 2@ type
+         2 cells +LOOP ;
+</pre>
+   <p>With a simple-minded compiler like Gforth's, this computes <code>2
+cells</code> on every loop iteration.  You can compute this value once and for
+all at compile time and compile it into the definition like this:
+
+<pre class="example">     : .strings ( addr u -- ) \ gforth
+         2* cells bounds U+DO
+     	cr i 2@ type
+         [ 2 cells ] literal +LOOP ;
+</pre>
+   <p><code>[</code> switches the text interpreter to interpret state (you will get
+an <code>ok</code> prompt if you type this example interactively and insert a
+newline between <code>[</code> and <code>]</code>), so it performs the
+interpretation semantics of <code>2 cells</code>; this computes a number. 
+<code>]</code> switches the text interpreter back into compile state.  It then
+performs <code>Literal</code>'s compilation semantics, which are to compile
+this number into the current word.  You can decompile the word with
+<code>see .strings</code> to see the effect on the compiled code.
+
+   <p>You can also optimize the <code>2* cells</code> into <code>[ 2 cells ] literal
+*</code> in this way.
+
+   <p><a name="index-g_t_005b-_0040var_007b-_002d_002d---_007d--core-1396"></a><a name="index-g_t_0040code_007b_005b_007d-1397"></a><a name="index-g_t_005b-1398"></a>
+<pre class="format"><code>[</code>       <i>&ndash;  </i>       core       &ldquo;left-bracket&rdquo;
+</pre>
+   <p>Enter interpretation state. Immediate word.
+
+   <p><a name="index-g_t_005d-_0040var_007b-_002d_002d---_007d--core-1399"></a><a name="index-g_t_0040code_007b_005d_007d-1400"></a><a name="index-g_t_005d-1401"></a>
+<pre class="format"><code>]</code>       <i>&ndash;  </i>       core       &ldquo;right-bracket&rdquo;
+</pre>
+   <p>Enter compilation state.
+
+   <p><a name="index-Literal-_0040var_007b-compilation-n-_002d_002d-_003b-run_002dtime-_002d_002d-n---_007d--core-1402"></a><a name="index-g_t_0040code_007bLiteral_007d-1403"></a><a name="index-Literal-1404"></a>
+<pre class="format"><code>Literal</code>       <i>compilation n &ndash; ; run-time &ndash; n  </i>       core       &ldquo;Literal&rdquo;
+</pre>
+   <p>Compilation semantics: compile the run-time semantics.<br>
+Run-time Semantics: push <i>n</i>.<br>
+Interpretation semantics: undefined.
+
+   <p><a name="index-g_t_005dL-_0040var_007b-compilation_003a-n-_002d_002d-_003b-run_002dtime_003a-_002d_002d-n---_007d--gforth-1405"></a><a name="index-g_t_0040code_007b_005dL_007d-1406"></a><a name="index-g_t_005dL-1407"></a>
+<pre class="format"><code>]L</code>       <i>compilation: n &ndash; ; run-time: &ndash; n  </i>       gforth       &ldquo;]L&rdquo;
+</pre>
+   <p>equivalent to <code>] literal</code>
+
+   <p>There are also words for compiling other data types than single cells as
+literals:
+
+   <p><a name="index-g_t2Literal-_0040var_007b-compilation-w1-w2-_002d_002d-_003b-run_002dtime--_002d_002d-w1-w2---_007d--double-1408"></a><a name="index-g_t_0040code_007b2Literal_007d-1409"></a><a name="index-g_t2Literal-1410"></a>
+<pre class="format"><code>2Literal</code>       <i>compilation w1 w2 &ndash; ; run-time  &ndash; w1 w2  </i>       double       &ldquo;two-literal&rdquo;
+</pre>
+   <p>Compile appropriate code such that, at run-time, <i>w1 w2</i> are
+placed on the stack. Interpretation semantics are undefined.
+
+   <p><a name="index-FLiteral-_0040var_007b-compilation-r-_002d_002d-_003b-run_002dtime-_002d_002d-r---_007d--float-1411"></a><a name="index-g_t_0040code_007bFLiteral_007d-1412"></a><a name="index-FLiteral-1413"></a>
+<pre class="format"><code>FLiteral</code>       <i>compilation r &ndash; ; run-time &ndash; r  </i>       float       &ldquo;f-literal&rdquo;
+</pre>
+   <p>Compile appropriate code such that, at run-time, <i>r</i> is placed
+on the (floating-point) stack. Interpretation semantics are undefined.
+
+   <p><a name="index-SLiteral-_0040var_007b-Compilation-c_002daddr1-u-_003b-run_002dtime-_002d_002d-c_002daddr2-u---_007d--string-1414"></a><a name="index-g_t_0040code_007bSLiteral_007d-1415"></a><a name="index-SLiteral-1416"></a>
+<pre class="format"><code>SLiteral</code>       <i>Compilation c-addr1 u ; run-time &ndash; c-addr2 u  </i>       string       &ldquo;SLiteral&rdquo;
+</pre>
+   <p>Compilation: compile the string specified by <i>c-addr1</i>,
+<i>u</i> into the current definition. Run-time: return
+<i>c-addr2 u</i> describing the address and length of the
+string.
+
+   <p><a name="index-colon_002dsys_002c-passing-data-across-_0040code_007b_003a_007d-1417"></a><a name="index-g_t_0040code_007b_003a_007d_002c-passing-data-across-1418"></a>You might be tempted to pass data from outside a colon definition to the
+inside on the data stack.  This does not work, because <code>:</code> puhes a
+colon-sys, making stuff below unaccessible.  E.g., this does not work:
+
+<pre class="example">     5 : foo literal ; \ error: "unstructured"
+</pre>
+   <p>Instead, you have to pass the value in some other way, e.g., through a
+variable:
+
+<pre class="example">     variable temp
+     5 temp !
+     : foo [ temp @ ] literal ;
+</pre>
+   </body></html>
+

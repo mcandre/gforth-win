@@ -1,0 +1,167 @@
+<html lang="en">
+<head>
+<title>Using the Cross Compiler - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Cross-Compiler.html#Cross-Compiler" title="Cross Compiler">
+<link rel="prev" href="Cross-Compiler.html#Cross-Compiler" title="Cross Compiler">
+<link rel="next" href="How-the-Cross-Compiler-Works.html#How-the-Cross-Compiler-Works" title="How the Cross Compiler Works">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Using-the-Cross-Compiler"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="How-the-Cross-Compiler-Works.html#How-the-Cross-Compiler-Works">How the Cross Compiler Works</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Cross-Compiler.html#Cross-Compiler">Cross Compiler</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Cross-Compiler.html#Cross-Compiler">Cross Compiler</a>
+<hr>
+</div>
+
+<h3 class="section">15.1 Using the Cross Compiler</h3>
+
+<p>The cross compiler uses a language that resembles Forth, but isn't. The
+main difference is that you can execute Forth code after definition,
+while you usually can't execute the code compiled by cross, because the
+code you are compiling is typically for a different computer than the
+one you are compiling on.
+
+<!-- anton: This chapter is somewhat different from waht I would expect: I -->
+<!-- would expect an explanation of the cross language and how to create an -->
+<!-- application image with it.  The section explains some aspects of -->
+<!-- creating a Gforth kernel. -->
+<p>The Makefile is already set up to allow you to create kernels for new
+architectures with a simple make command. The generic kernels using the
+GCC compiled virtual machine are created in the normal build process
+with <code>make</code>. To create a embedded Gforth executable for e.g. the
+8086 processor (running on a DOS machine), type
+
+<pre class="example">     make kernl-8086.fi
+</pre>
+   <p>This will use the machine description from the <samp><span class="file">arch/8086</span></samp>
+directory to create a new kernel. A machine file may look like that:
+
+<pre class="example">     \ Parameter for target systems                         06oct92py
+     
+         4 Constant cell             \ cell size in bytes
+         2 Constant cell&lt;&lt;           \ cell shift to bytes
+         5 Constant cell&gt;bit         \ cell shift to bits
+         8 Constant bits/char        \ bits per character
+         8 Constant bits/byte        \ bits per byte [default: 8]
+         8 Constant float            \ bytes per float
+         8 Constant /maxalign        \ maximum alignment in bytes
+     false Constant bigendian        \ byte order
+     ( true=big, false=little )
+     
+     include machpc.fs               \ feature list
+</pre>
+   <p>This part is obligatory for the cross compiler itself, the feature list
+is used by the kernel to conditionally compile some features in and out,
+depending on whether the target supports these features.
+
+   <p>There are some optional features, if you define your own primitives,
+have an assembler, or need special, nonstandard preparation to make the
+boot process work. <code>asm-include</code> includes an assembler,
+<code>prims-include</code> includes primitives, and <code>&gt;boot</code> prepares for
+booting.
+
+<pre class="example">     : asm-include    ." Include assembler" cr
+       s" arch/8086/asm.fs" included ;
+     
+     : prims-include  ." Include primitives" cr
+       s" arch/8086/prim.fs" included ;
+     
+     : &gt;boot          ." Prepare booting" cr
+       s" ' boot &gt;body into-forth 1+ !" evaluate ;
+</pre>
+   <p>These words are used as sort of macro during the cross compilation in
+the file <samp><span class="file">kernel/main.fs</span></samp>. Instead of using these macros, it would
+be possible &mdash; but more complicated &mdash; to write a new kernel project
+file, too.
+
+   <p><samp><span class="file">kernel/main.fs</span></samp> expects the machine description file name on the
+stack; the cross compiler itself (<samp><span class="file">cross.fs</span></samp>) assumes that either
+<code>mach-file</code> leaves a counted string on the stack, or
+<code>machine-file</code> leaves an address, count pair of the filename on the
+stack.
+
+   <p>The feature list is typically controlled using <code>SetValue</code>, generic
+files that are used by several projects can use <code>DefaultValue</code>
+instead. Both functions work like <code>Value</code>, when the value isn't
+defined, but <code>SetValue</code> works like <code>to</code> if the value is
+defined, and <code>DefaultValue</code> doesn't set anything, if the value is
+defined.
+
+<pre class="example">     \ generic mach file for pc gforth                       03sep97jaw
+     
+     true DefaultValue NIL  \ relocating
+     
+     &gt;ENVIRON
+     
+     true DefaultValue file          \ controls the presence of the
+                                     \ file access wordset
+     true DefaultValue OS            \ flag to indicate a operating system
+     
+     true DefaultValue prims         \ true: primitives are c-code
+     
+     true DefaultValue floating      \ floating point wordset is present
+     
+     true DefaultValue glocals       \ gforth locals are present
+                                     \ will be loaded
+     true DefaultValue dcomps        \ double number comparisons
+     
+     true DefaultValue hash          \ hashing primitives are loaded/present
+     
+     true DefaultValue xconds        \ used together with glocals,
+                                     \ special conditionals supporting gforths'
+                                     \ local variables
+     true DefaultValue header        \ save a header information
+     
+     true DefaultValue backtrace     \ enables backtrace code
+     
+     false DefaultValue ec
+     false DefaultValue crlf
+     
+     cell 2 = [IF] &amp;32 [ELSE] &amp;256 [THEN] KB DefaultValue kernel-size
+     
+     &amp;16 KB          DefaultValue stack-size
+     &amp;15 KB &amp;512 +   DefaultValue fstack-size
+     &amp;15 KB          DefaultValue rstack-size
+     &amp;14 KB &amp;512 +   DefaultValue lstack-size
+</pre>
+   </body></html>
+

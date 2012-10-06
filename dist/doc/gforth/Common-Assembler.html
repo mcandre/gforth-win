@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+<title>Common Assembler - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words" title="Assembler and Code Words">
+<link rel="prev" href="Code-and-_003bcode.html#Code-and-_003bcode" title="Code and ;code">
+<link rel="next" href="Common-Disassembler.html#Common-Disassembler" title="Common Disassembler">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Common-Assembler"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Common-Disassembler.html#Common-Disassembler">Common Disassembler</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Code-and-_003bcode.html#Code-and-_003bcode">Code and ;code</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words">Assembler and Code Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.26.2 Common Assembler</h4>
+
+<p>The assemblers in Gforth generally use a postfix syntax, i.e., the
+instruction name follows the operands.
+
+   <p>The operands are passed in the usual order (the same that is used in the
+manual of the architecture).  Since they all are Forth words, they have
+to be separated by spaces; you can also use Forth words to compute the
+operands.
+
+   <p>The instruction names usually end with a <code>,</code>.  This makes it easier
+to visually separate instructions if you put several of them on one
+line; it also avoids shadowing other Forth words (e.g., <code>and</code>).
+
+   <p>Registers are usually specified by number; e.g., (decimal) <code>11</code>
+specifies registers R11 and F11 on the Alpha architecture (which one,
+depends on the instruction).  The usual names are also available, e.g.,
+<code>s2</code> for R11 on Alpha.
+
+   <p>Control flow is specified similar to normal Forth code (see <a href="Arbitrary-control-structures.html#Arbitrary-control-structures">Arbitrary control structures</a>), with <code>if,</code>, <code>ahead,</code>, <code>then,</code>,
+<code>begin,</code>, <code>until,</code>, <code>again,</code>, <code>cs-roll</code>,
+<code>cs-pick</code>, <code>else,</code>, <code>while,</code>, and <code>repeat,</code>.  The
+conditions are specified in a way specific to each assembler.
+
+   <p>Note that the register assignments of the Gforth engine can change
+between Gforth versions, or even between different compilations of the
+same Gforth version (e.g., if you use a different GCC version).  So if
+you want to refer to Gforth's registers (e.g., the stack pointer or
+TOS), I recommend defining your own words for refering to these
+registers, and using them later on; then you can easily adapt to a
+changed register assignment.  The stability of the register assignment
+is usually better if you build Gforth with <code>--enable-force-reg</code>.
+
+   <p>The most common use of these registers is to dispatch to the next word
+(the <code>next</code> routine).  A portable way to do this is to jump to
+<code>' noop &gt;code-address</code> (of course, this is less efficient than
+integrating the <code>next</code> code and scheduling it well).
+
+   <p>Another difference between Gforth version is that the top of stack is
+kept in memory in <code>gforth</code> and, on most platforms, in a register in
+<code>gforth-fast</code>.
+
+   </body></html>
+

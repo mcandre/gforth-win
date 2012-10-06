@@ -1,0 +1,121 @@
+<html lang="en">
+<head>
+<title>Example overview - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Example.html#Example" title="Example">
+<link rel="prev" href="Example.html#Example" title="Example">
+<link rel="next" href="Using-profiling-to-create-superinstructions.html#Using-profiling-to-create-superinstructions" title="Using profiling to create superinstructions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Example-overview"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Using-profiling-to-create-superinstructions.html#Using-profiling-to-create-superinstructions">Using profiling to create superinstructions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Example.html#Example">Example</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Example.html#Example">Example</a>
+<hr>
+</div>
+
+<h3 class="section">5.1 Example overview</h3>
+
+<p><a name="index-example-overview-38"></a><a name="index-g_t_0040file_007bvmgen_002dex_007d-39"></a><a name="index-g_t_0040file_007bvmgen_002dex2_007d-40"></a>
+There are two versions of the same example for using Vmgen:
+<samp><span class="file">vmgen-ex</span></samp> and <samp><span class="file">vmgen-ex2</span></samp> (you can also see Gforth as
+example, but it uses additional (undocumented) features, and also
+differs in some other respects).  The example implements <em>mini</em>, a
+tiny Modula-2-like language with a small JavaVM-like virtual machine.
+
+   <p>The difference between the examples is that <samp><span class="file">vmgen-ex</span></samp> uses many
+casts, and <samp><span class="file">vmgen-ex2</span></samp> tries to avoids most casts and uses unions
+instead.  In the rest of this manual we usually mention just files in
+<samp><span class="file">vmgen-ex</span></samp>; if you want to use unions, use the equivalent file in
+<samp><span class="file">vmgen-ex2</span></samp>. 
+<a name="index-unions-example-41"></a><a name="index-casts-example-42"></a>
+The files provided with each example are:
+<a name="index-example-files-43"></a>
+<pre class="example">     Makefile
+     README
+     disasm.c           wrapper file
+     engine.c           wrapper file
+     peephole.c         wrapper file
+     profile.c          wrapper file
+     mini-inst.vmg      simple VM instructions
+     mini-super.vmg     superinstructions (empty at first)
+     mini.h             common declarations
+     mini.l             scanner
+     mini.y             front end (parser, VM code generator)
+     support.c          main() and other support functions
+     fib.mini           example mini program
+     simple.mini        example mini program
+     test.mini          example mini program (tests everything)
+     test.out           test.mini output
+     stat.awk           script for aggregating profile information
+     peephole-blacklist list of instructions not allowed in superinstructions
+     seq2rule.awk       script for creating superinstructions
+</pre>
+   <p>For your own interpreter, you would typically copy the following files
+and change little, if anything:
+<a name="index-wrapper-files-44"></a>
+<pre class="example">     disasm.c           wrapper file
+     engine.c           wrapper file
+     peephole.c         wrapper file
+     profile.c          wrapper file
+     stat.awk           script for aggregating profile information
+     seq2rule.awk       script for creating superinstructions
+</pre>
+   <p class="noindent">You would typically change much in or replace the following files:
+
+<pre class="example">     Makefile
+     mini-inst.vmg      simple VM instructions
+     mini.h             common declarations
+     mini.l             scanner
+     mini.y             front end (parser, VM code generator)
+     support.c          main() and other support functions
+     peephole-blacklist list of instructions not allowed in superinstructions
+</pre>
+   <p>You can build the example by <code>cd</code>ing into the example's directory,
+and then typing <code>make</code>; you can check that it works with <code>make
+check</code>.  You can run run mini programs like this:
+
+<pre class="example">     ./mini fib.mini
+</pre>
+   <p>To learn about the options, type <code>./mini -h</code>.
+
+<!--  -->
+</body></html>
+

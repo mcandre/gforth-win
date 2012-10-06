@@ -1,0 +1,107 @@
+<html lang="en">
+<head>
+<title>Characters and Strings Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Memory-Tutorial.html#Memory-Tutorial" title="Memory Tutorial">
+<link rel="next" href="Alignment-Tutorial.html#Alignment-Tutorial" title="Alignment Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Characters-and-Strings-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Alignment-Tutorial.html#Alignment-Tutorial">Alignment Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Memory-Tutorial.html#Memory-Tutorial">Memory Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.24 Characters and Strings</h3>
+
+<p><a name="index-strings-tutorial-108"></a><a name="index-characters-tutorial-109"></a>
+On the stack characters take up a cell, like numbers.  In memory they
+have their own size (one 8-bit byte on most systems), and therefore
+require their own words for memory access:
+
+<pre class="example">     create v4
+       104 c, 97 c, 108 c, 108 c, 111 c,
+     v4 4 chars + c@ .
+     v4 5 chars dump
+</pre>
+   <p>The preferred representation of strings on the stack is <code>addr
+u-count</code>, where <code>addr</code> is the address of the first character and
+<code>u-count</code> is the number of characters in the string.
+
+<pre class="example">     v4 5 type
+</pre>
+   <p>You get a string constant with
+
+<pre class="example">     s" hello, world" .s
+     type
+</pre>
+   <p>Make sure you have a space between <code>s"</code> and the string; <code>s"</code>
+is a normal Forth word and must be delimited with white space (try what
+happens when you remove the space).
+
+   <p>However, this interpretive use of <code>s"</code> is quite restricted: the
+string exists only until the next call of <code>s"</code> (some Forth systems
+keep more than one of these strings, but usually they still have a
+limited lifetime).
+
+<pre class="example">     s" hello," s" world" .s
+     type
+     type
+</pre>
+   <p>You can also use <code>s"</code> in a definition, and the resulting
+strings then live forever (well, for as long as the definition):
+
+<pre class="example">     : foo s" hello," s" world" ;
+     foo .s
+     type
+     type
+</pre>
+   <blockquote>
+<b>Assignment:</b> <code>Emit ( c -- )</code> types <code>c</code> as character (not a number). 
+Implement <code>type ( addr u -- )</code>. 
+</blockquote>
+
+   <p>Reference: <a href="Memory-Blocks.html#Memory-Blocks">Memory Blocks</a>.
+
+   </body></html>
+

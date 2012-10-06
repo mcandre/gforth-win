@@ -1,0 +1,104 @@
+<html lang="en">
+<head>
+<title>Object-Oriented Terminology - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Object_002doriented-Forth.html#Object_002doriented-Forth" title="Object-oriented Forth">
+<link rel="prev" href="Why-object_002doriented-programming_003f.html#Why-object_002doriented-programming_003f" title="Why object-oriented programming?">
+<link rel="next" href="Objects.html#Objects" title="Objects">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Object-Oriented-Terminology"></a>
+<a name="Object_002dOriented-Terminology"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Objects.html#Objects">Objects</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Why-object_002doriented-programming_003f.html#Why-object_002doriented-programming_003f">Why object-oriented programming?</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Object_002doriented-Forth.html#Object_002doriented-Forth">Object-oriented Forth</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.23.2 Object-Oriented Terminology</h4>
+
+<p><a name="index-object_002doriented-terminology-2420"></a><a name="index-terminology-for-object_002doriented-programming-2421"></a>
+This section is mainly for reference, so you don't have to understand
+all of it right away.  The terminology is mainly Smalltalk-inspired.  In
+short:
+
+     
+<a name="index-class-2422"></a>
+<dl><dt><em>class</em><dd>a data structure definition with some extras.
+
+     <p><a name="index-object-2423"></a><br><dt><em>object</em><dd>an instance of the data structure described by the class definition.
+
+     <p><a name="index-instance-variables-2424"></a><br><dt><em>instance variables</em><dd>fields of the data structure.
+
+     <p><a name="index-selector-2425"></a><a name="index-method-selector-2426"></a><a name="index-virtual-function-2427"></a><br><dt><em>selector</em><dd>(or <em>method selector</em>) a word (e.g.,
+<code>draw</code>) that performs an operation on a variety of data
+structures (classes). A selector describes <em>what</em> operation to
+perform. In C++ terminology: a (pure) virtual function.
+
+     <p><a name="index-method-2428"></a><br><dt><em>method</em><dd>the concrete definition that performs the operation
+described by the selector for a specific class. A method specifies
+<em>how</em> the operation is performed for a specific class.
+
+     <p><a name="index-selector-invocation-2429"></a><a name="index-message-send-2430"></a><a name="index-invoking-a-selector-2431"></a><br><dt><em>selector invocation</em><dd>a call of a selector. One argument of the call (the TOS (top-of-stack))
+is used for determining which method is used. In Smalltalk terminology:
+a message (consisting of the selector and the other arguments) is sent
+to the object.
+
+     <p><a name="index-receiving-object-2432"></a><br><dt><em>receiving object</em><dd>the object used for determining the method executed by a selector
+invocation. In the <samp><span class="file">objects.fs</span></samp> model, it is the object that is on
+the TOS when the selector is invoked. (<em>Receiving</em> comes from
+the Smalltalk <em>message</em> terminology.)
+
+     <p><a name="index-child-class-2433"></a><a name="index-parent-class-2434"></a><a name="index-inheritance-2435"></a><br><dt><em>child class</em><dd>a class that has (<em>inherits</em>) all properties (instance variables,
+selectors, methods) from a <em>parent class</em>. In Smalltalk
+terminology: The subclass inherits from the superclass. In C++
+terminology: The derived class inherits from the base class.
+
+   </dl>
+
+<!-- If you wonder about the message sending terminology, it comes from -->
+<!-- a time when each object had it's own task and objects communicated via -->
+<!-- message passing; eventually the Smalltalk developers realized that -->
+<!-- they can do most things through simple (indirect) calls. They kept the -->
+<!-- terminology. -->
+<!--  -->
+</body></html>
+

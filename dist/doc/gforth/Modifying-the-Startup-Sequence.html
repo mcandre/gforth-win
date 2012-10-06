@@ -1,0 +1,111 @@
+<html lang="en">
+<head>
+<title>Modifying the Startup Sequence - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Image-Files.html#Image-Files" title="Image Files">
+<link rel="prev" href="Running-Image-Files.html#Running-Image-Files" title="Running Image Files">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Modifying-the-Startup-Sequence"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Running-Image-Files.html#Running-Image-Files">Running Image Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Image-Files.html#Image-Files">Image Files</a>
+<hr>
+</div>
+
+<h3 class="section">13.8 Modifying the Startup Sequence</h3>
+
+<p><a name="index-startup-sequence-for-image-file-3438"></a><a name="index-image-file-initialization-sequence-3439"></a><a name="index-initialization-sequence-of-image-file-3440"></a>
+You can add your own initialization to the startup sequence of an image
+through the deferred word <code>'cold</code>. <code>'cold</code> is invoked just
+before the image-specific command line processing (i.e., loading files
+and evaluating (<code>-e</code>) strings) starts.
+
+   <p>A sequence for adding your initialization usually looks like this:
+
+<pre class="example">     :noname
+         Defers 'cold \ do other initialization stuff (e.g., rehashing wordlists)
+         ... \ your stuff
+     ; IS 'cold
+</pre>
+   <p>After <code>'cold</code>, Gforth processes the image options
+(see <a href="Invoking-Gforth.html#Invoking-Gforth">Invoking Gforth</a>), and then it performs <code>bootmessage</code>,
+another deferred word.  This normally prints Gforth's startup message
+and does nothing else.
+
+   <p><a name="index-turnkey-image-files-3441"></a><a name="index-image-file_002c-turnkey-applications-3442"></a>So, if you want to make a turnkey image (i.e., an image for an
+application instead of an extended Forth system), you can do this in
+two ways:
+
+     <ul>
+<li>If you want to do your interpretation of the OS command-line
+arguments, hook into <code>'cold</code>.  In that case you probably also
+want to build the image with <code>gforthmi --application</code>
+(see <a href="gforthmi.html#gforthmi">gforthmi</a>) to keep the engine from processing OS command line
+options.  You can then do your own command-line processing with
+<code>next-arg</code>
+
+     <li>If you want to have the normal Gforth processing of OS command-line
+arguments, hook into <code>bootmessage</code>.
+
+   </ul>
+
+   <p>In either case, you probably do not want the word that you execute in
+these hooks to exit normally, but use <code>bye</code> or <code>throw</code>. 
+Otherwise the Gforth startup process would continue and eventually
+present the Forth command line to the user.
+
+   <p><a name="index-g_t_0027cold-_0040var_007b-_002d_002d---_007d--gforth-3443"></a><a name="index-g_t_0040code_007b_0027cold_007d-3444"></a><a name="index-g_t_0027cold-3445"></a>
+<pre class="format"><code>'cold</code>       <i>&ndash;  </i>       gforth       &ldquo;tick-cold&rdquo;
+</pre>
+   <p>Hook (deferred word) for things to do right before interpreting the
+OS command-line arguments.  Normally does some initializations that
+you also want to perform.
+
+   <p><a name="index-bootmessage-_0040var_007b-_002d_002d---_007d--gforth-3446"></a><a name="index-g_t_0040code_007bbootmessage_007d-3447"></a><a name="index-bootmessage-3448"></a>
+<pre class="format"><code>bootmessage</code>       <i>&ndash;  </i>       gforth       &ldquo;bootmessage&rdquo;
+</pre>
+   <p>Hook (deferred word) executed right after interpreting the OS
+command-line arguments.  Normally prints the Gforth startup
+message.
+
+<!-- ****************************************************************** -->
+</body></html>
+

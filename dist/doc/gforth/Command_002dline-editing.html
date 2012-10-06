@@ -1,0 +1,118 @@
+<html lang="en">
+<head>
+<title>Command-line editing - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Gforth-Environment.html#Gforth-Environment" title="Gforth Environment">
+<link rel="prev" href="Leaving-Gforth.html#Leaving-Gforth" title="Leaving Gforth">
+<link rel="next" href="Environment-variables.html#Environment-variables" title="Environment variables">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Command-line-editing"></a>
+<a name="Command_002dline-editing"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Environment-variables.html#Environment-variables">Environment variables</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Leaving-Gforth.html#Leaving-Gforth">Leaving Gforth</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Gforth-Environment.html#Gforth-Environment">Gforth Environment</a>
+<hr>
+</div>
+
+<h3 class="section">2.3 Command-line editing</h3>
+
+<p><a name="index-command_002dline-editing-53"></a>
+Gforth maintains a history file that records every line that you type to
+the text interpreter. This file is preserved between sessions, and is
+used to provide a command-line recall facility; if you type <kbd>Ctrl-P</kbd>
+repeatedly you can recall successively older commands from this (or
+previous) session(s). The full list of command-line editing facilities is:
+
+     <ul>
+<li><kbd>Ctrl-p</kbd> (&ldquo;previous&rdquo;) (or up-arrow) to recall successively older
+commands from the history buffer. 
+<li><kbd>Ctrl-n</kbd> (&ldquo;next&rdquo;) (or down-arrow) to recall successively newer commands
+from the history buffer. 
+<li><kbd>Ctrl-f</kbd> (or right-arrow) to move the cursor right, non-destructively. 
+<li><kbd>Ctrl-b</kbd> (or left-arrow) to move the cursor left, non-destructively. 
+<li><kbd>Ctrl-h</kbd> (backspace) to delete the character to the left of the cursor,
+closing up the line. 
+<li><kbd>Ctrl-k</kbd> to delete (&ldquo;kill&rdquo;) from the cursor to the end of the line. 
+<li><kbd>Ctrl-a</kbd> to move the cursor to the start of the line. 
+<li><kbd>Ctrl-e</kbd> to move the cursor to the end of the line. 
+<li>&lt;RET&gt; (<kbd>Ctrl-m</kbd>) or &lt;LFD&gt; (<kbd>Ctrl-j</kbd>) to submit the current
+line. 
+<li>&lt;TAB&gt; to step through all possible full-word completions of the word
+currently being typed. 
+<li><kbd>Ctrl-d</kbd> on an empty line line to terminate Gforth (gracefully,
+using <code>bye</code>). 
+<li><kbd>Ctrl-x</kbd> (or <code>Ctrl-d</code> on a non-empty line) to delete the
+character under the cursor. 
+</ul>
+
+   <p>When editing, displayable characters are inserted to the left of the
+cursor position; the line is always in &ldquo;insert&rdquo; (as opposed to
+&ldquo;overstrike&rdquo;) mode.
+
+   <p><a name="index-history-file-54"></a><a name="index-g_t_0040file_007b_002egforth_002dhistory_007d-55"></a>On Unix systems, the history file is <samp><span class="file">~/.gforth-history</span></samp> by
+default<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>. You
+can find out the name and location of your history file using:
+
+<pre class="example">     history-file type \ Unix-class systems
+     
+     history-file type \ Other systems
+     history-dir  type
+</pre>
+   <p>If you enter long definitions by hand, you can use a text editor to
+paste them out of the history file into a Forth source file for reuse at
+a later time.
+
+   <p>Gforth never trims the size of the history file, so you should do this
+periodically, if necessary.
+
+<!-- this is all defined in history.fs -->
+<!-- NAC TODO the ctrl-D behaviour can either do a bye or a beep.. how is that option -->
+<!-- chosen? -->
+<!--  -->
+<div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> i.e. it is stored in the user's home directory.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

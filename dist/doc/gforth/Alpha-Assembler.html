@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+<title>Alpha Assembler - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words" title="Assembler and Code Words">
+<link rel="prev" href="386-Assembler.html#g_t386-Assembler" title="386 Assembler">
+<link rel="next" href="MIPS-assembler.html#MIPS-assembler" title="MIPS assembler">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Alpha-Assembler"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="MIPS-assembler.html#MIPS-assembler">MIPS assembler</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="386-Assembler.html#g_t386-Assembler">386 Assembler</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words">Assembler and Code Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.26.5 Alpha Assembler</h4>
+
+<p>The Alpha assembler and disassembler were originally written by Bernd
+Thallner.
+
+   <p>The register names <code>a0</code>&ndash;<code>a5</code> are not available to avoid
+shadowing hex numbers.
+
+   <p>Immediate forms of arithmetic instructions are distinguished by a
+<code>#</code> just before the <code>,</code>, e.g., <code>and#,</code> (note: <code>lda,</code>
+does not count as arithmetic instruction).
+
+   <p>You have to specify all operands to an instruction, even those that
+other assemblers consider optional, e.g., the destination register for
+<code>br,</code>, or the destination register and hint for <code>jmp,</code>.
+
+   <p>You can specify conditions for <code>if,</code> by removing the first <code>b</code>
+and the trailing <code>,</code> from a branch with a corresponding name; e.g.,
+
+<pre class="example">     11 fgt if, \ if F11&gt;0e
+       ...
+     endif,
+</pre>
+   <p><code>fbgt,</code> gives <code>fgt</code>.
+
+   </body></html>
+

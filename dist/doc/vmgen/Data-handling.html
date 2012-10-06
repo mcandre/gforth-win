@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+<title>Data handling - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Concepts.html#Concepts" title="Concepts">
+<link rel="prev" href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter" title="Front end and VM interpreter">
+<link rel="next" href="Dispatch.html#Dispatch" title="Dispatch">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Data-handling"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Dispatch.html#Dispatch">Dispatch</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Concepts.html#Concepts">Concepts</a>
+<hr>
+</div>
+
+<h3 class="section">3.2 Data handling</h3>
+
+<p><a name="index-stack-machine-20"></a><a name="index-register-machine-21"></a>Most VMs use one or more stacks for passing temporary data between VM
+instructions.  Another option is to use a register machine architecture
+for the virtual machine; we believe that using a stack architecture is
+usually both simpler and faster.
+
+   <p>However, this option is slower or
+significantly more complex to implement than a stack machine architecture.
+
+   <p>Vmgen has special support and optimizations for stack VMs, making their
+implementation easy and efficient.
+
+   <p>You can also implement a register VM with Vmgen (see <a href="Register-Machines.html#Register-Machines">Register Machines</a>), and you will still profit from most Vmgen features.
+
+   <p><a name="index-stack-item-size-22"></a><a name="index-size_002c-stack-items-23"></a>Stack items all have the same size, so they typically will be as wide as
+an integer, pointer, or floating-point value.  Vmgen supports treating
+two consecutive stack items as a single value, but anything larger is
+best kept in some other memory area (e.g., the heap), with pointers to
+the data on the stack.
+
+   <p><a name="index-instruction-stream-24"></a><a name="index-immediate-arguments-25"></a>Another source of data is immediate arguments VM instructions (in the VM
+instruction stream).  The VM instruction stream is handled similar to a
+stack in Vmgen.
+
+   <p><a name="index-garbage-collection-26"></a><a name="index-reference-counting-27"></a>Vmgen has no built-in support for, nor restrictions against
+<em>garbage collection</em>.  If you need garbage collection, you need to
+provide it in your run-time libraries.  Using <em>reference counting</em>
+is probably harder, but might be possible (contact us if you are
+interested). 
+<!-- reference counting might be possible by including counting code in -->
+<!-- the conversion macros. -->
+
+<!--  -->
+</body></html>
+

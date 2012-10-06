@@ -1,0 +1,172 @@
+<html lang="en">
+<head>
+<title>Code and ;code - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words" title="Assembler and Code Words">
+<link rel="prev" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words" title="Assembler and Code Words">
+<link rel="next" href="Common-Assembler.html#Common-Assembler" title="Common Assembler">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Code-and-%3bcode"></a>
+<a name="Code-and-_003bcode"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Common-Assembler.html#Common-Assembler">Common Assembler</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words">Assembler and Code Words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words">Assembler and Code Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.26.1 <code>Code</code> and <code>;code</code></h4>
+
+<p>Gforth provides some words for defining primitives (words written in
+machine code), and for defining the machine-code equivalent of
+<code>DOES&gt;</code>-based defining words. However, the machine-independent
+nature of Gforth poses a few problems: First of all, Gforth runs on
+several architectures, so it can provide no standard assembler. What's
+worse is that the register allocation not only depends on the processor,
+but also on the <code>gcc</code> version and options used.
+
+   <p>The words that Gforth offers encapsulate some system dependences (e.g.,
+the header structure), so a system-independent assembler may be used in
+Gforth. If you do not have an assembler, you can compile machine code
+directly with <code>,</code> and <code>c,</code><a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>.
+
+   <p><a name="index-assembler-_0040var_007b-_002d_002d---_007d--tools_002dext-2933"></a><a name="index-g_t_0040code_007bassembler_007d-2934"></a><a name="index-assembler-2935"></a>
+<pre class="format"><code>assembler</code>       <i>&ndash;  </i>       tools-ext       &ldquo;assembler&rdquo;
+</pre>
+   <p><a name="index-init_002dasm-_0040var_007b-_002d_002d---_007d--gforth-2936"></a><a name="index-g_t_0040code_007binit_002dasm_007d-2937"></a><a name="index-init_002dasm-2938"></a>
+<pre class="format"><code>init-asm</code>       <i>&ndash;  </i>       gforth       &ldquo;init-asm&rdquo;
+</pre>
+   <p><a name="index-code-_0040var_007b-_0022name_0022-_002d_002d-colon_002dsys---_007d--tools_002dext-2939"></a><a name="index-g_t_0040code_007bcode_007d-2940"></a><a name="index-code-2941"></a>
+<pre class="format"><code>code</code>       <i>"name" &ndash; colon-sys  </i>       tools-ext       &ldquo;code&rdquo;
+</pre>
+   <p><a name="index-end_002dcode-_0040var_007b-colon_002dsys-_002d_002d---_007d--gforth-2942"></a><a name="index-g_t_0040code_007bend_002dcode_007d-2943"></a><a name="index-end_002dcode-2944"></a>
+<pre class="format"><code>end-code</code>       <i>colon-sys &ndash;  </i>       gforth       &ldquo;end-code&rdquo;
+</pre>
+   <p><a name="index-g_t_003bcode-_0040var_007b-compilation_002e-colon_002dsys1-_002d_002d-colon_002dsys2---_007d--tools_002dext-2945"></a><a name="index-g_t_0040code_007b_003bcode_007d-2946"></a><a name="index-g_t_003bcode-2947"></a>
+<pre class="format"><code>;code</code>       <i>compilation. colon-sys1 &ndash; colon-sys2  </i>       tools-ext       &ldquo;semicolon-code&rdquo;
+</pre>
+   <p><a name="index-flush_002dicache-_0040var_007b-c_002daddr-u-_002d_002d--_007d--gforth-2948"></a><a name="index-g_t_0040code_007bflush_002dicache_007d-2949"></a><a name="index-flush_002dicache-2950"></a>
+<pre class="format"><code>flush-icache</code>       <i>c-addr u &ndash; </i>       gforth       &ldquo;flush-icache&rdquo;
+</pre>
+   <p>Make sure that the instruction cache of the processor (if there is
+one) does not contain stale data at <i>c-addr</i> and <i>u</i> bytes
+afterwards. <code>END-CODE</code> performs a <code>flush-icache</code>
+automatically. Caveat: <code>flush-icache</code> might not work on your
+installation; this is usually the case if direct threading is not
+supported on your machine (take a look at your <samp><span class="file">machine.h</span></samp>) and
+your machine has a separate instruction cache. In such cases,
+<code>flush-icache</code> does nothing instead of flushing the instruction
+cache.
+
+   <p>If <code>flush-icache</code> does not work correctly, <code>code</code> words
+etc. will not work (reliably), either.
+
+   <p>The typical usage of these <code>code</code> words can be shown most easily by
+analogy to the equivalent high-level defining words:
+
+<pre class="example">     : foo                              code foo
+        &lt;high-level Forth words&gt;              &lt;assembler&gt;
+     ;                                  end-code
+     
+     : bar                              : bar
+        &lt;high-level Forth words&gt;           &lt;high-level Forth words&gt;
+        CREATE                             CREATE
+           &lt;high-level Forth words&gt;           &lt;high-level Forth words&gt;
+        DOES&gt;                              ;code
+           &lt;high-level Forth words&gt;           &lt;assembler&gt;
+     ;                                  end-code
+</pre>
+   <!-- anton: the following stuff is also in "Common Assembler", in less detail. -->
+<p><a name="index-registers-of-the-inner-interpreter-2951"></a>In the assembly code you will want to refer to the inner interpreter's
+registers (e.g., the data stack pointer) and you may want to use other
+registers for temporary storage. Unfortunately, the register allocation
+is installation-dependent.
+
+   <p>In particular, <code>ip</code> (Forth instruction pointer) and <code>rp</code>
+(return stack pointer) may be in different places in <code>gforth</code> and
+<code>gforth-fast</code>, or different installations.  This means that you
+cannot write a <code>NEXT</code> routine that works reliably on both versions
+or different installations; so for doing <code>NEXT</code>, I recommend
+jumping to <code>' noop &gt;code-address</code>, which contains nothing but a
+<code>NEXT</code>.
+
+   <p>For general accesses to the inner interpreter's registers, the easiest
+solution is to use explicit register declarations (see <a href="../gcc/Explicit-Reg-Vars.html#Explicit-Reg-Vars">Variables in Specified Registers</a>) for
+all of the inner interpreter's registers: You have to compile Gforth
+with <code>-DFORCE_REG</code> (configure option <code>--enable-force-reg</code>) and
+the appropriate declarations must be present in the <code>machine.h</code>
+file (see <code>mips.h</code> for an example; you can find a full list of all
+declarable register symbols with <code>grep register engine.c</code>). If you
+give explicit registers to all variables that are declared at the
+beginning of <code>engine()</code>, you should be able to use the other
+caller-saved registers for temporary storage. Alternatively, you can use
+the <code>gcc</code> option <code>-ffixed-REG</code> (see <a href="../gcc/Code-Gen-Options.html#Code-Gen-Options">Options for Code Generation Conventions</a>) to
+reserve a register (however, this restriction on register allocation may
+slow Gforth significantly).
+
+   <p>If this solution is not viable (e.g., because <code>gcc</code> does not allow
+you to explicitly declare all the registers you need), you have to find
+out by looking at the code where the inner interpreter's registers
+reside and which registers can be used for temporary storage. You can
+get an assembly listing of the engine's code with <code>make engine.s</code>.
+
+   <p>In any case, it is good practice to abstract your assembly code from the
+actual register allocation. E.g., if the data stack pointer resides in
+register <code>$17</code>, create an alias for this register called <code>sp</code>,
+and use that in your assembly code.
+
+   <p><a name="index-code-words_002c-portable-2952"></a>Another option for implementing normal and defining words efficiently
+is to add the desired functionality to the source of Gforth. For normal
+words you just have to edit <samp><span class="file">primitives</span></samp> (see <a href="Automatic-Generation.html#Automatic-Generation">Automatic Generation</a>). Defining words (equivalent to <code>;CODE</code> words, for fast
+defined words) may require changes in <samp><span class="file">engine.c</span></samp>, <samp><span class="file">kernel.fs</span></samp>,
+<samp><span class="file">prims2x.fs</span></samp>, and possibly <samp><span class="file">cross.fs</span></samp>.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> This isn't portable,
+because these words emit stuff in <i>data</i> space; it works because
+Gforth has unified code/data spaces. Assembler isn't likely to be
+portable anyway.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

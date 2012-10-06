@@ -1,0 +1,86 @@
+<html lang="en">
+<head>
+<title>Floating point - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Hints.html#Hints" title="Hints">
+<link rel="prev" href="Hints.html#Hints" title="Hints">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Floating-point"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Hints.html#Hints">Hints</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Hints.html#Hints">Hints</a>
+<hr>
+</div>
+
+<h3 class="section">9.1 Floating point</h3>
+
+<p>How should you deal with floating point values?  Should you use the same
+stack as for integers/pointers, or a different one?  This section
+discusses this issue with a view on execution speed.
+
+   <p>The simpler approach is to use a separate floating-point stack.  This
+allows you to choose FP value size without considering the size of the
+integers/pointers, and you avoid a number of performance problems.  The
+main downside is that this needs an FP stack pointer (and that may not
+fit in the register file on the 386 arhitecture, costing some
+performance, but comparatively little if you take the other option into
+account).  If you use a separate FP stack (with stack pointer <code>fp</code>),
+using an fpTOS is helpful on most machines, but some spill the fpTOS
+register into memory, and fpTOS should not be used there.
+
+   <p>The other approach is to share one stack (pointed to by, say, <code>sp</code>)
+between integer/pointer and floating-point values.  This is ok if you do
+not use <code>spTOS</code>.  If you do use <code>spTOS</code>, the compiler has to
+decide whether to put that variable into an integer or a floating point
+register, and the other type of operation becomes quite expensive on
+most machines (because moving values between integer and FP registers is
+quite expensive).  If a value of one type has to be synthesized out of
+two values of the other type (<code>double</code> types), things are even more
+interesting.
+
+   <p>One way around this problem would be to not use the <code>spTOS</code>
+supported by Vmgen, but to use explicit top-of-stack variables (one for
+integers, one for FP values), and having a kind of accumulator+stack
+architecture (e.g., Ocaml bytecode uses this approach); however, this is
+a major change, and it's ramifications are not completely clear.
+
+<!-- ********************************************************** -->
+</body></html>
+

@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+<title>Scheduling - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Threading.html#Threading" title="Threading">
+<link rel="prev" href="Threading.html#Threading" title="Threading">
+<link rel="next" href="Direct-or-Indirect-Threaded_003f.html#Direct-or-Indirect-Threaded_003f" title="Direct or Indirect Threaded?">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Scheduling"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Direct-or-Indirect-Threaded_003f.html#Direct-or-Indirect-Threaded_003f">Direct or Indirect Threaded?</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Threading.html#Threading">Threading</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Threading.html#Threading">Threading</a>
+<hr>
+</div>
+
+<h4 class="subsection">14.2.1 Scheduling</h4>
+
+<p><a name="index-inner-interpreter-optimization-3468"></a>
+There is a little complication: Pipelined and superscalar processors,
+i.e., RISC and some modern CISC machines can process independent
+instructions while waiting for the results of an instruction. The
+compiler usually reorders (schedules) the instructions in a way that
+achieves good usage of these delay slots. However, on our first tries
+the compiler did not do well on scheduling primitives. E.g., for
+<code>+</code> implemented as
+<pre class="example">     n=sp[0]+sp[1];
+     sp++;
+     sp[0]=n;
+     NEXT;
+</pre>
+   <p>the <code>NEXT</code> comes strictly after the other code, i.e., there is
+nearly no scheduling. After a little thought the problem becomes clear:
+The compiler cannot know that <code>sp</code> and <code>ip</code> point to different
+addresses (and the version of <code>gcc</code> we used would not know it even
+if it was possible), so it could not move the load of the cfa above the
+store to the TOS. Indeed the pointers could be the same, if code on or
+very near the top of stack were executed. In the interest of speed we
+chose to forbid this probably unused &ldquo;feature&rdquo; and helped the compiler
+in scheduling: <code>NEXT</code> is divided into several parts:
+<code>NEXT_P0</code>, <code>NEXT_P1</code> and <code>NEXT_P2</code>). <code>+</code> now looks
+like:
+<pre class="example">     NEXT_P0;
+     n=sp[0]+sp[1];
+     sp++;
+     NEXT_P1;
+     sp[0]=n;
+     NEXT_P2;
+</pre>
+   <p>There are various schemes that distribute the different operations of
+NEXT between these parts in several ways; in general, different schemes
+perform best on different processors.  We use a scheme for most
+architectures that performs well for most processors of this
+architecture; in the future we may switch to benchmarking and chosing
+the scheme on installation time.
+
+   </body></html>
+

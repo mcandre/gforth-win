@@ -1,0 +1,228 @@
+<html lang="en">
+<head>
+<title>Displaying characters and strings - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-I_002fO.html#Other-I_002fO" title="Other I/O">
+<link rel="prev" href="String-Formats.html#String-Formats" title="String Formats">
+<link rel="next" href="Terminal-output.html#Terminal-output" title="Terminal output">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Displaying-characters-and-strings"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Terminal-output.html#Terminal-output">Terminal output</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="String-Formats.html#String-Formats">String Formats</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-I_002fO.html#Other-I_002fO">Other I/O</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.19.4 Displaying characters and strings</h4>
+
+<p><a name="index-characters-_002d-compiling-and-displaying-1990"></a><a name="index-character-strings-_002d-compiling-and-displaying-1991"></a>
+This section starts with a glossary of Forth words and ends with a set
+of examples.
+
+   <p><a name="index-bl-_0040var_007b-_002d_002d-c_002dchar---_007d--core-1992"></a><a name="index-g_t_0040code_007bbl_007d-1993"></a><a name="index-bl-1994"></a>
+<pre class="format"><code>bl</code>       <i>&ndash; c-char  </i>       core       &ldquo;b-l&rdquo;
+</pre>
+   <p><i>c-char</i> is the character value for a space.
+
+   <p><a name="index-space-_0040var_007b-_002d_002d---_007d--core-1995"></a><a name="index-g_t_0040code_007bspace_007d-1996"></a><a name="index-space-1997"></a>
+<pre class="format"><code>space</code>       <i>&ndash;  </i>       core       &ldquo;space&rdquo;
+</pre>
+   <p>Display one space.
+
+   <p><a name="index-spaces-_0040var_007b-u-_002d_002d---_007d--core-1998"></a><a name="index-g_t_0040code_007bspaces_007d-1999"></a><a name="index-spaces-2000"></a>
+<pre class="format"><code>spaces</code>       <i>u &ndash;  </i>       core       &ldquo;spaces&rdquo;
+</pre>
+   <p>Display <var>n</var> spaces.
+
+   <p><a name="index-emit-_0040var_007b-c-_002d_002d---_007d--core-2001"></a><a name="index-g_t_0040code_007bemit_007d-2002"></a><a name="index-emit-2003"></a>
+<pre class="format"><code>emit</code>       <i>c &ndash;  </i>       core       &ldquo;emit&rdquo;
+</pre>
+   <p>Display the character associated with character value c.
+
+   <p><a name="index-toupper-_0040var_007b-c1-_002d_002d-c2--_007d--gforth-2004"></a><a name="index-g_t_0040code_007btoupper_007d-2005"></a><a name="index-toupper-2006"></a>
+<pre class="format"><code>toupper</code>       <i>c1 &ndash; c2 </i>       gforth       &ldquo;toupper&rdquo;
+</pre>
+   <p>If <i>c1</i> is a lower-case character (in the current locale), <i>c2</i>
+is the equivalent upper-case character. All other characters are unchanged.
+
+   <p><a name="index-g_t_002e_0022-_0040var_007b-compilation-_0027ccc_0022_0027-_002d_002d-_003b-run_002dtime-_002d_002d---_007d--core-2007"></a><a name="index-g_t_0040code_007b_002e_0022_007d-2008"></a><a name="index-g_t_002e_0022-2009"></a>
+<pre class="format"><code>."</code>       <i>compilation 'ccc"' &ndash; ; run-time &ndash;  </i>       core       &ldquo;dot-quote&rdquo;
+</pre>
+   <p>Compilation: Parse a string <i>ccc</i> delimited by a " (double
+quote). At run-time, display the string. Interpretation semantics
+for this word are undefined in ANS Forth. Gforth's interpretation
+semantics are to display the string. This is the simplest way to
+display a string from within a definition; see examples below.
+
+   <p><a name="index-g_t_002e_0028-_0040var_007b-compilation_0026interpretation-_0022ccc_003cparen_003e_0022-_002d_002d---_007d--core_002dext-2010"></a><a name="index-g_t_0040code_007b_002e_0028_007d-2011"></a><a name="index-g_t_002e_0028-2012"></a>
+<pre class="format"><code>.(</code>       <i>compilation&amp;interpretation "ccc&lt;paren&gt;" &ndash;  </i>       core-ext       &ldquo;dot-paren&rdquo;
+</pre>
+   <p>Compilation and interpretation semantics: Parse a string <i>ccc</i>
+delimited by a <code>)</code> (right parenthesis). Display the
+string. This is often used to display progress information during
+compilation; see examples below.
+
+   <p><a name="index-g_t_002e_005c_0022-_0040var_007b-compilation-_0027ccc_0022_0027-_002d_002d-_003b-run_002dtime-_002d_002d---_007d--gforth-2013"></a><a name="index-g_t_0040code_007b_002e_005c_0022_007d-2014"></a><a name="index-g_t_002e_005c_0022-2015"></a>
+<pre class="format"><code>.\"</code>       <i>compilation 'ccc"' &ndash; ; run-time &ndash;  </i>       gforth       &ldquo;dot-backslash-quote&rdquo;
+</pre>
+   <p>Like <code>."</code>, but translates C-like \-escape-sequences (see
+<code>S\"</code>).
+
+   <p><a name="index-type-_0040var_007b-c_002daddr-u-_002d_002d---_007d--core-2016"></a><a name="index-g_t_0040code_007btype_007d-2017"></a><a name="index-type-2018"></a>
+<pre class="format"><code>type</code>       <i>c-addr u &ndash;  </i>       core       &ldquo;type&rdquo;
+</pre>
+   <p>If <var>u</var>&gt;0, display <var>u</var> characters from a string starting
+with the character stored at <var>c-addr</var>.
+
+   <p><a name="index-typewhite-_0040var_007b-addr-n-_002d_002d---_007d--gforth-2019"></a><a name="index-g_t_0040code_007btypewhite_007d-2020"></a><a name="index-typewhite-2021"></a>
+<pre class="format"><code>typewhite</code>       <i>addr n &ndash;  </i>       gforth       &ldquo;typewhite&rdquo;
+</pre>
+   <p>Like type, but white space is printed instead of the characters.
+
+   <p><a name="index-cr-_0040var_007b-_002d_002d---_007d--core-2022"></a><a name="index-g_t_0040code_007bcr_007d-2023"></a><a name="index-cr-2024"></a>
+<pre class="format"><code>cr</code>       <i>&ndash;  </i>       core       &ldquo;c-r&rdquo;
+</pre>
+   <p>Output a newline (of the favourite kind of the host OS).  Note
+that due to the way the Forth command line interpreter inserts
+newlines, the preferred way to use <code>cr</code> is at the start
+of a piece of text; e.g., <code>cr ." hello, world"</code>.
+
+   <p><a name="index-cursor-control-2025"></a><a name="index-S_0022-_0040var_007b-compilation-_0027ccc_0022_0027-_002d_002d-_003b-run_002dtime-_002d_002d-c_002daddr-u---_007d--core_002cfile-2026"></a><a name="index-g_t_0040code_007bS_0022_007d-2027"></a><a name="index-S_0022-2028"></a>
+<pre class="format"><code>S"</code>       <i>compilation 'ccc"' &ndash; ; run-time &ndash; c-addr u  </i>       core,file       &ldquo;s-quote&rdquo;
+</pre>
+   <p>Compilation: Parse a string <i>ccc</i> delimited by a <code>"</code>
+(double quote). At run-time, return the length, <i>u</i>, and the
+start address, <i>c-addr</i> of the string. Interpretation: parse
+the string as before, and return <i>c-addr</i>, <i>u</i>. Gforth
+<code>allocate</code>s the string. The resulting memory leak is usually
+not a problem; the exception is if you create strings containing
+<code>S"</code> and <code>evaluate</code> them; then the leak is not bounded
+by the size of the interpreted files and you may want to
+<code>free</code> the strings.  ANS Forth only guarantees one buffer of
+80 characters, so in standard programs you should assume that the
+string lives only until the next <code>s"</code>.
+
+   <p><a name="index-s_005c_0022-_0040var_007b-compilation-_0027ccc_0022_0027-_002d_002d-_003b-run_002dtime-_002d_002d-c_002daddr-u---_007d--gforth-2029"></a><a name="index-g_t_0040code_007bs_005c_0022_007d-2030"></a><a name="index-s_005c_0022-2031"></a>
+<pre class="format"><code>s\"</code>       <i>compilation 'ccc"' &ndash; ; run-time &ndash; c-addr u  </i>       gforth       &ldquo;s-backslash-quote&rdquo;
+</pre>
+   <p>Like <code>S"</code>, but translates C-like \-escape-sequences, as
+follows: <code>\a</code> BEL (alert), <code>\b</code> BS, <code>\e</code> ESC (not in
+C99), <code>\f</code> FF, <code>\n</code> newline, <code>\r</code> CR, <code>\t</code> HT,
+<code>\v</code> VT, <code>\"</code> ", <code>\\</code> \, <code>\</code>[0-7]{1,3} octal
+numerical character value (non-standard), <code>\x</code>[0-9a-f]{0,2}
+hex numerical character value (standard only with two digits); a
+<code>\</code> before any other character is reserved.
+
+   <p><a name="index-C_0022-_0040var_007b-compilation-_0022ccc_003cquote_003e_0022-_002d_002d-_003b-run_002dtime--_002d_002d-c_002daddr---_007d--core_002dext-2032"></a><a name="index-g_t_0040code_007bC_0022_007d-2033"></a><a name="index-C_0022-2034"></a>
+<pre class="format"><code>C"</code>       <i>compilation "ccc&lt;quote&gt;" &ndash; ; run-time  &ndash; c-addr  </i>       core-ext       &ldquo;c-quote&rdquo;
+</pre>
+   <p>Compilation: parse a string <i>ccc</i> delimited by a <code>"</code>
+(double quote). At run-time, return <i>c-addr</i> which
+specifies the counted string <i>ccc</i>.  Interpretation
+semantics are undefined.
+
+   <p><a name="index-char-_0040var_007b-_0027_003cspaces_003eccc_0027-_002d_002d-c---_007d--core-2035"></a><a name="index-g_t_0040code_007bchar_007d-2036"></a><a name="index-char-2037"></a>
+<pre class="format"><code>char</code>       <i>'&lt;spaces&gt;ccc' &ndash; c  </i>       core       &ldquo;char&rdquo;
+</pre>
+   <p>Skip leading spaces. Parse the string <i>ccc</i> and return <i>c</i>, the
+display code representing the first character of <i>ccc</i>.
+
+   <p><a name="index-g_t_005bChar_005d-_0040var_007b-compilation-_0027_003cspaces_003eccc_0027-_002d_002d-_003b-run_002dtime-_002d_002d-c---_007d--core-2038"></a><a name="index-g_t_0040code_007b_005bChar_005d_007d-2039"></a><a name="index-g_t_005bChar_005d-2040"></a>
+<pre class="format"><code>[Char]</code>       <i>compilation '&lt;spaces&gt;ccc' &ndash; ; run-time &ndash; c  </i>       core       &ldquo;bracket-char&rdquo;
+</pre>
+   <p>Compilation: skip leading spaces. Parse the string
+<i>ccc</i>. Run-time: return <i>c</i>, the display code
+representing the first character of <i>ccc</i>.  Interpretation
+semantics for this word are undefined.
+
+<p class="noindent">As an example, consider the following text, stored in a file <samp><span class="file">test.fs</span></samp>:
+
+<pre class="example">     .( text-1)
+     : my-word
+       ." text-2" cr
+       .( text-3)
+     ;
+     
+     ." text-4"
+     
+     : my-char
+       [char] ALPHABET emit
+       char emit
+     ;
+</pre>
+   <p>When you load this code into Gforth, the following output is generated:
+
+<pre class="example">     <kbd>include test.fs &lt;RET&gt;</kbd> text-1text-3text-4 ok
+</pre>
+     <ul>
+<li>Messages <code>text-1</code> and <code>text-3</code> are displayed because <code>.(</code>
+is an immediate word; it behaves in the same way whether it is used inside
+or outside a colon definition. 
+<li>Message <code>text-4</code> is displayed because of Gforth's added interpretation
+semantics for <code>."</code>. 
+<li>Message <code>text-2</code> is <i>not</i> displayed, because the text interpreter
+performs the compilation semantics for <code>."</code> within the definition of
+<code>my-word</code>. 
+</ul>
+
+   <p>Here are some examples of executing <code>my-word</code> and <code>my-char</code>:
+
+<pre class="example">     <kbd>my-word &lt;RET&gt;</kbd> text-2
+      ok
+     <kbd>my-char fred &lt;RET&gt;</kbd> Af ok
+     <kbd>my-char jim &lt;RET&gt;</kbd> Aj ok
+</pre>
+     <ul>
+<li>Message <code>text-2</code> is displayed because of the run-time behaviour of
+<code>."</code>. 
+<li><code>[char]</code> compiles the &ldquo;A&rdquo; from &ldquo;ALPHABET&rdquo; and puts its display code
+on the stack at run-time. <code>emit</code> always displays the character
+when <code>my-char</code> is executed. 
+<li><code>char</code> parses a string at run-time and the second <code>emit</code> displays
+the first character of the string. 
+<li>If you type <code>see my-char</code> you can see that <code>[char]</code> discarded
+the text &ldquo;LPHABET&rdquo; and only compiled the display code for &ldquo;A&rdquo; into the
+definition of <code>my-char</code>. 
+</ul>
+
+   </body></html>
+

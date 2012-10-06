@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+<title>Case insensitivity - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Notation.html#Notation" title="Notation">
+<link rel="next" href="Comments.html#Comments" title="Comments">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Case-insensitivity"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Comments.html#Comments">Comments</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Notation.html#Notation">Notation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.2 Case insensitivity</h3>
+
+<p><a name="index-case-sensitivity-192"></a><a name="index-upper-and-lower-case-193"></a>
+Gforth is case-insensitive; you can enter definitions and invoke
+Standard words using upper, lower or mixed case (however,
+see <a href="core_002didef.html#core_002didef">Implementation-defined options</a>).
+
+   <p>ANS Forth only <i>requires</i> implementations to recognise Standard words
+when they are typed entirely in upper case. Therefore, a Standard
+program must use upper case for all Standard words. You can use whatever
+case you like for words that you define, but in a Standard program you
+have to use the words in the same case that you defined them.
+
+   <p>Gforth supports case sensitivity through <code>table</code>s (case-sensitive
+wordlists, see <a href="Word-Lists.html#Word-Lists">Word Lists</a>).
+
+   <p>Two people have asked how to convert Gforth to be case-sensitive; while
+we think this is a bad idea, you can change all wordlists into tables
+like this:
+
+<pre class="example">     ' table-find forth-wordlist wordlist-map  !
+</pre>
+   <p>Note that you now have to type the predefined words in the same case
+that we defined them, which are varying.  You may want to convert them
+to your favourite case before doing this operation (I won't explain how,
+because if you are even contemplating doing this, you'd better have
+enough knowledge of Forth systems to know this already).
+
+   </body></html>
+

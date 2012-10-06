@@ -1,0 +1,169 @@
+<html lang="en">
+<head>
+<title>The OOF base class - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="OOF.html#OOF" title="OOF">
+<link rel="prev" href="Basic-OOF-Usage.html#Basic-OOF-Usage" title="Basic OOF Usage">
+<link rel="next" href="Class-Declaration.html#Class-Declaration" title="Class Declaration">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="The-OOF-base-class"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Class-Declaration.html#Class-Declaration">Class Declaration</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Basic-OOF-Usage.html#Basic-OOF-Usage">Basic OOF Usage</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="OOF.html#OOF">OOF</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.23.4.3 The <samp><span class="file">oof.fs</span></samp> base class</h5>
+
+<p><a name="index-g_t_0040file_007boof_002efs_007d-base-class-2656"></a>
+When you define a class, you have to specify a parent class.  So how do
+you start defining classes? There is one class available from the start:
+<code>object</code>. You have to use it as ancestor for all classes. It is the
+only class that has no parent. Classes are also objects, except that
+they don't have instance variables; class manipulation such as
+inheritance or changing definitions of a class is handled through
+selectors of the class <code>object</code>.
+
+   <p><code>object</code> provides a number of selectors:
+
+     <ul>
+<li><code>class</code> for subclassing, <code>definitions</code> to add definitions
+later on, and <code>class?</code> to get type informations (is the class a
+subclass of the class passed on the stack?).
+
+     <p><a name="index-class-_0040var_007b-_0022name_0022-_002d_002d---_007d--oof-2657"></a><a name="index-g_t_0040code_007bclass_007d-2658"></a><a name="index-class-2659"></a>
+     <pre class="format"><code>class</code>       <i>"name" &ndash;  </i>       oof       &ldquo;class&rdquo;
+</pre>
+     <p><a name="index-definitions-_0040var_007b-_002d_002d---_007d--oof-2660"></a><a name="index-g_t_0040code_007bdefinitions_007d-2661"></a><a name="index-definitions-2662"></a>
+     <pre class="format"><code>definitions</code>       <i>&ndash;  </i>       oof       &ldquo;definitions&rdquo;
+</pre>
+     <p><a name="index-class_003f-_0040var_007b-o-_002d_002d-flag---_007d--oof-2663"></a><a name="index-g_t_0040code_007bclass_003f_007d-2664"></a><a name="index-class_003f-2665"></a>
+     <pre class="format"><code>class?</code>       <i>o &ndash; flag  </i>       oof       &ldquo;class-query&rdquo;
+</pre>
+     <li><code>init</code> and <code>dispose</code> as constructor and destructor of the
+object. <code>init</code> is invocated after the object's memory is allocated,
+while <code>dispose</code> also handles deallocation. Thus if you redefine
+<code>dispose</code>, you have to call the parent's dispose with <code>super
+dispose</code>, too.
+
+     <p><a name="index-init-_0040var_007b-_002e_002e_002e-_002d_002d---_007d--oof-2666"></a><a name="index-g_t_0040code_007binit_007d-2667"></a><a name="index-init-2668"></a>
+     <pre class="format"><code>init</code>       <i>... &ndash;  </i>       oof       &ldquo;init&rdquo;
+</pre>
+     <p><a name="index-dispose-_0040var_007b-_002d_002d---_007d--oof-2669"></a><a name="index-g_t_0040code_007bdispose_007d-2670"></a><a name="index-dispose-2671"></a>
+     <pre class="format"><code>dispose</code>       <i>&ndash;  </i>       oof       &ldquo;dispose&rdquo;
+</pre>
+     <li><code>new</code>, <code>new[]</code>, <code>:</code>, <code>ptr</code>, <code>asptr</code>, and
+<code>[]</code> to create named and unnamed objects and object arrays or
+object pointers.
+
+     <p><a name="index-new-_0040var_007b-_002d_002d-o---_007d--oof-2672"></a><a name="index-g_t_0040code_007bnew_007d-2673"></a><a name="index-new-2674"></a>
+     <pre class="format"><code>new</code>       <i>&ndash; o  </i>       oof       &ldquo;new&rdquo;
+</pre>
+     <p><a name="index-new_005b_005d-_0040var_007b-n-_002d_002d-o---_007d--oof-2675"></a><a name="index-g_t_0040code_007bnew_005b_005d_007d-2676"></a><a name="index-new_005b_005d-2677"></a>
+     <pre class="format"><code>new[]</code>       <i>n &ndash; o  </i>       oof       &ldquo;new-array&rdquo;
+</pre>
+     <p><a name="index-g_t_003a-_0040var_007b-_0022name_0022-_002d_002d---_007d--oof-2678"></a><a name="index-g_t_0040code_007b_003a_007d-2679"></a>
+     <pre class="format"><code>:</code>       <i>"name" &ndash;  </i>       oof       &ldquo;define&rdquo;
+</pre>
+     <p><a name="index-ptr-_0040var_007b-_0022name_0022-_002d_002d---_007d--oof-2680"></a><a name="index-g_t_0040code_007bptr_007d-2681"></a><a name="index-ptr-2682"></a>
+     <pre class="format"><code>ptr</code>       <i>"name" &ndash;  </i>       oof       &ldquo;ptr&rdquo;
+</pre>
+     <p><a name="index-asptr-_0040var_007b-o-_0022name_0022-_002d_002d---_007d--oof-2683"></a><a name="index-g_t_0040code_007basptr_007d-2684"></a><a name="index-asptr-2685"></a>
+     <pre class="format"><code>asptr</code>       <i>o "name" &ndash;  </i>       oof       &ldquo;asptr&rdquo;
+</pre>
+     <p><a name="index-g_t_005b_005d-_0040var_007b-n-_0022name_0022-_002d_002d---_007d--oof-2686"></a><a name="index-g_t_0040code_007b_005b_005d_007d-2687"></a><a name="index-g_t_005b_005d-2688"></a>
+     <pre class="format"><code>[]</code>       <i>n "name" &ndash;  </i>       oof       &ldquo;array&rdquo;
+</pre>
+     <li><code>::</code> and <code>super</code> for explicit scoping. You should use explicit
+scoping only for super classes or classes with the same set of instance
+variables. Explicitly-scoped selectors use early binding.
+
+     <p><a name="index-g_t_003a_003a-_0040var_007b-_0022name_0022-_002d_002d---_007d--oof-2689"></a><a name="index-g_t_0040code_007b_003a_003a_007d-2690"></a>
+     <pre class="format"><code>::</code>       <i>"name" &ndash;  </i>       oof       &ldquo;scope&rdquo;
+</pre>
+     <p><a name="index-super-_0040var_007b-_0022name_0022-_002d_002d---_007d--oof-2691"></a><a name="index-g_t_0040code_007bsuper_007d-2692"></a><a name="index-super-2693"></a>
+     <pre class="format"><code>super</code>       <i>"name" &ndash;  </i>       oof       &ldquo;super&rdquo;
+</pre>
+     <li><code>self</code> to get the address of the object
+
+     <p><a name="index-self-_0040var_007b-_002d_002d-o---_007d--oof-2694"></a><a name="index-g_t_0040code_007bself_007d-2695"></a><a name="index-self-2696"></a>
+     <pre class="format"><code>self</code>       <i>&ndash; o  </i>       oof       &ldquo;self&rdquo;
+</pre>
+     <li><code>bind</code>, <code>bound</code>, <code>link</code>, and <code>is</code> to assign object
+pointers and instance defers.
+
+     <p><a name="index-bind-_0040var_007b-o-_0022name_0022-_002d_002d---_007d--oof-2697"></a><a name="index-g_t_0040code_007bbind_007d-2698"></a><a name="index-bind-2699"></a>
+     <pre class="format"><code>bind</code>       <i>o "name" &ndash;  </i>       oof       &ldquo;bind&rdquo;
+</pre>
+     <p><a name="index-bound-_0040var_007b-class-addr-_0022name_0022-_002d_002d---_007d--oof-2700"></a><a name="index-g_t_0040code_007bbound_007d-2701"></a><a name="index-bound-2702"></a>
+     <pre class="format"><code>bound</code>       <i>class addr "name" &ndash;  </i>       oof       &ldquo;bound&rdquo;
+</pre>
+     <p><a name="index-link-_0040var_007b-_0022name_0022-_002d_002d-class-addr---_007d--oof-2703"></a><a name="index-g_t_0040code_007blink_007d-2704"></a><a name="index-link-2705"></a>
+     <pre class="format"><code>link</code>       <i>"name" &ndash; class addr  </i>       oof       &ldquo;link&rdquo;
+</pre>
+     <p><a name="index-is-_0040var_007b-xt-_0022name_0022-_002d_002d---_007d--oof-2706"></a><a name="index-g_t_0040code_007bis_007d-2707"></a><a name="index-is-2708"></a>
+     <pre class="format"><code>is</code>       <i>xt "name" &ndash;  </i>       oof       &ldquo;is&rdquo;
+</pre>
+     <li><code>'</code> to obtain selector tokens, <code>send</code> to invocate selectors
+form the stack, and <code>postpone</code> to generate selector invocation code.
+
+     <p><a name="index-g_t_0027-_0040var_007b-_0022name_0022-_002d_002d-xt---_007d--oof-2709"></a><a name="index-g_t_0040code_007b_0027_007d-2710"></a><a name="index-g_t_0027-2711"></a>
+     <pre class="format"><code>'</code>       <i>"name" &ndash; xt  </i>       oof       &ldquo;tick&rdquo;
+</pre>
+     <p><a name="index-postpone-_0040var_007b-_0022name_0022-_002d_002d---_007d--oof-2712"></a><a name="index-g_t_0040code_007bpostpone_007d-2713"></a><a name="index-postpone-2714"></a>
+     <pre class="format"><code>postpone</code>       <i>"name" &ndash;  </i>       oof       &ldquo;postpone&rdquo;
+</pre>
+     <li><code>with</code> and <code>endwith</code> to select the active object from the
+stack, and enable its scope. Using <code>with</code> and <code>endwith</code>
+also allows you to create code using selector <code>postpone</code> without being
+trapped by the state-smart objects.
+
+     <p><a name="index-with-_0040var_007b-o-_002d_002d---_007d--oof-2715"></a><a name="index-g_t_0040code_007bwith_007d-2716"></a><a name="index-with-2717"></a>
+     <pre class="format"><code>with</code>       <i>o &ndash;  </i>       oof       &ldquo;with&rdquo;
+</pre>
+     <p><a name="index-endwith-_0040var_007b-_002d_002d---_007d--oof-2718"></a><a name="index-g_t_0040code_007bendwith_007d-2719"></a><a name="index-endwith-2720"></a>
+     <pre class="format"><code>endwith</code>       <i>&ndash;  </i>       oof       &ldquo;endwith&rdquo;
+</pre>
+     </ul>
+
+   </body></html>
+

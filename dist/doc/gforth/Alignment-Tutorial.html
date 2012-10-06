@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+<title>Alignment Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Characters-and-Strings-Tutorial.html#Characters-and-Strings-Tutorial" title="Characters and Strings Tutorial">
+<link rel="next" href="Floating-Point-Tutorial.html#Floating-Point-Tutorial" title="Floating Point Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Alignment-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Floating-Point-Tutorial.html#Floating-Point-Tutorial">Floating Point Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Characters-and-Strings-Tutorial.html#Characters-and-Strings-Tutorial">Characters and Strings Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.25 Alignment</h3>
+
+<p><a name="index-alignment-tutorial-110"></a><a name="index-memory-alignment-tutorial-111"></a>
+On many processors cells have to be aligned in memory, if you want to
+access them with <code>@</code> and <code>!</code> (and even if the processor does
+not require alignment, access to aligned cells is faster).
+
+   <p><code>Create</code> aligns <code>here</code> (i.e., the place where the next
+allocation will occur, and that the <code>create</code>d word points to). 
+Likewise, the memory produced by <code>allocate</code> starts at an aligned
+address.  Adding a number of <code>cells</code> to an aligned address produces
+another aligned address.
+
+   <p>However, address arithmetic involving <code>char+</code> and <code>chars</code> can
+create an address that is not cell-aligned.  <code>Aligned ( addr --
+a-addr )</code> produces the next aligned address:
+
+<pre class="example">     v3 char+ aligned .s @ .
+     v3 char+ .s @ .
+</pre>
+   <p>Similarly, <code>align</code> advances <code>here</code> to the next aligned
+address:
+
+<pre class="example">     create v5 97 c,
+     here .
+     align here .
+     1000 ,
+</pre>
+   <p>Note that you should use aligned addresses even if your processor does
+not require them, if you want your program to be portable.
+
+   <p>Reference: <a href="Address-arithmetic.html#Address-arithmetic">Address arithmetic</a>.
+
+   </body></html>
+

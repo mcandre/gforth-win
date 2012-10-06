@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+<title>Review - elements of a Forth system - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction.html#Introduction" title="Introduction">
+<link rel="prev" href="Forth-is-written-in-Forth.html#Forth-is-written-in-Forth" title="Forth is written in Forth">
+<link rel="next" href="Where-to-go-next.html#Where-to-go-next" title="Where to go next">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Review---elements-of-a-Forth-system"></a>
+<a name="Review-_002d-elements-of-a-Forth-system"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Where-to-go-next.html#Where-to-go-next">Where to go next</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Forth-is-written-in-Forth.html#Forth-is-written-in-Forth">Forth is written in Forth</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction.html#Introduction">Introduction</a>
+<hr>
+</div>
+
+<h3 class="section">4.6 Review - elements of a Forth system</h3>
+
+<p><a name="index-elements-of-a-Forth-system-159"></a>
+To summarise this chapter:
+
+     <ul>
+<li>Forth programs use <dfn>factoring</dfn> to break a problem down into small
+fragments called <dfn>words</dfn> or <dfn>definitions</dfn>. 
+<li>Forth program development is an interactive process. 
+<li>The main command loop that accepts input, and controls both
+interpretation and compilation, is called the <dfn>text interpreter</dfn>
+(also known as the <dfn>outer interpreter</dfn>). 
+<li>Forth has a very simple syntax, consisting of words and numbers
+separated by spaces or carriage-return characters. Any additional syntax
+is imposed by <dfn>parsing words</dfn>. 
+<li>Forth uses a stack to pass parameters between words. As a result, it
+uses postfix notation. 
+<li>To use a word that has previously been defined, the text interpreter
+searches for the word in the <dfn>name dictionary</dfn>. 
+<li>Words have <dfn>interpretation semantics</dfn> and <dfn>compilation semantics</dfn>. 
+<li>The text interpreter uses the value of <code>state</code> to select between
+the use of the <dfn>interpretation semantics</dfn> and the  <dfn>compilation
+semantics</dfn> of a word that it encounters. 
+<li>The relationship between the <dfn>interpretation semantics</dfn> and
+<dfn>compilation semantics</dfn> for a word
+depend upon the way in which the word was defined (for example, whether
+it is an <dfn>immediate</dfn> word). 
+<li>Forth definitions can be implemented in Forth (called <dfn>high-level
+definitions</dfn>) or in some other way (usually a lower-level language and
+as a result often called <dfn>low-level definitions</dfn>, <dfn>code
+definitions</dfn> or <dfn>primitives</dfn>). 
+<li>Many Forth systems are implemented mainly in Forth. 
+</ul>
+
+<!--  -->
+</body></html>
+

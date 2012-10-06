@@ -1,0 +1,102 @@
+<html lang="en">
+<head>
+<title>Bitwise operations - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Arithmetic.html#Arithmetic" title="Arithmetic">
+<link rel="prev" href="Double-precision.html#Double-precision" title="Double precision">
+<link rel="next" href="Numeric-comparison.html#Numeric-comparison" title="Numeric comparison">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Bitwise-operations"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Numeric-comparison.html#Numeric-comparison">Numeric comparison</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Double-precision.html#Double-precision">Double precision</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Arithmetic.html#Arithmetic">Arithmetic</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.5.3 Bitwise operations</h4>
+
+<p><a name="index-bitwise-operation-words-287"></a>
+
+   <p><a name="index-and-_0040var_007b-w1-w2-_002d_002d-w--_007d--core-288"></a><a name="index-g_t_0040code_007band_007d-289"></a><a name="index-and-290"></a>
+<pre class="format"><code>and</code>       <i>w1 w2 &ndash; w </i>       core       &ldquo;and&rdquo;
+</pre>
+   <p><a name="index-or-_0040var_007b-w1-w2-_002d_002d-w--_007d--core-291"></a><a name="index-g_t_0040code_007bor_007d-292"></a><a name="index-or-293"></a>
+<pre class="format"><code>or</code>       <i>w1 w2 &ndash; w </i>       core       &ldquo;or&rdquo;
+</pre>
+   <p><a name="index-xor-_0040var_007b-w1-w2-_002d_002d-w--_007d--core-294"></a><a name="index-g_t_0040code_007bxor_007d-295"></a><a name="index-xor-296"></a>
+<pre class="format"><code>xor</code>       <i>w1 w2 &ndash; w </i>       core       &ldquo;x-or&rdquo;
+</pre>
+   <p><a name="index-invert-_0040var_007b-w1-_002d_002d-w2--_007d--core-297"></a><a name="index-g_t_0040code_007binvert_007d-298"></a><a name="index-invert-299"></a>
+<pre class="format"><code>invert</code>       <i>w1 &ndash; w2 </i>       core       &ldquo;invert&rdquo;
+</pre>
+   <p><a name="index-lshift-_0040var_007b-u1-n-_002d_002d-u2--_007d--core-300"></a><a name="index-g_t_0040code_007blshift_007d-301"></a><a name="index-lshift-302"></a>
+<pre class="format"><code>lshift</code>       <i>u1 n &ndash; u2 </i>       core       &ldquo;l-shift&rdquo;
+</pre>
+   <p><a name="index-rshift-_0040var_007b-u1-n-_002d_002d-u2--_007d--core-303"></a><a name="index-g_t_0040code_007brshift_007d-304"></a><a name="index-rshift-305"></a>
+<pre class="format"><code>rshift</code>       <i>u1 n &ndash; u2 </i>       core       &ldquo;r-shift&rdquo;
+</pre>
+   <p>Logical shift right by <i>n</i> bits.
+
+   <p><a name="index-g_t2_002a-_0040var_007b-n1-_002d_002d-n2--_007d--core-306"></a><a name="index-g_t_0040code_007b2_002a_007d-307"></a><a name="index-g_t2_002a-308"></a>
+<pre class="format"><code>2*</code>       <i>n1 &ndash; n2 </i>       core       &ldquo;two-star&rdquo;
+</pre>
+   <p>Shift left by 1; also works on unsigned numbers
+
+   <p><a name="index-d2_002a-_0040var_007b-d1-_002d_002d-d2--_007d--double-309"></a><a name="index-g_t_0040code_007bd2_002a_007d-310"></a><a name="index-d2_002a-311"></a>
+<pre class="format"><code>d2*</code>       <i>d1 &ndash; d2 </i>       double       &ldquo;d-two-star&rdquo;
+</pre>
+   <p>Shift left by 1; also works on unsigned numbers
+
+   <p><a name="index-g_t2_002f-_0040var_007b-n1-_002d_002d-n2--_007d--core-312"></a><a name="index-g_t_0040code_007b2_002f_007d-313"></a><a name="index-g_t2_002f-314"></a>
+<pre class="format"><code>2/</code>       <i>n1 &ndash; n2 </i>       core       &ldquo;two-slash&rdquo;
+</pre>
+   <p>Arithmetic shift right by 1.  For signed numbers this is a floored
+division by 2 (note that <code>/</code> not necessarily floors).
+
+   <p><a name="index-d2_002f-_0040var_007b-d1-_002d_002d-d2--_007d--double-315"></a><a name="index-g_t_0040code_007bd2_002f_007d-316"></a><a name="index-d2_002f-317"></a>
+<pre class="format"><code>d2/</code>       <i>d1 &ndash; d2 </i>       double       &ldquo;d-two-slash&rdquo;
+</pre>
+   <p>Arithmetic shift right by 1.  For signed numbers this is a floored
+division by 2.
+
+   </body></html>
+

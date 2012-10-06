@@ -1,0 +1,207 @@
+<html lang="en">
+<head>
+<title>core-idef - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-Core-Words.html#The-Core-Words" title="The Core Words">
+<link rel="prev" href="The-Core-Words.html#The-Core-Words" title="The Core Words">
+<link rel="next" href="core_002dambcond.html#core_002dambcond" title="core-ambcond">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="core-idef"></a>
+<a name="core_002didef"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="core_002dambcond.html#core_002dambcond">core-ambcond</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="The-Core-Words.html#The-Core-Words">The Core Words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-Core-Words.html#The-Core-Words">The Core Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">8.1.1 Implementation Defined Options</h4>
+
+<!--  -->
+<p><a name="index-core-words_002c-implementation_002ddefined-options-3060"></a><a name="index-implementation_002ddefined-options_002c-core-words-3061"></a>
+
+     <dl>
+<dt><i>(Cell) aligned addresses:</i><dd><a name="index-cell_002daligned-addresses-3062"></a><a name="index-aligned-addresses-3063"></a>processor-dependent. Gforth's alignment words perform natural alignment
+(e.g., an address aligned for a datum of size 8 is divisible by
+8). Unaligned accesses usually result in a <code>-23 THROW</code>.
+
+     <br><dt><code>EMIT</code><i> and non-graphic characters:</i><dd><a name="index-g_t_0040code_007bEMIT_007d-and-non_002dgraphic-characters-3064"></a><a name="index-non_002dgraphic-characters-and-_0040code_007bEMIT_007d-3065"></a>The character is output using the C library function (actually, macro)
+<code>putc</code>.
+
+     <br><dt><i>character editing of </i><code>ACCEPT</code><i> and </i><code>EXPECT</code><i>:</i><dd><a name="index-character-editing-of-_0040code_007bACCEPT_007d-and-_0040code_007bEXPECT_007d-3066"></a><a name="index-editing-in-_0040code_007bACCEPT_007d-and-_0040code_007bEXPECT_007d-3067"></a><a name="index-g_t_0040code_007bACCEPT_007d_002c-editing-3068"></a><a name="index-g_t_0040code_007bEXPECT_007d_002c-editing-3069"></a>This is modeled on the GNU readline library (see <a href="../readline/Readline-Interaction.html#Readline-Interaction">Command Line Editing</a>) with Emacs-like key bindings. <kbd>Tab</kbd> deviates a little by
+producing a full word completion every time you type it (instead of
+producing the common prefix of all completions). See <a href="Command_002dline-editing.html#Command_002dline-editing">Command-line editing</a>.
+
+     <br><dt><i>character set:</i><dd><a name="index-character-set-3070"></a>The character set of your computer and display device. Gforth is
+8-bit-clean (but some other component in your system may make trouble).
+
+     <br><dt><i>Character-aligned address requirements:</i><dd><a name="index-character_002daligned-address-requirements-3071"></a>installation-dependent. Currently a character is represented by a C
+<code>unsigned char</code>; in the future we might switch to <code>wchar_t</code>
+(Comments on that requested).
+
+     <br><dt><i>character-set extensions and matching of names:</i><dd><a name="index-character_002dset-extensions-and-matching-of-names-3072"></a><a name="index-case_002dsensitivity-for-name-lookup-3073"></a><a name="index-name-lookup_002c-case_002dsensitivity-3074"></a><a name="index-locale-and-case_002dsensitivity-3075"></a>Any character except the ASCII NUL character can be used in a
+name. Matching is case-insensitive (except in <code>TABLE</code>s). The
+matching is performed using the C library function <code>strncasecmp</code>, whose
+function is probably influenced by the locale. E.g., the <code>C</code> locale
+does not know about accents and umlauts, so they are matched
+case-sensitively in that locale. For portability reasons it is best to
+write programs such that they work in the <code>C</code> locale. Then one can
+use libraries written by a Polish programmer (who might use words
+containing ISO Latin-2 encoded characters) and by a French programmer
+(ISO Latin-1) in the same program (of course, <code>WORDS</code> will produce
+funny results for some of the words (which ones, depends on the font you
+are using)). Also, the locale you prefer may not be available in other
+operating systems. Hopefully, Unicode will solve these problems one day.
+
+     <br><dt><i>conditions under which control characters match a space delimiter:</i><dd><a name="index-space-delimiters-3076"></a><a name="index-control-characters-as-delimiters-3077"></a>If <code>word</code> is called with the space character as a delimiter, all
+white-space characters (as identified by the C macro <code>isspace()</code>)
+are delimiters. <code>Parse</code>, on the other hand, treats space like other
+delimiters.  <code>Parse-name</code>, which is used by the outer
+interpreter (aka text interpreter) by default, treats all white-space
+characters as delimiters.
+
+     <br><dt><i>format of the control-flow stack:</i><dd><a name="index-control_002dflow-stack_002c-format-3078"></a>The data stack is used as control-flow stack. The size of a control-flow
+stack item in cells is given by the constant <code>cs-item-size</code>. At the
+time of this writing, an item consists of a (pointer to a) locals list
+(third), an address in the code (second), and a tag for identifying the
+item (TOS). The following tags are used: <code>defstart</code>,
+<code>live-orig</code>, <code>dead-orig</code>, <code>dest</code>, <code>do-dest</code>,
+<code>scopestart</code>.
+
+     <br><dt><i>conversion of digits &gt; 35</i><dd><a name="index-digits-_003e-35-3079"></a>The characters <code>[\]^_'</code> are the digits with the decimal value
+36&minus;41. There is no way to input many of the larger digits.
+
+     <br><dt><i>display after input terminates in </i><code>ACCEPT</code><i> and </i><code>EXPECT</code><i>:</i><dd><a name="index-g_t_0040code_007bEXPECT_007d_002c-display-after-end-of-input-3080"></a><a name="index-g_t_0040code_007bACCEPT_007d_002c-display-after-end-of-input-3081"></a>The cursor is moved to the end of the entered string. If the input is
+terminated using the <kbd>Return</kbd> key, a space is typed.
+
+     <br><dt><i>exception abort sequence of </i><code>ABORT"</code><i>:</i><dd><a name="index-exception-abort-sequence-of-_0040code_007bABORT_0022_007d-3082"></a><a name="index-g_t_0040code_007bABORT_0022_007d_002c-exception-abort-sequence-3083"></a>The error string is stored into the variable <code>"error</code> and a
+<code>-2 throw</code> is performed.
+
+     <br><dt><i>input line terminator:</i><dd><a name="index-input-line-terminator-3084"></a><a name="index-line-terminator-on-input-3085"></a><a name="index-newline-character-on-input-3086"></a>For interactive input, <kbd>C-m</kbd> (CR) and <kbd>C-j</kbd> (LF) terminate
+lines. One of these characters is typically produced when you type the
+<kbd>Enter</kbd> or <kbd>Return</kbd> key.
+
+     <br><dt><i>maximum size of a counted string:</i><dd><a name="index-maximum-size-of-a-counted-string-3087"></a><a name="index-counted-string_002c-maximum-size-3088"></a><code>s" /counted-string" environment? drop .</code>. Currently 255 characters
+on all platforms, but this may change.
+
+     <br><dt><i>maximum size of a parsed string:</i><dd><a name="index-maximum-size-of-a-parsed-string-3089"></a><a name="index-parsed-string_002c-maximum-size-3090"></a>Given by the constant <code>/line</code>. Currently 255 characters.
+
+     <br><dt><i>maximum size of a definition name, in characters:</i><dd><a name="index-maximum-size-of-a-definition-name_002c-in-characters-3091"></a><a name="index-name_002c-maximum-length-3092"></a>MAXU/8
+
+     <br><dt><i>maximum string length for </i><code>ENVIRONMENT?</code><i>, in characters:</i><dd><a name="index-maximum-string-length-for-_0040code_007bENVIRONMENT_003f_007d_002c-in-characters-3093"></a><a name="index-g_t_0040code_007bENVIRONMENT_003f_007d-string-length_002c-maximum-3094"></a>MAXU/8
+
+     <br><dt><i>method of selecting the user input device:</i><dd><a name="index-user-input-device_002c-method-of-selecting-3095"></a>The user input device is the standard input. There is currently no way to
+change it from within Gforth. However, the input can typically be
+redirected in the command line that starts Gforth.
+
+     <br><dt><i>method of selecting the user output device:</i><dd><a name="index-user-output-device_002c-method-of-selecting-3096"></a><code>EMIT</code> and <code>TYPE</code> output to the file-id stored in the value
+<code>outfile-id</code> (<code>stdout</code> by default). Gforth uses unbuffered
+output when the user output device is a terminal, otherwise the output
+is buffered.
+
+     <br><dt><i>methods of dictionary compilation:</i><dd>What are we expected to document here?
+
+     <br><dt><i>number of bits in one address unit:</i><dd><a name="index-number-of-bits-in-one-address-unit-3097"></a><a name="index-address-unit_002c-size-in-bits-3098"></a><code>s" address-units-bits" environment? drop .</code>. 8 in all current
+platforms.
+
+     <br><dt><i>number representation and arithmetic:</i><dd><a name="index-number-representation-and-arithmetic-3099"></a>Processor-dependent. Binary two's complement on all current platforms.
+
+     <br><dt><i>ranges for integer types:</i><dd><a name="index-ranges-for-integer-types-3100"></a><a name="index-integer-types_002c-ranges-3101"></a>Installation-dependent. Make environmental queries for <code>MAX-N</code>,
+<code>MAX-U</code>, <code>MAX-D</code> and <code>MAX-UD</code>. The lower bounds for
+unsigned (and positive) types is 0. The lower bound for signed types on
+two's complement and one's complement machines machines can be computed
+by adding 1 to the upper bound.
+
+     <br><dt><i>read-only data space regions:</i><dd><a name="index-read_002donly-data-space-regions-3102"></a><a name="index-data_002dspace_002c-read_002donly-regions-3103"></a>The whole Forth data space is writable.
+
+     <br><dt><i>size of buffer at </i><code>WORD</code><i>:</i><dd><a name="index-size-of-buffer-at-_0040code_007bWORD_007d-3104"></a><a name="index-g_t_0040code_007bWORD_007d-buffer-size-3105"></a><code>PAD HERE - .</code>. 104 characters on 32-bit machines. The buffer is
+shared with the pictured numeric output string. If overwriting
+<code>PAD</code> is acceptable, it is as large as the remaining dictionary
+space, although only as much can be sensibly used as fits in a counted
+string.
+
+     <br><dt><i>size of one cell in address units:</i><dd><a name="index-cell-size-3106"></a><code>1 cells .</code>.
+
+     <br><dt><i>size of one character in address units:</i><dd><a name="index-char-size-3107"></a><code>1 chars .</code>. 1 on all current platforms.
+
+     <br><dt><i>size of the keyboard terminal buffer:</i><dd><a name="index-size-of-the-keyboard-terminal-buffer-3108"></a><a name="index-terminal-buffer_002c-size-3109"></a>Varies. You can determine the size at a specific time using <code>lp@
+tib - .</code>. It is shared with the locals stack and TIBs of files that
+include the current file. You can change the amount of space for TIBs
+and locals stack at Gforth startup with the command line option
+<code>-l</code>.
+
+     <br><dt><i>size of the pictured numeric output buffer:</i><dd><a name="index-size-of-the-pictured-numeric-output-buffer-3110"></a><a name="index-pictured-numeric-output-buffer_002c-size-3111"></a><code>PAD HERE - .</code>. 104 characters on 32-bit machines. The buffer is
+shared with <code>WORD</code>.
+
+     <br><dt><i>size of the scratch area returned by </i><code>PAD</code><i>:</i><dd><a name="index-size-of-the-scratch-area-returned-by-_0040code_007bPAD_007d-3112"></a><a name="index-g_t_0040code_007bPAD_007d-size-3113"></a>The remainder of dictionary space. <code>unused pad here - - .</code>.
+
+     <br><dt><i>system case-sensitivity characteristics:</i><dd><a name="index-case_002dsensitivity-characteristics-3114"></a>Dictionary searches are case-insensitive (except in
+<code>TABLE</code>s). However, as explained above under <i>character-set
+extensions</i>, the matching for non-ASCII characters is determined by the
+locale you are using. In the default <code>C</code> locale all non-ASCII
+characters are matched case-sensitively.
+
+     <br><dt><i>system prompt:</i><dd><a name="index-system-prompt-3115"></a><a name="index-prompt-3116"></a><code> ok</code> in interpret state, <code> compiled</code> in compile state.
+
+     <br><dt><i>division rounding:</i><dd><a name="index-division-rounding-3117"></a>The ordinary division words <code>/ mod /mod */ */mod</code> perform floored
+division (with the default installation of Gforth).  You can check
+this with <code>s" floored" environment? drop .</code>.  If you write
+programs that need a specific division rounding, best use
+<code>fm/mod</code> or <code>sm/rem</code> for portability.
+
+     <br><dt><i>values of </i><code>STATE</code><i> when true:</i><dd><a name="index-g_t_0040code_007bSTATE_007d-values-3118"></a>-1.
+
+     <br><dt><i>values returned after arithmetic overflow:</i><dd>On two's complement machines, arithmetic is performed modulo
+2**bits-per-cell for single arithmetic and 4**bits-per-cell for double
+arithmetic (with appropriate mapping for signed types). Division by
+zero typically results in a <code>-55 throw</code> (Floating-point
+unidentified fault) or <code>-10 throw</code> (divide by zero).  Integer
+division overflow can result in these throws, or in <code>-11 throw</code>;
+in <code>gforth-fast</code> division overflow and divide by zero may also
+result in returning bogus results without producing an exception.
+
+     <br><dt><i>whether the current definition can be found after </i><tt>DOES&gt;</tt><i>:</i><dd><a name="index-g_t_0040t_007bDOES_003e_007d_002c-visibility-of-current-definition-3119"></a>No.
+
+   </dl>
+
+<!--  -->
+</body></html>
+

@@ -1,0 +1,80 @@
+<html lang="en">
+<head>
+<title>block-ambcond - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-optional-Block-word-set.html#The-optional-Block-word-set" title="The optional Block word set">
+<link rel="prev" href="block_002didef.html#block_002didef" title="block-idef">
+<link rel="next" href="block_002dother.html#block_002dother" title="block-other">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="block-ambcond"></a>
+<a name="block_002dambcond"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="block_002dother.html#block_002dother">block-other</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="block_002didef.html#block_002didef">block-idef</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-optional-Block-word-set.html#The-optional-Block-word-set">The optional Block word set</a>
+<hr>
+</div>
+
+<h4 class="subsection">8.2.2 Ambiguous conditions</h4>
+
+<!--  -->
+<p><a name="index-block-words_002c-ambiguous-conditions-3193"></a><a name="index-ambiguous-conditions_002c-block-words-3194"></a>
+     <dl>
+<dt><i>correct block read was not possible:</i><dd><a name="index-block-read-not-possible-3195"></a>Typically results in a <code>throw</code> of some OS-derived value (between
+-512 and -2048). If the blocks file was just not long enough, blanks are
+supplied for the missing portion.
+
+     <br><dt><i>I/O exception in block transfer:</i><dd><a name="index-I_002fO-exception-in-block-transfer-3196"></a><a name="index-block-transfer_002c-I_002fO-exception-3197"></a>Typically results in a <code>throw</code> of some OS-derived value (between
+-512 and -2048).
+
+     <br><dt><i>invalid block number:</i><dd><a name="index-invalid-block-number-3198"></a><a name="index-block-number-invalid-3199"></a><code>-35 throw</code> (Invalid block number)
+
+     <br><dt><i>a program directly alters the contents of </i><code>BLK</code><i>:</i><dd><a name="index-g_t_0040code_007bBLK_007d_002c-altering-_0040code_007bBLK_007d-3200"></a>The input stream is switched to that other block, at the same
+position. If the storing to <code>BLK</code> happens when interpreting
+non-block input, the system will get quite confused when the block ends.
+
+     <br><dt><i>no current block buffer for </i><code>UPDATE</code><i>:</i><dd><a name="index-g_t_0040code_007bUPDATE_007d_002c-no-current-block-buffer-3201"></a><code>UPDATE</code> has no effect.
+
+   </dl>
+
+<!--  -->
+</body></html>
+

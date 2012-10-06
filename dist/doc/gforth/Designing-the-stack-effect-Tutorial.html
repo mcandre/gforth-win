@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+<title>Designing the stack effect Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Factoring-Tutorial.html#Factoring-Tutorial" title="Factoring Tutorial">
+<link rel="next" href="Local-Variables-Tutorial.html#Local-Variables-Tutorial" title="Local Variables Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Designing-the-stack-effect-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Local-Variables-Tutorial.html#Local-Variables-Tutorial">Local Variables Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Factoring-Tutorial.html#Factoring-Tutorial">Factoring Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.14 Designing the stack effect</h3>
+
+<p><a name="index-Stack-effect-design_002c-tutorial-94"></a><a name="index-design-of-stack-effects_002c-tutorial-95"></a>
+In other languages you can use an arbitrary order of parameters for a
+function; and since there is only one result, you don't have to deal with
+the order of results, either.
+
+   <p>In Forth (and other stack-based languages, e.g., PostScript) the
+parameter and result order of a definition is important and should be
+designed well.  The general guideline is to design the stack effect such
+that the word is simple to use in most cases, even if that complicates
+the implementation of the word.  Some concrete rules are:
+
+     <ul>
+<li>Words consume all of their parameters (e.g., <code>.</code>).
+
+     <li>If there is a convention on the order of parameters (e.g., from
+mathematics or another programming language), stick with it (e.g.,
+<code>-</code>).
+
+     <li>If one parameter usually requires only a short computation (e.g., it is
+a constant), pass it on the top of the stack.  Conversely, parameters
+that usually require a long sequence of code to compute should be passed
+as the bottom (i.e., first) parameter.  This makes the code easier to
+read, because the reader does not need to keep track of the bottom item
+through a long sequence of code (or, alternatively, through stack
+manipulations). E.g., <code>!</code> (store, see <a href="Memory.html#Memory">Memory</a>) expects the
+address on top of the stack because it is usually simpler to compute
+than the stored value (often the address is just a variable).
+
+     <li>Similarly, results that are usually consumed quickly should be returned
+on the top of stack, whereas a result that is often used in long
+computations should be passed as bottom result.  E.g., the file words
+like <code>open-file</code> return the error code on the top of stack, because
+it is usually consumed quickly by <code>throw</code>; moreover, the error code
+has to be checked before doing anything with the other results.
+
+   </ul>
+
+   <p>These rules are just general guidelines, don't lose sight of the overall
+goal to make the words easy to use.  E.g., if the convention rule
+conflicts with the computation-length rule, you might decide in favour
+of the convention if the word will be used rarely, and in favour of the
+computation-length rule if the word will be used frequently (because
+with frequent use the cost of breaking the computation-length rule would
+be quite high, and frequent use makes it easier to remember an
+unconventional order).
+
+<!-- example !! structure package -->
+</body></html>
+

@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+<title>Eval escapes - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Input-File-Grammar.html#Input-File-Grammar" title="Input File Grammar">
+<link rel="prev" href="Input-File-Grammar.html#Input-File-Grammar" title="Input File Grammar">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Eval-escapes"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.1.1 Eval escapes</h4>
+
+<p><a name="index-escape-to-Forth-58"></a><a name="index-eval-escape-59"></a><a name="index-g_t_0040code_007b_005cE_007d-60"></a>
+<!-- woanders? -->
+The text in <code>eval-escape</code> is Forth code that is evaluated when
+Vmgen reads the line.  You will normally use this feature to define
+stacks and types.
+
+   <p>If you do not know (and do not want to learn) Forth, you can build the
+text according to the following grammar; these rules are normally all
+Forth you need for using Vmgen:
+
+<pre class="example">     text: stack-decl|type-prefix-decl|stack-prefix-decl|set-flag
+     
+     stack-decl: 'stack ' ident ident ident
+     type-prefix-decl:
+         's" ' string '" ' ('single'|'double') ident 'type-prefix' ident
+     stack-prefix-decl:  ident 'stack-prefix' string
+     set-flag: ('store-optimization'|'include-skipped-insts') ('on'|'off')
+</pre>
+   <p>Note that the syntax of this code is not checked thoroughly (there are
+many other Forth program fragments that could be written in an
+eval-escape).
+
+   <p>A stack prefix can contain letters, digits, or `<samp><span class="samp">:</span></samp>', and may start
+with an `<samp><span class="samp">#</span></samp>'; e.g., in Gforth the return stack has the stack prefix
+`<samp><span class="samp">R:</span></samp>'.  This restriction is not checked during the stack prefix
+definition, but it is enforced by the parsing rules for stack items
+later.
+
+   <p>If you know Forth, the stack effects of the non-standard words involved
+are:
+<a name="index-stack-61"></a><a name="index-type_002dprefix-62"></a><a name="index-single-63"></a><a name="index-double-64"></a><a name="index-stack_002dprefix-65"></a><a name="index-store_002doptimization-66"></a>
+<pre class="example">     stack                 ( "name" "pointer" "type" -- )
+                           ( name execution: -- stack )
+     type-prefix           ( addr u item-size stack "prefix" -- )
+     single                ( -- item-size )
+     double                ( -- item-size )
+     stack-prefix          ( stack "prefix" -- )
+     store-optimization    ( -- addr )
+     include-skipped-insts ( -- addr )
+</pre>
+   <p>An <var>item-size</var> takes three cells on the stack.
+
+<!--  -->
+</body></html>
+

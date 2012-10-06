@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+<title>Classes and Scoping - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Objects.html#Objects" title="Objects">
+<link rel="prev" href="Method-conveniences.html#Method-conveniences" title="Method conveniences">
+<link rel="next" href="Dividing-classes.html#Dividing-classes" title="Dividing classes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Classes-and-Scoping"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Dividing-classes.html#Dividing-classes">Dividing classes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Method-conveniences.html#Method-conveniences">Method conveniences</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Objects.html#Objects">Objects</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.23.3.8 Classes and Scoping</h5>
+
+<p><a name="index-classes-and-scoping-2484"></a><a name="index-scoping-and-classes-2485"></a>
+Inheritance is frequent, unlike structure extension. This exacerbates
+the problem with the field name convention (see <a href="Structure-Naming-Convention.html#Structure-Naming-Convention">Structure Naming Convention</a>): One always has to remember in which class the field was
+originally defined; changing a part of the class structure would require
+changes for renaming in otherwise unaffected code.
+
+   <p><a name="index-g_t_0040code_007binst_002dvar_007d-visibility-2486"></a><a name="index-g_t_0040code_007binst_002dvalue_007d-visibility-2487"></a>To solve this problem, I added a scoping mechanism (which was not in my
+original charter): A field defined with <code>inst-var</code> (or
+<code>inst-value</code>) is visible only in the class where it is defined and in
+the descendent classes of this class.  Using such fields only makes
+sense in <code>m:</code>-defined methods in these classes anyway.
+
+   <p>This scoping mechanism allows us to use the unadorned field name,
+because name clashes with unrelated words become much less likely.
+
+   <p><a name="index-g_t_0040code_007bprotected_007d-discussion-2488"></a><a name="index-g_t_0040code_007bprivate_007d-discussion-2489"></a>Once we have this mechanism, we can also use it for controlling the
+visibility of other words: All words defined after
+<code>protected</code> are visible only in the current class and its
+descendents. <code>public</code> restores the compilation
+(i.e. <code>current</code>) word list that was in effect before. If you
+have several <code>protected</code>s without an intervening
+<code>public</code> or <code>set-current</code>, <code>public</code>
+will restore the compilation word list in effect before the first of
+these <code>protected</code>s.
+
+   </body></html>
+

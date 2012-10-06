@@ -1,0 +1,147 @@
+<html lang="en">
+<head>
+<title>Declaring C Functions - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="C-Interface.html#C-Interface" title="C Interface">
+<link rel="prev" href="Calling-C-Functions.html#Calling-C-Functions" title="Calling C Functions">
+<link rel="next" href="Calling-C-function-pointers.html#Calling-C-function-pointers" title="Calling C function pointers">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Declaring-C-Functions"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Calling-C-function-pointers.html#Calling-C-function-pointers">Calling C function pointers</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Calling-C-Functions.html#Calling-C-Functions">Calling C Functions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="C-Interface.html#C-Interface">C Interface</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.25.2 Declaring C Functions</h4>
+
+<p><a name="index-C-functions_002c-declarations-2887"></a><a name="index-declaring-C-functions-2888"></a>
+Before you can call <code>lseek</code> or <code>dlseek</code>, you have to declare
+it.  The declaration consists of two parts:
+
+     <dl>
+<dt><b>The C part</b><dd>is the C declaration of the function, or more typically and portably,
+a C-style <code>#include</code> of a file that contains the declaration of
+the C function.
+
+     <br><dt><b>The Forth part</b><dd>declares the Forth types of the parameters and the Forth word name
+corresponding to the C function.
+
+   </dl>
+
+   <p>For the words <code>lseek</code> and <code>dlseek</code> mentioned earlier, the
+declarations are:
+
+<pre class="example">     \c #define _FILE_OFFSET_BITS 64
+     \c #include &lt;sys/types.h&gt;
+     \c #include &lt;unistd.h&gt;
+     c-function lseek lseek n n n -- n
+     c-function dlseek lseek n d n -- d
+</pre>
+   <p>The C part of the declarations is prefixed by <code>\c</code>, and the rest
+of the line is ordinary C code.  You can use as many lines of C
+declarations as you like, and they are visible for all further
+function declarations.
+
+   <p>The Forth part declares each interface word with <code>c-function</code>,
+followed by the Forth name of the word, the C name of the called
+function, and the stack effect of the word.  The stack effect contains
+an arbitrary number of types of parameters, then <code>--</code>, and then
+exactly one type for the return value.  The possible types are:
+
+     <dl>
+<dt><code>n</code><dd>single-cell integer
+
+     <br><dt><code>a</code><dd>address (single-cell)
+
+     <br><dt><code>d</code><dd>double-cell integer
+
+     <br><dt><code>r</code><dd>floating-point value
+
+     <br><dt><code>func</code><dd>C function pointer
+
+     <br><dt><code>void</code><dd>no value (used as return type for void functions)
+
+   </dl>
+
+   <p><a name="index-variadic-C-functions-2889"></a>
+To deal with variadic C functions, you can declare one Forth word for
+every pattern you want to use, e.g.:
+
+<pre class="example">     \c #include &lt;stdio.h&gt;
+     c-function printf-nr printf a n r -- n
+     c-function printf-rn printf a r n -- n
+</pre>
+   <p>Note that with C functions declared as variadic (or if you don't
+provide a prototype), the C interface has no C type to convert to, so
+no automatic conversion happens, which may lead to portability
+problems in some cases.  In such cases you can perform the conversion
+explicitly on the C level, e.g., as follows:
+
+<pre class="example">     \c #define printfll(s,ll) printf(s,(long long)ll)
+     c-function printfll printfll a n -- n
+</pre>
+   <p>Here, instead of calling <code>printf()</code> directly, we define a macro
+that casts (converts) the Forth single-cell integer into a
+C <code>long long</code> before calling <code>printf()</code>.
+
+   <p><a name="index-g_t_005cc-_0040var_007b-_0022rest_002dof_002dline_0022-_002d_002d---_007d--gforth-2890"></a><a name="index-g_t_0040code_007b_005cc_007d-2891"></a><a name="index-g_t_005cc-2892"></a>
+<pre class="format"><code>\c</code>       <i>"rest-of-line" &ndash;  </i>       gforth       &ldquo;backslash-c&rdquo;
+</pre>
+   <p>One line of C declarations for the C interface
+
+   <p><a name="index-c_002dfunction-_0040var_007b-_0022forth_002dname_0022-_0022c_002dname_0022-_0022_0040_007btype_0040_007d_0022-_0022_002d_002d_0022-_0022type_0022-_002d_002d---_007d--gforth-2893"></a><a name="index-g_t_0040code_007bc_002dfunction_007d-2894"></a><a name="index-c_002dfunction-2895"></a>
+<pre class="format"><code>c-function</code>       <i>"forth-name" "c-name" "{type}" "&ndash;" "type" &ndash;  </i>       gforth       &ldquo;c-function&rdquo;
+</pre>
+   <p>Define a Forth word <i>forth-name</i>.  <i>Forth-name</i> has the
+specified stack effect and calls the C function <code>c-name</code>.
+
+   <p>In order to work, this C interface invokes GCC at run-time and uses
+dynamic linking.  If these features are not available, there are
+other, less convenient and less portable C interfaces in <samp><span class="file">lib.fs</span></samp>
+and <samp><span class="file">oldlib.fs</span></samp>.  These interfaces are mostly undocumented and
+mostly incompatible with each other and with the documented C
+interface; you can find some examples for the <samp><span class="file">lib.fs</span></samp> interface
+in <samp><span class="file">lib.fs</span></samp>.
+
+   </body></html>
+

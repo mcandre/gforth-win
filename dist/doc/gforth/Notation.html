@@ -1,0 +1,130 @@
+<html lang="en">
+<head>
+<title>Notation - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Words.html#Words" title="Words">
+<link rel="next" href="Case-insensitivity.html#Case-insensitivity" title="Case insensitivity">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Notation"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Case-insensitivity.html#Case-insensitivity">Case insensitivity</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Words.html#Words">Words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.1 Notation</h3>
+
+<p><a name="index-notation-of-glossary-entries-163"></a><a name="index-format-of-glossary-entries-164"></a><a name="index-glossary-notation-format-165"></a><a name="index-word-glossary-entry-format-166"></a>
+The Forth words are described in this section in the glossary notation
+that has become a de-facto standard for Forth texts:
+
+<pre class="format"><i>word</i>     <i>Stack effect</i>   <i>wordset</i>   <i>pronunciation</i>
+</pre>
+   <p><i>Description</i>
+
+     <dl>
+<dt><var>word</var><dd>The name of the word.
+
+     <br><dt><var>Stack effect</var><dd><a name="index-stack-effect-167"></a>The stack effect is written in the notation <i>before</i><code> --
+</code><i>after</i>, where <i>before</i> and <i>after</i> describe the top of
+stack entries before and after the execution of the word. The rest of
+the stack is not touched by the word. The top of stack is rightmost,
+i.e., a stack sequence is written as it is typed in. Note that Gforth
+uses a separate floating point stack, but a unified stack
+notation. Also, return stack effects are not shown in <i>stack
+effect</i>, but in <i>Description</i>. The name of a stack item describes
+the type and/or the function of the item. See below for a discussion of
+the types.
+
+     <p>All words have two stack effects: A compile-time stack effect and a
+run-time stack effect. The compile-time stack-effect of most words is
+<i> &ndash; </i>. If the compile-time stack-effect of a word deviates from
+this standard behaviour, or the word does other unusual things at
+compile time, both stack effects are shown; otherwise only the run-time
+stack effect is shown.
+
+     <p><a name="index-pronounciation-of-words-168"></a><br><dt><var>pronunciation</var><dd>How the word is pronounced.
+
+     <p><a name="index-wordset-169"></a><a name="index-environment-wordset-170"></a><br><dt><var>wordset</var><dd>The ANS Forth standard is divided into several word sets. A standard
+system need not support all of them. Therefore, in theory, the fewer
+word sets your program uses the more portable it will be. However, we
+suspect that most ANS Forth systems on personal machines will feature
+all word sets. Words that are not defined in ANS Forth have
+<code>gforth</code> or <code>gforth-internal</code> as word set. <code>gforth</code>
+describes words that will work in future releases of Gforth;
+<code>gforth-internal</code> words are more volatile. Environmental query
+strings are also displayed like words; you can recognize them by the
+<code>environment</code> in the word set field.
+
+     <br><dt><var>Description</var><dd>A description of the behaviour of the word. 
+</dl>
+
+   <p><a name="index-types-of-stack-items-171"></a><a name="index-stack-item-types-172"></a>The type of a stack item is specified by the character(s) the name
+starts with:
+
+     <dl>
+<dt><code>f</code><dd><a name="index-g_t_0040code_007bf_007d_002c-stack-item-type-173"></a>Boolean flags, i.e. <code>false</code> or <code>true</code>. 
+<br><dt><code>c</code><dd><a name="index-g_t_0040code_007bc_007d_002c-stack-item-type-174"></a>Char
+<br><dt><code>w</code><dd><a name="index-g_t_0040code_007bw_007d_002c-stack-item-type-175"></a>Cell, can contain an integer or an address
+<br><dt><code>n</code><dd><a name="index-g_t_0040code_007bn_007d_002c-stack-item-type-176"></a>signed integer
+<br><dt><code>u</code><dd><a name="index-g_t_0040code_007bu_007d_002c-stack-item-type-177"></a>unsigned integer
+<br><dt><code>d</code><dd><a name="index-g_t_0040code_007bd_007d_002c-stack-item-type-178"></a>double sized signed integer
+<br><dt><code>ud</code><dd><a name="index-g_t_0040code_007bud_007d_002c-stack-item-type-179"></a>double sized unsigned integer
+<br><dt><code>r</code><dd><a name="index-g_t_0040code_007br_007d_002c-stack-item-type-180"></a>Float (on the FP stack)
+<br><dt><code>a-</code><dd><a name="index-g_t_0040code_007ba_005f_007d_002c-stack-item-type-181"></a>Cell-aligned address
+<br><dt><code>c-</code><dd><a name="index-g_t_0040code_007bc_005f_007d_002c-stack-item-type-182"></a>Char-aligned address (note that a Char may have two bytes in Windows NT)
+<br><dt><code>f-</code><dd><a name="index-g_t_0040code_007bf_005f_007d_002c-stack-item-type-183"></a>Float-aligned address
+<br><dt><code>df-</code><dd><a name="index-g_t_0040code_007bdf_005f_007d_002c-stack-item-type-184"></a>Address aligned for IEEE double precision float
+<br><dt><code>sf-</code><dd><a name="index-g_t_0040code_007bsf_005f_007d_002c-stack-item-type-185"></a>Address aligned for IEEE single precision float
+<br><dt><code>xt</code><dd><a name="index-g_t_0040code_007bxt_007d_002c-stack-item-type-186"></a>Execution token, same size as Cell
+<br><dt><code>wid</code><dd><a name="index-g_t_0040code_007bwid_007d_002c-stack-item-type-187"></a>Word list ID, same size as Cell
+<br><dt><code>ior, wior</code><dd><a name="index-ior-type-description-188"></a><a name="index-wior-type-description-189"></a>I/O result code, cell-sized.  In Gforth, you can <code>throw</code> iors. 
+<br><dt><code>f83name</code><dd><a name="index-g_t_0040code_007bf83name_007d_002c-stack-item-type-190"></a>Pointer to a name structure
+<br><dt><code>"</code><dd><a name="index-g_t_0040code_007b_0022_007d_002c-stack-item-type-191"></a>string in the input stream (not on the stack). The terminating character
+is a blank by default. If it is not a blank, it is shown in <code>&lt;&gt;</code>
+quotes. 
+</dl>
+
+<!--  -->
+</body></html>
+

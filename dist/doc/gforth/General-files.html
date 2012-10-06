@@ -1,0 +1,173 @@
+<html lang="en">
+<head>
+<title>General files - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Files.html#Files" title="Files">
+<link rel="prev" href="Forth-source-files.html#Forth-source-files" title="Forth source files">
+<link rel="next" href="Redirection.html#Redirection" title="Redirection">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="General-files"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Redirection.html#Redirection">Redirection</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Forth-source-files.html#Forth-source-files">Forth source files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Files.html#Files">Files</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.17.2 General files</h4>
+
+<p><a name="index-general-files-1707"></a><a name="index-file_002dhandling-1708"></a>
+Files are opened/created by name and type. The following file access
+methods (FAMs) are recognised:
+
+   <p><a name="index-fam-_0028file-access-method_0029-1709"></a><a name="index-r_002fo-_0040var_007b-_002d_002d-fam---_007d--file-1710"></a><a name="index-g_t_0040code_007br_002fo_007d-1711"></a><a name="index-r_002fo-1712"></a>
+<pre class="format"><code>r/o</code>       <i>&ndash; fam  </i>       file       &ldquo;r-o&rdquo;
+</pre>
+   <p><a name="index-r_002fw-_0040var_007b-_002d_002d-fam---_007d--file-1713"></a><a name="index-g_t_0040code_007br_002fw_007d-1714"></a><a name="index-r_002fw-1715"></a>
+<pre class="format"><code>r/w</code>       <i>&ndash; fam  </i>       file       &ldquo;r-w&rdquo;
+</pre>
+   <p><a name="index-w_002fo-_0040var_007b-_002d_002d-fam---_007d--file-1716"></a><a name="index-g_t_0040code_007bw_002fo_007d-1717"></a><a name="index-w_002fo-1718"></a>
+<pre class="format"><code>w/o</code>       <i>&ndash; fam  </i>       file       &ldquo;w-o&rdquo;
+</pre>
+   <p><a name="index-bin-_0040var_007b-fam1-_002d_002d-fam2---_007d--file-1719"></a><a name="index-g_t_0040code_007bbin_007d-1720"></a><a name="index-bin-1721"></a>
+<pre class="format"><code>bin</code>       <i>fam1 &ndash; fam2  </i>       file       &ldquo;bin&rdquo;
+</pre>
+   <p>When a file is opened/created, it returns a file identifier,
+<i>wfileid</i> that is used for all other file commands. All file
+commands also return a status value, <i>wior</i>, that is 0 for a
+successful operation and an implementation-defined non-zero value in the
+case of an error.
+
+   <p><a name="index-open_002dfile-_0040var_007b-c_002daddr-u-wfam-_002d_002d-wfileid-wior--_007d--file-1722"></a><a name="index-g_t_0040code_007bopen_002dfile_007d-1723"></a><a name="index-open_002dfile-1724"></a>
+<pre class="format"><code>open-file</code>       <i>c-addr u wfam &ndash; wfileid wior </i>       file       &ldquo;open-file&rdquo;
+</pre>
+   <p><a name="index-create_002dfile-_0040var_007b-c_002daddr-u-wfam-_002d_002d-wfileid-wior--_007d--file-1725"></a><a name="index-g_t_0040code_007bcreate_002dfile_007d-1726"></a><a name="index-create_002dfile-1727"></a>
+<pre class="format"><code>create-file</code>       <i>c-addr u wfam &ndash; wfileid wior </i>       file       &ldquo;create-file&rdquo;
+</pre>
+   <p><a name="index-close_002dfile-_0040var_007b-wfileid-_002d_002d-wior--_007d--file-1728"></a><a name="index-g_t_0040code_007bclose_002dfile_007d-1729"></a><a name="index-close_002dfile-1730"></a>
+<pre class="format"><code>close-file</code>       <i>wfileid &ndash; wior </i>       file       &ldquo;close-file&rdquo;
+</pre>
+   <p><a name="index-delete_002dfile-_0040var_007b-c_002daddr-u-_002d_002d-wior--_007d--file-1731"></a><a name="index-g_t_0040code_007bdelete_002dfile_007d-1732"></a><a name="index-delete_002dfile-1733"></a>
+<pre class="format"><code>delete-file</code>       <i>c-addr u &ndash; wior </i>       file       &ldquo;delete-file&rdquo;
+</pre>
+   <p><a name="index-rename_002dfile-_0040var_007b-c_002daddr1-u1-c_002daddr2-u2-_002d_002d-wior--_007d--file_002dext-1734"></a><a name="index-g_t_0040code_007brename_002dfile_007d-1735"></a><a name="index-rename_002dfile-1736"></a>
+<pre class="format"><code>rename-file</code>       <i>c-addr1 u1 c-addr2 u2 &ndash; wior </i>       file-ext       &ldquo;rename-file&rdquo;
+</pre>
+   <p>Rename file <i>c_addr1 u1</i> to new name <i>c_addr2 u2</i>
+
+   <p><a name="index-read_002dfile-_0040var_007b-c_002daddr-u1-wfileid-_002d_002d-u2-wior--_007d--file-1737"></a><a name="index-g_t_0040code_007bread_002dfile_007d-1738"></a><a name="index-read_002dfile-1739"></a>
+<pre class="format"><code>read-file</code>       <i>c-addr u1 wfileid &ndash; u2 wior </i>       file       &ldquo;read-file&rdquo;
+</pre>
+   <p><a name="index-read_002dline-_0040var_007b-c_005faddr-u1-wfileid-_002d_002d-u2-flag-wior---_007d--file-1740"></a><a name="index-g_t_0040code_007bread_002dline_007d-1741"></a><a name="index-read_002dline-1742"></a>
+<pre class="format"><code>read-line</code>       <i>c_addr u1 wfileid &ndash; u2 flag wior  </i>       file       &ldquo;read-line&rdquo;
+</pre>
+   <p><a name="index-key_002dfile-_0040var_007b-wfileid-_002d_002d-c--_007d--gforth-1743"></a><a name="index-g_t_0040code_007bkey_002dfile_007d-1744"></a><a name="index-key_002dfile-1745"></a>
+<pre class="format"><code>key-file</code>       <i>wfileid &ndash; c </i>       gforth       &ldquo;paren-key-file&rdquo;
+</pre>
+   <p>Read one character <i>c</i> from <i>wfileid</i>.  This word disables
+buffering for <i>wfileid</i>.  If you want to read characters from a
+terminal in non-canonical (raw) mode, you have to put the terminal in
+non-canonical mode yourself (using the C interface); the exception is
+<code>stdin</code>: Gforth automatically puts it into non-canonical mode.
+
+   <p><a name="index-key_003f_002dfile-_0040var_007b-wfileid-_002d_002d-f--_007d--gforth-1746"></a><a name="index-g_t_0040code_007bkey_003f_002dfile_007d-1747"></a><a name="index-key_003f_002dfile-1748"></a>
+<pre class="format"><code>key?-file</code>       <i>wfileid &ndash; f </i>       gforth       &ldquo;key-q-file&rdquo;
+</pre>
+   <p><i>f</i> is true if at least one character can be read from <i>wfileid</i>
+without blocking.  If you also want to use <code>read-file</code> or
+<code>read-line</code> on the file, you have to call <code>key?-file</code> or
+<code>key-file</code> first (these two words disable buffering).
+
+   <p><a name="index-write_002dfile-_0040var_007b-c_002daddr-u1-wfileid-_002d_002d-wior--_007d--file-1749"></a><a name="index-g_t_0040code_007bwrite_002dfile_007d-1750"></a><a name="index-write_002dfile-1751"></a>
+<pre class="format"><code>write-file</code>       <i>c-addr u1 wfileid &ndash; wior </i>       file       &ldquo;write-file&rdquo;
+</pre>
+   <p><a name="index-write_002dline-_0040var_007b-c_002daddr-u-fileid-_002d_002d-ior---_007d--file-1752"></a><a name="index-g_t_0040code_007bwrite_002dline_007d-1753"></a><a name="index-write_002dline-1754"></a>
+<pre class="format"><code>write-line</code>       <i>c-addr u fileid &ndash; ior  </i>       file       &ldquo;write-line&rdquo;
+</pre>
+   <p><a name="index-emit_002dfile-_0040var_007b-c-wfileid-_002d_002d-wior--_007d--gforth-1755"></a><a name="index-g_t_0040code_007bemit_002dfile_007d-1756"></a><a name="index-emit_002dfile-1757"></a>
+<pre class="format"><code>emit-file</code>       <i>c wfileid &ndash; wior </i>       gforth       &ldquo;emit-file&rdquo;
+</pre>
+   <p><a name="index-flush_002dfile-_0040var_007b-wfileid-_002d_002d-wior--_007d--file_002dext-1758"></a><a name="index-g_t_0040code_007bflush_002dfile_007d-1759"></a><a name="index-flush_002dfile-1760"></a>
+<pre class="format"><code>flush-file</code>       <i>wfileid &ndash; wior </i>       file-ext       &ldquo;flush-file&rdquo;
+</pre>
+   <p><a name="index-file_002dstatus-_0040var_007b-c_002daddr-u-_002d_002d-wfam-wior--_007d--file_002dext-1761"></a><a name="index-g_t_0040code_007bfile_002dstatus_007d-1762"></a><a name="index-file_002dstatus-1763"></a>
+<pre class="format"><code>file-status</code>       <i>c-addr u &ndash; wfam wior </i>       file-ext       &ldquo;file-status&rdquo;
+</pre>
+   <p><a name="index-file_002dposition-_0040var_007b-wfileid-_002d_002d-ud-wior--_007d--file-1764"></a><a name="index-g_t_0040code_007bfile_002dposition_007d-1765"></a><a name="index-file_002dposition-1766"></a>
+<pre class="format"><code>file-position</code>       <i>wfileid &ndash; ud wior </i>       file       &ldquo;file-position&rdquo;
+</pre>
+   <p><a name="index-reposition_002dfile-_0040var_007b-ud-wfileid-_002d_002d-wior--_007d--file-1767"></a><a name="index-g_t_0040code_007breposition_002dfile_007d-1768"></a><a name="index-reposition_002dfile-1769"></a>
+<pre class="format"><code>reposition-file</code>       <i>ud wfileid &ndash; wior </i>       file       &ldquo;reposition-file&rdquo;
+</pre>
+   <p><a name="index-file_002dsize-_0040var_007b-wfileid-_002d_002d-ud-wior--_007d--file-1770"></a><a name="index-g_t_0040code_007bfile_002dsize_007d-1771"></a><a name="index-file_002dsize-1772"></a>
+<pre class="format"><code>file-size</code>       <i>wfileid &ndash; ud wior </i>       file       &ldquo;file-size&rdquo;
+</pre>
+   <p><a name="index-resize_002dfile-_0040var_007b-ud-wfileid-_002d_002d-wior--_007d--file-1773"></a><a name="index-g_t_0040code_007bresize_002dfile_007d-1774"></a><a name="index-resize_002dfile-1775"></a>
+<pre class="format"><code>resize-file</code>       <i>ud wfileid &ndash; wior </i>       file       &ldquo;resize-file&rdquo;
+</pre>
+   <p><a name="index-slurp_002dfile-_0040var_007b-c_002daddr1-u1-_002d_002d-c_002daddr2-u2---_007d--gforth-1776"></a><a name="index-g_t_0040code_007bslurp_002dfile_007d-1777"></a><a name="index-slurp_002dfile-1778"></a>
+<pre class="format"><code>slurp-file</code>       <i>c-addr1 u1 &ndash; c-addr2 u2  </i>       gforth       &ldquo;slurp-file&rdquo;
+</pre>
+   <p><var>c-addr1 u1</var> is the filename, <var>c-addr2 u2</var> is the file's contents
+
+   <p><a name="index-slurp_002dfid-_0040var_007b-fid-_002d_002d-addr-u---_007d--gforth-1779"></a><a name="index-g_t_0040code_007bslurp_002dfid_007d-1780"></a><a name="index-slurp_002dfid-1781"></a>
+<pre class="format"><code>slurp-fid</code>       <i>fid &ndash; addr u  </i>       gforth       &ldquo;slurp-fid&rdquo;
+</pre>
+   <p><var>addr u</var> is the content of the file <var>fid</var>
+
+   <p><a name="index-stdin-_0040var_007b-_002d_002d-wfileid--_007d--gforth-1782"></a><a name="index-g_t_0040code_007bstdin_007d-1783"></a><a name="index-stdin-1784"></a>
+<pre class="format"><code>stdin</code>       <i>&ndash; wfileid </i>       gforth       &ldquo;stdin&rdquo;
+</pre>
+   <p>The standard input file of the Gforth process.
+
+   <p><a name="index-stdout-_0040var_007b-_002d_002d-wfileid--_007d--gforth-1785"></a><a name="index-g_t_0040code_007bstdout_007d-1786"></a><a name="index-stdout-1787"></a>
+<pre class="format"><code>stdout</code>       <i>&ndash; wfileid </i>       gforth       &ldquo;stdout&rdquo;
+</pre>
+   <p>The standard output file of the Gforth process.
+
+   <p><a name="index-stderr-_0040var_007b-_002d_002d-wfileid--_007d--gforth-1788"></a><a name="index-g_t_0040code_007bstderr_007d-1789"></a><a name="index-stderr-1790"></a>
+<pre class="format"><code>stderr</code>       <i>&ndash; wfileid </i>       gforth       &ldquo;stderr&rdquo;
+</pre>
+   <p>The standard error output file of the Gforth process.
+
+<!--  -->
+</body></html>
+

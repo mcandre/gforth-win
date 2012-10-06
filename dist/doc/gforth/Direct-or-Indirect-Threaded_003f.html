@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+<title>Direct or Indirect Threaded? - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Threading.html#Threading" title="Threading">
+<link rel="prev" href="Scheduling.html#Scheduling" title="Scheduling">
+<link rel="next" href="Dynamic-Superinstructions.html#Dynamic-Superinstructions" title="Dynamic Superinstructions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Direct-or-Indirect-Threaded%3f"></a>
+<a name="Direct-or-Indirect-Threaded_003f"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Dynamic-Superinstructions.html#Dynamic-Superinstructions">Dynamic Superinstructions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Scheduling.html#Scheduling">Scheduling</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Threading.html#Threading">Threading</a>
+<hr>
+</div>
+
+<h4 class="subsection">14.2.2 Direct or Indirect Threaded?</h4>
+
+<p><a name="index-threading_002c-direct-or-indirect_003f-3469"></a>
+Threaded forth code consists of references to primitives (simple machine
+code routines like <code>+</code>) and to non-primitives (e.g., colon
+definitions, variables, constants); for a specific class of
+non-primitives (e.g., variables) there is one code routine (e.g.,
+<code>dovar</code>), but each variable needs a separate reference to its data.
+
+   <p>Traditionally Forth has been implemented as indirect threaded code,
+because this allows to use only one cell to reference a non-primitive
+(basically you point to the data, and find the code address there).
+
+   <p><a name="index-primitive_002dcentric-threaded-code-3470"></a>However, threaded code in Gforth (since 0.6.0) uses two cells for
+non-primitives, one for the code address, and one for the data address;
+the data pointer is an immediate argument for the virtual machine
+instruction represented by the code address.  We call this
+<em>primitive-centric</em> threaded code, because all code addresses point
+to simple primitives.  E.g., for a variable, the code address is for
+<code>lit</code> (also used for integer literals like <code>99</code>).
+
+   <p>Primitive-centric threaded code allows us to use (faster) direct
+threading as dispatch method, completely portably (direct threaded code
+in Gforth before 0.6.0 required architecture-specific code).  It also
+eliminates the performance problems related to I-cache consistency that
+386 implementations have with direct threaded code, and allows
+additional optimizations.
+
+   <p><a name="index-hybrid-direct_002findirect-threaded-code-3471"></a>There is a catch, however: the <var>xt</var> parameter of <code>execute</code> can
+occupy only one cell, so how do we pass non-primitives with their code
+<em>and</em> data addresses to them?  Our answer is to use indirect
+threaded dispatch for <code>execute</code> and other words that use a
+single-cell xt.  So, normal threaded code in colon definitions uses
+direct threading, and <code>execute</code> and similar words, which dispatch
+to xts on the data stack, use indirect threaded code.  We call this
+<em>hybrid direct/indirect</em> threaded code.
+
+   <p><a name="index-engines_002c-gforth-vs_002e-gforth_002dfast-vs_002e-gforth_002ditc-3472"></a><a name="index-gforth-engine-3473"></a><a name="index-gforth_002dfast-engine-3474"></a>The engines <samp><span class="command">gforth</span></samp> and <samp><span class="command">gforth-fast</span></samp> use hybrid
+direct/indirect threaded code.  This means that with these engines you
+cannot use <code>,</code> to compile an xt.  Instead, you have to use
+<code>compile,</code>.
+
+   <p><a name="index-gforth_002ditc-engine-3475"></a>If you want to compile xts with <code>,</code>, use <samp><span class="command">gforth-itc</span></samp>. 
+This engine uses plain old indirect threaded code.  It still compiles in
+a primitive-centric style, so you cannot use <code>compile,</code> instead of
+<code>,</code> (e.g., for producing tables of xts with <code>] word1 word2
+... [</code>).  If you want to do that, you have to use <samp><span class="command">gforth-itc</span></samp>
+and execute <code>' , is compile,</code>.  Your program can check if it is
+running on a hybrid direct/indirect threaded engine or a pure indirect
+threaded engine with <code>threading-method</code> (see <a href="Threading-Words.html#Threading-Words">Threading Words</a>).
+
+   </body></html>
+

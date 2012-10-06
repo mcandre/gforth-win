@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+<title>Basic Mini-OOF Usage - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Mini_002dOOF.html#Mini_002dOOF" title="Mini-OOF">
+<link rel="prev" href="Mini_002dOOF.html#Mini_002dOOF" title="Mini-OOF">
+<link rel="next" href="Mini_002dOOF-Example.html#Mini_002dOOF-Example" title="Mini-OOF Example">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Basic-Mini-OOF-Usage"></a>
+<a name="Basic-Mini_002dOOF-Usage"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Mini_002dOOF-Example.html#Mini_002dOOF-Example">Mini-OOF Example</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Mini_002dOOF.html#Mini_002dOOF">Mini-OOF</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Mini_002dOOF.html#Mini_002dOOF">Mini-OOF</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.23.5.1 Basic <samp><span class="file">mini-oof.fs</span></samp> Usage</h5>
+
+<p><a name="index-mini_002doof-usage-2751"></a>
+There is a base class (<code>class</code>, which allocates one cell for the
+object pointer) plus seven other words: to define a method, a variable,
+a class; to end a class, to resolve binding, to allocate an object and
+to compile a class method. 
+<!-- TODO better description of the last one -->
+
+   <p><a name="index-object-_0040var_007b-_002d_002d-a_002daddr---_007d--mini_002doof-2752"></a><a name="index-g_t_0040code_007bobject_007d-2753"></a><a name="index-object-2754"></a>
+<pre class="format"><code>object</code>       <i>&ndash; a-addr  </i>       mini-oof       &ldquo;object&rdquo;
+</pre>
+   <p><var>object</var> is the base class of all objects.
+
+   <p><a name="index-method-_0040var_007b-m-v-_0022name_0022-_002d_002d-m_0027-v---_007d--mini_002doof-2755"></a><a name="index-g_t_0040code_007bmethod_007d-2756"></a><a name="index-method-2757"></a>
+<pre class="format"><code>method</code>       <i>m v "name" &ndash; m' v  </i>       mini-oof       &ldquo;method&rdquo;
+</pre>
+   <p>Define a selector.
+
+   <p><a name="index-var-_0040var_007b-m-v-size-_0022name_0022-_002d_002d-m-v_0027---_007d--mini_002doof-2758"></a><a name="index-g_t_0040code_007bvar_007d-2759"></a><a name="index-var-2760"></a>
+<pre class="format"><code>var</code>       <i>m v size "name" &ndash; m v'  </i>       mini-oof       &ldquo;var&rdquo;
+</pre>
+   <p>Define a variable with <var>size</var> bytes.
+
+   <p><a name="index-class-_0040var_007b-class-_002d_002d-class-selectors-vars---_007d--mini_002doof-2761"></a><a name="index-g_t_0040code_007bclass_007d-2762"></a><a name="index-class-2763"></a>
+<pre class="format"><code>class</code>       <i>class &ndash; class selectors vars  </i>       mini-oof       &ldquo;class&rdquo;
+</pre>
+   <p>Start the definition of a class.
+
+   <p><a name="index-end_002dclass-_0040var_007b-class-selectors-vars-_0022name_0022-_002d_002d---_007d--mini_002doof-2764"></a><a name="index-g_t_0040code_007bend_002dclass_007d-2765"></a><a name="index-end_002dclass-2766"></a>
+<pre class="format"><code>end-class</code>       <i>class selectors vars "name" &ndash;  </i>       mini-oof       &ldquo;end-class&rdquo;
+</pre>
+   <p>End the definition of a class.
+
+   <p><a name="index-defines-_0040var_007b-xt-class-_0022name_0022-_002d_002d---_007d--mini_002doof-2767"></a><a name="index-g_t_0040code_007bdefines_007d-2768"></a><a name="index-defines-2769"></a>
+<pre class="format"><code>defines</code>       <i>xt class "name" &ndash;  </i>       mini-oof       &ldquo;defines&rdquo;
+</pre>
+   <p>Bind <var>xt</var> to the selector <var>name</var> in class <var>class</var>.
+
+   <p><a name="index-new-_0040var_007b-class-_002d_002d-o---_007d--mini_002doof-2770"></a><a name="index-g_t_0040code_007bnew_007d-2771"></a><a name="index-new-2772"></a>
+<pre class="format"><code>new</code>       <i>class &ndash; o  </i>       mini-oof       &ldquo;new&rdquo;
+</pre>
+   <p>Create a new incarnation of the class <var>class</var>.
+
+   <p><a name="index-g_t_003a_003a-_0040var_007b-class-_0022name_0022-_002d_002d---_007d--mini_002doof-2773"></a><a name="index-g_t_0040code_007b_003a_003a_007d-2774"></a>
+<pre class="format"><code>::</code>       <i>class "name" &ndash;  </i>       mini-oof       &ldquo;colon-colon&rdquo;
+</pre>
+   <p>Compile the method for the selector <var>name</var> of the class
+<var>class</var> (not immediate!).
+
+<!--  -->
+</body></html>
+

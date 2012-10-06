@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+<title>Class Declaration - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="OOF.html#OOF" title="OOF">
+<link rel="prev" href="The-OOF-base-class.html#The-OOF-base-class" title="The OOF base class">
+<link rel="next" href="Class-Implementation.html#Class-Implementation" title="Class Implementation">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Class-Declaration"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Class-Implementation.html#Class-Implementation">Class Implementation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="The-OOF-base-class.html#The-OOF-base-class">The OOF base class</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="OOF.html#OOF">OOF</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.23.4.4 Class Declaration</h5>
+
+<p><a name="index-class-declaration-2721"></a>
+     <ul>
+<li>Instance variables
+
+     <p><a name="index-var-_0040var_007b-size-_002d_002d---_007d--oof-2722"></a><a name="index-g_t_0040code_007bvar_007d-2723"></a><a name="index-var-2724"></a>
+     <pre class="format"><code>var</code>       <i>size &ndash;  </i>       oof       &ldquo;var&rdquo;
+</pre>
+     <p>Create an instance variable
+
+     <li>Object pointers
+
+     <p><a name="index-ptr-_0040var_007b-_002d_002d---_007d--oof-2725"></a><a name="index-g_t_0040code_007bptr_007d-2726"></a><a name="index-ptr-2727"></a>
+     <pre class="format"><code>ptr</code>       <i>&ndash;  </i>       oof       &ldquo;ptr&rdquo;
+</pre>
+     <p>Create an instance pointer
+
+     <p><a name="index-asptr-_0040var_007b-class-_002d_002d---_007d--oof-2728"></a><a name="index-g_t_0040code_007basptr_007d-2729"></a><a name="index-asptr-2730"></a>
+     <pre class="format"><code>asptr</code>       <i>class &ndash;  </i>       oof       &ldquo;asptr&rdquo;
+</pre>
+     <p>Create an alias to an instance pointer, cast to another class.
+
+     <li>Instance defers
+
+     <p><a name="index-defer-_0040var_007b-_002d_002d---_007d--oof-2731"></a><a name="index-g_t_0040code_007bdefer_007d-2732"></a><a name="index-defer-2733"></a>
+     <pre class="format"><code>defer</code>       <i>&ndash;  </i>       oof       &ldquo;defer&rdquo;
+</pre>
+     <p>Create an instance defer
+
+     <li>Method selectors
+
+     <p><a name="index-early-_0040var_007b-_002d_002d---_007d--oof-2734"></a><a name="index-g_t_0040code_007bearly_007d-2735"></a><a name="index-early-2736"></a>
+     <pre class="format"><code>early</code>       <i>&ndash;  </i>       oof       &ldquo;early&rdquo;
+</pre>
+     <p>Create a method selector for early binding.
+
+     <p><a name="index-method-_0040var_007b-_002d_002d---_007d--oof-2737"></a><a name="index-g_t_0040code_007bmethod_007d-2738"></a><a name="index-method-2739"></a>
+     <pre class="format"><code>method</code>       <i>&ndash;  </i>       oof       &ldquo;method&rdquo;
+</pre>
+     <p>Create a method selector.
+
+     <li>Class-wide variables
+
+     <p><a name="index-static-_0040var_007b-_002d_002d---_007d--oof-2740"></a><a name="index-g_t_0040code_007bstatic_007d-2741"></a><a name="index-static-2742"></a>
+     <pre class="format"><code>static</code>       <i>&ndash;  </i>       oof       &ldquo;static&rdquo;
+</pre>
+     <p>Create a class-wide cell-sized variable.
+
+     <li>End declaration
+
+     <p><a name="index-how_003a-_0040var_007b-_002d_002d---_007d--oof-2743"></a><a name="index-g_t_0040code_007bhow_003a_007d-2744"></a><a name="index-how_003a-2745"></a>
+     <pre class="format"><code>how:</code>       <i>&ndash;  </i>       oof       &ldquo;how-to&rdquo;
+</pre>
+     <p>End declaration, start implementation
+
+     <p><a name="index-class_003b-_0040var_007b-_002d_002d---_007d--oof-2746"></a><a name="index-g_t_0040code_007bclass_003b_007d-2747"></a><a name="index-class_003b-2748"></a>
+     <pre class="format"><code>class;</code>       <i>&ndash;  </i>       oof       &ldquo;end-class&rdquo;
+</pre>
+     <p>End class declaration or implementation
+
+   </ul>
+
+<!--  -->
+</body></html>
+

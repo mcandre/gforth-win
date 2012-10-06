@@ -1,0 +1,231 @@
+<html lang="en">
+<head>
+<title>Arbitrary control structures - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Control-Structures.html#Control-Structures" title="Control Structures">
+<link rel="prev" href="Counted-Loops.html#Counted-Loops" title="Counted Loops">
+<link rel="next" href="Calls-and-returns.html#Calls-and-returns" title="Calls and returns">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Arbitrary-control-structures"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Calls-and-returns.html#Calls-and-returns">Calls and returns</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Counted-Loops.html#Counted-Loops">Counted Loops</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Control-Structures.html#Control-Structures">Control Structures</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.8.4 Arbitrary control structures</h4>
+
+<p><a name="index-control-structures_002c-user_002ddefined-1032"></a>
+<a name="index-control_002dflow-stack-1033"></a>ANS Forth permits and supports using control structures in a non-nested
+way. Information about incomplete control structures is stored on the
+control-flow stack. This stack may be implemented on the Forth data
+stack, and this is what we have done in Gforth.
+
+   <p><a name="index-g_t_0040code_007borig_007d_002c-control_002dflow-stack-item-1034"></a><a name="index-g_t_0040code_007bdest_007d_002c-control_002dflow-stack-item-1035"></a>An <i>orig</i> entry represents an unresolved forward branch, a <i>dest</i>
+entry represents a backward branch target. A few words are the basis for
+building any control structure possible (except control structures that
+need storage, like calls, coroutines, and backtracking).
+
+   <p><a name="index-IF-_0040var_007b-compilation-_002d_002d-orig-_003b-run_002dtime-f-_002d_002d---_007d--core-1036"></a><a name="index-g_t_0040code_007bIF_007d-1037"></a><a name="index-IF-1038"></a>
+<pre class="format"><code>IF</code>       <i>compilation &ndash; orig ; run-time f &ndash;  </i>       core       &ldquo;IF&rdquo;
+</pre>
+   <p><a name="index-AHEAD-_0040var_007b-compilation-_002d_002d-orig-_003b-run_002dtime-_002d_002d---_007d--tools_002dext-1039"></a><a name="index-g_t_0040code_007bAHEAD_007d-1040"></a><a name="index-AHEAD-1041"></a>
+<pre class="format"><code>AHEAD</code>       <i>compilation &ndash; orig ; run-time &ndash;  </i>       tools-ext       &ldquo;AHEAD&rdquo;
+</pre>
+   <p><a name="index-THEN-_0040var_007b-compilation-orig-_002d_002d-_003b-run_002dtime-_002d_002d---_007d--core-1042"></a><a name="index-g_t_0040code_007bTHEN_007d-1043"></a><a name="index-THEN-1044"></a>
+<pre class="format"><code>THEN</code>       <i>compilation orig &ndash; ; run-time &ndash;  </i>       core       &ldquo;THEN&rdquo;
+</pre>
+   <p><a name="index-BEGIN-_0040var_007b-compilation-_002d_002d-dest-_003b-run_002dtime-_002d_002d---_007d--core-1045"></a><a name="index-g_t_0040code_007bBEGIN_007d-1046"></a><a name="index-BEGIN-1047"></a>
+<pre class="format"><code>BEGIN</code>       <i>compilation &ndash; dest ; run-time &ndash;  </i>       core       &ldquo;BEGIN&rdquo;
+</pre>
+   <p><a name="index-UNTIL-_0040var_007b-compilation-dest-_002d_002d-_003b-run_002dtime-f-_002d_002d---_007d--core-1048"></a><a name="index-g_t_0040code_007bUNTIL_007d-1049"></a><a name="index-UNTIL-1050"></a>
+<pre class="format"><code>UNTIL</code>       <i>compilation dest &ndash; ; run-time f &ndash;  </i>       core       &ldquo;UNTIL&rdquo;
+</pre>
+   <p><a name="index-AGAIN-_0040var_007b-compilation-dest-_002d_002d-_003b-run_002dtime-_002d_002d---_007d--core_002dext-1051"></a><a name="index-g_t_0040code_007bAGAIN_007d-1052"></a><a name="index-AGAIN-1053"></a>
+<pre class="format"><code>AGAIN</code>       <i>compilation dest &ndash; ; run-time &ndash;  </i>       core-ext       &ldquo;AGAIN&rdquo;
+</pre>
+   <p><a name="index-CS_002dPICK-_0040var_007b-_002e_002e_002e-u-_002d_002d-_002e_002e_002e-destu---_007d--tools_002dext-1054"></a><a name="index-g_t_0040code_007bCS_002dPICK_007d-1055"></a><a name="index-CS_002dPICK-1056"></a>
+<pre class="format"><code>CS-PICK</code>       <i>... u &ndash; ... destu  </i>       tools-ext       &ldquo;c-s-pick&rdquo;
+</pre>
+   <p><a name="index-CS_002dROLL-_0040var_007b-destu_002forigu-_002e_002e-dest0_002forig0-u-_002d_002d-_002e_002e-dest0_002forig0-destu_002forigu---_007d--tools_002dext-1057"></a><a name="index-g_t_0040code_007bCS_002dROLL_007d-1058"></a><a name="index-CS_002dROLL-1059"></a>
+<pre class="format"><code>CS-ROLL</code>       <i>destu/origu .. dest0/orig0 u &ndash; .. dest0/orig0 destu/origu  </i>       tools-ext       &ldquo;c-s-roll&rdquo;
+</pre>
+   <p>The Standard words <code>CS-PICK</code> and <code>CS-ROLL</code> allow you to
+manipulate the control-flow stack in a portable way. Without them, you
+would need to know how many stack items are occupied by a control-flow
+entry (many systems use one cell. In Gforth they currently take three,
+but this may change in the future).
+
+   <p>Some standard control structure words are built from these words:
+
+   <p><a name="index-ELSE-_0040var_007b-compilation-orig1-_002d_002d-orig2-_003b-run_002dtime-_002d_002d---_007d--core-1060"></a><a name="index-g_t_0040code_007bELSE_007d-1061"></a><a name="index-ELSE-1062"></a>
+<pre class="format"><code>ELSE</code>       <i>compilation orig1 &ndash; orig2 ; run-time &ndash;  </i>       core       &ldquo;ELSE&rdquo;
+</pre>
+   <p><a name="index-WHILE-_0040var_007b-compilation-dest-_002d_002d-orig-dest-_003b-run_002dtime-f-_002d_002d---_007d--core-1063"></a><a name="index-g_t_0040code_007bWHILE_007d-1064"></a><a name="index-WHILE-1065"></a>
+<pre class="format"><code>WHILE</code>       <i>compilation dest &ndash; orig dest ; run-time f &ndash;  </i>       core       &ldquo;WHILE&rdquo;
+</pre>
+   <p><a name="index-REPEAT-_0040var_007b-compilation-orig-dest-_002d_002d-_003b-run_002dtime-_002d_002d---_007d--core-1066"></a><a name="index-g_t_0040code_007bREPEAT_007d-1067"></a><a name="index-REPEAT-1068"></a>
+<pre class="format"><code>REPEAT</code>       <i>compilation orig dest &ndash; ; run-time &ndash;  </i>       core       &ldquo;REPEAT&rdquo;
+</pre>
+   <p class="noindent">Gforth adds some more control-structure words:
+
+   <p><a name="index-ENDIF-_0040var_007b-compilation-orig-_002d_002d-_003b-run_002dtime-_002d_002d---_007d--gforth-1069"></a><a name="index-g_t_0040code_007bENDIF_007d-1070"></a><a name="index-ENDIF-1071"></a>
+<pre class="format"><code>ENDIF</code>       <i>compilation orig &ndash; ; run-time &ndash;  </i>       gforth       &ldquo;ENDIF&rdquo;
+</pre>
+   <p><a name="index-g_t_003fDUP_002dIF-_0040var_007b-compilation-_002d_002d-orig-_003b-run_002dtime-n-_002d_002d-n_007c---_007d--gforth-1072"></a><a name="index-g_t_0040code_007b_003fDUP_002dIF_007d-1073"></a><a name="index-g_t_003fDUP_002dIF-1074"></a>
+<pre class="format"><code>?DUP-IF</code>       <i>compilation &ndash; orig ; run-time n &ndash; n|  </i>       gforth       &ldquo;question-dupe-if&rdquo;
+</pre>
+   <p>This is the preferred alternative to the idiom "<code>?DUP IF</code>", since it can be
+better handled by tools like stack checkers. Besides, it's faster.
+
+   <p><a name="index-g_t_003fDUP_002d0_003d_002dIF-_0040var_007b-compilation-_002d_002d-orig-_003b-run_002dtime-n-_002d_002d-n_007c---_007d--gforth-1075"></a><a name="index-g_t_0040code_007b_003fDUP_002d0_003d_002dIF_007d-1076"></a><a name="index-g_t_003fDUP_002d0_003d_002dIF-1077"></a>
+<pre class="format"><code>?DUP-0=-IF</code>       <i>compilation &ndash; orig ; run-time n &ndash; n|  </i>       gforth       &ldquo;question-dupe-zero-equals-if&rdquo;
+</pre>
+   <p class="noindent">Counted loop words constitute a separate group of words:
+
+   <p><a name="index-g_t_003fDO-_0040var_007b-compilation-_002d_002d-do_002dsys-_003b-run_002dtime-w1-w2-_002d_002d-_007c-loop_002dsys---_007d--core_002dext-1078"></a><a name="index-g_t_0040code_007b_003fDO_007d-1079"></a><a name="index-g_t_003fDO-1080"></a>
+<pre class="format"><code>?DO</code>       <i>compilation &ndash; do-sys ; run-time w1 w2 &ndash; | loop-sys  </i>       core-ext       &ldquo;question-do&rdquo;
+</pre>
+   <p><a name="index-g_t_002bDO-_0040var_007b-compilation-_002d_002d-do_002dsys-_003b-run_002dtime-n1-n2-_002d_002d-_007c-loop_002dsys---_007d--gforth-1081"></a><a name="index-g_t_0040code_007b_002bDO_007d-1082"></a><a name="index-g_t_002bDO-1083"></a>
+<pre class="format"><code>+DO</code>       <i>compilation &ndash; do-sys ; run-time n1 n2 &ndash; | loop-sys  </i>       gforth       &ldquo;plus-do&rdquo;
+</pre>
+   <p><a name="index-U_002bDO-_0040var_007b-compilation-_002d_002d-do_002dsys-_003b-run_002dtime-u1-u2-_002d_002d-_007c-loop_002dsys---_007d--gforth-1084"></a><a name="index-g_t_0040code_007bU_002bDO_007d-1085"></a><a name="index-U_002bDO-1086"></a>
+<pre class="format"><code>U+DO</code>       <i>compilation &ndash; do-sys ; run-time u1 u2 &ndash; | loop-sys  </i>       gforth       &ldquo;u-plus-do&rdquo;
+</pre>
+   <p><a name="index-g_t_002dDO-_0040var_007b-compilation-_002d_002d-do_002dsys-_003b-run_002dtime-n1-n2-_002d_002d-_007c-loop_002dsys---_007d--gforth-1087"></a><a name="index-g_t_0040code_007b_002dDO_007d-1088"></a><a name="index-g_t_002dDO-1089"></a>
+<pre class="format"><code>-DO</code>       <i>compilation &ndash; do-sys ; run-time n1 n2 &ndash; | loop-sys  </i>       gforth       &ldquo;minus-do&rdquo;
+</pre>
+   <p><a name="index-U_002dDO-_0040var_007b-compilation-_002d_002d-do_002dsys-_003b-run_002dtime-u1-u2-_002d_002d-_007c-loop_002dsys---_007d--gforth-1090"></a><a name="index-g_t_0040code_007bU_002dDO_007d-1091"></a><a name="index-U_002dDO-1092"></a>
+<pre class="format"><code>U-DO</code>       <i>compilation &ndash; do-sys ; run-time u1 u2 &ndash; | loop-sys  </i>       gforth       &ldquo;u-minus-do&rdquo;
+</pre>
+   <p><a name="index-DO-_0040var_007b-compilation-_002d_002d-do_002dsys-_003b-run_002dtime-w1-w2-_002d_002d-loop_002dsys---_007d--core-1093"></a><a name="index-g_t_0040code_007bDO_007d-1094"></a><a name="index-DO-1095"></a>
+<pre class="format"><code>DO</code>       <i>compilation &ndash; do-sys ; run-time w1 w2 &ndash; loop-sys  </i>       core       &ldquo;DO&rdquo;
+</pre>
+   <p><a name="index-FOR-_0040var_007b-compilation-_002d_002d-do_002dsys-_003b-run_002dtime-u-_002d_002d-loop_002dsys---_007d--gforth-1096"></a><a name="index-g_t_0040code_007bFOR_007d-1097"></a><a name="index-FOR-1098"></a>
+<pre class="format"><code>FOR</code>       <i>compilation &ndash; do-sys ; run-time u &ndash; loop-sys  </i>       gforth       &ldquo;FOR&rdquo;
+</pre>
+   <p><a name="index-LOOP-_0040var_007b-compilation-do_002dsys-_002d_002d-_003b-run_002dtime-loop_002dsys1-_002d_002d-_007c-loop_002dsys2---_007d--core-1099"></a><a name="index-g_t_0040code_007bLOOP_007d-1100"></a><a name="index-LOOP-1101"></a>
+<pre class="format"><code>LOOP</code>       <i>compilation do-sys &ndash; ; run-time loop-sys1 &ndash; | loop-sys2  </i>       core       &ldquo;LOOP&rdquo;
+</pre>
+   <p><a name="index-g_t_002bLOOP-_0040var_007b-compilation-do_002dsys-_002d_002d-_003b-run_002dtime-loop_002dsys1-n-_002d_002d-_007c-loop_002dsys2---_007d--core-1102"></a><a name="index-g_t_0040code_007b_002bLOOP_007d-1103"></a><a name="index-g_t_002bLOOP-1104"></a>
+<pre class="format"><code>+LOOP</code>       <i>compilation do-sys &ndash; ; run-time loop-sys1 n &ndash; | loop-sys2  </i>       core       &ldquo;plus-loop&rdquo;
+</pre>
+   <p><a name="index-g_t_002dLOOP-_0040var_007b-compilation-do_002dsys-_002d_002d-_003b-run_002dtime-loop_002dsys1-u-_002d_002d-_007c-loop_002dsys2---_007d--gforth-1105"></a><a name="index-g_t_0040code_007b_002dLOOP_007d-1106"></a><a name="index-g_t_002dLOOP-1107"></a>
+<pre class="format"><code>-LOOP</code>       <i>compilation do-sys &ndash; ; run-time loop-sys1 u &ndash; | loop-sys2  </i>       gforth       &ldquo;minus-loop&rdquo;
+</pre>
+   <p><a name="index-NEXT-_0040var_007b-compilation-do_002dsys-_002d_002d-_003b-run_002dtime-loop_002dsys1-_002d_002d-_007c-loop_002dsys2---_007d--gforth-1108"></a><a name="index-g_t_0040code_007bNEXT_007d-1109"></a><a name="index-NEXT-1110"></a>
+<pre class="format"><code>NEXT</code>       <i>compilation do-sys &ndash; ; run-time loop-sys1 &ndash; | loop-sys2  </i>       gforth       &ldquo;NEXT&rdquo;
+</pre>
+   <p><a name="index-LEAVE-_0040var_007b-compilation-_002d_002d-_003b-run_002dtime-loop_002dsys-_002d_002d---_007d--core-1111"></a><a name="index-g_t_0040code_007bLEAVE_007d-1112"></a><a name="index-LEAVE-1113"></a>
+<pre class="format"><code>LEAVE</code>       <i>compilation &ndash; ; run-time loop-sys &ndash;  </i>       core       &ldquo;LEAVE&rdquo;
+</pre>
+   <p><a name="index-g_t_003fLEAVE-_0040var_007b-compilation-_002d_002d-_003b-run_002dtime-f-_007c-f-loop_002dsys-_002d_002d---_007d--gforth-1114"></a><a name="index-g_t_0040code_007b_003fLEAVE_007d-1115"></a><a name="index-g_t_003fLEAVE-1116"></a>
+<pre class="format"><code>?LEAVE</code>       <i>compilation &ndash; ; run-time f | f loop-sys &ndash;  </i>       gforth       &ldquo;question-leave&rdquo;
+</pre>
+   <p><a name="index-unloop-_0040var_007b-R_003aw1-R_003aw2-_002d_002d--_007d--core-1117"></a><a name="index-g_t_0040code_007bunloop_007d-1118"></a><a name="index-unloop-1119"></a>
+<pre class="format"><code>unloop</code>       <i>R:w1 R:w2 &ndash; </i>       core       &ldquo;unloop&rdquo;
+</pre>
+   <p><a name="index-DONE-_0040var_007b-compilation-orig-_002d_002d-_003b-run_002dtime-_002d_002d---_007d--gforth-1120"></a><a name="index-g_t_0040code_007bDONE_007d-1121"></a><a name="index-DONE-1122"></a>
+<pre class="format"><code>DONE</code>       <i>compilation orig &ndash; ; run-time &ndash;  </i>       gforth       &ldquo;DONE&rdquo;
+</pre>
+   <p>The standard does not allow using <code>CS-PICK</code> and <code>CS-ROLL</code> on
+<i>do-sys</i>. Gforth allows it, but it's your job to ensure that for
+every <code>?DO</code> etc. there is exactly one <code>UNLOOP</code> on any path
+through the definition (<code>LOOP</code> etc. compile an <code>UNLOOP</code> on the
+fall-through path). Also, you have to ensure that all <code>LEAVE</code>s are
+resolved (by using one of the loop-ending words or <code>DONE</code>).
+
+<p class="noindent">Another group of control structure words are:
+
+   <p><a name="index-case-_0040var_007b-compilation--_002d_002d-case_002dsys-_003b-run_002dtime--_002d_002d---_007d--core_002dext-1123"></a><a name="index-g_t_0040code_007bcase_007d-1124"></a><a name="index-case-1125"></a>
+<pre class="format"><code>case</code>       <i>compilation  &ndash; case-sys ; run-time  &ndash;  </i>       core-ext       &ldquo;case&rdquo;
+</pre>
+   <p><a name="index-endcase-_0040var_007b-compilation-case_002dsys-_002d_002d-_003b-run_002dtime-x-_002d_002d---_007d--core_002dext-1126"></a><a name="index-g_t_0040code_007bendcase_007d-1127"></a><a name="index-endcase-1128"></a>
+<pre class="format"><code>endcase</code>       <i>compilation case-sys &ndash; ; run-time x &ndash;  </i>       core-ext       &ldquo;end-case&rdquo;
+</pre>
+   <p><a name="index-of-_0040var_007b-compilation--_002d_002d-of_002dsys-_003b-run_002dtime-x1-x2-_002d_002d-_007cx1---_007d--core_002dext-1129"></a><a name="index-g_t_0040code_007bof_007d-1130"></a><a name="index-of-1131"></a>
+<pre class="format"><code>of</code>       <i>compilation  &ndash; of-sys ; run-time x1 x2 &ndash; |x1  </i>       core-ext       &ldquo;of&rdquo;
+</pre>
+   <p><a name="index-endof-_0040var_007b-compilation-case_002dsys1-of_002dsys-_002d_002d-case_002dsys2-_003b-run_002dtime--_002d_002d---_007d--core_002dext-1132"></a><a name="index-g_t_0040code_007bendof_007d-1133"></a><a name="index-endof-1134"></a>
+<pre class="format"><code>endof</code>       <i>compilation case-sys1 of-sys &ndash; case-sys2 ; run-time  &ndash;  </i>       core-ext       &ldquo;end-of&rdquo;
+</pre>
+   <p><i>case-sys</i> and <i>of-sys</i> cannot be processed using <code>CS-PICK</code> and
+<code>CS-ROLL</code>.
+
+<h5 class="subsubsection">5.8.4.1 Programming Style</h5>
+
+<p><a name="index-control-structures-programming-style-1135"></a><a name="index-programming-style_002c-arbitrary-control-structures-1136"></a>
+In order to ensure readability we recommend that you do not create
+arbitrary control structures directly, but define new control structure
+words for the control structure you want and use these words in your
+program. For example, instead of writing:
+
+<pre class="example">     BEGIN
+       ...
+     IF [ 1 CS-ROLL ]
+       ...
+     AGAIN THEN
+</pre>
+   <p class="noindent">we recommend defining control structure words, e.g.,
+
+<pre class="example">     : WHILE ( DEST -- ORIG DEST )
+      POSTPONE IF
+      1 CS-ROLL ; immediate
+     
+     : REPEAT ( orig dest -- )
+      POSTPONE AGAIN
+      POSTPONE THEN ; immediate
+</pre>
+   <p class="noindent">and then using these to create the control structure:
+
+<pre class="example">     BEGIN
+       ...
+     WHILE
+       ...
+     REPEAT
+</pre>
+   <p>That's much easier to read, isn't it? Of course, <code>REPEAT</code> and
+<code>WHILE</code> are predefined, so in this example it would not be
+necessary to define them.
+
+   </body></html>
+

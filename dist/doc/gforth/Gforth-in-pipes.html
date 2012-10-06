@@ -1,0 +1,99 @@
+<html lang="en">
+<head>
+<title>Gforth in pipes - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Gforth-Environment.html#Gforth-Environment" title="Gforth Environment">
+<link rel="prev" href="Gforth-Files.html#Gforth-Files" title="Gforth Files">
+<link rel="next" href="Startup-speed.html#Startup-speed" title="Startup speed">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Gforth-in-pipes"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Startup-speed.html#Startup-speed">Startup speed</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Gforth-Files.html#Gforth-Files">Gforth Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Gforth-Environment.html#Gforth-Environment">Gforth Environment</a>
+<hr>
+</div>
+
+<h3 class="section">2.6 Gforth in pipes</h3>
+
+<p><a name="index-pipes_002c-Gforth-as-part-of-67"></a>
+Gforth can be used in pipes created elsewhere (described here).  It can
+also create pipes on its own (see <a href="Pipes.html#Pipes">Pipes</a>).
+
+   <p><a name="index-input-from-pipes-68"></a>If you pipe into Gforth, your program should read with <code>read-file</code>
+or <code>read-line</code> from <code>stdin</code> (see <a href="General-files.html#General-files">General files</a>). 
+<code>Key</code> does not recognize the end of input.  Words like
+<code>accept</code> echo the input and are therefore usually not useful for
+reading from a pipe.  You have to invoke the Forth program with an OS
+command-line option, as you have no chance to use the Forth command line
+(the text interpreter would try to interpret the pipe input).
+
+   <p><a name="index-output-in-pipes-69"></a>You can output to a pipe with <code>type</code>, <code>emit</code>, <code>cr</code> etc.
+
+   <p><a name="index-silent-exiting-from-Gforth-70"></a>When you write to a pipe that has been closed at the other end, Gforth
+receives a SIGPIPE signal (&ldquo;pipe broken&rdquo;).  Gforth translates this
+into the exception <code>broken-pipe-error</code>.  If your application does
+not catch that exception, the system catches it and exits, usually
+silently (unless you were working on the Forth command line; then it
+prints an error message and exits).  This is usually the desired
+behaviour.
+
+   <p>If you do not like this behaviour, you have to catch the exception
+yourself, and react to it.
+
+   <p>Here's an example of an invocation of Gforth that is usable in a pipe:
+
+<pre class="example">     gforth -e ": foo begin pad dup 10 stdin read-file throw dup while \
+      type repeat ; foo bye"
+</pre>
+   <p>This example just copies the input verbatim to the output.  A very
+simple pipe containing this example looks like this:
+
+<pre class="example">     cat startup.fs |
+     gforth -e ": foo begin pad dup 80 stdin read-file throw dup while \
+      type repeat ; foo bye"|
+     head
+</pre>
+   <p><a name="index-stderr-and-pipes-71"></a>Pipes involving Gforth's <code>stderr</code> output do not work.
+
+<!--  -->
+</body></html>
+

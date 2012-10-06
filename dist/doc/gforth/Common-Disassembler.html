@@ -1,0 +1,93 @@
+<html lang="en">
+<head>
+<title>Common Disassembler - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words" title="Assembler and Code Words">
+<link rel="prev" href="Common-Assembler.html#Common-Assembler" title="Common Assembler">
+<link rel="next" href="386-Assembler.html#g_t386-Assembler" title="386 Assembler">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Common-Disassembler"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="386-Assembler.html#g_t386-Assembler">386 Assembler</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Common-Assembler.html#Common-Assembler">Common Assembler</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words">Assembler and Code Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.26.3 Common Disassembler</h4>
+
+<p><a name="index-disassembler_002c-general-2953"></a><a name="index-gdb-disassembler-2954"></a>
+You can disassemble a <code>code</code> word with <code>see</code>
+(see <a href="Debugging.html#Debugging">Debugging</a>).  You can disassemble a section of memory with
+
+   <p><a name="index-discode-_0040var_007b-addr-u-_002d_002d---_007d--gforth-2955"></a><a name="index-g_t_0040code_007bdiscode_007d-2956"></a><a name="index-discode-2957"></a>
+<pre class="format"><code>discode</code>       <i>addr u &ndash;  </i>       gforth       &ldquo;discode&rdquo;
+</pre>
+   <p>hook for the disassembler: disassemble code at addr of length u
+
+   <p>There are two kinds of disassembler for Gforth: The Forth disassembler
+(available on some CPUs) and the gdb disassembler (available on
+platforms with <samp><span class="command">gdb</span></samp> and <samp><span class="command">mktemp</span></samp>).  If both are
+available, the Forth disassembler is used by default.  If you prefer
+the gdb disassembler, say
+
+<pre class="example">     ' disasm-gdb is discode
+</pre>
+   <p>If neither is available, <code>discode</code> performs <code>dump</code>.
+
+   <p>The Forth disassembler generally produces output that can be fed into the
+assembler (i.e., same syntax, etc.).  It also includes additional
+information in comments.  In particular, the address of the instruction
+is given in a comment before the instruction.
+
+   <p>The gdb disassembler produces output in the same format as the gdb
+<code>disassemble</code> command (see <a href="../gdb/Machine-Code.html#Machine-Code">Source and machine code</a>), in the default flavour (AT&amp;T syntax for
+the 386 and AMD64 architectures).
+
+   <p><code>See</code> may display more or less than the actual code of the word,
+because the recognition of the end of the code is unreliable.  You can
+use <code>discode</code> if it did not display enough.  It may display more, if
+the code word is not immediately followed by a named word.  If you have
+something else there, you can follow the word with <code>align latest ,</code>
+to ensure that the end is recognized.
+
+   </body></html>
+

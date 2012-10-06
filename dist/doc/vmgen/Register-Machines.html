@@ -1,0 +1,101 @@
+<html lang="en">
+<head>
+<title>Register Machines - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Input-File-Format.html#Input-File-Format" title="Input File Format">
+<link rel="prev" href="Store-Optimization.html#Store-Optimization" title="Store Optimization">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Register-Machines"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Store-Optimization.html#Store-Optimization">Store Optimization</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Input-File-Format.html#Input-File-Format">Input File Format</a>
+<hr>
+</div>
+
+<h3 class="section">6.5 Register Machines</h3>
+
+<p><a name="index-Register-VM-109"></a><a name="index-Superinstructions-for-register-VMs-110"></a><a name="index-tracing-of-register-VMs-111"></a>
+If you want to implement a register VM rather than a stack VM with
+Vmgen, there are two ways to do it: Directly and through
+superinstructions.
+
+   <p>If you use the direct way, you define instructions that take the
+register numbers as immediate arguments, like this:
+
+<pre class="example">     add3 ( #src1 #src2 #dest -- )
+     reg[dest] = reg[src1]+reg[src2];
+</pre>
+   <p>A disadvantage of this method is that during tracing you only see the
+register numbers, but not the register contents.  Actually, with an
+appropriate definition of <code>printarg_src</code> (see <a href="VM-engine.html#VM-engine">VM engine</a>), you
+can print the values of the source registers on entry, but you cannot
+print the value of the destination register on exit.
+
+   <p>If you use superinstructions to define a register VM, you define simple
+instructions that use a stack, and then define superinstructions that
+have no overall stack effect, like this:
+
+<pre class="example">     loadreg ( #src -- n )
+     n = reg[src];
+     
+     storereg ( n #dest -- )
+     reg[dest] = n;
+     
+     adds ( n1 n2 -- n )
+     n = n1+n2;
+     
+     add3 = loadreg loadreg adds storereg
+</pre>
+   <p>An advantage of this method is that you see the values and not just the
+register numbers in tracing.  A disadvantage of this method is that
+currently you cannot generate superinstructions directly, but only
+through generating a sequence of simple instructions (we might change
+this in the future if there is demand).
+
+   <p>Could the register VM support be improved, apart from the issues
+mentioned above?  It is hard to see how to do it in a general way,
+because there are a number of different designs that different people
+mean when they use the term <em>register machine</em> in connection with
+VM interpreters.  However, if you have ideas or requests in that
+direction, please let me know (see <a href="Contact.html#Contact">Contact</a>).
+
+<!-- ******************************************************************** -->
+</body></html>
+

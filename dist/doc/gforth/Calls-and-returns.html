@@ -1,0 +1,115 @@
+<html lang="en">
+<head>
+<title>Calls and returns - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Control-Structures.html#Control-Structures" title="Control Structures">
+<link rel="prev" href="Arbitrary-control-structures.html#Arbitrary-control-structures" title="Arbitrary control structures">
+<link rel="next" href="Exception-Handling.html#Exception-Handling" title="Exception Handling">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Calls-and-returns"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Exception-Handling.html#Exception-Handling">Exception Handling</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Arbitrary-control-structures.html#Arbitrary-control-structures">Arbitrary control structures</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Control-Structures.html#Control-Structures">Control Structures</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.8.5 Calls and returns</h4>
+
+<p><a name="index-calling-a-definition-1137"></a><a name="index-returning-from-a-definition-1138"></a>
+<a name="index-recursive-definitions-1139"></a>A definition can be called simply be writing the name of the definition
+to be called. Normally a definition is invisible during its own
+definition. If you want to write a directly recursive definition, you
+can use <code>recursive</code> to make the current definition visible, or
+<code>recurse</code> to call the current definition directly.
+
+   <p><a name="index-recursive-_0040var_007b-compilation-_002d_002d-_003b-run_002dtime-_002d_002d---_007d--gforth-1140"></a><a name="index-g_t_0040code_007brecursive_007d-1141"></a><a name="index-recursive-1142"></a>
+<pre class="format"><code>recursive</code>       <i>compilation &ndash; ; run-time &ndash;  </i>       gforth       &ldquo;recursive&rdquo;
+</pre>
+   <p>Make the current definition visible, enabling it to call itself
+recursively.
+
+   <p><a name="index-recurse-_0040var_007b-compilation-_002d_002d-_003b-run_002dtime-_003f_003f-_002d_002d-_003f_003f---_007d--core-1143"></a><a name="index-g_t_0040code_007brecurse_007d-1144"></a><a name="index-recurse-1145"></a>
+<pre class="format"><code>recurse</code>       <i>compilation &ndash; ; run-time ?? &ndash; ??  </i>       core       &ldquo;recurse&rdquo;
+</pre>
+   <p>Call the current definition.
+
+<!-- TODO add example of the two recursion methods -->
+<blockquote>
+Programming style note:
+I prefer using <code>recursive</code> to <code>recurse</code>, because calling the
+definition by name is more descriptive (if the name is well-chosen) than
+the somewhat cryptic <code>recurse</code>.  E.g., in a quicksort
+implementation, it is much better to read (and think) &ldquo;now sort the
+partitions&rdquo; than to read &ldquo;now do a recursive call&rdquo;. 
+</blockquote>
+
+   <p>For mutual recursion, use <code>Defer</code>red words, like this:
+
+<pre class="example">     Defer foo
+     
+     : bar ( ... -- ... )
+      ... foo ... ;
+     
+     :noname ( ... -- ... )
+      ... bar ... ;
+     IS foo
+</pre>
+   <p>Deferred words are discussed in more detail in <a href="Deferred-Words.html#Deferred-Words">Deferred Words</a>.
+
+   <p>The current definition returns control to the calling definition when
+the end of the definition is reached or <code>EXIT</code> is encountered.
+
+   <p><a name="index-EXIT-_0040var_007b-compilation-_002d_002d-_003b-run_002dtime-nest_002dsys-_002d_002d---_007d--core-1146"></a><a name="index-g_t_0040code_007bEXIT_007d-1147"></a><a name="index-EXIT-1148"></a>
+<pre class="format"><code>EXIT</code>       <i>compilation &ndash; ; run-time nest-sys &ndash;  </i>       core       &ldquo;EXIT&rdquo;
+</pre>
+   <p>Return to the calling definition; usually used as a way of
+forcing an early return from a definition. Before
+<code>EXIT</code>ing you must clean up the return stack and
+<code>UNLOOP</code> any outstanding <code>?DO</code>...<code>LOOP</code>s.
+
+   <p><a name="index-g_t_003bs-_0040var_007b-R_003aw-_002d_002d--_007d--gforth-1149"></a><a name="index-g_t_0040code_007b_003bs_007d-1150"></a><a name="index-g_t_003bs-1151"></a>
+<pre class="format"><code>;s</code>       <i>R:w &ndash; </i>       gforth       &ldquo;semis&rdquo;
+</pre>
+   <p>The primitive compiled by <code>EXIT</code>.
+
+   </body></html>
+

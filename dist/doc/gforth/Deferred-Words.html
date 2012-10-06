@@ -1,0 +1,176 @@
+<html lang="en">
+<head>
+<title>Deferred Words - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Defining-Words.html#Defining-Words" title="Defining Words">
+<link rel="prev" href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words" title="User-defined Defining Words">
+<link rel="next" href="Aliases.html#Aliases" title="Aliases">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Deferred-Words"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Aliases.html#Aliases">Aliases</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">User-defined Defining Words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Defining-Words.html#Defining-Words">Defining Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.9.9 Deferred Words</h4>
+
+<p><a name="index-deferred-words-1272"></a>
+The defining word <code>Defer</code> allows you to define a word by name
+without defining its behaviour; the definition of its behaviour is
+deferred. Here are two situation where this can be useful:
+
+     <ul>
+<li>Where you want to allow the behaviour of a word to be altered later, and
+for all precompiled references to the word to change when its behaviour
+is changed. 
+<li>For mutual recursion; See <a href="Calls-and-returns.html#Calls-and-returns">Calls and returns</a>. 
+</ul>
+
+   <p>In the following example, <code>foo</code> always invokes the version of
+<code>greet</code> that prints &ldquo;<code>Good morning</code>&rdquo; whilst <code>bar</code>
+always invokes the version that prints &ldquo;<code>Hello</code>&rdquo;. There is no way
+of getting <code>foo</code> to use the later version without re-ordering the
+source code and recompiling it.
+
+<pre class="example">     : greet ." Good morning" ;
+     : foo ... greet ... ;
+     : greet ." Hello" ;
+     : bar ... greet ... ;
+</pre>
+   <p>This problem can be solved by defining <code>greet</code> as a <code>Defer</code>red
+word. The behaviour of a <code>Defer</code>red word can be defined and
+redefined at any time by using <code>IS</code> to associate the xt of a
+previously-defined word with it. The previous example becomes:
+
+<pre class="example">     Defer greet ( -- )
+     : foo ... greet ... ;
+     : bar ... greet ... ;
+     : greet1 ( -- ) ." Good morning" ;
+     : greet2 ( -- ) ." Hello" ;
+     ' greet2 IS greet  \ make greet behave like greet2
+</pre>
+   <p>Programming style note:
+You should write a stack comment for every deferred word, and put only
+XTs into deferred words that conform to this stack effect.  Otherwise
+it's too difficult to use the deferred word.
+
+   <p>A deferred word can be used to improve the statistics-gathering example
+from <a href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">User-defined Defining Words</a>; rather than edit the
+application's source code to change every <code>:</code> to a <code>my:</code>, do
+this:
+
+<pre class="example">     : real: : ;     \ retain access to the original
+     defer :         \ redefine as a deferred word
+     ' my: IS :      \ use special version of :
+     \
+     \ load application here
+     \
+     ' real: IS :    \ go back to the original
+</pre>
+   <p>One thing to note is that <code>IS</code> has special compilation semantics,
+such that it parses the name at compile time (like <code>TO</code>):
+
+<pre class="example">     : set-greet ( xt -- )
+       IS greet ;
+     
+     ' greet1 set-greet
+</pre>
+   <p>In situations where <code>IS</code> does not fit, use <code>defer!</code> instead.
+
+   <p>A deferred word can only inherit execution semantics from the xt
+(because that is all that an xt can represent &ndash; for more discussion of
+this see <a href="Tokens-for-Words.html#Tokens-for-Words">Tokens for Words</a>); by default it will have default
+interpretation and compilation semantics deriving from this execution
+semantics.  However, you can change the interpretation and compilation
+semantics of the deferred word in the usual ways:
+
+<pre class="example">     : bar .... ; immediate
+     Defer fred immediate
+     Defer jim
+     
+     ' bar IS jim  \ jim has default semantics
+     ' bar IS fred \ fred is immediate
+</pre>
+   <p><a name="index-Defer-_0040var_007b-_0022name_0022-_002d_002d---_007d--gforth-1273"></a><a name="index-g_t_0040code_007bDefer_007d-1274"></a><a name="index-Defer-1275"></a>
+<pre class="format"><code>Defer</code>       <i>"name" &ndash;  </i>       gforth       &ldquo;Defer&rdquo;
+</pre>
+   <p>Define a deferred word <i>name</i>; its execution semantics can be
+set with <code>defer!</code> or <code>is</code> (and they have to, before first
+executing <i>name</i>.
+
+   <p><a name="index-defer_0021-_0040var_007b-xt-xt_002ddeferred-_002d_002d---_007d--gforth-1276"></a><a name="index-g_t_0040code_007bdefer_0021_007d-1277"></a><a name="index-defer_0021-1278"></a>
+<pre class="format"><code>defer!</code>       <i>xt xt-deferred &ndash;  </i>       gforth       &ldquo;defer-store&rdquo;
+</pre>
+   <p>Changes the <code>defer</code>red word <var>xt-deferred</var> to execute <var>xt</var>.
+
+   <p><a name="index-IS-_0040var_007b-compilation_002finterpretation-_0022name_002ddeferred_0022-_002d_002d-_003b-run_002dtime-xt-_002d_002d---_007d--gforth-1279"></a><a name="index-g_t_0040code_007bIS_007d-1280"></a><a name="index-IS-1281"></a>
+<pre class="format"><code>IS</code>       <i>compilation/interpretation "name-deferred" &ndash; ; run-time xt &ndash;  </i>       gforth       &ldquo;IS&rdquo;
+</pre>
+   <p>Changes the <code>defer</code>red word <var>name</var> to execute <var>xt</var>. 
+Its compilation semantics parses at compile time.
+
+   <p><a name="index-defer_0040_0040-_0040var_007b-xt_002ddeferred-_002d_002d-xt---_007d--gforth-1282"></a><a name="index-g_t_0040code_007bdefer_0040_0040_007d-1283"></a><a name="index-defer_0040_0040-1284"></a>
+<pre class="format"><code>defer@</code>       <i>xt-deferred &ndash; xt  </i>       gforth       &ldquo;defer-fetch&rdquo;
+</pre>
+   <p><i>xt</i> represents the word currently associated with the deferred
+word <i>xt-deferred</i>.
+
+   <p><a name="index-action_002dof-_0040var_007b-interpretation-_0022name_0022-_002d_002d-xt_003b-compilation-_0022name_0022-_002d_002d-_003b-run_002dtime-_002d_002d-xt---_007d--gforth-1285"></a><a name="index-g_t_0040code_007baction_002dof_007d-1286"></a><a name="index-action_002dof-1287"></a>
+<pre class="format"><code>action-of</code>       <i>interpretation "name" &ndash; xt; compilation "name" &ndash; ; run-time &ndash; xt  </i>       gforth       &ldquo;action-of&rdquo;
+</pre>
+   <p><i>Xt</i> is the XT that is currently assigned to <i>name</i>.
+
+<!-- TODO document these: what's defers [is] -->
+<p><a name="index-defers-_0040var_007b-compilation-_0022name_0022-_002d_002d-_003b-run_002dtime-_002e_002e_002e-_002d_002d-_002e_002e_002e---_007d--gforth-1288"></a><a name="index-g_t_0040code_007bdefers_007d-1289"></a><a name="index-defers-1290"></a>
+<pre class="format"><code>defers</code>       <i>compilation "name" &ndash; ; run-time ... &ndash; ...  </i>       gforth       &ldquo;defers&rdquo;
+</pre>
+   <p>Compiles the present contents of the deferred word <i>name</i>
+into the current definition.  I.e., this produces static
+binding as if <i>name</i> was not deferred.
+
+<!-- Use @code{words-deferred} to see a list of deferred words. -->
+<p>Definitions of these words (except <code>defers</code>) in ANS Forth are
+provided in <samp><span class="file">compat/defer.fs</span></samp>.
+
+   </body></html>
+

@@ -1,0 +1,110 @@
+<html lang="en">
+<head>
+<title>Return Stack Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Leaving-definitions-or-loops-Tutorial.html#Leaving-definitions-or-loops-Tutorial" title="Leaving definitions or loops Tutorial">
+<link rel="next" href="Memory-Tutorial.html#Memory-Tutorial" title="Memory Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Return-Stack-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Memory-Tutorial.html#Memory-Tutorial">Memory Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Leaving-definitions-or-loops-Tutorial.html#Leaving-definitions-or-loops-Tutorial">Leaving definitions or loops Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.22 Return Stack</h3>
+
+<p><a name="index-return-stack-tutorial-106"></a>
+In addition to the data stack Forth also has a second stack, the return
+stack; most Forth systems store the return addresses of procedure calls
+there (thus its name).  Programmers can also use this stack:
+
+<pre class="example">     : foo ( n1 n2 -- )
+      .s
+      &gt;r .s
+      r@ .
+      &gt;r .s
+      r@ .
+      r&gt; .
+      r@ .
+      r&gt; . ;
+     1 2 foo
+</pre>
+   <p><code>&gt;r</code> takes an element from the data stack and pushes it onto the
+return stack; conversely, <code>r&gt;</code> moves an elementm from the return to
+the data stack; <code>r@</code> pushes a copy of the top of the return stack
+on the data stack.
+
+   <p>Forth programmers usually use the return stack for storing data
+temporarily, if using the data stack alone would be too complex, and
+factoring and locals are not an option:
+
+<pre class="example">     : 2swap ( x1 x2 x3 x4 -- x3 x4 x1 x2 )
+      rot &gt;r rot r&gt; ;
+</pre>
+   <p>The return address of the definition and the loop control parameters of
+counted loops usually reside on the return stack, so you have to take
+all items, that you have pushed on the return stack in a colon
+definition or counted loop, from the return stack before the definition
+or loop ends.  You cannot access items that you pushed on the return
+stack outside some definition or loop within the definition of loop.
+
+   <p>If you miscount the return stack items, this usually ends in a crash:
+
+<pre class="example">     : crash ( n -- )
+       &gt;r ;
+     5 crash
+</pre>
+   <p>You cannot mix using locals and using the return stack (according to the
+standard; Gforth has no problem).  However, they solve the same
+problems, so this shouldn't be an issue.
+
+   <blockquote>
+<b>Assignment:</b> Can you rewrite any of the definitions you wrote until now in a better
+way using the return stack? 
+</blockquote>
+
+   <p>Reference: <a href="Return-stack.html#Return-stack">Return stack</a>.
+
+   </body></html>
+

@@ -1,0 +1,86 @@
+<html lang="en">
+<head>
+<title>Comments - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Case-insensitivity.html#Case-insensitivity" title="Case insensitivity">
+<link rel="next" href="Boolean-Flags.html#Boolean-Flags" title="Boolean Flags">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Comments"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Boolean-Flags.html#Boolean-Flags">Boolean Flags</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Case-insensitivity.html#Case-insensitivity">Case insensitivity</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.3 Comments</h3>
+
+<p><a name="index-comments-194"></a>
+Forth supports two styles of comment; the traditional <i>in-line</i> comment,
+<code>(</code> and its modern cousin, the <i>comment to end of line</i>; <code>\</code>.
+
+   <p><a name="index-g_t_0028-_0040var_007b-compilation-_0027ccc_003cclose_002dparen_003e_0027-_002d_002d-_003b-run_002dtime-_002d_002d---_007d--core_002cfile-195"></a><a name="index-g_t_0040code_007b_0028_007d-196"></a><a name="index-g_t_0028-197"></a>
+<pre class="format"><code>(</code>       <i>compilation 'ccc&lt;close-paren&gt;' &ndash; ; run-time &ndash;  </i>       core,file       &ldquo;paren&rdquo;
+</pre>
+   <p>Comment, usually till the next <code>)</code>: parse and discard all
+subsequent characters in the parse area until ")" is
+encountered. During interactive input, an end-of-line also acts as
+a comment terminator. For file input, it does not; if the
+end-of-file is encountered whilst parsing for the ")" delimiter,
+Gforth will generate a warning.
+
+   <p><a name="index-g_t_005c-_0040var_007b-compilation-_0027ccc_003cnewline_003e_0027-_002d_002d-_003b-run_002dtime-_002d_002d---_007d--core_002dext_002cblock_002dext-198"></a><a name="index-g_t_0040code_007b_005c_007d-199"></a><a name="index-g_t_005c-200"></a>
+<pre class="format"><code>\</code>       <i>compilation 'ccc&lt;newline&gt;' &ndash; ; run-time &ndash;  </i>       core-ext,block-ext       &ldquo;backslash&rdquo;
+</pre>
+   <p>Comment till the end of the line if <code>BLK</code> contains 0 (i.e.,
+while not loading a block), parse and discard the remainder of the
+parse area. Otherwise, parse and discard all subsequent characters
+in the parse area corresponding to the current line.
+
+   <p><a name="index-g_t_005cG-_0040var_007b-compilation-_0027ccc_003cnewline_003e_0027-_002d_002d-_003b-run_002dtime-_002d_002d---_007d--gforth-201"></a><a name="index-g_t_0040code_007b_005cG_007d-202"></a><a name="index-g_t_005cG-203"></a>
+<pre class="format"><code>\G</code>       <i>compilation 'ccc&lt;newline&gt;' &ndash; ; run-time &ndash;  </i>       gforth       &ldquo;backslash-gee&rdquo;
+</pre>
+   <p>Equivalent to <code>\</code> but used as a tag to annotate definition
+comments into documentation.
+
+   </body></html>
+

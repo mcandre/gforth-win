@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+<title>Pipes - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-I_002fO.html#Other-I_002fO" title="Other I/O">
+<link rel="prev" href="Line-input-and-conversion.html#Line-input-and-conversion" title="Line input and conversion">
+<link rel="next" href="Xchars-and-Unicode.html#Xchars-and-Unicode" title="Xchars and Unicode">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Pipes"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Xchars-and-Unicode.html#Xchars-and-Unicode">Xchars and Unicode</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Line-input-and-conversion.html#Line-input-and-conversion">Line input and conversion</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-I_002fO.html#Other-I_002fO">Other I/O</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.19.8 Pipes</h4>
+
+<p><a name="index-pipes_002c-creating-your-own-2181"></a>
+In addition to using Gforth in pipes created by other processes
+(see <a href="Gforth-in-pipes.html#Gforth-in-pipes">Gforth in pipes</a>), you can create your own pipe with
+<code>open-pipe</code>, and read from or write to it.
+
+   <p><a name="index-open_002dpipe-_0040var_007b-c_002daddr-u-wfam-_002d_002d-wfileid-wior--_007d--gforth-2182"></a><a name="index-g_t_0040code_007bopen_002dpipe_007d-2183"></a><a name="index-open_002dpipe-2184"></a>
+<pre class="format"><code>open-pipe</code>       <i>c-addr u wfam &ndash; wfileid wior </i>       gforth       &ldquo;open-pipe&rdquo;
+</pre>
+   <p><a name="index-close_002dpipe-_0040var_007b-wfileid-_002d_002d-wretval-wior--_007d--gforth-2185"></a><a name="index-g_t_0040code_007bclose_002dpipe_007d-2186"></a><a name="index-close_002dpipe-2187"></a>
+<pre class="format"><code>close-pipe</code>       <i>wfileid &ndash; wretval wior </i>       gforth       &ldquo;close-pipe&rdquo;
+</pre>
+   <p>If you write to a pipe, Gforth can throw a <code>broken-pipe-error</code>; if
+you don't catch this exception, Gforth will catch it and exit, usually
+silently (see <a href="Gforth-in-pipes.html#Gforth-in-pipes">Gforth in pipes</a>).  Since you probably do not want
+this, you should wrap a <code>catch</code> or <code>try</code> block around the code
+from <code>open-pipe</code> to <code>close-pipe</code>, so you can deal with the
+problem yourself, and then return to regular processing.
+
+   <p><a name="index-broken_002dpipe_002derror-_0040var_007b-_002d_002d-n---_007d--gforth-2188"></a><a name="index-g_t_0040code_007bbroken_002dpipe_002derror_007d-2189"></a><a name="index-broken_002dpipe_002derror-2190"></a>
+<pre class="format"><code>broken-pipe-error</code>       <i>&ndash; n  </i>       gforth       &ldquo;broken-pipe-error&rdquo;
+</pre>
+   <p>the error number for a broken pipe
+
+   </body></html>
+

@@ -1,0 +1,130 @@
+<html lang="en">
+<head>
+<title>Comparison with other object models - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Object_002doriented-Forth.html#Object_002doriented-Forth" title="Object-oriented Forth">
+<link rel="prev" href="Mini_002dOOF.html#Mini_002dOOF" title="Mini-OOF">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Comparison-with-other-object-models"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Mini_002dOOF.html#Mini_002dOOF">Mini-OOF</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Object_002doriented-Forth.html#Object_002doriented-Forth">Object-oriented Forth</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.23.6 Comparison with other object models</h4>
+
+<p><a name="index-comparison-of-object-models-2776"></a><a name="index-object-models_002c-comparison-2777"></a>
+Many object-oriented Forth extensions have been proposed (<cite>A survey
+of object-oriented Forths</cite> (SIGPLAN Notices, April 1996) by Bradford
+J. Rodriguez and W. F. S. Poehlman lists 17). This section discusses the
+relation of the object models described here to two well-known and two
+closely-related (by the use of method maps) models.  Andras Zsoter
+helped us with this section.
+
+   <p><a name="index-Neon-model-2778"></a>The most popular model currently seems to be the Neon model (see
+<cite>Object-oriented programming in ANS Forth</cite> (Forth Dimensions, March
+1997) by Andrew McKewan) but this model has a number of limitations
+<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>:
+
+     <ul>
+<li>It uses a <em>selector object</em> syntax, which makes it unnatural
+to pass objects on the stack.
+
+     <li>It requires that the selector parses the input stream (at
+compile time); this leads to reduced extensibility and to bugs that are
+hard to find.
+
+     <li>It allows using every selector on every object; this eliminates the
+need for interfaces, but makes it harder to create efficient
+implementations. 
+</ul>
+
+   <p><a name="index-Pountain_0027s-object_002doriented-model-2779"></a>Another well-known publication is <cite>Object-Oriented Forth</cite> (Academic
+Press, London, 1987) by Dick Pountain. However, it is not really about
+object-oriented programming, because it hardly deals with late
+binding. Instead, it focuses on features like information hiding and
+overloading that are characteristic of modular languages like Ada (83).
+
+   <p><a name="index-Zsoter_0027s-object_002doriented-model-2780"></a>In <a href="http://www.forth.org/oopf.html">Does late binding have to be slow?</a> (Forth Dimensions 18(1) 1996, pages 31-35) Andras Zsoter
+describes a model that makes heavy use of an active object (like
+<code>this</code> in <samp><span class="file">objects.fs</span></samp>): The active object is not only used
+for accessing all fields, but also specifies the receiving object of
+every selector invocation; you have to change the active object
+explicitly with <code>{ ... }</code>, whereas in <samp><span class="file">objects.fs</span></samp> it
+changes more or less implicitly at <code>m: ... ;m</code>. Such a change at
+the method entry point is unnecessary with Zsoter's model, because the
+receiving object is the active object already. On the other hand, the
+explicit change is absolutely necessary in that model, because otherwise
+no one could ever change the active object. An ANS Forth implementation
+of this model is available through
+<a href="http://www.forth.org/oopf.html">http://www.forth.org/oopf.html</a>.
+
+   <p><a name="index-g_t_0040file_007boof_002efs_007d_002c-differences-to-other-models-2781"></a>The <samp><span class="file">oof.fs</span></samp> model combines information hiding and overloading
+resolution (by keeping names in various word lists) with object-oriented
+programming. It sets the active object implicitly on method entry, but
+also allows explicit changing (with <code>&gt;o...o&gt;</code> or with
+<code>with...endwith</code>). It uses parsing and state-smart objects and
+classes for resolving overloading and for early binding: the object or
+class parses the selector and determines the method from this. If the
+selector is not parsed by an object or class, it performs a call to the
+selector for the active object (late binding), like Zsoter's model. 
+Fields are always accessed through the active object. The big
+disadvantage of this model is the parsing and the state-smartness, which
+reduces extensibility and increases the opportunities for subtle bugs;
+essentially, you are only safe if you never tick or <code>postpone</code> an
+object or class (Bernd disagrees, but I (Anton) am not convinced).
+
+   <p><a name="index-g_t_0040file_007bmini_002doof_002efs_007d_002c-differences-to-other-models-2782"></a>The <samp><span class="file">mini-oof.fs</span></samp> model is quite similar to a very stripped-down
+version of the <samp><span class="file">objects.fs</span></samp> model, but syntactically it is a
+mixture of the <samp><span class="file">objects.fs</span></samp> and <samp><span class="file">oof.fs</span></samp> models.
+
+<!--  -->
+<div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> A longer version of this critique can be
+found in <cite>On Standardizing Object-Oriented Forth Extensions</cite> (Forth
+Dimensions, May 1997) by Anton Ertl.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

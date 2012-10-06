@@ -1,0 +1,129 @@
+<html lang="en">
+<head>
+<title>Standard vs Extensions - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="ANS-conformance.html#ANS-conformance" title="ANS conformance">
+<link rel="next" href="Model.html#Model" title="Model">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Standard-vs-Extensions"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Model.html#Model">Model</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="ANS-conformance.html#ANS-conformance">ANS conformance</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">9 Should I use Gforth extensions?</h2>
+
+<p><a name="index-Gforth-extensions-3358"></a>
+As you read through the rest of this manual, you will see documentation
+for <i>Standard</i> words, and documentation for some appealing Gforth
+<i>extensions</i>. You might ask yourself the question: <i>&ldquo;Should I
+restrict myself to the standard, or should I use the extensions?&rdquo;</i>
+
+   <p>The answer depends on the goals you have for the program you are working
+on:
+
+     <ul>
+<li>Is it just for yourself or do you want to share it with others?
+
+     <li>If you want to share it, do the others all use Gforth?
+
+     <li>If it is just for yourself, do you want to restrict yourself to Gforth?
+
+   </ul>
+
+   <p>If restricting the program to Gforth is ok, then there is no reason not
+to use extensions.  It is still a good idea to keep to the standard
+where it is easy, in case you want to reuse these parts in another
+program that you want to be portable.
+
+   <p>If you want to be able to port the program to other Forth systems, there
+are the following points to consider:
+
+     <ul>
+<li>Most Forth systems that are being maintained support the ANS Forth
+standard.  So if your program complies with the standard, it will be
+portable among many systems.
+
+     <li>A number of the Gforth extensions can be implemented in ANS Forth using
+public-domain files provided in the <samp><span class="file">compat/</span></samp> directory. These are
+mentioned in the text in passing.  There is no reason not to use these
+extensions, your program will still be ANS Forth compliant; just include
+the appropriate compat files with your program.
+
+     <li>The tool <samp><span class="file">ans-report.fs</span></samp> (see <a href="ANS-Report.html#ANS-Report">ANS Report</a>) makes it easy to
+analyse your program and determine what non-Standard words it relies
+upon.  However, it does not check whether you use standard words in a
+non-standard way.
+
+     <li>Some techniques are not standardized by ANS Forth, and are hard or
+impossible to implement in a standard way, but can be implemented in
+most Forth systems easily, and usually in similar ways (e.g., accessing
+word headers).  Forth has a rich historical precedent for programmers
+taking advantage of implementation-dependent features of their tools
+(for example, relying on a knowledge of the dictionary
+structure). Sometimes these techniques are necessary to extract every
+last bit of performance from the hardware, sometimes they are just a
+programming shorthand.
+
+     <li>Does using a Gforth extension save more work than the porting this part
+to other Forth systems (if any) will cost?
+
+     <li>Is the additional functionality worth the reduction in portability and
+the additional porting problems?
+
+   </ul>
+
+   <p>In order to perform these consideratios, you need to know what's
+standard and what's not.  This manual generally states if something is
+non-standard, but the authoritative source is the
+<a href="http://www.taygeta.com/forth/dpans.html">standard document</a>. 
+Appendix A of the Standard (<var>Rationale</var>) provides a valuable insight
+into the thought processes of the technical committee.
+
+   <p>Note also that portability between Forth systems is not the only
+portability issue; there is also the issue of portability between
+different platforms (processor/OS combinations).
+
+<!-- *************************************************************** -->
+</body></html>
+

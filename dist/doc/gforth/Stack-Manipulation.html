@@ -1,0 +1,82 @@
+<html lang="en">
+<head>
+<title>Stack Manipulation - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Arithmetic.html#Arithmetic" title="Arithmetic">
+<link rel="next" href="Memory.html#Memory" title="Memory">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Stack-Manipulation"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Memory.html#Memory">Memory</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Arithmetic.html#Arithmetic">Arithmetic</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.6 Stack Manipulation</h3>
+
+<p><a name="index-stack-manipulation-words-617"></a>
+<a name="index-floating_002dpoint-stack-in-the-standard-618"></a>Gforth maintains a number of separate stacks:
+
+   <p><a name="index-data-stack-619"></a><a name="index-parameter-stack-620"></a>
+     <ul>
+<li>A data stack (also known as the <dfn>parameter stack</dfn>) &ndash; for
+characters, cells, addresses, and double cells.
+
+     <p><a name="index-floating_002dpoint-stack-621"></a><li>A floating point stack &ndash; for holding floating point (FP) numbers.
+
+     <p><a name="index-return-stack-622"></a><li>A return stack &ndash; for holding the return addresses of colon
+definitions and other (non-FP) data.
+
+     <p><a name="index-locals-stack-623"></a><li>A locals stack &ndash; for holding local variables. 
+</ul>
+
+<ul class="menu">
+<li><a accesskey="1" href="Data-stack.html#Data-stack">Data stack</a>
+<li><a accesskey="2" href="Floating-point-stack.html#Floating-point-stack">Floating point stack</a>
+<li><a accesskey="3" href="Return-stack.html#Return-stack">Return stack</a>
+<li><a accesskey="4" href="Locals-stack.html#Locals-stack">Locals stack</a>
+<li><a accesskey="5" href="Stack-pointer-manipulation.html#Stack-pointer-manipulation">Stack pointer manipulation</a>
+</ul>
+
+   </body></html>
+

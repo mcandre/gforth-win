@@ -1,0 +1,163 @@
+<html lang="en">
+<head>
+<title>Memory Blocks - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Memory.html#Memory" title="Memory">
+<link rel="prev" href="Address-arithmetic.html#Address-arithmetic" title="Address arithmetic">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Memory-Blocks"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Address-arithmetic.html#Address-arithmetic">Address arithmetic</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Memory.html#Memory">Memory</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.7.6 Memory Blocks</h4>
+
+<p><a name="index-memory-block-words-959"></a><a name="index-character-strings-_002d-moving-and-copying-960"></a>
+Memory blocks often represent character strings; For ways of storing
+character strings in memory see <a href="String-Formats.html#String-Formats">String Formats</a>.  For other
+string-processing words see <a href="Displaying-characters-and-strings.html#Displaying-characters-and-strings">Displaying characters and strings</a>.
+
+   <p>A few of these words work on address unit blocks.  In that case, you
+usually have to insert <code>CHARS</code> before the word when working on
+character strings.  Most words work on character blocks, and expect a
+char-aligned address.
+
+   <p>When copying characters between overlapping memory regions, use
+<code>chars move</code> or choose carefully between <code>cmove</code> and
+<code>cmove&gt;</code>.
+
+   <p><a name="index-move-_0040var_007b-c_002dfrom-c_002dto-ucount-_002d_002d--_007d--core-961"></a><a name="index-g_t_0040code_007bmove_007d-962"></a><a name="index-move-963"></a>
+<pre class="format"><code>move</code>       <i>c-from c-to ucount &ndash; </i>       core       &ldquo;move&rdquo;
+</pre>
+   <p>Copy the contents of <i>ucount</i> aus at <i>c-from</i> to
+<i>c-to</i>. <code>move</code> works correctly even if the two areas overlap.
+
+   <p><a name="index-erase-_0040var_007b-addr-u-_002d_002d---_007d--core_002dext-964"></a><a name="index-g_t_0040code_007berase_007d-965"></a><a name="index-erase-966"></a>
+<pre class="format"><code>erase</code>       <i>addr u &ndash;  </i>       core-ext       &ldquo;erase&rdquo;
+</pre>
+   <p>Clear all bits in <i>u</i> aus starting at <i>addr</i>.
+
+   <p><a name="index-cmove-_0040var_007b-c_002dfrom-c_002dto-u-_002d_002d--_007d--string-967"></a><a name="index-g_t_0040code_007bcmove_007d-968"></a><a name="index-cmove-969"></a>
+<pre class="format"><code>cmove</code>       <i>c-from c-to u &ndash; </i>       string       &ldquo;c-move&rdquo;
+</pre>
+   <p>Copy the contents of <i>ucount</i> characters from data space at
+<i>c-from</i> to <i>c-to</i>. The copy proceeds <code>char</code>-by-<code>char</code>
+from low address to high address; i.e., for overlapping areas it is
+safe if <i>c-to</i>=&lt;<i>c-from</i>.
+
+   <p><a name="index-cmove_003e-_0040var_007b-c_002dfrom-c_002dto-u-_002d_002d--_007d--string-970"></a><a name="index-g_t_0040code_007bcmove_003e_007d-971"></a><a name="index-cmove_003e-972"></a>
+<pre class="format"><code>cmove&gt;</code>       <i>c-from c-to u &ndash; </i>       string       &ldquo;c-move-up&rdquo;
+</pre>
+   <p>Copy the contents of <i>ucount</i> characters from data space at
+<i>c-from</i> to <i>c-to</i>. The copy proceeds <code>char</code>-by-<code>char</code>
+from high address to low address; i.e., for overlapping areas it is
+safe if <i>c-to</i>&gt;=<i>c-from</i>.
+
+   <p><a name="index-fill-_0040var_007b-c_002daddr-u-c-_002d_002d--_007d--core-973"></a><a name="index-g_t_0040code_007bfill_007d-974"></a><a name="index-fill-975"></a>
+<pre class="format"><code>fill</code>       <i>c-addr u c &ndash; </i>       core       &ldquo;fill&rdquo;
+</pre>
+   <p>Store <i>c</i> in <i>u</i> chars starting at <i>c-addr</i>.
+
+   <p><a name="index-blank-_0040var_007b-c_002daddr-u-_002d_002d---_007d--string-976"></a><a name="index-g_t_0040code_007bblank_007d-977"></a><a name="index-blank-978"></a>
+<pre class="format"><code>blank</code>       <i>c-addr u &ndash;  </i>       string       &ldquo;blank&rdquo;
+</pre>
+   <p>Store the space character into <i>u</i> chars starting at <i>c-addr</i>.
+
+   <p><a name="index-compare-_0040var_007b-c_002daddr1-u1-c_002daddr2-u2-_002d_002d-n--_007d--string-979"></a><a name="index-g_t_0040code_007bcompare_007d-980"></a><a name="index-compare-981"></a>
+<pre class="format"><code>compare</code>       <i>c-addr1 u1 c-addr2 u2 &ndash; n </i>       string       &ldquo;compare&rdquo;
+</pre>
+   <p>Compare two strings lexicographically. If they are equal, <i>n</i> is 0; if
+the first string is smaller, <i>n</i> is -1; if the first string is larger, <i>n</i>
+is 1. Currently this is based on the machine's character
+comparison. In the future, this may change to consider the current
+locale and its collation order.
+
+   <p><a name="index-str_003d-_0040var_007b-c_002daddr1-u1-c_002daddr2-u2-_002d_002d-f---_007d--gforth-982"></a><a name="index-g_t_0040code_007bstr_003d_007d-983"></a><a name="index-str_003d-984"></a>
+<pre class="format"><code>str=</code>       <i>c-addr1 u1 c-addr2 u2 &ndash; f  </i>       gforth       &ldquo;str=&rdquo;
+</pre>
+   <p><a name="index-str_003c-_0040var_007b-c_002daddr1-u1-c_002daddr2-u2-_002d_002d-f---_007d--gforth-985"></a><a name="index-g_t_0040code_007bstr_003c_007d-986"></a><a name="index-str_003c-987"></a>
+<pre class="format"><code>str&lt;</code>       <i>c-addr1 u1 c-addr2 u2 &ndash; f  </i>       gforth       &ldquo;str&lt;&rdquo;
+</pre>
+   <p><a name="index-string_002dprefix_003f-_0040var_007b-c_002daddr1-u1-c_002daddr2-u2-_002d_002d-f---_007d--gforth-988"></a><a name="index-g_t_0040code_007bstring_002dprefix_003f_007d-989"></a><a name="index-string_002dprefix_003f-990"></a>
+<pre class="format"><code>string-prefix?</code>       <i>c-addr1 u1 c-addr2 u2 &ndash; f  </i>       gforth       &ldquo;string-prefix?&rdquo;
+</pre>
+   <p>Is <var>c-addr2 u2</var> a prefix of <var>c-addr1 u1</var>?
+
+   <p><a name="index-search-_0040var_007b-c_002daddr1-u1-c_002daddr2-u2-_002d_002d-c_002daddr3-u3-flag---_007d--string-991"></a><a name="index-g_t_0040code_007bsearch_007d-992"></a><a name="index-search-993"></a>
+<pre class="format"><code>search</code>       <i>c-addr1 u1 c-addr2 u2 &ndash; c-addr3 u3 flag  </i>       string       &ldquo;search&rdquo;
+</pre>
+   <p>Search the string specified by <i>c-addr1, u1</i> for the string
+specified by <i>c-addr2, u2</i>. If <i>flag</i> is true: match was found
+at <i>c-addr3</i> with <i>u3</i> characters remaining. If <i>flag</i> is false:
+no match was found; <i>c-addr3, u3</i> are equal to <i>c-addr1, u1</i>.
+
+   <p><a name="index-g_t_002dtrailing-_0040var_007b-c_005faddr-u1-_002d_002d-c_005faddr-u2---_007d--string-994"></a><a name="index-g_t_0040code_007b_002dtrailing_007d-995"></a><a name="index-g_t_002dtrailing-996"></a>
+<pre class="format"><code>-trailing</code>       <i>c_addr u1 &ndash; c_addr u2  </i>       string       &ldquo;dash-trailing&rdquo;
+</pre>
+   <p>Adjust the string specified by <i>c-addr, u1</i> to remove all
+trailing spaces. <i>u2</i> is the length of the modified string.
+
+   <p><a name="index-g_t_002fstring-_0040var_007b-c_002daddr1-u1-n-_002d_002d-c_002daddr2-u2--_007d--string-997"></a><a name="index-g_t_0040code_007b_002fstring_007d-998"></a><a name="index-g_t_002fstring-999"></a>
+<pre class="format"><code>/string</code>       <i>c-addr1 u1 n &ndash; c-addr2 u2 </i>       string       &ldquo;slash-string&rdquo;
+</pre>
+   <p>Adjust the string specified by <i>c-addr1, u1</i> to remove <i>n</i>
+characters from the start of the string.
+
+   <p><a name="index-bounds-_0040var_007b-addr-u-_002d_002d-addr_002bu-addr---_007d--gforth-1000"></a><a name="index-g_t_0040code_007bbounds_007d-1001"></a><a name="index-bounds-1002"></a>
+<pre class="format"><code>bounds</code>       <i>addr u &ndash; addr+u addr  </i>       gforth       &ldquo;bounds&rdquo;
+</pre>
+   <p>Given a memory block represented by starting address <i>addr</i>
+and length <i>u</i> in aus, produce the end address <i>addr+u</i> and
+the start address in the right order for <code>u+do</code> or
+<code>?do</code>.
+
+   <p><a name="index-pad-_0040var_007b-_002d_002d-c_002daddr---_007d--core_002dext-1003"></a><a name="index-g_t_0040code_007bpad_007d-1004"></a><a name="index-pad-1005"></a>
+<pre class="format"><code>pad</code>       <i>&ndash; c-addr  </i>       core-ext       &ldquo;pad&rdquo;
+</pre>
+   <p><var>c-addr</var> is the address of a transient region that can be
+used as temporary data storage. At least 84 characters of space
+is available.
+
+<!-- TODO examples -->
+</body></html>
+

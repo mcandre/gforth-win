@@ -1,0 +1,70 @@
+<html lang="en">
+<head>
+<title>locals-ambcond - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-optional-Locals-word-set.html#The-optional-Locals-word-set" title="The optional Locals word set">
+<link rel="prev" href="locals_002didef.html#locals_002didef" title="locals-idef">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="locals-ambcond"></a>
+<a name="locals_002dambcond"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="locals_002didef.html#locals_002didef">locals-idef</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-optional-Locals-word-set.html#The-optional-Locals-word-set">The optional Locals word set</a>
+<hr>
+</div>
+
+<h4 class="subsection">8.8.2 Ambiguous conditions</h4>
+
+<!--  -->
+<p><a name="index-locals-words_002c-ambiguous-conditions-3308"></a><a name="index-ambiguous-conditions_002c-locals-words-3309"></a>
+     <dl>
+<dt><i>executing a named local in interpretation state:</i><dd><a name="index-local-in-interpretation-state-3310"></a><a name="index-Interpreting-a-compile_002donly-word_002c-for-a-local-3311"></a>Locals have no interpretation semantics. If you try to perform the
+interpretation semantics, you will get a <code>-14 throw</code> somewhere
+(Interpreting a compile-only word). If you perform the compilation
+semantics, the locals access will be compiled (irrespective of state).
+
+     <br><dt><i>name not defined by </i><code>VALUE</code><i> or </i><code>(LOCAL)</code><i> (</i><code>TO</code><i>):</i><dd><a name="index-name-not-defined-by-_0040code_007bVALUE_007d-or-_0040code_007b_0028LOCAL_0029_007d-used-by-_0040code_007bTO_007d-3312"></a><a name="index-g_t_0040code_007bTO_007d-on-non_002d_0040code_007bVALUE_007ds-and-non_002dlocals-3313"></a><a name="index-Invalid-name-argument_002c-_0040code_007bTO_007d-3314"></a><code>-32 throw</code> (Invalid name argument)
+
+   </dl>
+
+<!-- ===================================================================== -->
+</body></html>
+

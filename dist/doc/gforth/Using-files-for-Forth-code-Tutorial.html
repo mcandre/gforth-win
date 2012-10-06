@@ -1,0 +1,94 @@
+<html lang="en">
+<head>
+<title>Using files for Forth code Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Stack-Manipulation-Tutorial.html#Stack-Manipulation-Tutorial" title="Stack Manipulation Tutorial">
+<link rel="next" href="Comments-Tutorial.html#Comments-Tutorial" title="Comments Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Using-files-for-Forth-code-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Comments-Tutorial.html#Comments-Tutorial">Comments Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Stack-Manipulation-Tutorial.html#Stack-Manipulation-Tutorial">Stack Manipulation Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.7 Using files for Forth code</h3>
+
+<p><a name="index-loading-Forth-code_002c-tutorial-81"></a><a name="index-files-containing-Forth-code_002c-tutorial-82"></a>
+While working at the Forth command line is convenient for one-line
+examples and short one-off code, you probably want to store your source
+code in files for convenient editing and persistence.  You can use your
+favourite editor (Gforth includes Emacs support, see <a href="Emacs-and-Gforth.html#Emacs-and-Gforth">Emacs and Gforth</a>) to create <var>file.fs</var> and use
+
+<pre class="example">     s" <var>file.fs</var>" included
+</pre>
+   <p>to load it into your Forth system.  The file name extension I use for
+Forth files is `<samp><span class="samp">.fs</span></samp>'.
+
+   <p>You can easily start Gforth with some files loaded like this:
+
+<pre class="example">     gforth <var>file1.fs</var> <var>file2.fs</var>
+</pre>
+   <p>If an error occurs during loading these files, Gforth terminates,
+whereas an error during <code>INCLUDED</code> within Gforth usually gives you
+a Gforth command line.  Starting the Forth system every time gives you a
+clean start every time, without interference from the results of earlier
+tries.
+
+   <p>I often put all the tests in a file, then load the code and run the
+tests with
+
+<pre class="example">     gforth <var>code.fs</var> <var>tests.fs</var> -e bye
+</pre>
+   <p>(often by performing this command with <kbd>C-x C-e</kbd> in Emacs).  The
+<code>-e bye</code> ensures that Gforth terminates afterwards so that I can
+restart this command without ado.
+
+   <p>The advantage of this approach is that the tests can be repeated easily
+every time the program ist changed, making it easy to catch bugs
+introduced by the change.
+
+   <p>Reference: <a href="Forth-source-files.html#Forth-source-files">Forth source files</a>.
+
+   </body></html>
+

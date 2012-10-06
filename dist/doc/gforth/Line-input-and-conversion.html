@@ -1,0 +1,144 @@
+<html lang="en">
+<head>
+<title>Line input and conversion - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-I_002fO.html#Other-I_002fO" title="Other I/O">
+<link rel="prev" href="Single_002dkey-input.html#Single_002dkey-input" title="Single-key input">
+<link rel="next" href="Pipes.html#Pipes" title="Pipes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Line-input-and-conversion"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Pipes.html#Pipes">Pipes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Single_002dkey-input.html#Single_002dkey-input">Single-key input</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-I_002fO.html#Other-I_002fO">Other I/O</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.19.7 Line input and conversion</h4>
+
+<p><a name="index-line-input-from-terminal-2150"></a><a name="index-input_002c-linewise-from-terminal-2151"></a><a name="index-convertin-strings-to-numbers-2152"></a><a name="index-I_002fO-_002d-see-input-2153"></a>
+For ways of storing character strings in memory see <a href="String-Formats.html#String-Formats">String Formats</a>.
+
+<!-- TODO examples for >number >float accept key key? pad parse word refill -->
+<!-- then index them -->
+<p>Words for inputting one line from the keyboard:
+
+   <p><a name="index-accept-_0040var_007b-c_002daddr-_002bn1-_002d_002d-_002bn2---_007d--core-2154"></a><a name="index-g_t_0040code_007baccept_007d-2155"></a><a name="index-accept-2156"></a>
+<pre class="format"><code>accept</code>       <i>c-addr +n1 &ndash; +n2  </i>       core       &ldquo;accept&rdquo;
+</pre>
+   <p>Get a string of up to <var>n1</var> characters from the user input
+device and store it at <var>c-addr</var>.  <var>n2</var> is the length of
+the received string. The user indicates the end by pressing
+&lt;RET&gt;.  Gforth supports all the editing functions available
+on the Forth command line (including history and word
+completion) in <code>accept</code>.
+
+   <p><a name="index-edit_002dline-_0040var_007b-c_002daddr-n1-n2-_002d_002d-n3---_007d--gforth-2157"></a><a name="index-g_t_0040code_007bedit_002dline_007d-2158"></a><a name="index-edit_002dline-2159"></a>
+<pre class="format"><code>edit-line</code>       <i>c-addr n1 n2 &ndash; n3  </i>       gforth       &ldquo;edit-line&rdquo;
+</pre>
+   <p>edit the string with length <var>n2</var> in the buffer <var>c-addr
+n1</var>, like <code>accept</code>.
+
+   <p>Conversion words:
+
+   <p><a name="index-s_003enumber_003f-_0040var_007b-addr-u-_002d_002d-d-f---_007d--gforth-2160"></a><a name="index-g_t_0040code_007bs_003enumber_003f_007d-2161"></a><a name="index-s_003enumber_003f-2162"></a>
+<pre class="format"><code>s&gt;number?</code>       <i>addr u &ndash; d f  </i>       gforth       &ldquo;s&gt;number?&rdquo;
+</pre>
+   <p>converts string addr u into d, flag indicates success
+
+   <p><a name="index-s_003eunumber_003f-_0040var_007b-c_002daddr-u-_002d_002d-ud-flag---_007d--gforth-2163"></a><a name="index-g_t_0040code_007bs_003eunumber_003f_007d-2164"></a><a name="index-s_003eunumber_003f-2165"></a>
+<pre class="format"><code>s&gt;unumber?</code>       <i>c-addr u &ndash; ud flag  </i>       gforth       &ldquo;s&gt;unumber?&rdquo;
+</pre>
+   <p>converts string c-addr u into ud, flag indicates success
+
+   <p><a name="index-g_t_003enumber-_0040var_007b-ud1-c_002daddr1-u1-_002d_002d-ud2-c_002daddr2-u2---_007d--core-2166"></a><a name="index-g_t_0040code_007b_003enumber_007d-2167"></a><a name="index-g_t_003enumber-2168"></a>
+<pre class="format"><code>&gt;number</code>       <i>ud1 c-addr1 u1 &ndash; ud2 c-addr2 u2  </i>       core       &ldquo;to-number&rdquo;
+</pre>
+   <p>Attempt to convert the character string <var>c-addr1 u1</var> to an
+unsigned number in the current number base. The double
+<var>ud1</var> accumulates the result of the conversion to form
+<var>ud2</var>. Conversion continues, left-to-right, until the whole
+string is converted or a character that is not convertable in
+the current number base is encountered (including + or -). For
+each convertable character, <var>ud1</var> is first multiplied by
+the value in <code>BASE</code> and then incremented by the value
+represented by the character. <var>c-addr2</var> is the location of
+the first unconverted character (past the end of the string if
+the whole string was converted). <var>u2</var> is the number of
+unconverted characters in the string. Overflow is not detected.
+
+   <p><a name="index-g_t_003efloat-_0040var_007b-c_002daddr-u-_002d_002d-f_003a_002e_002e_002e-flag--_007d--float-2169"></a><a name="index-g_t_0040code_007b_003efloat_007d-2170"></a><a name="index-g_t_003efloat-2171"></a>
+<pre class="format"><code>&gt;float</code>       <i>c-addr u &ndash; f:... flag </i>       float       &ldquo;to-float&rdquo;
+</pre>
+   <p>Actual stack effect: ( c_addr u &ndash; r t | f ).  Attempt to convert the
+character string <i>c-addr u</i> to internal floating-point
+representation. If the string represents a valid floating-point number
+<i>r</i> is placed on the floating-point stack and <i>flag</i> is
+true. Otherwise, <i>flag</i> is false. A string of blanks is a special
+case and represents the floating-point number 0.
+
+<!-- obsolescent words.. -->
+<p>Obsolescent input and conversion words:
+
+   <p><a name="index-convert-_0040var_007b-ud1-c_002daddr1-_002d_002d-ud2-c_002daddr2---_007d--core_002dext_002dobsolescent-2172"></a><a name="index-g_t_0040code_007bconvert_007d-2173"></a><a name="index-convert-2174"></a>
+<pre class="format"><code>convert</code>       <i>ud1 c-addr1 &ndash; ud2 c-addr2  </i>       core-ext-obsolescent       &ldquo;convert&rdquo;
+</pre>
+   <p>Obsolescent: superseded by <code>&gt;number</code>.
+
+   <p><a name="index-expect-_0040var_007b-c_002daddr-_002bn-_002d_002d---_007d--core_002dext_002dobsolescent-2175"></a><a name="index-g_t_0040code_007bexpect_007d-2176"></a><a name="index-expect-2177"></a>
+<pre class="format"><code>expect</code>       <i>c-addr +n &ndash;  </i>       core-ext-obsolescent       &ldquo;expect&rdquo;
+</pre>
+   <p>Receive a string of at most <i>+n</i> characters, and store it
+in memory starting at <i>c-addr</i>. The string is
+displayed. Input terminates when the &lt;return&gt; key is pressed or
+<i>+n</i> characters have been received. The normal Gforth line
+editing capabilites are available. The length of the string is
+stored in <code>span</code>; it does not include the &lt;return&gt;
+character. OBSOLESCENT: superceeded by <code>accept</code>.
+
+   <p><a name="index-span-_0040var_007b-_002d_002d-c_002daddr---_007d--core_002dext_002dobsolescent-2178"></a><a name="index-g_t_0040code_007bspan_007d-2179"></a><a name="index-span-2180"></a>
+<pre class="format"><code>span</code>       <i>&ndash; c-addr  </i>       core-ext-obsolescent       &ldquo;span&rdquo;
+</pre>
+   <p><code>Variable</code> &ndash; <i>c-addr</i> is the address of a cell that stores the
+length of the last string received by <code>expect</code>. OBSOLESCENT.
+
+   </body></html>
+

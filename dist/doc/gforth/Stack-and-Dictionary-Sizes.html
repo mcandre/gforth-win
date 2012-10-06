@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+<title>Stack and Dictionary Sizes - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Image-Files.html#Image-Files" title="Image Files">
+<link rel="prev" href="Fully-Relocatable-Image-Files.html#Fully-Relocatable-Image-Files" title="Fully Relocatable Image Files">
+<link rel="next" href="Running-Image-Files.html#Running-Image-Files" title="Running Image Files">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Stack-and-Dictionary-Sizes"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Running-Image-Files.html#Running-Image-Files">Running Image Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Fully-Relocatable-Image-Files.html#Fully-Relocatable-Image-Files">Fully Relocatable Image Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Image-Files.html#Image-Files">Image Files</a>
+<hr>
+</div>
+
+<h3 class="section">13.6 Stack and Dictionary Sizes</h3>
+
+<p><a name="index-image-file_002c-stack-and-dictionary-sizes-3424"></a><a name="index-dictionary-size-default-3425"></a><a name="index-stack-size-default-3426"></a>
+If you invoke Gforth with a command line flag for the size
+(see <a href="Invoking-Gforth.html#Invoking-Gforth">Invoking Gforth</a>), the size you specify is stored in the
+dictionary. If you save the dictionary with <code>savesystem</code> or create
+an image with <samp><span class="file">gforthmi</span></samp>, this size will become the default
+for the resulting image file. E.g., the following will create a
+fully relocatable version of <samp><span class="file">gforth.fi</span></samp> with a 1MB dictionary:
+
+<pre class="example">     gforthmi gforth.fi -m 1M
+</pre>
+   <p>In other words, if you want to set the default size for the dictionary
+and the stacks of an image, just invoke <samp><span class="file">gforthmi</span></samp> with the
+appropriate options when creating the image.
+
+   <p><a name="index-stack-size_002c-cache_002dfriendly-3427"></a>Note: For cache-friendly behaviour (i.e., good performance), you should
+make the sizes of the stacks modulo, say, 2K, somewhat different. E.g.,
+the default stack sizes are: data: 16k (mod 2k=0); fp: 15.5k (mod
+2k=1.5k); return: 15k(mod 2k=1k); locals: 14.5k (mod 2k=0.5k).
+
+   </body></html>
+

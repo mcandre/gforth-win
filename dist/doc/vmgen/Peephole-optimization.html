@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+<title>Peephole optimization - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Using-the-generated-code.html#Using-the-generated-code" title="Using the generated code">
+<link rel="prev" href="VM-code-generation.html#VM-code-generation" title="VM code generation">
+<link rel="next" href="VM-disassembler.html#VM-disassembler" title="VM disassembler">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Peephole-optimization"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="VM-disassembler.html#VM-disassembler">VM disassembler</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="VM-code-generation.html#VM-code-generation">VM code generation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Using-the-generated-code.html#Using-the-generated-code">Using the generated code</a>
+<hr>
+</div>
+
+<h3 class="section">8.4 Peephole optimization</h3>
+
+<p><a name="index-peephole-optimization-178"></a><a name="index-superinstructions_002c-generating-179"></a><a name="index-g_t_0040file_007bpeephole_002ec_007d-180"></a><a name="index-g_t_0040file_007b_002dpeephole_002ei_007d-output-file-181"></a>
+You need peephole optimization only if you want to use
+superinstructions.  But having the code for it does not hurt much if you
+do not use superinstructions.
+
+   <p>A simple greedy peephole optimization algorithm is used for
+superinstruction selection: every time <code>gen_inst</code> compiles a VM
+instruction, it checks if it can combine it with the last VM instruction
+(which may also be a superinstruction resulting from a previous peephole
+optimization); if so, it changes the last instruction to the combined
+instruction instead of laying down <code>i</code> at the current `<samp><span class="samp">*ctp</span></samp>'.
+
+   <p>The code for peephole optimization is in <samp><span class="file">vmgen-ex/peephole.c</span></samp>. 
+You can use this file almost verbatim.  Vmgen generates
+<samp><var>file</var><span class="file">-peephole.i</span></samp> which contains data for the peephole
+optimizer.
+
+   <p><a name="index-init_005fpeeptable-182"></a>You have to call `<samp><span class="samp">init_peeptable()</span></samp>' after initializing
+`<samp><span class="samp">vm_prim</span></samp>', and before compiling any VM code to initialize data
+structures for peephole optimization.  After that, compiling with the VM
+code generation functions will automatically combine VM instructions
+into superinstructions.  Since you do not want to combine instructions
+across VM branch targets (otherwise there will not be a proper VM
+instruction to branch to), you have to call <code>BB_BOUNDARY</code>
+(see <a href="VM-code-generation.html#VM-code-generation">VM code generation</a>) at branch targets.
+
+<!--  -->
+</body></html>
+

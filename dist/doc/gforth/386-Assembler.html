@@ -1,0 +1,150 @@
+<html lang="en">
+<head>
+<title>386 Assembler - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words" title="Assembler and Code Words">
+<link rel="prev" href="Common-Disassembler.html#Common-Disassembler" title="Common Disassembler">
+<link rel="next" href="Alpha-Assembler.html#Alpha-Assembler" title="Alpha Assembler">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="g_t386-Assembler"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Alpha-Assembler.html#Alpha-Assembler">Alpha Assembler</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Common-Disassembler.html#Common-Disassembler">Common Disassembler</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words">Assembler and Code Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.26.4 386 Assembler</h4>
+
+<p>The 386 assembler included in Gforth was written by Bernd Paysan, it's
+available under GPL, and originally part of bigFORTH.
+
+   <p>The 386 disassembler included in Gforth was written by Andrew McKewan
+and is in the public domain.
+
+   <p>The disassembler displays code in an Intel-like prefix syntax.
+
+   <p>The assembler uses a postfix syntax with reversed parameters.
+
+   <p>The assembler includes all instruction of the Athlon, i.e. 486 core
+instructions, Pentium and PPro extensions, floating point, MMX, 3Dnow!,
+but not ISSE. It's an integrated 16- and 32-bit assembler. Default is 32
+bit, you can switch to 16 bit with .86 and back to 32 bit with .386.
+
+   <p>There are several prefixes to switch between different operation sizes,
+<code>.b</code> for byte accesses, <code>.w</code> for word accesses, <code>.d</code> for
+double-word accesses. Addressing modes can be switched with <code>.wa</code>
+for 16 bit addresses, and <code>.da</code> for 32 bit addresses. You don't
+need a prefix for byte register names (<code>AL</code> et al).
+
+   <p>For floating point operations, the prefixes are <code>.fs</code> (IEEE
+single), <code>.fl</code> (IEEE double), <code>.fx</code> (extended), <code>.fw</code>
+(word), <code>.fd</code> (double-word), and <code>.fq</code> (quad-word).
+
+   <p>The MMX opcodes don't have size prefixes, they are spelled out like in
+the Intel assembler. Instead of move from and to memory, there are
+PLDQ/PLDD and PSTQ/PSTD.
+
+   <p>The registers lack the 'e' prefix; even in 32 bit mode, eax is called
+ax.  Immediate values are indicated by postfixing them with <code>#</code>,
+e.g., <code>3 #</code>.  Here are some examples of addressing modes in various
+syntaxes:
+
+<pre class="example">     Gforth          Intel (NASM)   AT&amp;T (gas)      Name
+     .w ax           ax             %ax             register (16 bit)
+     ax              eax            %eax            register (32 bit)
+     3 #             offset 3       $3              immediate
+     1000 #)         byte ptr 1000  1000            displacement
+     bx )            [ebx]          (%ebx)          base
+     100 di d)       100[edi]       100(%edi)       base+displacement
+     20 ax *4 i#)    20[eax*4]      20(,%eax,4)     (index*scale)+displacement
+     di ax *4 i)     [edi][eax*4]   (%edi,%eax,4)   base+(index*scale)
+     4 bx cx di)     4[ebx][ecx]    4(%ebx,%ecx)    base+index+displacement
+     12 sp ax *2 di) 12[esp][eax*2] 12(%esp,%eax,2) base+(index*scale)+displacement
+</pre>
+   <p>You can use <code>L)</code> and <code>LI)</code> instead of <code>D)</code> and
+<code>DI)</code> to enforce 32-bit displacement fields (useful for
+later patching).
+
+   <p>Some example of instructions are:
+
+<pre class="example">     ax bx mov             \ move ebx,eax
+     3 # ax mov            \ mov eax,3
+     100 di d) ax mov      \ mov eax,100[edi]
+     4 bx cx di) ax mov    \ mov eax,4[ebx][ecx]
+     .w ax bx mov          \ mov bx,ax
+</pre>
+   <p>The following forms are supported for binary instructions:
+
+<pre class="example">     &lt;reg&gt; &lt;reg&gt; &lt;inst&gt;
+     &lt;n&gt; # &lt;reg&gt; &lt;inst&gt;
+     &lt;mem&gt; &lt;reg&gt; &lt;inst&gt;
+     &lt;reg&gt; &lt;mem&gt; &lt;inst&gt;
+     &lt;n&gt; # &lt;mem&gt; &lt;inst&gt;
+</pre>
+   <p>The shift/rotate syntax is:
+
+<pre class="example">     &lt;reg/mem&gt; 1 # shl \ shortens to shift without immediate
+     &lt;reg/mem&gt; 4 # shl
+     &lt;reg/mem&gt; cl shl
+</pre>
+   <p>Precede string instructions (<code>movs</code> etc.) with <code>.b</code> to get
+the byte version.
+
+   <p>The control structure words <code>IF</code> <code>UNTIL</code> etc. must be preceded
+by one of these conditions: <code>vs vc u&lt; u&gt;= 0= 0&lt;&gt; u&lt;= u&gt; 0&lt; 0&gt;= ps
+pc &lt; &gt;= &lt;= &gt;</code>. (Note that most of these words shadow some Forth words
+when <code>assembler</code> is in front of <code>forth</code> in the search path,
+e.g., in <code>code</code> words).  Currently the control structure words use
+one stack item, so you have to use <code>roll</code> instead of <code>cs-roll</code>
+to shuffle them (you can also use <code>swap</code> etc.).
+
+   <p>Here is an example of a <code>code</code> word (assumes that the stack pointer
+is in esi and the TOS is in ebx):
+
+<pre class="example">     code my+ ( n1 n2 -- n )
+         4 si D) bx add
+         4 # si add
+         Next
+     end-code
+</pre>
+   </body></html>
+

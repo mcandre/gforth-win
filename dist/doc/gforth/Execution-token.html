@@ -1,0 +1,121 @@
+<html lang="en">
+<head>
+<title>Execution token - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tokens-for-Words.html#Tokens-for-Words" title="Tokens for Words">
+<link rel="prev" href="Tokens-for-Words.html#Tokens-for-Words" title="Tokens for Words">
+<link rel="next" href="Compilation-token.html#Compilation-token" title="Compilation token">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Execution-token"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Compilation-token.html#Compilation-token">Compilation token</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Tokens-for-Words.html#Tokens-for-Words">Tokens for Words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tokens-for-Words.html#Tokens-for-Words">Tokens for Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.11.1 Execution token</h4>
+
+<p><a name="index-xt-1332"></a><a name="index-execution-token-1333"></a>An <dfn>execution token</dfn> (<i>XT</i>) represents some behaviour of a word. 
+You can use <code>execute</code> to invoke this behaviour.
+
+   <p><a name="index-tick-_0028_0027_0029-1334"></a>You can use <code>'</code> to get an execution token that represents the
+interpretation semantics of a named word:
+
+<pre class="example">     5 ' .   ( n xt )
+     execute ( )      \ execute the xt (i.e., ".")
+</pre>
+   <p><a name="index-g_t_0027-_0040var_007b-_0022name_0022-_002d_002d-xt---_007d--core-1335"></a><a name="index-g_t_0040code_007b_0027_007d-1336"></a><a name="index-g_t_0027-1337"></a>
+<pre class="format"><code>'</code>       <i>"name" &ndash; xt  </i>       core       &ldquo;tick&rdquo;
+</pre>
+   <p><i>xt</i> represents <i>name</i>'s interpretation
+semantics. Perform <code>-14 throw</code> if the word has no
+interpretation semantics.
+
+   <p><code>'</code> parses at run-time; there is also a word <code>[']</code> that parses
+when it is compiled, and compiles the resulting XT:
+
+<pre class="example">     : foo ['] . execute ;
+     5 foo
+     : bar ' execute ; \ by contrast,
+     5 bar .           \ ' parses "." when bar executes
+</pre>
+   <p><a name="index-g_t_005b_0027_005d-_0040var_007b-compilation_002e-_0022name_0022-_002d_002d-_003b-run_002dtime_002e-_002d_002d-xt---_007d--core-1338"></a><a name="index-g_t_0040code_007b_005b_0027_005d_007d-1339"></a><a name="index-g_t_005b_0027_005d-1340"></a>
+<pre class="format"><code>[']</code>       <i>compilation. "name" &ndash; ; run-time. &ndash; xt  </i>       core       &ldquo;bracket-tick&rdquo;
+</pre>
+   <p><i>xt</i> represents <i>name</i>'s interpretation
+semantics. Perform <code>-14 throw</code> if the word has no
+interpretation semantics.
+
+   <p>If you want the execution token of <i>word</i>, write <code>['] </code><i>word</i>
+in compiled code and <code>' </code><i>word</i> in interpreted code.  Gforth's
+<code>'</code> and <code>[']</code> behave somewhat unusually by complaining about
+compile-only words (because these words have no interpretation
+semantics).  You might get what you want by using <code>COMP' </code><i>word</i><code>
+DROP</code> or <code>[COMP'] </code><i>word</i><code> DROP</code> (for details see <a href="Compilation-token.html#Compilation-token">Compilation token</a>).
+
+   <p>Another way to get an XT is <code>:noname</code> or <code>latestxt</code>
+(see <a href="Anonymous-Definitions.html#Anonymous-Definitions">Anonymous Definitions</a>).  For anonymous words this gives an xt
+for the only behaviour the word has (the execution semantics).  For
+named words, <code>latestxt</code> produces an XT for the same behaviour it
+would produce if the word was defined anonymously.
+
+<pre class="example">     :noname ." hello" ;
+     execute
+</pre>
+   <p>An XT occupies one cell and can be manipulated like any other cell.
+
+   <p><a name="index-code-field-address-1341"></a><a name="index-CFA-1342"></a>In ANS Forth the XT is just an abstract data type (i.e., defined by the
+operations that produce or consume it).  For old hands: In Gforth, the
+XT is implemented as a code field address (CFA).
+
+   <p><a name="index-execute-_0040var_007b-xt-_002d_002d--_007d--core-1343"></a><a name="index-g_t_0040code_007bexecute_007d-1344"></a><a name="index-execute-1345"></a>
+<pre class="format"><code>execute</code>       <i>xt &ndash; </i>       core       &ldquo;execute&rdquo;
+</pre>
+   <p>Perform the semantics represented by the execution token, <i>xt</i>.
+
+   <p><a name="index-perform-_0040var_007b-a_002daddr-_002d_002d--_007d--gforth-1346"></a><a name="index-g_t_0040code_007bperform_007d-1347"></a><a name="index-perform-1348"></a>
+<pre class="format"><code>perform</code>       <i>a-addr &ndash; </i>       gforth       &ldquo;perform&rdquo;
+</pre>
+   <p><code>@ execute</code>.
+
+   </body></html>
+

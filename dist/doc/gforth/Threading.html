@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+<title>Threading - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Engine.html#Engine" title="Engine">
+<link rel="prev" href="Portability.html#Portability" title="Portability">
+<link rel="next" href="Primitives.html#Primitives" title="Primitives">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Threading"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Primitives.html#Primitives">Primitives</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Portability.html#Portability">Portability</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Engine.html#Engine">Engine</a>
+<hr>
+</div>
+
+<h3 class="section">14.2 Threading</h3>
+
+<p><a name="index-inner-interpreter-implementation-3458"></a><a name="index-threaded-code-implementation-3459"></a>
+<a name="index-labels-as-values-3460"></a>GNU C's labels as values extension (available since <code>gcc-2.0</code>,
+see <a href="../gcc/Labels-as-Values.html#Labels-as-Values">Labels as Values</a>)
+makes it possible to take the address of <i>label</i> by writing
+<code>&amp;&amp;</code><i>label</i>.  This address can then be used in a statement like
+<code>goto *</code><i>address</i>. I.e., <code>goto *&amp;&amp;x</code> is the same as
+<code>goto x</code>.
+
+   <p><a name="index-g_t_0040code_007bNEXT_007d_002c-indirect-threaded-3461"></a><a name="index-indirect-threaded-inner-interpreter-3462"></a><a name="index-inner-interpreter_002c-indirect-threaded-3463"></a>With this feature an indirect threaded <code>NEXT</code> looks like:
+<pre class="example">     cfa = *ip++;
+     ca = *cfa;
+     goto *ca;
+</pre>
+   <p><a name="index-instruction-pointer-3464"></a>For those unfamiliar with the names: <code>ip</code> is the Forth instruction
+pointer; the <code>cfa</code> (code-field address) corresponds to ANS Forths
+execution token and points to the code field of the next word to be
+executed; The <code>ca</code> (code address) fetched from there points to some
+executable code, e.g., a primitive or the colon definition handler
+<code>docol</code>.
+
+   <p><a name="index-g_t_0040code_007bNEXT_007d_002c-direct-threaded-3465"></a><a name="index-direct-threaded-inner-interpreter-3466"></a><a name="index-inner-interpreter_002c-direct-threaded-3467"></a>Direct threading is even simpler:
+<pre class="example">     ca = *ip++;
+     goto *ca;
+</pre>
+   <p>Of course we have packaged the whole thing neatly in macros called
+<code>NEXT</code> and <code>NEXT1</code> (the part of <code>NEXT</code> after fetching the cfa).
+
+<ul class="menu">
+<li><a accesskey="1" href="Scheduling.html#Scheduling">Scheduling</a>
+<li><a accesskey="2" href="Direct-or-Indirect-Threaded_003f.html#Direct-or-Indirect-Threaded_003f">Direct or Indirect Threaded?</a>
+<li><a accesskey="3" href="Dynamic-Superinstructions.html#Dynamic-Superinstructions">Dynamic Superinstructions</a>
+<li><a accesskey="4" href="DOES_003e.html#DOES_003e">DOES&gt;</a>
+</ul>
+
+   </body></html>
+

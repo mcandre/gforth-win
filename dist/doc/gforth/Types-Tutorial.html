@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+<title>Types Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Stack_002dEffect-Comments-Tutorial.html#Stack_002dEffect-Comments-Tutorial" title="Stack-Effect Comments Tutorial">
+<link rel="next" href="Factoring-Tutorial.html#Factoring-Tutorial" title="Factoring Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Types-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Factoring-Tutorial.html#Factoring-Tutorial">Factoring Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Stack_002dEffect-Comments-Tutorial.html#Stack_002dEffect-Comments-Tutorial">Stack-Effect Comments Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.12 Types</h3>
+
+<p><a name="index-types-tutorial-92"></a>
+In Forth the names of the operations are not overloaded; so similar
+operations on different types need different names; e.g., <code>+</code> adds
+integers, and you have to use <code>f+</code> to add floating-point numbers. 
+The following prefixes are often used for related operations on
+different types:
+
+     <dl>
+<dt><code>(none)</code><dd>signed integer
+<br><dt><code>u</code><dd>unsigned integer
+<br><dt><code>c</code><dd>character
+<br><dt><code>d</code><dd>signed double-cell integer
+<br><dt><code>ud, du</code><dd>unsigned double-cell integer
+<br><dt><code>2</code><dd>two cells (not-necessarily double-cell numbers)
+<br><dt><code>m, um</code><dd>mixed single-cell and double-cell operations
+<br><dt><code>f</code><dd>floating-point (note that in stack comments `<samp><span class="samp">f</span></samp>' represents flags,
+and `<samp><span class="samp">r</span></samp>' represents FP numbers). 
+</dl>
+
+   <p>If there are no differences between the signed and the unsigned variant
+(e.g., for <code>+</code>), there is only the prefix-less variant.
+
+   <p>Forth does not perform type checking, neither at compile time, nor at
+run time.  If you use the wrong oeration, the data are interpreted
+incorrectly:
+
+<pre class="example">     -1 u.
+</pre>
+   <p>If you have only experience with type-checked languages until now, and
+have heard how important type-checking is, don't panic!  In my
+experience (and that of other Forthers), type errors in Forth code are
+usually easy to find (once you get used to it), the increased vigilance
+of the programmer tends to catch some harder errors in addition to most
+type errors, and you never have to work around the type system, so in
+most situations the lack of type-checking seems to be a win (projects to
+add type checking to Forth have not caught on).
+
+   </body></html>
+

@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+<title>Basic OOF Usage - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="OOF.html#OOF" title="OOF">
+<link rel="prev" href="Properties-of-the-OOF-model.html#Properties-of-the-OOF-model" title="Properties of the OOF model">
+<link rel="next" href="The-OOF-base-class.html#The-OOF-base-class" title="The OOF base class">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Basic-OOF-Usage"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="The-OOF-base-class.html#The-OOF-base-class">The OOF base class</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Properties-of-the-OOF-model.html#Properties-of-the-OOF-model">Properties of the OOF model</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="OOF.html#OOF">OOF</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.23.4.2 Basic <samp><span class="file">oof.fs</span></samp> Usage</h5>
+
+<p><a name="index-g_t_0040file_007boof_002efs_007d-usage-2649"></a>
+This section uses the same example as for <code>objects</code> (see <a href="Basic-Objects-Usage.html#Basic-Objects-Usage">Basic Objects Usage</a>).
+
+   <p>You can define a class for graphical objects like this:
+
+   <p><a name="index-g_t_0040code_007bclass_007d-usage-2650"></a><a name="index-g_t_0040code_007bclass_003b_007d-usage-2651"></a><a name="index-g_t_0040code_007bmethod_007d-usage-2652"></a>
+<pre class="example">     object class graphical \ "object" is the parent class
+       method draw ( x y -- )
+     class;
+</pre>
+   <p>This code defines a class <code>graphical</code> with an
+operation <code>draw</code>.  We can perform the operation
+<code>draw</code> on any <code>graphical</code> object, e.g.:
+
+<pre class="example">     100 100 t-rex draw
+</pre>
+   <p class="noindent">where <code>t-rex</code> is an object or object pointer, created with e.g. 
+<code>graphical : t-rex</code>.
+
+   <p><a name="index-abstract-class-2653"></a>How do we create a graphical object? With the present definitions,
+we cannot create a useful graphical object. The class
+<code>graphical</code> describes graphical objects in general, but not
+any concrete graphical object type (C++ users would call it an
+<em>abstract class</em>); e.g., there is no method for the selector
+<code>draw</code> in the class <code>graphical</code>.
+
+   <p>For concrete graphical objects, we define child classes of the
+class <code>graphical</code>, e.g.:
+
+<pre class="example">     graphical class circle \ "graphical" is the parent class
+       cell var circle-radius
+     how:
+       : draw ( x y -- )
+         circle-radius @ draw-circle ;
+     
+       : init ( n-radius -- )
+         circle-radius ! ;
+     class;
+</pre>
+   <p>Here we define a class <code>circle</code> as a child of <code>graphical</code>,
+with a field <code>circle-radius</code>; it defines new methods for the
+selectors <code>draw</code> and <code>init</code> (<code>init</code> is defined in
+<code>object</code>, the parent class of <code>graphical</code>).
+
+   <p>Now we can create a circle in the dictionary with:
+
+<pre class="example">     50 circle : my-circle
+</pre>
+   <p class="noindent"><code>:</code> invokes <code>init</code>, thus initializing the field
+<code>circle-radius</code> with 50. We can draw this new circle at (100,100)
+with:
+
+<pre class="example">     100 100 my-circle draw
+</pre>
+   <p><a name="index-selector-invocation_002c-restrictions-2654"></a><a name="index-class-definition_002c-restrictions-2655"></a>Note: You can only invoke a selector if the receiving object belongs to
+the class where the selector was defined or one of its descendents;
+e.g., you can invoke <code>draw</code> only for objects belonging to
+<code>graphical</code> or its descendents (e.g., <code>circle</code>). The scoping
+mechanism will check if you try to invoke a selector that is not
+defined in this class hierarchy, so you'll get an error at compilation
+time.
+
+   </body></html>
+

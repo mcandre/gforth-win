@@ -1,0 +1,131 @@
+<html lang="en">
+<head>
+<title>OS command line arguments - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Other-I_002fO.html#Other-I_002fO" title="Other I/O">
+<link rel="next" href="Locals.html#Locals" title="Locals">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="OS-command-line-arguments"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Locals.html#Locals">Locals</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Other-I_002fO.html#Other-I_002fO">Other I/O</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.20 OS command line arguments</h3>
+
+<p><a name="index-OS-command-line-arguments-2230"></a><a name="index-command-line-arguments_002c-OS-2231"></a><a name="index-arguments_002c-OS-command-line-2232"></a>
+The usual way to pass arguments to Gforth programs on the command line
+is via the <samp><span class="option">-e</span></samp> option, e.g.
+
+<pre class="example">     gforth -e "123 456" foo.fs -e bye
+</pre>
+   <p>However, you may want to interpret the command-line arguments directly. 
+In that case, you can access the (image-specific) command-line arguments
+through <code>next-arg</code>:
+
+   <p><a name="index-next_002darg-_0040var_007b-_002d_002d-addr-u---_007d--gforth-2233"></a><a name="index-g_t_0040code_007bnext_002darg_007d-2234"></a><a name="index-next_002darg-2235"></a>
+<pre class="format"><code>next-arg</code>       <i>&ndash; addr u  </i>       gforth       &ldquo;next-arg&rdquo;
+</pre>
+   <p>get the next argument from the OS command line, consuming it; if
+there is no argument left, return <code>0 0</code>.
+
+   <p>Here's an example program <samp><span class="file">echo.fs</span></samp> for <code>next-arg</code>:
+
+<pre class="example">     : echo ( -- )
+         begin
+     	next-arg 2dup 0 0 d&lt;&gt; while
+     	    type space
+         repeat
+         2drop ;
+     
+     echo cr bye
+</pre>
+   <p>This can be invoked with
+
+<pre class="example">     gforth echo.fs hello world
+</pre>
+   <p>and it will print
+
+<pre class="example">     hello world
+</pre>
+   <p>The next lower level of dealing with the OS command line are the
+following words:
+
+   <p><a name="index-arg-_0040var_007b-u-_002d_002d-addr-count---_007d--gforth-2236"></a><a name="index-g_t_0040code_007barg_007d-2237"></a><a name="index-arg-2238"></a>
+<pre class="format"><code>arg</code>       <i>u &ndash; addr count  </i>       gforth       &ldquo;arg&rdquo;
+</pre>
+   <p>Return the string for the <i>u</i>th command-line argument; returns
+<code>0 0</code> if the access is beyond the last argument.  <code>0 arg</code>
+is the program name with which you started Gforth.  The next
+unprocessed argument is always <code>1 arg</code>, the one after that is
+<code>2 arg</code> etc.  All arguments already processed by the system
+are deleted.  After you have processed an argument, you can delete
+it with <code>shift-args</code>.
+
+   <p><a name="index-shift_002dargs-_0040var_007b-_002d_002d---_007d--gforth-2239"></a><a name="index-g_t_0040code_007bshift_002dargs_007d-2240"></a><a name="index-shift_002dargs-2241"></a>
+<pre class="format"><code>shift-args</code>       <i>&ndash;  </i>       gforth       &ldquo;shift-args&rdquo;
+</pre>
+   <p><code>1 arg</code> is deleted, shifting all following OS command line
+parameters to the left by 1, and reducing <code>argc @</code>.  This word
+can change <code>argv @</code>.
+
+   <p>Finally, at the lowest level Gforth provides the following words:
+
+   <p><a name="index-argc-_0040var_007b-_002d_002d-addr---_007d--gforth-2242"></a><a name="index-g_t_0040code_007bargc_007d-2243"></a><a name="index-argc-2244"></a>
+<pre class="format"><code>argc</code>       <i>&ndash; addr  </i>       gforth       &ldquo;argc&rdquo;
+</pre>
+   <p><code>Variable</code> &ndash; the number of command-line arguments (including
+the command name).  Changed by <code>next-arg</code> and <code>shift-args</code>.
+
+   <p><a name="index-argv-_0040var_007b-_002d_002d-addr---_007d--gforth-2245"></a><a name="index-g_t_0040code_007bargv_007d-2246"></a><a name="index-argv-2247"></a>
+<pre class="format"><code>argv</code>       <i>&ndash; addr  </i>       gforth       &ldquo;argv&rdquo;
+</pre>
+   <p><code>Variable</code> &ndash; a pointer to a vector of pointers to the
+command-line arguments (including the command-name). Each argument
+is represented as a C-style zero-terminated string.  Changed by
+<code>next-arg</code> and <code>shift-args</code>.
+
+<!--  -->
+</body></html>
+

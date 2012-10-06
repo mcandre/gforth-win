@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+<title>Return stack - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Stack-Manipulation.html#Stack-Manipulation" title="Stack Manipulation">
+<link rel="prev" href="Floating-point-stack.html#Floating-point-stack" title="Floating point stack">
+<link rel="next" href="Locals-stack.html#Locals-stack" title="Locals stack">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Return-stack"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Locals-stack.html#Locals-stack">Locals stack</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Floating-point-stack.html#Floating-point-stack">Floating point stack</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Stack-Manipulation.html#Stack-Manipulation">Stack Manipulation</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.6.3 Return stack</h4>
+
+<p><a name="index-return-stack-manipulation-words-709"></a><a name="index-stack-manipulation-words_002c-return-stack-710"></a>
+<a name="index-return-stack-and-locals-711"></a><a name="index-locals-and-return-stack-712"></a>A Forth system is allowed to keep local variables on the
+return stack. This is reasonable, as local variables usually eliminate
+the need to use the return stack explicitly. So, if you want to produce
+a standard compliant program and you are using local variables in a
+word, forget about return stack manipulations in that word (refer to the
+standard document for the exact rules).
+
+   <p><a name="index-g_t_003er-_0040var_007b-w-_002d_002d-R_003aw--_007d--core-713"></a><a name="index-g_t_0040code_007b_003er_007d-714"></a><a name="index-g_t_003er-715"></a>
+<pre class="format"><code>&gt;r</code>       <i>w &ndash; R:w </i>       core       &ldquo;to-r&rdquo;
+</pre>
+   <p><a name="index-r_003e-_0040var_007b-R_003aw-_002d_002d-w--_007d--core-716"></a><a name="index-g_t_0040code_007br_003e_007d-717"></a><a name="index-r_003e-718"></a>
+<pre class="format"><code>r&gt;</code>       <i>R:w &ndash; w </i>       core       &ldquo;r-from&rdquo;
+</pre>
+   <p><a name="index-r_0040_0040-_0040var_007b-_002d_002d-w-_003b-R_003a-w-_002d_002d-w---_007d--core-719"></a><a name="index-g_t_0040code_007br_0040_0040_007d-720"></a><a name="index-r_0040_0040-721"></a>
+<pre class="format"><code>r@</code>       <i>&ndash; w ; R: w &ndash; w  </i>       core       &ldquo;r-fetch&rdquo;
+</pre>
+   <p><a name="index-rdrop-_0040var_007b-R_003aw-_002d_002d--_007d--gforth-722"></a><a name="index-g_t_0040code_007brdrop_007d-723"></a><a name="index-rdrop-724"></a>
+<pre class="format"><code>rdrop</code>       <i>R:w &ndash; </i>       gforth       &ldquo;rdrop&rdquo;
+</pre>
+   <p><a name="index-g_t2_003er-_0040var_007b-d-_002d_002d-R_003ad--_007d--core_002dext-725"></a><a name="index-g_t_0040code_007b2_003er_007d-726"></a><a name="index-g_t2_003er-727"></a>
+<pre class="format"><code>2&gt;r</code>       <i>d &ndash; R:d </i>       core-ext       &ldquo;two-to-r&rdquo;
+</pre>
+   <p><a name="index-g_t2r_003e-_0040var_007b-R_003ad-_002d_002d-d--_007d--core_002dext-728"></a><a name="index-g_t_0040code_007b2r_003e_007d-729"></a><a name="index-g_t2r_003e-730"></a>
+<pre class="format"><code>2r&gt;</code>       <i>R:d &ndash; d </i>       core-ext       &ldquo;two-r-from&rdquo;
+</pre>
+   <p><a name="index-g_t2r_0040_0040-_0040var_007b-R_003ad-_002d_002d-R_003ad-d--_007d--core_002dext-731"></a><a name="index-g_t_0040code_007b2r_0040_0040_007d-732"></a><a name="index-g_t2r_0040_0040-733"></a>
+<pre class="format"><code>2r@</code>       <i>R:d &ndash; R:d d </i>       core-ext       &ldquo;two-r-fetch&rdquo;
+</pre>
+   <p><a name="index-g_t2rdrop-_0040var_007b-R_003ad-_002d_002d--_007d--gforth-734"></a><a name="index-g_t_0040code_007b2rdrop_007d-735"></a><a name="index-g_t2rdrop-736"></a>
+<pre class="format"><code>2rdrop</code>       <i>R:d &ndash; </i>       gforth       &ldquo;two-r-drop&rdquo;
+</pre>
+   </body></html>
+

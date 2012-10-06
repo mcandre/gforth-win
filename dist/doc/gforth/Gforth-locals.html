@@ -1,0 +1,121 @@
+<html lang="en">
+<head>
+<title>Gforth locals - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Locals.html#Locals" title="Locals">
+<link rel="prev" href="Locals.html#Locals" title="Locals">
+<link rel="next" href="ANS-Forth-locals.html#ANS-Forth-locals" title="ANS Forth locals">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Gforth-locals"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="ANS-Forth-locals.html#ANS-Forth-locals">ANS Forth locals</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Locals.html#Locals">Locals</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Locals.html#Locals">Locals</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.21.1 Gforth locals</h4>
+
+<p><a name="index-Gforth-locals-2249"></a><a name="index-locals_002c-Gforth-style-2250"></a>
+Locals can be defined with
+
+<pre class="example">     { local1 local2 ... -- comment }
+</pre>
+   <p>or
+<pre class="example">     { local1 local2 ... }
+</pre>
+   <p>E.g.,
+<pre class="example">     : max { n1 n2 -- n3 }
+      n1 n2 &gt; if
+        n1
+      else
+        n2
+      endif ;
+</pre>
+   <p>The similarity of locals definitions with stack comments is intended. A
+locals definition often replaces the stack comment of a word. The order
+of the locals corresponds to the order in a stack comment and everything
+after the <code>--</code> is really a comment.
+
+   <p>This similarity has one disadvantage: It is too easy to confuse locals
+declarations with stack comments, causing bugs and making them hard to
+find. However, this problem can be avoided by appropriate coding
+conventions: Do not use both notations in the same program. If you do,
+they should be distinguished using additional means, e.g. by position.
+
+   <p><a name="index-types-of-locals-2251"></a><a name="index-locals-types-2252"></a>The name of the local may be preceded by a type specifier, e.g.,
+<code>F:</code> for a floating point value:
+
+<pre class="example">     : CX* { F: Ar F: Ai F: Br F: Bi -- Cr Ci }
+     \ complex multiplication
+      Ar Br f* Ai Bi f* f-
+      Ar Bi f* Ai Br f* f+ ;
+</pre>
+   <p><a name="index-flavours-of-locals-2253"></a><a name="index-locals-flavours-2254"></a><a name="index-value_002dflavoured-locals-2255"></a><a name="index-variable_002dflavoured-locals-2256"></a>Gforth currently supports cells (<code>W:</code>, <code>W^</code>), doubles
+(<code>D:</code>, <code>D^</code>), floats (<code>F:</code>, <code>F^</code>) and characters
+(<code>C:</code>, <code>C^</code>) in two flavours: a value-flavoured local (defined
+with <code>W:</code>, <code>D:</code> etc.) produces its value and can be changed
+with <code>TO</code>. A variable-flavoured local (defined with <code>W^</code> etc.) 
+produces its address (which becomes invalid when the variable's scope is
+left). E.g., the standard word <code>emit</code> can be defined in terms of
+<code>type</code> like this:
+
+<pre class="example">     : emit { C^ char* -- }
+         char* 1 type ;
+</pre>
+   <p><a name="index-default-type-of-locals-2257"></a><a name="index-locals_002c-default-type-2258"></a>A local without type specifier is a <code>W:</code> local. Both flavours of
+locals are initialized with values from the data or FP stack.
+
+   <p>Currently there is no way to define locals with user-defined data
+structures, but we are working on it.
+
+   <p>Gforth allows defining locals everywhere in a colon definition. This
+poses the following questions:
+
+<ul class="menu">
+<li><a accesskey="1" href="Where-are-locals-visible-by-name_003f.html#Where-are-locals-visible-by-name_003f">Where are locals visible by name?</a>
+<li><a accesskey="2" href="How-long-do-locals-live_003f.html#How-long-do-locals-live_003f">How long do locals live?</a>
+<li><a accesskey="3" href="Locals-programming-style.html#Locals-programming-style">Locals programming style</a>
+<li><a accesskey="4" href="Locals-implementation.html#Locals-implementation">Locals implementation</a>
+</ul>
+
+   </body></html>
+

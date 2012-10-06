@@ -1,0 +1,85 @@
+<html lang="en">
+<head>
+<title>Keeping track of Time - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Passing-Commands-to-the-OS.html#Passing-Commands-to-the-OS" title="Passing Commands to the OS">
+<link rel="next" href="Miscellaneous-Words.html#Miscellaneous-Words" title="Miscellaneous Words">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Keeping-track-of-Time"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Miscellaneous-Words.html#Miscellaneous-Words">Miscellaneous Words</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Passing-Commands-to-the-OS.html#Passing-Commands-to-the-OS">Passing Commands to the OS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.29 Keeping track of Time</h3>
+
+<p><a name="index-time_002drelated-words-3024"></a>
+<a name="index-ms-_0040var_007b-u-_002d_002d--_007d--facility_002dext-3025"></a><a name="index-g_t_0040code_007bms_007d-3026"></a><a name="index-ms-3027"></a>
+<pre class="format"><code>ms</code>       <i>u &ndash; </i>       facility-ext       &ldquo;ms&rdquo;
+</pre>
+   <p>Wait at least <i>n</i> milli-second.
+
+   <p><a name="index-time_0026date-_0040var_007b-_002d_002d-nsec-nmin-nhour-nday-nmonth-nyear--_007d--facility_002dext-3028"></a><a name="index-g_t_0040code_007btime_0026date_007d-3029"></a><a name="index-time_0026date-3030"></a>
+<pre class="format"><code>time&amp;date</code>       <i>&ndash; nsec nmin nhour nday nmonth nyear </i>       facility-ext       &ldquo;time-and-date&rdquo;
+</pre>
+   <p>Report the current time of day. Seconds, minutes and hours are numbered from 0. 
+Months are numbered from 1.
+
+   <p><a name="index-utime-_0040var_007b-_002d_002d-dtime--_007d--gforth-3031"></a><a name="index-g_t_0040code_007butime_007d-3032"></a><a name="index-utime-3033"></a>
+<pre class="format"><code>utime</code>       <i>&ndash; dtime </i>       gforth       &ldquo;utime&rdquo;
+</pre>
+   <p>Report the current time in microseconds since some epoch.
+
+   <p><a name="index-cputime-_0040var_007b-_002d_002d-duser-dsystem--_007d--gforth-3034"></a><a name="index-g_t_0040code_007bcputime_007d-3035"></a><a name="index-cputime-3036"></a>
+<pre class="format"><code>cputime</code>       <i>&ndash; duser dsystem </i>       gforth       &ldquo;cputime&rdquo;
+</pre>
+   <p>duser and dsystem are the respective user- and system-level CPU
+times used since the start of the Forth system (excluding child
+processes), in microseconds (the granularity may be much larger,
+however).  On platforms without the getrusage call, it reports elapsed
+time (since some epoch) for duser and 0 for dsystem.
+
+<!--  -->
+</body></html>
+

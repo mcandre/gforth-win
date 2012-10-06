@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+<title>String Formats - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-I_002fO.html#Other-I_002fO" title="Other I/O">
+<link rel="prev" href="Formatted-numeric-output.html#Formatted-numeric-output" title="Formatted numeric output">
+<link rel="next" href="Displaying-characters-and-strings.html#Displaying-characters-and-strings" title="Displaying characters and strings">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="String-Formats"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Displaying-characters-and-strings.html#Displaying-characters-and-strings">Displaying characters and strings</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Formatted-numeric-output.html#Formatted-numeric-output">Formatted numeric output</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-I_002fO.html#Other-I_002fO">Other I/O</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.19.3 String Formats</h4>
+
+<p><a name="index-strings-_002d-see-character-strings-1981"></a><a name="index-character-strings-_002d-formats-1982"></a><a name="index-I_002fO-_002d-see-character-strings-1983"></a><a name="index-counted-strings-1984"></a>
+<!-- anton: this does not really belong here; maybe the memory section, -->
+<!-- or the principles chapter -->
+
+   <p>Forth commonly uses two different methods for representing character
+strings:
+
+     <ul>
+<li><a name="index-address-of-counted-string-1985"></a><a name="index-counted-string-1986"></a>As a <dfn>counted string</dfn>, represented by a <i>c-addr</i>. The char
+addressed by <i>c-addr</i> contains a character-count, <i>n</i>, of the
+string and the string occupies the subsequent <i>n</i> char addresses in
+memory. 
+<li>As cell pair on the stack; <i>c-addr u</i>, where <i>u</i> is the length
+of the string in characters, and <i>c-addr</i> is the address of the
+first byte of the string. 
+</ul>
+
+   <p>ANS Forth encourages the use of the second format when representing
+strings.
+
+   <p><a name="index-count-_0040var_007b-c_002daddr1-_002d_002d-c_002daddr2-u--_007d--core-1987"></a><a name="index-g_t_0040code_007bcount_007d-1988"></a><a name="index-count-1989"></a>
+<pre class="format"><code>count</code>       <i>c-addr1 &ndash; c-addr2 u </i>       core       &ldquo;count&rdquo;
+</pre>
+   <p><i>c-addr2</i> is the first character and <i>u</i> the length of the
+counted string at <i>c-addr1</i>.
+
+   <p>For words that move, copy and search for strings see <a href="Memory-Blocks.html#Memory-Blocks">Memory Blocks</a>. For words that display characters and strings see
+<a href="Displaying-characters-and-strings.html#Displaying-characters-and-strings">Displaying characters and strings</a>.
+
+   </body></html>
+

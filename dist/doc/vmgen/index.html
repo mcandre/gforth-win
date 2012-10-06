@@ -1,0 +1,410 @@
+<html lang="en">
+<head>
+<title>Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="#Top">
+<link href="http://ww<ul class="index-cp" compact>
+<li><a href="Error-messages.html#index-g_t_0040code_007b_0023-can-only-be-on-the-input-side_007d-error-113"><code># can only be on the input side</code> error</a>: <a href="Error-messages.html#Error-messages">Error messages</a></li>
+<li><a href="Input-File-Grammar.html#index-g_t_0040code_007b_0023line_007d-57"><code>#line</code></a>: <a href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a></li>
+<li><a href="VM-disassembler.html#index-g_t_0040file_007b_002ddisasm_002ei_007d-output-file-186"><samp><span class="file">-disasm.i</span></samp> output file</a>: <a href="VM-disassembler.html#VM-disassembler">VM disassembler</a></li>
+<li><a href="VM-code-generation.html#index-g_t_0040file_007b_002dgen_002ei_007d-output-file-170"><samp><span class="file">-gen.i</span></samp> output file</a>: <a href="VM-code-generation.html#VM-code-generation">VM code generation</a></li>
+<li><a href="Invoking-Vmgen.html#index-g_t_002dh_002c-command_002dline-option-33">-h, command-line option</a>: <a href="Invoking-Vmgen.html#Invoking-Vmgen">Invoking Vmgen</a></li>
+<li><a href="Invoking-Vmgen.html#index-g_t_002d_002dhelp_002c-command_002dline-option-34">&ndash;help, command-line option</a>: <a href="Invoking-Vmgen.html#Invoking-Vmgen">Invoking Vmgen</a></li>
+<li><a href="VM-instruction-table.html#index-g_t_0040file_007b_002dlabels_002ei_007d-output-file-166"><samp><span class="file">-labels.i</span></samp> output file</a>: <a href="VM-instruction-table.html#VM-instruction-table">VM instruction table</a></li>
+<li><a href="Peephole-optimization.html#index-g_t_0040file_007b_002dpeephole_002ei_007d-output-file-181"><samp><span class="file">-peephole.i</span></samp> output file</a>: <a href="Peephole-optimization.html#Peephole-optimization">Peephole optimization</a></li>
+<li><a href="VM-profiler.html#index-g_t_0040file_007b_002dprofile_002ei_007d-output-file-193"><samp><span class="file">-profile.i</span></samp> output file</a>: <a href="VM-profiler.html#VM-profiler">VM profiler</a></li>
+<li><a href="Invoking-Vmgen.html#index-g_t_002dv_002c-command_002dline-option-35">-v, command-line option</a>: <a href="Invoking-Vmgen.html#Invoking-Vmgen">Invoking Vmgen</a></li>
+<li><a href="Invoking-Vmgen.html#index-g_t_002d_002dversion_002c-command_002dline-option-36">&ndash;version, command-line option</a>: <a href="Invoking-Vmgen.html#Invoking-Vmgen">Invoking Vmgen</a></li>
+<li><a href="VM-engine.html#index-g_t_0040file_007b_002dvm_002ei_007d-output-file-126"><samp><span class="file">-vm.i</span></samp> output file</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="Input-File-Grammar.html#index-g_t_0040code_007b_005cC_007d-54"><code>\C</code></a>: <a href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a></li>
+<li><a href="Eval-escapes.html#index-g_t_0040code_007b_005cE_007d-60"><code>\E</code></a>: <a href="Eval-escapes.html#Eval-escapes">Eval escapes</a></li>
+<li><a href="C-Code-restrictions.html#index-accessing-stack-_0028pointer_0029-94">accessing stack (pointer)</a>: <a href="C-Code-restrictions.html#C-Code-restrictions">C Code restrictions</a></li>
+<li><a href="Why-interpreters_003f.html#index-advantages-of-interpreters-5">advantages of interpreters</a>: <a href="Why-interpreters_003f.html#Why-interpreters_003f">Why interpreters?</a></li>
+<li><a href="Why-interpreters_003f.html#index-advantages-of-vmgen-6">advantages of vmgen</a>: <a href="Why-interpreters_003f.html#Why-interpreters_003f">Why interpreters?</a></li>
+<li><a href="C-Code-restrictions.html#index-assumptions-about-C-code-93">assumptions about C code</a>: <a href="C-Code-restrictions.html#C-Code-restrictions">C Code restrictions</a></li>
+<li><a href="C-Code-Macros.html#index-basic-block_002c-VM-level-86">basic block, VM level</a>: <a href="C-Code-Macros.html#C-Code-Macros">C Code Macros</a></li>
+<li><a href="Simple-instructions.html#index-basic-type-of-a-stack-77">basic type of a stack</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="VM-profiler.html#index-g_t_0040code_007bBB_005fBOUNDARY_007d-in-profiling-197"><code>BB_BOUNDARY</code> in profiling</a>: <a href="VM-profiler.html#VM-profiler">VM profiler</a></li>
+<li><a href="Front-end-and-VM-interpreter.html#index-branch-instruction_002c-VM-15">branch instruction, VM</a>: <a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a></li>
+<li><a href="C-Code-restrictions.html#index-C-code-restrictions-91">C code restrictions</a>: <a href="C-Code-restrictions.html#C-Code-restrictions">C Code restrictions</a></li>
+<li><a href="Input-File-Grammar.html#index-C-escape-53">C escape</a>: <a href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a></li>
+<li><a href="Example-overview.html#index-casts-example-42">casts example</a>: <a href="Example-overview.html#Example-overview">Example overview</a></li>
+<li><a href="VM-engine.html#index-casts-in-type-cast-macros-142">casts in type cast macros</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="Changes.html#index-Changes-from-old-versions-201">Changes from old versions</a>: <a href="Changes.html#Changes">Changes</a></li>
+<li><a href="VM-code-generation.html#index-code-generation_002c-VM-169">code generation, VM</a>: <a href="VM-code-generation.html#VM-code-generation">VM code generation</a></li>
+<li><a href="Input-File-Grammar.html#index-conditional-compilation-of-Vmgen-output-55">conditional compilation of Vmgen output</a>: <a href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a></li>
+<li><a href="Simple-instructions.html#index-default-stack-of-a-type-prefix-73">default stack of a type prefix</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="Simple-instructions.html#index-defining-a-stack-75">defining a stack</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="Superinstructions.html#index-defining-superinstructions-102">defining superinstructions</a>: <a href="Superinstructions.html#Superinstructions">Superinstructions</a></li>
+<li><a href="VM-disassembler.html#index-g_t_0040file_007bdisasm_002ec_007d-185"><samp><span class="file">disasm.c</span></samp></a>: <a href="VM-disassembler.html#VM-disassembler">VM disassembler</a></li>
+<li><a href="VM-disassembler.html#index-disassembler_002c-VM-code-184">disassembler, VM code</a>: <a href="VM-disassembler.html#VM-disassembler">VM disassembler</a></li>
+<li><a href="Dispatch.html#index-Dispatch-of-VM-instructions-28">Dispatch of VM instructions</a>: <a href="Dispatch.html#Dispatch">Dispatch</a></li>
+<li><a href="Simple-instructions.html#index-effect_002c-stack-70">effect, stack</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="Introduction.html#index-efficiency-features-overview-2">efficiency features overview</a>: <a href="Introduction.html#Introduction">Introduction</a></li>
+<li><a href="Store-Optimization.html#index-eliminating-stack-stores-108">eliminating stack stores</a>: <a href="Store-Optimization.html#Store-Optimization">Store Optimization</a></li>
+<li><a href="VM-engine.html#index-engine-123">engine</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="VM-engine.html#index-g_t_0040file_007bengine_002ec_007d-125"><samp><span class="file">engine.c</span></samp></a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="Error-messages.html#index-error-messages-112">error messages</a>: <a href="Error-messages.html#Error-messages">Error messages</a></li>
+<li><a href="Eval-escapes.html#index-escape-to-Forth-58">escape to Forth</a>: <a href="Eval-escapes.html#Eval-escapes">Eval escapes</a></li>
+<li><a href="Eval-escapes.html#index-eval-escape-59">eval escape</a>: <a href="Eval-escapes.html#Eval-escapes">Eval escapes</a></li>
+<li><a href="Example-overview.html#index-example-files-43">example files</a>: <a href="Example-overview.html#Example-overview">Example overview</a></li>
+<li><a href="Example.html#index-example-of-a-Vmgen_002dbased-interpreter-37">example of a Vmgen-based interpreter</a>: <a href="Example.html#Example">Example</a></li>
+<li><a href="Example-overview.html#index-example-overview-38">example overview</a>: <a href="Example-overview.html#Example-overview">Example overview</a></li>
+<li><a href="VM-engine.html#index-executing-VM-code-124">executing VM code</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="Explicit-stack-access.html#index-explicit-stack-access-84">explicit stack access</a>: <a href="Explicit-stack-access.html#Explicit-stack-access">Explicit stack access</a></li>
+<li><a href="GNU-Free-Documentation-License.html#index-FDL_002c-GNU-Free-Documentation-License-205">FDL, GNU Free Documentation License</a>: <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License">GNU Free Documentation License</a></li>
+<li><a href="Input-File-Format.html#index-format_002c-input-file-48">format, input file</a>: <a href="Input-File-Format.html#Input-File-Format">Input File Format</a></li>
+<li><a href="Input-File-Grammar.html#index-free_002dformat_002c-not-51">free-format, not</a>: <a href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a></li>
+<li><a href="Front-end-and-VM-interpreter.html#index-front_002dend-9">front-end</a>: <a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a></li>
+<li><a href="Introduction.html#index-functionality-features-overview-1">functionality features overview</a>: <a href="Introduction.html#Introduction">Introduction</a></li>
+<li><a href="The-future.html#index-future-ideas-200">future ideas</a>: <a href="The-future.html#The-future">The future</a></li>
+<li><a href="Data-handling.html#index-garbage-collection-26">garbage collection</a>: <a href="Data-handling.html#Data-handling">Data handling</a></li>
+<li><a href="Using-the-generated-code.html#index-generated-code_002c-usage-120">generated code, usage</a>: <a href="Using-the-generated-code.html#Using-the-generated-code">Using the generated code</a></li>
+<li><a href="Input-File-Grammar.html#index-grammar_002c-input-file-49">grammar, input file</a>: <a href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a></li>
+<li><a href="Hints.html#index-hints-199">hints</a>: <a href="Hints.html#Hints">Hints</a></li>
+<li><a href="VM-engine.html#index-IMM_005fARG-148">IMM_ARG</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="Front-end-and-VM-interpreter.html#index-immediate-argument_002c-VM-instruction-19">immediate argument, VM instruction</a>: <a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a></li>
+<li><a href="Data-handling.html#index-immediate-arguments-25">immediate arguments</a>: <a href="Data-handling.html#Data-handling">Data handling</a></li>
+<li><a href="VM-code-generation.html#index-immediate-arguments_002c-VM-code-generation-172">immediate arguments, VM code generation</a>: <a href="VM-code-generation.html#VM-code-generation">VM code generation</a></li>
+<li><a href="Superinstructions.html#index-include_002dskipped_002dinsts-104">include-skipped-insts</a>: <a href="Superinstructions.html#Superinstructions">Superinstructions</a></li>
+<li><a href="Input-File-Format.html#index-input-file-format-47">input file format</a>: <a href="Input-File-Format.html#Input-File-Format">Input File Format</a></li>
+<li><a href="Input-File-Grammar.html#index-input-file-grammar-50">input file grammar</a>: <a href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a></li>
+<li><a href="VM-engine.html#index-instruction-pointer-definition-147">instruction pointer definition</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="C-Code-restrictions.html#index-instruction-pointer_002c-access-96">instruction pointer, access</a>: <a href="C-Code-restrictions.html#C-Code-restrictions">C Code restrictions</a></li>
+<li><a href="Data-handling.html#index-instruction-stream-24">instruction stream</a>: <a href="Data-handling.html#Data-handling">Data handling</a></li>
+<li><a href="Simple-instructions.html#index-instruction-stream-81">instruction stream</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="VM-engine.html#index-instruction-stream_002c-basic-type-140">instruction stream, basic type</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="VM-instruction-table.html#index-instruction-table-162">instruction table</a>: <a href="VM-instruction-table.html#VM-instruction-table">VM instruction table</a></li>
+<li><a href="Simple-instructions.html#index-instruction_002c-simple-VM-68">instruction, simple VM</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="Front-end-and-VM-interpreter.html#index-instruction_002c-VM-13">instruction, VM</a>: <a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a></li>
+<li><a href="Why-interpreters_003f.html#index-interpreters_002c-advantages-4">interpreters, advantages</a>: <a href="Why-interpreters_003f.html#Why-interpreters_003f">Why interpreters?</a></li>
+<li><a href="Invoking-Vmgen.html#index-Invoking-Vmgen-32">Invoking Vmgen</a>: <a href="Invoking-Vmgen.html#Invoking-Vmgen">Invoking Vmgen</a></li>
+<li><a href="VM-disassembler.html#index-g_t_0040code_007bIP_007d_002c-_0040code_007bIPTOS_007d-in-disassmbler-187"><code>IP</code>, <code>IPTOS</code> in disassmbler</a>: <a href="VM-disassembler.html#VM-disassembler">VM disassembler</a></li>
+<li><a href="VM-instruction-table.html#index-labels-for-threaded-code-164">labels for threaded code</a>: <a href="VM-instruction-table.html#VM-instruction-table">VM instruction table</a></li>
+<li><a href="C-Code-Macros.html#index-macros-recognized-by-Vmgen-85">macros recognized by Vmgen</a>: <a href="C-Code-Macros.html#C-Code-Macros">C Code Macros</a></li>
+<li><a href="Dispatch.html#index-main-interpreter-loop-29">main interpreter loop</a>: <a href="Dispatch.html#Dispatch">Dispatch</a></li>
+<li><a href="Front-end-and-VM-interpreter.html#index-modularization-of-interpreters-8">modularization of interpreters</a>: <a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a></li>
+<li><a href="Input-File-Grammar.html#index-newlines_002c-significance-in-syntax-52">newlines, significance in syntax</a>: <a href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a></li>
+<li><a href="VM-instruction-table.html#index-opcode-definition-163">opcode definition</a>: <a href="VM-instruction-table.html#VM-instruction-table">VM instruction table</a></li>
+<li><a href="Front-end-and-VM-interpreter.html#index-opcode_002c-VM-instruction-18">opcode, VM instruction</a>: <a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a></li>
+<li><a href="Store-Optimization.html#index-optimization_002c-stack-stores-106">optimization, stack stores</a>: <a href="Store-Optimization.html#Store-Optimization">Store Optimization</a></li>
+<li><a href="Peephole-optimization.html#index-peephole-optimization-178">peephole optimization</a>: <a href="Peephole-optimization.html#Peephole-optimization">Peephole optimization</a></li>
+<li><a href="Peephole-optimization.html#index-g_t_0040file_007bpeephole_002ec_007d-180"><samp><span class="file">peephole.c</span></samp></a>: <a href="Peephole-optimization.html#Peephole-optimization">Peephole optimization</a></li>
+<li><a href="Error-messages.html#index-g_t_0040code_007bprefix-for-this-combination-must-be-defined-earlier_007d-error-114"><code>prefix for this combination must be defined earlier</code> error</a>: <a href="Error-messages.html#Error-messages">Error messages</a></li>
+<li><a href="Simple-instructions.html#index-prefix_002c-stack-80">prefix, stack</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="Simple-instructions.html#index-prefix_002c-type-71">prefix, type</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="Superinstructions.html#index-prefixes-of-superinstructions-103">prefixes of superinstructions</a>: <a href="Superinstructions.html#Superinstructions">Superinstructions</a></li>
+<li><a href="VM-profiler.html#index-g_t_0040file_007bprofile_002ec_007d-192"><samp><span class="file">profile.c</span></samp></a>: <a href="VM-profiler.html#VM-profiler">VM profiler</a></li>
+<li><a href="Using-profiling-to-create-superinstructions.html#index-profiling-example-45">profiling example</a>: <a href="Using-profiling-to-create-superinstructions.html#Using-profiling-to-create-superinstructions">Using profiling to create superinstructions</a></li>
+<li><a href="VM-profiler.html#index-profiling-for-selecting-superinstructions-190">profiling for selecting superinstructions</a>: <a href="VM-profiler.html#VM-profiler">VM profiler</a></li>
+<li><a href="Data-handling.html#index-reference-counting-27">reference counting</a>: <a href="Data-handling.html#Data-handling">Data handling</a></li>
+<li><a href="Data-handling.html#index-register-machine-21">register machine</a>: <a href="Data-handling.html#Data-handling">Data handling</a></li>
+<li><a href="Register-Machines.html#index-Register-VM-109">Register VM</a>: <a href="Register-Machines.html#Register-Machines">Register Machines</a></li>
+<li><a href="Front-end-and-VM-interpreter.html#index-register_002c-VM-17">register, VM</a>: <a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a></li>
+<li><a href="C-Code-restrictions.html#index-restrictions-on-C-code-92">restrictions on C code</a>: <a href="C-Code-restrictions.html#C-Code-restrictions">C Code restrictions</a></li>
+<li><a href="VM-profiler.html#index-g_t_0040file_007bseq2rule_002eawk_007d-195"><samp><span class="file">seq2rule.awk</span></samp></a>: <a href="VM-profiler.html#VM-profiler">VM profiler</a></li>
+<li><a href="Simple-instructions.html#index-simple-VM-instruction-67">simple VM instruction</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="Data-handling.html#index-size_002c-stack-items-23">size, stack items</a>: <a href="Data-handling.html#Data-handling">Data handling</a></li>
+<li><a href="Introduction.html#index-speed-for-JVM-3">speed for JVM</a>: <a href="Introduction.html#Introduction">Introduction</a></li>
+<li><a href="Why-interpreters_003f.html#index-speed-of-interpreters-7">speed of interpreters</a>: <a href="Why-interpreters_003f.html#Why-interpreters_003f">Why interpreters?</a></li>
+<li><a href="Explicit-stack-access.html#index-stack-access_002c-explicit-82">stack access, explicit</a>: <a href="Explicit-stack-access.html#Explicit-stack-access">Explicit stack access</a></li>
+<li><a href="Simple-instructions.html#index-stack-basic-type-76">stack basic type</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="VM-engine.html#index-stack-caching-151">stack caching</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="C-Code-restrictions.html#index-stack-caching_002c-restriction-on-C-code-97">stack caching, restriction on C code</a>: <a href="C-Code-restrictions.html#C-Code-restrictions">C Code restrictions</a></li>
+<li><a href="Simple-instructions.html#index-stack-definition-74">stack definition</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="Simple-instructions.html#index-stack-effect-69">stack effect</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="Stack-growth-direction.html#index-stack-growth-direction-99">stack growth direction</a>: <a href="Stack-growth-direction.html#Stack-growth-direction">Stack growth direction</a></li>
+<li><a href="Data-handling.html#index-stack-item-size-22">stack item size</a>: <a href="Data-handling.html#Data-handling">Data handling</a></li>
+<li><a href="Data-handling.html#index-stack-machine-20">stack machine</a>: <a href="Data-handling.html#Data-handling">Data handling</a></li>
+<li><a href="Explicit-stack-access.html#index-Stack-pointer-access-83">Stack pointer access</a>: <a href="Explicit-stack-access.html#Explicit-stack-access">Explicit stack access</a></li>
+<li><a href="VM-engine.html#index-stack-pointer-definition-146">stack pointer definition</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="C-Code-restrictions.html#index-stack-pointer_002c-access-95">stack pointer, access</a>: <a href="C-Code-restrictions.html#C-Code-restrictions">C Code restrictions</a></li>
+<li><a href="Simple-instructions.html#index-stack-prefix-79">stack prefix</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="Store-Optimization.html#index-stack-stores_002c-optimization-107">stack stores, optimization</a>: <a href="Store-Optimization.html#Store-Optimization">Store Optimization</a></li>
+<li><a href="Stack-growth-direction.html#index-g_t_0040code_007bstack_002daccess_002dtransform_007d-100"><code>stack-access-transform</code></a>: <a href="Stack-growth-direction.html#Stack-growth-direction">Stack growth direction</a></li>
+<li><a href="VM-profiler.html#index-g_t_0040file_007bstat_002eawk_007d-194"><samp><span class="file">stat.awk</span></samp></a>: <a href="VM-profiler.html#VM-profiler">VM profiler</a></li>
+<li><a href="Store-Optimization.html#index-store-optimization-105">store optimization</a>: <a href="Store-Optimization.html#Store-Optimization">Store Optimization</a></li>
+<li><a href="VM-profiler.html#index-g_t_0040code_007bSUPER_005fEND_007d-in-profiling-196"><code>SUPER_END</code> in profiling</a>: <a href="VM-profiler.html#VM-profiler">VM profiler</a></li>
+<li><a href="VM-profiler.html#index-superinstructions-and-profiling-191">superinstructions and profiling</a>: <a href="VM-profiler.html#VM-profiler">VM profiler</a></li>
+<li><a href="VM-engine.html#index-superinstructions-and-tracing-128">superinstructions and tracing</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="Using-profiling-to-create-superinstructions.html#index-superinstructions-example-46">superinstructions example</a>: <a href="Using-profiling-to-create-superinstructions.html#Using-profiling-to-create-superinstructions">Using profiling to create superinstructions</a></li>
+<li><a href="Register-Machines.html#index-Superinstructions-for-register-VMs-110">Superinstructions for register VMs</a>: <a href="Register-Machines.html#Register-Machines">Register Machines</a></li>
+<li><a href="Superinstructions.html#index-superinstructions_002c-defining-101">superinstructions, defining</a>: <a href="Superinstructions.html#Superinstructions">Superinstructions</a></li>
+<li><a href="Peephole-optimization.html#index-superinstructions_002c-generating-179">superinstructions, generating</a>: <a href="Peephole-optimization.html#Peephole-optimization">Peephole optimization</a></li>
+<li><a href="C-Code-restrictions.html#index-superinstructions_002c-restrictions-on-components-98">superinstructions, restrictions on components</a>: <a href="C-Code-restrictions.html#C-Code-restrictions">C Code restrictions</a></li>
+<li><a href="Dispatch.html#index-switch-dispatch-30">switch dispatch</a>: <a href="Dispatch.html#Dispatch">Dispatch</a></li>
+<li><a href="Error-messages.html#index-g_t_0040code_007bsync-line-syntax_007d-error-115"><code>sync line syntax</code> error</a>: <a href="Error-messages.html#Error-messages">Error messages</a></li>
+<li><a href="Input-File-Grammar.html#index-sync-lines-56">sync lines</a>: <a href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a></li>
+<li><a href="Error-messages.html#index-g_t_0040code_007bsyntax-error_002c-wrong-char_007d-error-116"><code>syntax error, wrong char</code> error</a>: <a href="Error-messages.html#Error-messages">Error messages</a></li>
+<li><a href="Changes.html#index-g_t_0040code_007bTAIL_003b_007d_002c-changes-202"><code>TAIL;</code>, changes</a>: <a href="Changes.html#Changes">Changes</a></li>
+<li><a href="Dispatch.html#index-threaded-code-31">threaded code</a>: <a href="Dispatch.html#Dispatch">Dispatch</a></li>
+<li><a href="Error-messages.html#index-g_t_0040code_007btoo-many-stacks_007d-error-117"><code>too many stacks</code> error</a>: <a href="Error-messages.html#Error-messages">Error messages</a></li>
+<li><a href="VM-engine.html#index-top-of-stack-caching-150">top of stack caching</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="VM-engine.html#index-TOS-152">TOS</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="Register-Machines.html#index-tracing-of-register-VMs-111">tracing of register VMs</a>: <a href="Register-Machines.html#Register-Machines">Register Machines</a></li>
+<li><a href="VM-engine.html#index-tracing-VM-code-127">tracing VM code</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="VM-engine.html#index-type-cast-macro-138">type cast macro</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="VM-engine.html#index-type-casting-between-floats-and-integers-143">type casting between floats and integers</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="Simple-instructions.html#index-type-of-a-stack_002c-basic-78">type of a stack, basic</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="Simple-instructions.html#index-type-prefix-72">type prefix</a>: <a href="Simple-instructions.html#Simple-instructions">Simple instructions</a></li>
+<li><a href="Example-overview.html#index-unions-example-41">unions example</a>: <a href="Example-overview.html#Example-overview">Example overview</a></li>
+<li><a href="VM-engine.html#index-unions-in-type-cast-macros-141">unions in type cast macros</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="Error-messages.html#index-g_t_0040code_007bunknown-prefix_007d-error-118"><code>unknown prefix</code> error</a>: <a href="Error-messages.html#Error-messages">Error messages</a></li>
+<li><a href="Error-messages.html#index-g_t_0040code_007bunknown-primitive_007d-error-119"><code>unknown primitive</code> error</a>: <a href="Error-messages.html#Error-messages">Error messages</a></li>
+<li><a href="Using-the-generated-code.html#index-Using-vmgen_002derated-code-121">Using vmgen-erated code</a>: <a href="Using-the-generated-code.html#Using-the-generated-code">Using the generated code</a></li>
+<li><a href="Front-end-and-VM-interpreter.html#index-virtual-machine-10">virtual machine</a>: <a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a></li>
+<li><a href="Front-end-and-VM-interpreter.html#index-VM-11">VM</a>: <a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a></li>
+<li><a href="Front-end-and-VM-interpreter.html#index-VM-branch-instruction-14">VM branch instruction</a>: <a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a></li>
+<li><a href="VM-code-generation.html#index-VM-code-generation-168">VM code generation</a>: <a href="VM-code-generation.html#VM-code-generation">VM code generation</a></li>
+<li><a href="VM-disassembler.html#index-VM-disassembler-183">VM disassembler</a>: <a href="VM-disassembler.html#VM-disassembler">VM disassembler</a></li>
+<li><a href="Front-end-and-VM-interpreter.html#index-VM-instruction-12">VM instruction</a>: <a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a></li>
+<li><a href="VM-engine.html#index-VM-instruction-execution-122">VM instruction execution</a>: <a href="VM-engine.html#VM-engine">VM engine</a></li>
+<li><a href="VM-profiler.html#index-VM-profiler-189">VM profiler</a>: <a href="VM-profiler.html#VM-profiler">VM profiler</a></li>
+<li><a href="Front-end-and-VM-interpreter.html#index-VM-register-16">VM register</a>: <a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a></li>
+<li><a href="Changes.html#index-g_t_0040code_007bvm_005f_0040var_007bA_007d2_0040var_007bB_007d_007d_002c-changes-203"><code>vm_</code><var>A</var><code>2</code><var>B</var>, changes</a>: <a href="Changes.html#Changes">Changes</a></li>
+<li><a href="VM-profiler.html#index-g_t_0040code_007bVM_005fIS_005fINST_007d-in-profiling-198"><code>VM_IS_INST</code> in profiling</a>: <a href="VM-profiler.html#VM-profiler">VM profiler</a></li>
+<li><a href="VM-instruction-table.html#index-g_t_0040code_007bvm_005fprim_007d_002c-definition-165"><code>vm_prim</code>, definition</a>: <a href="VM-instruction-table.html#VM-instruction-table">VM instruction table</a></li>
+<li><a href="VM-code-generation.html#index-g_t_0040code_007bvm_005fprim_007d_002c-use-174"><code>vm_prim</code>, use</a>: <a href="VM-code-generation.html#VM-code-generation">VM code generation</a></li>
+<li><a href="Changes.html#index-g_t_0040code_007bvm_005ftwo_0040var_007bA_007d2_0040var_007bB_007d_007d_002c-changes-204"><code>vm_two</code><var>A</var><code>2</code><var>B</var>, changes</a>: <a href="Changes.html#Changes">Changes</a></li>
+<li><a href="Example-overview.html#index-g_t_0040file_007bvmgen_002dex_007d-39"><samp><span class="file">vmgen-ex</span></samp></a>: <a href="Example-overview.html#Example-overview">Example overview</a></li>
+<li><a href="Example-overview.html#index-g_t_0040file_007bvmgen_002dex2_007d-40"><samp><span class="file">vmgen-ex2</span></samp></a>: <a href="Example-overview.html#Example-overview">Example overview</a></li>
+<li><a href="Example-overview.html#index-wrapper-files-44">wrapper files</a>: <a href="Example-overview.html#Example-overview">Example overview</a></li>
+   </ul>w.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being "A GNU Manual," and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     "GNU Free Documentation License."
+
+     (a) The FSF's Back-Cover Text is: "You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development."
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<h1 class="settitle">Vmgen (Gforth 0.7.0)</h1>
+<div class="contents">
+<h2>Table of Contents</h2>
+<ul>
+<li><a name="toc_Top" href="index.html#Top">Vmgen</a>
+<li><a name="toc_Introduction" href="Introduction.html#Introduction">1 Introduction</a>
+<li><a name="toc_Why-interpreters_003f" href="Why-interpreters_003f.html#Why-interpreters_003f">2 Why interpreters?</a>
+<li><a name="toc_Concepts" href="Concepts.html#Concepts">3 Concepts</a>
+<ul>
+<li><a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">3.1 Front end and VM interpreter</a>
+<li><a href="Data-handling.html#Data-handling">3.2 Data handling</a>
+<li><a href="Dispatch.html#Dispatch">3.3 Dispatch</a>
+</li></ul>
+<li><a name="toc_Invoking-Vmgen" href="Invoking-Vmgen.html#Invoking-Vmgen">4 Invoking Vmgen</a>
+<li><a name="toc_Example" href="Example.html#Example">5 Example</a>
+<ul>
+<li><a href="Example-overview.html#Example-overview">5.1 Example overview</a>
+<li><a href="Using-profiling-to-create-superinstructions.html#Using-profiling-to-create-superinstructions">5.2 Using profiling to create superinstructions</a>
+</li></ul>
+<li><a name="toc_Input-File-Format" href="Input-File-Format.html#Input-File-Format">6 Input File Format</a>
+<ul>
+<li><a href="Input-File-Grammar.html#Input-File-Grammar">6.1 Input File Grammar</a>
+<ul>
+<li><a href="Eval-escapes.html#Eval-escapes">6.1.1 Eval escapes</a>
+</li></ul>
+<li><a href="Simple-instructions.html#Simple-instructions">6.2 Simple instructions</a>
+<ul>
+<li><a href="Explicit-stack-access.html#Explicit-stack-access">6.2.1 Explicit stack access</a>
+<li><a href="C-Code-Macros.html#C-Code-Macros">6.2.2 C Code Macros</a>
+<li><a href="C-Code-restrictions.html#C-Code-restrictions">6.2.3 C Code restrictions</a>
+<li><a href="Stack-growth-direction.html#Stack-growth-direction">6.2.4 Stack growth direction</a>
+</li></ul>
+<li><a href="Superinstructions.html#Superinstructions">6.3 Superinstructions</a>
+<li><a href="Store-Optimization.html#Store-Optimization">6.4 Store Optimization</a>
+<li><a href="Register-Machines.html#Register-Machines">6.5 Register Machines</a>
+</li></ul>
+<li><a name="toc_Error-messages" href="Error-messages.html#Error-messages">7 Error messages</a>
+<li><a name="toc_Using-the-generated-code" href="Using-the-generated-code.html#Using-the-generated-code">8 Using the generated code</a>
+<ul>
+<li><a href="VM-engine.html#VM-engine">8.1 VM engine</a>
+<li><a href="VM-instruction-table.html#VM-instruction-table">8.2 VM instruction table</a>
+<li><a href="VM-code-generation.html#VM-code-generation">8.3 VM code generation</a>
+<li><a href="Peephole-optimization.html#Peephole-optimization">8.4 Peephole optimization</a>
+<li><a href="VM-disassembler.html#VM-disassembler">8.5 VM disassembler</a>
+<li><a href="VM-profiler.html#VM-profiler">8.6 VM profiler</a>
+</li></ul>
+<li><a name="toc_Hints" href="Hints.html#Hints">9 Hints</a>
+<ul>
+<li><a href="Floating-point.html#Floating-point">9.1 Floating point</a>
+</li></ul>
+<li><a name="toc_The-future" href="The-future.html#The-future">10 The future</a>
+<li><a name="toc_Changes" href="Changes.html#Changes">11 Changes</a>
+<li><a name="toc_Contact" href="Contact.html#Contact">12 Contact</a>
+<li><a name="toc_Copying-This-Manual" href="Copying-This-Manual.html#Copying-This-Manual">Appendix A Copying This Manual</a>
+<ul>
+<li><a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License">A.1 GNU Free Documentation License</a>
+<ul>
+<li><a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License">A.1.1 ADDENDUM: How to use this License for your documents</a>
+</li></ul>
+</li></ul>
+<li><a name="toc_Index" href="Index.html#Index">Index</a>
+</li></ul>
+</div>
+
+
+
+<div class="node">
+<p>
+<a name="Top"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Introduction.html#Introduction">Introduction</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="../index.html#dir">(dir)</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="../index.html#dir">(dir)</a>
+<hr>
+</div>
+
+<h2 class="unnumbered">Vmgen</h2>
+
+<p>This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+   <p>Copyright &copy; 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+   <blockquote>
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with the Front-Cover texts being &ldquo;A GNU Manual,&rdquo;
+and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled &ldquo;GNU Free Documentation
+License.&rdquo;
+
+        <p>(a) The FSF's Back-Cover Text is: &ldquo;You have freedom to copy and modify
+this GNU Manual, like GNU software.  Copies published by the Free
+Software Foundation raise funds for GNU development.&rdquo;
+</blockquote>
+
+<ul class="menu">
+<li><a accesskey="1" href="Introduction.html#Introduction">Introduction</a>:                 What can Vmgen do for you? 
+<li><a accesskey="2" href="Why-interpreters_003f.html#Why-interpreters_003f">Why interpreters?</a>:            Advantages and disadvantages
+<li><a accesskey="3" href="Concepts.html#Concepts">Concepts</a>:                     VM interpreter background
+<li><a accesskey="4" href="Invoking-Vmgen.html#Invoking-Vmgen">Invoking Vmgen</a>
+<li><a accesskey="5" href="Example.html#Example">Example</a>
+<li><a accesskey="6" href="Input-File-Format.html#Input-File-Format">Input File Format</a>
+<li><a accesskey="7" href="Error-messages.html#Error-messages">Error messages</a>:               reported by Vmgen
+<li><a accesskey="8" href="Using-the-generated-code.html#Using-the-generated-code">Using the generated code</a>
+<li><a accesskey="9" href="Hints.html#Hints">Hints</a>:                        VM archictecture, efficiency
+<li><a href="The-future.html#The-future">The future</a>
+<li><a href="Changes.html#Changes">Changes</a>:                      from earlier versions
+<li><a href="Contact.html#Contact">Contact</a>:                      Bug reporting etc. 
+<li><a href="Copying-This-Manual.html#Copying-This-Manual">Copying This Manual</a>:          Manual License
+<li><a href="Index.html#Index">Index</a>
+
+</li></ul>
+<p>--- The Detailed Node Listing ---
+
+<p>Concepts
+
+</p>
+<ul class="menu">
+<li><a href="Front-end-and-VM-interpreter.html#Front-end-and-VM-interpreter">Front end and VM interpreter</a>:   Modularizing an interpretive system
+<li><a href="Data-handling.html#Data-handling">Data handling</a>:                Stacks, registers, immediate arguments
+<li><a href="Dispatch.html#Dispatch">Dispatch</a>:                     From one VM instruction to the next
+
+</li></ul>
+<p>Example
+
+</p>
+<ul class="menu">
+<li><a href="Example-overview.html#Example-overview">Example overview</a>
+<li><a href="Using-profiling-to-create-superinstructions.html#Using-profiling-to-create-superinstructions">Using profiling to create superinstructions</a>
+
+</li></ul>
+<p>Input File Format
+
+</p>
+<ul class="menu">
+<li><a href="Input-File-Grammar.html#Input-File-Grammar">Input File Grammar</a>
+<li><a href="Simple-instructions.html#Simple-instructions">Simple instructions</a>
+<li><a href="Superinstructions.html#Superinstructions">Superinstructions</a>
+<li><a href="Store-Optimization.html#Store-Optimization">Store Optimization</a>
+<li><a href="Register-Machines.html#Register-Machines">Register Machines</a>:            How to define register VM instructions
+
+</li></ul>
+<p>Input File Grammar
+
+</p>
+<ul class="menu">
+<li><a href="Eval-escapes.html#Eval-escapes">Eval escapes</a>:                 what follows \E
+
+</li></ul>
+<p>Simple instructions
+
+</p>
+<ul class="menu">
+<li><a href="Explicit-stack-access.html#Explicit-stack-access">Explicit stack access</a>:        If the C code accesses a stack pointer
+<li><a href="C-Code-Macros.html#C-Code-Macros">C Code Macros</a>:                Macros recognized by Vmgen
+<li><a href="C-Code-restrictions.html#C-Code-restrictions">C Code restrictions</a>:          Vmgen makes assumptions about C code
+<li><a href="Stack-growth-direction.html#Stack-growth-direction">Stack growth direction</a>:       is configurable per stack
+
+</li></ul>
+<p>Using the generated code
+
+</p>
+<ul class="menu">
+<li><a href="VM-engine.html#VM-engine">VM engine</a>:                    Executing VM code
+<li><a href="VM-instruction-table.html#VM-instruction-table">VM instruction table</a>
+<li><a href="VM-code-generation.html#VM-code-generation">VM code generation</a>:           Creating VM code (in the front-end)
+<li><a href="Peephole-optimization.html#Peephole-optimization">Peephole optimization</a>:        Creating VM superinstructions
+<li><a href="VM-disassembler.html#VM-disassembler">VM disassembler</a>:              for debugging the front end
+<li><a href="VM-profiler.html#VM-profiler">VM profiler</a>:                  for finding worthwhile superinstructions
+
+</li></ul>
+<p>Hints
+
+</p>
+<ul class="menu">
+<li><a href="Floating-point.html#Floating-point">Floating point</a>:               and stacks
+
+</li></ul>
+<p>Copying This Manual
+
+</p>
+<ul class="menu">
+<li><a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License">GNU Free Documentation License</a>:   License for copying this manual.
+
+   </ul>
+
+<!-- @ifnottex -->
+<!-- This file documents Vmgen (Gforth @value{VERSION}). -->
+<!-- ************************************************************ -->
+<div class="node">
+<p>
+<a name="Index"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Copying-This-Manual.html#Copying-This-Manual">Copying This Manual</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="unnumbered">Index</h2>
+
+</body></html>
+

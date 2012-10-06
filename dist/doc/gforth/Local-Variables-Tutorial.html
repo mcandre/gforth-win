@@ -1,0 +1,94 @@
+<html lang="en">
+<head>
+<title>Local Variables Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Designing-the-stack-effect-Tutorial.html#Designing-the-stack-effect-Tutorial" title="Designing the stack effect Tutorial">
+<link rel="next" href="Conditional-execution-Tutorial.html#Conditional-execution-Tutorial" title="Conditional execution Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Local-Variables-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Conditional-execution-Tutorial.html#Conditional-execution-Tutorial">Conditional execution Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Designing-the-stack-effect-Tutorial.html#Designing-the-stack-effect-Tutorial">Designing the stack effect Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.15 Local Variables</h3>
+
+<p><a name="index-local-variables_002c-tutorial-96"></a>
+You can define local variables (<em>locals</em>) in a colon definition:
+
+<pre class="example">     : swap { a b -- b a }
+       b a ;
+     1 2 swap .s 2drop
+</pre>
+   <p>(If your Forth system does not support this syntax, include
+<samp><span class="file">compat/anslocal.fs</span></samp> first).
+
+   <p>In this example <code>{ a b -- b a }</code> is the locals definition; it
+takes two cells from the stack, puts the top of stack in <code>b</code> and
+the next stack element in <code>a</code>.  <code>--</code> starts a comment ending
+with <code>}</code>.  After the locals definition, using the name of the
+local will push its value on the stack.  You can leave the comment
+part (<code>-- b a</code>) away:
+
+<pre class="example">     : swap ( x1 x2 -- x2 x1 )
+       { a b } b a ;
+</pre>
+   <p>In Gforth you can have several locals definitions, anywhere in a colon
+definition; in contrast, in a standard program you can have only one
+locals definition per colon definition, and that locals definition must
+be outside any control structure.
+
+   <p>With locals you can write slightly longer definitions without running
+into stack trouble.  However, I recommend trying to write colon
+definitions without locals for exercise purposes to help you gain the
+essential factoring skills.
+
+   <blockquote>
+<b>Assignment:</b> Rewrite your definitions until now with locals
+</blockquote>
+
+   <p>Reference: <a href="Locals.html#Locals">Locals</a>.
+
+   </body></html>
+

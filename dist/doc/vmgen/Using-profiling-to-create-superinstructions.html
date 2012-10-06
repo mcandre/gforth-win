@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+<title>Using profiling to create superinstructions - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Example.html#Example" title="Example">
+<link rel="prev" href="Example-overview.html#Example-overview" title="Example overview">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Using-profiling-to-create-superinstructions"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Example-overview.html#Example-overview">Example overview</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Example.html#Example">Example</a>
+<hr>
+</div>
+
+<h3 class="section">5.2 Using profiling to create superinstructions</h3>
+
+<p><a name="index-profiling-example-45"></a><a name="index-superinstructions-example-46"></a>
+I have not added rules for this in the <samp><span class="file">Makefile</span></samp> (there are many
+options for selecting superinstructions, and I did not want to hardcode
+one into the <samp><span class="file">Makefile</span></samp>), but there are some supporting scripts, and
+here's an example:
+
+   <p>Suppose you want to use <samp><span class="file">fib.mini</span></samp> and <samp><span class="file">test.mini</span></samp> as training
+programs, you get the profiles like this:
+
+<pre class="example">     make fib.prof test.prof #takes a few seconds
+</pre>
+   <p>You can aggregate these profiles with <samp><span class="file">stat.awk</span></samp>:
+
+<pre class="example">     awk -f stat.awk fib.prof test.prof
+</pre>
+   <p>The result contains lines like:
+
+<pre class="example">           2      16        36910041 loadlocal lit
+</pre>
+   <p>This means that the sequence <code>loadlocal lit</code> statically occurs a
+total of 16 times in 2 profiles, with a dynamic execution count of
+36910041.
+
+   <p>The numbers can be used in various ways to select superinstructions. 
+E.g., if you just want to select all sequences with a dynamic
+execution count exceeding 10000, you would use the following pipeline:
+
+<pre class="example">     awk -f stat.awk fib.prof test.prof|
+     awk '$3&gt;=10000'|                #select sequences
+     fgrep -v -f peephole-blacklist| #eliminate wrong instructions
+     awk -f seq2rule.awk|  #transform sequences into superinstruction rules
+     sort -k 3 &gt;mini-super.vmg       #sort sequences
+</pre>
+   <p>The file <samp><span class="file">peephole-blacklist</span></samp> contains all instructions that
+directly access a stack or stack pointer (for mini: <code>call</code>,
+<code>return</code>); the sort step is necessary to ensure that prefixes
+precede larger superinstructions.
+
+   <p>Now you can create a version of mini with superinstructions by just
+saying `<samp><span class="samp">make</span></samp>'
+
+<!-- *************************************************************** -->
+</body></html>
+

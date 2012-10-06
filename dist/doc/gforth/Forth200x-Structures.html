@@ -1,0 +1,104 @@
+<html lang="en">
+<head>
+<title>Forth200x Structures - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Structures.html#Structures" title="Structures">
+<link rel="prev" href="Structure-Glossary.html#Structure-Glossary" title="Structure Glossary">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Forth200x-Structures"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Structure-Glossary.html#Structure-Glossary">Structure Glossary</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Structures.html#Structures">Structures</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.22.6 Forth200x Structures</h4>
+
+<p><a name="index-Structures-in-Forth200x-2390"></a>
+The Forth 200x standard defines a slightly less convenient form of
+structures.  In general (when using <code>field+</code>, you have to perform
+the alignment yourself, but there are a number of convenience words
+(e.g., <code>field:</code> that perform the alignment for you.
+
+   <p>A typical usage example is:
+
+<pre class="example">     0
+       field:                   s-a
+       faligned 2 floats +field s-b
+     constant s-struct
+</pre>
+   <p>An alternative way of writing this structure is:
+
+<pre class="example">     begin-structure s-struct
+       field:                   s-a
+       faligned 2 floats +field s-b
+     end-structure
+</pre>
+   <p><a name="index-begin_002dstructure-_0040var_007b-_0022name_0022-_002d_002d-struct_002dsys-0---_007d--X_003astructures-2391"></a><a name="index-g_t_0040code_007bbegin_002dstructure_007d-2392"></a><a name="index-begin_002dstructure-2393"></a>
+<pre class="format"><code>begin-structure</code>       <i>"name" &ndash; struct-sys 0  </i>       X:structures       &ldquo;begin-structure&rdquo;
+</pre>
+   <p><a name="index-end_002dstructure-_0040var_007b-struct_002dsys-_002bn-_002d_002d---_007d--X_003astructures-2394"></a><a name="index-g_t_0040code_007bend_002dstructure_007d-2395"></a><a name="index-end_002dstructure-2396"></a>
+<pre class="format"><code>end-structure</code>       <i>struct-sys +n &ndash;  </i>       X:structures       &ldquo;end-structure&rdquo;
+</pre>
+   <p><a name="index-g_t_002bfield-_0040var_007b-n1-n2-_0022name_0022-_002d_002d-n3---_007d--X_003astructures-2397"></a><a name="index-g_t_0040code_007b_002bfield_007d-2398"></a><a name="index-g_t_002bfield-2399"></a>
+<pre class="format"><code>+field</code>       <i>n1 n2 "name" &ndash; n3  </i>       X:structures       &ldquo;plus-field&rdquo;
+</pre>
+   <p><a name="index-cfield_003a-_0040var_007b-u1-_0022name_0022-_002d_002d-u2---_007d--X_003astructures-2400"></a><a name="index-g_t_0040code_007bcfield_003a_007d-2401"></a><a name="index-cfield_003a-2402"></a>
+<pre class="format"><code>cfield:</code>       <i>u1 "name" &ndash; u2  </i>       X:structures       &ldquo;cfield:&rdquo;
+</pre>
+   <p><a name="index-field_003a-_0040var_007b-u1-_0022name_0022-_002d_002d-u2---_007d--X_003astructures-2403"></a><a name="index-g_t_0040code_007bfield_003a_007d-2404"></a><a name="index-field_003a-2405"></a>
+<pre class="format"><code>field:</code>       <i>u1 "name" &ndash; u2  </i>       X:structures       &ldquo;field:&rdquo;
+</pre>
+   <p><a name="index-g_t2field_003a-_0040var_007b-u1-_0022name_0022-_002d_002d-u2---_007d--gforth-2406"></a><a name="index-g_t_0040code_007b2field_003a_007d-2407"></a><a name="index-g_t2field_003a-2408"></a>
+<pre class="format"><code>2field:</code>       <i>u1 "name" &ndash; u2  </i>       gforth       &ldquo;2field:&rdquo;
+</pre>
+   <p><a name="index-ffield_003a-_0040var_007b-u1-_0022name_0022-_002d_002d-u2---_007d--X_003astructures-2409"></a><a name="index-g_t_0040code_007bffield_003a_007d-2410"></a><a name="index-ffield_003a-2411"></a>
+<pre class="format"><code>ffield:</code>       <i>u1 "name" &ndash; u2  </i>       X:structures       &ldquo;ffield:&rdquo;
+</pre>
+   <p><a name="index-sffield_003a-_0040var_007b-u1-_0022name_0022-_002d_002d-u2---_007d--X_003astructures-2412"></a><a name="index-g_t_0040code_007bsffield_003a_007d-2413"></a><a name="index-sffield_003a-2414"></a>
+<pre class="format"><code>sffield:</code>       <i>u1 "name" &ndash; u2  </i>       X:structures       &ldquo;sffield:&rdquo;
+</pre>
+   <p><a name="index-dffield_003a-_0040var_007b-u1-_0022name_0022-_002d_002d-u2---_007d--X_003astructures-2415"></a><a name="index-g_t_0040code_007bdffield_003a_007d-2416"></a><a name="index-dffield_003a-2417"></a>
+<pre class="format"><code>dffield:</code>       <i>u1 "name" &ndash; u2  </i>       X:structures       &ldquo;dffield:&rdquo;
+</pre>
+   <!--  -->
+</body></html>
+

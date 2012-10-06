@@ -1,0 +1,101 @@
+<html lang="en">
+<head>
+<title>Startup speed - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Gforth-Environment.html#Gforth-Environment" title="Gforth Environment">
+<link rel="prev" href="Gforth-in-pipes.html#Gforth-in-pipes" title="Gforth in pipes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Startup-speed"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Gforth-in-pipes.html#Gforth-in-pipes">Gforth in pipes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Gforth-Environment.html#Gforth-Environment">Gforth Environment</a>
+<hr>
+</div>
+
+<h3 class="section">2.7 Startup speed</h3>
+
+<p><a name="index-Startup-speed-72"></a><a name="index-speed_002c-startup-73"></a>
+If Gforth is used for CGI scripts or in shell scripts, its startup
+speed may become a problem.  On a 300MHz 21064a under Linux-2.2.13 with
+glibc-2.0.7, <code>gforth -e bye</code> takes about 24.6ms user and 11.3ms
+system time.
+
+   <p>If startup speed is a problem, you may consider the following ways to
+improve it; or you may consider ways to reduce the number of startups
+(for example, by using Fast-CGI).
+
+   <p>An easy step that influences Gforth startup speed is the use of the
+<samp><span class="option">--no-dynamic</span></samp> option; this decreases image loading speed, but
+increases compile-time and run-time.
+
+   <p>Another step to improve startup speed is to statically link Gforth, by
+building it with <code>XLDFLAGS=-static</code>.  This requires more memory for
+the code and will therefore slow down the first invocation, but
+subsequent invocations avoid the dynamic linking overhead.  Another
+disadvantage is that Gforth won't profit from library upgrades.  As a
+result, <code>gforth-static -e bye</code> takes about 17.1ms user and
+8.2ms system time.
+
+   <p>The next step to improve startup speed is to use a non-relocatable image
+(see <a href="Non_002dRelocatable-Image-Files.html#Non_002dRelocatable-Image-Files">Non-Relocatable Image Files</a>).  You can create this image with
+<code>gforth -e "savesystem gforthnr.fi bye"</code> and later use it with
+<code>gforth -i gforthnr.fi ...</code>.  This avoids the relocation overhead
+and a part of the copy-on-write overhead.  The disadvantage is that the
+non-relocatable image does not work if the OS gives Gforth a different
+address for the dictionary, for whatever reason; so you better provide a
+fallback on a relocatable image.  <code>gforth-static -i gforthnr.fi -e
+bye</code> takes about 15.3ms user and 7.5ms system time.
+
+   <p>The final step is to disable dictionary hashing in Gforth.  Gforth
+builds the hash table on startup, which takes much of the startup
+overhead. You can do this by commenting out the <code>include hash.fs</code>
+in <samp><span class="file">startup.fs</span></samp> and everything that requires <samp><span class="file">hash.fs</span></samp> (at the
+moment <samp><span class="file">table.fs</span></samp> and <samp><span class="file">ekey.fs</span></samp>) and then doing <code>make</code>. 
+The disadvantages are that functionality like <code>table</code> and
+<code>ekey</code> is missing and that text interpretation (e.g., compiling)
+now takes much longer. So, you should only use this method if there is
+no significant text interpretation to perform (the script should be
+compiled into the image, amongst other things).  <code>gforth-static -i
+gforthnrnh.fi -e bye</code> takes about 2.1ms user and 6.1ms system time.
+
+<!-- ****************************************************************** -->
+</body></html>
+

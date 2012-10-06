@@ -1,0 +1,203 @@
+<html lang="en">
+<head>
+<title>core-ambcond - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-Core-Words.html#The-Core-Words" title="The Core Words">
+<link rel="prev" href="core_002didef.html#core_002didef" title="core-idef">
+<link rel="next" href="core_002dother.html#core_002dother" title="core-other">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="core-ambcond"></a>
+<a name="core_002dambcond"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="core_002dother.html#core_002dother">core-other</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="core_002didef.html#core_002didef">core-idef</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-Core-Words.html#The-Core-Words">The Core Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">8.1.2 Ambiguous conditions</h4>
+
+<!--  -->
+<p><a name="index-core-words_002c-ambiguous-conditions-3120"></a><a name="index-ambiguous-conditions_002c-core-words-3121"></a>
+     <dl>
+<dt><i>a name is neither a word nor a number:</i><dd><a name="index-name-not-found-3122"></a><a name="index-undefined-word-3123"></a><code>-13 throw</code> (Undefined word).
+
+     <br><dt><i>a definition name exceeds the maximum length allowed:</i><dd><a name="index-word-name-too-long-3124"></a><code>-19 throw</code> (Word name too long)
+
+     <br><dt><i>addressing a region not inside the various data spaces of the forth system:</i><dd><a name="index-Invalid-memory-address-3125"></a>The stacks, code space and header space are accessible. Machine code space is
+typically readable. Accessing other addresses gives results dependent on
+the operating system. On decent systems: <code>-9 throw</code> (Invalid memory
+address).
+
+     <br><dt><i>argument type incompatible with parameter:</i><dd><a name="index-argument-type-mismatch-3126"></a>This is usually not caught. Some words perform checks, e.g., the control
+flow words, and issue a <code>ABORT"</code> or <code>-12 THROW</code> (Argument type
+mismatch).
+
+     <br><dt><i>attempting to obtain the execution token of a word with undefined execution semantics:</i><dd><a name="index-Interpreting-a-compile_002donly-word_002c-for-_0040code_007b_0027_007d-etc_002e-3127"></a><a name="index-execution-token-of-words-with-undefined-execution-semantics-3128"></a><code>-14 throw</code> (Interpreting a compile-only word). In some cases, you
+get an execution token for <code>compile-only-error</code> (which performs a
+<code>-14 throw</code> when executed).
+
+     <br><dt><i>dividing by zero:</i><dd><a name="index-dividing-by-zero-3129"></a><a name="index-floating-point-unidentified-fault_002c-integer-division-3130"></a>On some platforms, this produces a <code>-10 throw</code> (Division by
+zero); on other systems, this typically results in a <code>-55 throw</code>
+(Floating-point unidentified fault).
+
+     <br><dt><i>insufficient data stack or return stack space:</i><dd><a name="index-insufficient-data-stack-or-return-stack-space-3131"></a><a name="index-stack-overflow-3132"></a><a name="index-address-alignment-exception_002c-stack-overflow-3133"></a><a name="index-Invalid-memory-address_002c-stack-overflow-3134"></a>Depending on the operating system, the installation, and the invocation
+of Gforth, this is either checked by the memory management hardware, or
+it is not checked. If it is checked, you typically get a <code>-3 throw</code>
+(Stack overflow), <code>-5 throw</code> (Return stack overflow), or <code>-9
+throw</code> (Invalid memory address) (depending on the platform and how you
+achieved the overflow) as soon as the overflow happens. If it is not
+checked, overflows typically result in mysterious illegal memory
+accesses, producing <code>-9 throw</code> (Invalid memory address) or
+<code>-23 throw</code> (Address alignment exception); they might also destroy
+the internal data structure of <code>ALLOCATE</code> and friends, resulting in
+various errors in these words.
+
+     <br><dt><i>insufficient space for loop control parameters:</i><dd><a name="index-insufficient-space-for-loop-control-parameters-3135"></a>Like other return stack overflows.
+
+     <br><dt><i>insufficient space in the dictionary:</i><dd><a name="index-insufficient-space-in-the-dictionary-3136"></a><a name="index-dictionary-overflow-3137"></a>If you try to allot (either directly with <code>allot</code>, or indirectly
+with <code>,</code>, <code>create</code> etc.) more memory than available in the
+dictionary, you get a <code>-8 throw</code> (Dictionary overflow). If you try
+to access memory beyond the end of the dictionary, the results are
+similar to stack overflows.
+
+     <br><dt><i>interpreting a word with undefined interpretation semantics:</i><dd><a name="index-interpreting-a-word-with-undefined-interpretation-semantics-3138"></a><a name="index-Interpreting-a-compile_002donly-word-3139"></a>For some words, we have defined interpretation semantics. For the
+others: <code>-14 throw</code> (Interpreting a compile-only word).
+
+     <br><dt><i>modifying the contents of the input buffer or a string literal:</i><dd><a name="index-modifying-the-contents-of-the-input-buffer-or-a-string-literal-3140"></a>These are located in writable memory and can be modified.
+
+     <br><dt><i>overflow of the pictured numeric output string:</i><dd><a name="index-overflow-of-the-pictured-numeric-output-string-3141"></a><a name="index-pictured-numeric-output-string_002c-overflow-3142"></a><code>-17 throw</code> (Pictured numeric ouput string overflow).
+
+     <br><dt><i>parsed string overflow:</i><dd><a name="index-parsed-string-overflow-3143"></a><code>PARSE</code> cannot overflow. <code>WORD</code> does not check for overflow.
+
+     <br><dt><i>producing a result out of range:</i><dd><a name="index-result-out-of-range-3144"></a>On two's complement machines, arithmetic is performed modulo
+2**bits-per-cell for single arithmetic and 4**bits-per-cell for double
+arithmetic (with appropriate mapping for signed types). Division by
+zero typically results in a <code>-10 throw</code> (divide by zero) or
+<code>-55 throw</code> (floating point unidentified fault). Overflow on
+division may result in these errors or in <code>-11 throw</code> (result out
+of range).  <code>Gforth-fast</code> may silently produce bogus results on
+division overflow or division by zero.  <code>Convert</code> and
+<code>&gt;number</code> currently overflow silently.
+
+     <br><dt><i>reading from an empty data or return stack:</i><dd><a name="index-stack-empty-3145"></a><a name="index-stack-underflow-3146"></a><a name="index-return-stack-underflow-3147"></a>The data stack is checked by the outer (aka text) interpreter after
+every word executed. If it has underflowed, a <code>-4 throw</code> (Stack
+underflow) is performed. Apart from that, stacks may be checked or not,
+depending on operating system, installation, and invocation. If they are
+caught by a check, they typically result in <code>-4 throw</code> (Stack
+underflow), <code>-6 throw</code> (Return stack underflow) or <code>-9 throw</code>
+(Invalid memory address), depending on the platform and which stack
+underflows and by how much. Note that even if the system uses checking
+(through the MMU), your program may have to underflow by a significant
+number of stack items to trigger the reaction (the reason for this is
+that the MMU, and therefore the checking, works with a page-size
+granularity).  If there is no checking, the symptoms resulting from an
+underflow are similar to those from an overflow.  Unbalanced return
+stack errors can result in a variety of symptoms, including <code>-9 throw</code>
+(Invalid memory address) and Illegal Instruction (typically <code>-260
+throw</code>).
+
+     <br><dt><i>unexpected end of the input buffer, resulting in an attempt to use a zero-length string as a name:</i><dd><a name="index-unexpected-end-of-the-input-buffer-3148"></a><a name="index-zero_002dlength-string-as-a-name-3149"></a><a name="index-Attempt-to-use-zero_002dlength-string-as-a-name-3150"></a><code>Create</code> and its descendants perform a <code>-16 throw</code> (Attempt to
+use zero-length string as a name). Words like <code>'</code> probably will not
+find what they search. Note that it is possible to create zero-length
+names with <code>nextname</code> (should it not?).
+
+     <br><dt><code>&gt;IN</code><i> greater than input buffer:</i><dd><a name="index-g_t_0040code_007b_003eIN_007d-greater-than-input-buffer-3151"></a>The next invocation of a parsing word returns a string with length 0.
+
+     <br><dt><code>RECURSE</code><i> appears after </i><code>DOES&gt;</code><i>:</i><dd><a name="index-g_t_0040code_007bRECURSE_007d-appears-after-_0040code_007bDOES_003e_007d-3152"></a>Compiles a recursive call to the defining word, not to the defined word.
+
+     <br><dt><i>argument input source different than current input source for </i><code>RESTORE-INPUT</code><i>:</i><dd><a name="index-argument-input-source-different-than-current-input-source-for-_0040code_007bRESTORE_002dINPUT_007d-3153"></a><a name="index-argument-type-mismatch_002c-_0040code_007bRESTORE_002dINPUT_007d-3154"></a><a name="index-g_t_0040code_007bRESTORE_002dINPUT_007d_002c-Argument-type-mismatch-3155"></a><code>-12 THROW</code>. Note that, once an input file is closed (e.g., because
+the end of the file was reached), its source-id may be
+reused. Therefore, restoring an input source specification referencing a
+closed file may lead to unpredictable results instead of a <code>-12
+THROW</code>.
+
+     <p>In the future, Gforth may be able to restore input source specifications
+from other than the current input source.
+
+     <br><dt><i>data space containing definitions gets de-allocated:</i><dd><a name="index-data-space-containing-definitions-gets-de_002dallocated-3156"></a>Deallocation with <code>allot</code> is not checked. This typically results in
+memory access faults or execution of illegal instructions.
+
+     <br><dt><i>data space read/write with incorrect alignment:</i><dd><a name="index-data-space-read_002fwrite-with-incorrect-alignment-3157"></a><a name="index-alignment-faults-3158"></a><a name="index-address-alignment-exception-3159"></a>Processor-dependent. Typically results in a <code>-23 throw</code> (Address
+alignment exception). Under Linux-Intel on a 486 or later processor with
+alignment turned on, incorrect alignment results in a <code>-9 throw</code>
+(Invalid memory address). There are reportedly some processors with
+alignment restrictions that do not report violations.
+
+     <br><dt><i>data space pointer not properly aligned, </i><code>,</code><i>, </i><code>C,</code><i>:</i><dd><a name="index-data-space-pointer-not-properly-aligned_002c-_0040code_007b_002c_007d_002c-_0040code_007bC_002c_007d-3160"></a>Like other alignment errors.
+
+     <br><dt><i>less than u+2 stack items (</i><code>PICK</code><i> and </i><code>ROLL</code><i>):</i><dd>Like other stack underflows.
+
+     <br><dt><i>loop control parameters not available:</i><dd><a name="index-loop-control-parameters-not-available-3161"></a>Not checked. The counted loop words simply assume that the top of return
+stack items are loop control parameters and behave accordingly.
+
+     <br><dt><i>most recent definition does not have a name (</i><code>IMMEDIATE</code><i>):</i><dd><a name="index-most-recent-definition-does-not-have-a-name-_0028_0040code_007bIMMEDIATE_007d_0029-3162"></a><a name="index-last-word-was-headerless-3163"></a><code>abort" last word was headerless"</code>.
+
+     <br><dt><i>name not defined by </i><code>VALUE</code><i> used by </i><code>TO</code><i>:</i><dd><a name="index-name-not-defined-by-_0040code_007bVALUE_007d-used-by-_0040code_007bTO_007d-3164"></a><a name="index-g_t_0040code_007bTO_007d-on-non_002d_0040code_007bVALUE_007ds-3165"></a><a name="index-Invalid-name-argument_002c-_0040code_007bTO_007d-3166"></a><code>-32 throw</code> (Invalid name argument) (unless name is a local or was
+defined by <code>CONSTANT</code>; in the latter case it just changes the constant).
+
+     <br><dt><i>name not found (</i><code>'</code><i>, </i><code>POSTPONE</code><i>, </i><code>[']</code><i>, </i><code>[COMPILE]</code><i>):</i><dd><a name="index-name-not-found-_0028_0040code_007b_0027_007d_002c-_0040code_007bPOSTPONE_007d_002c-_0040code_007b_005b_0027_005d_007d_002c-_0040code_007b_005bCOMPILE_005d_007d_0029-3167"></a><a name="index-undefined-word_002c-_0040code_007b_0027_007d_002c-_0040code_007bPOSTPONE_007d_002c-_0040code_007b_005b_0027_005d_007d_002c-_0040code_007b_005bCOMPILE_005d_007d-3168"></a><code>-13 throw</code> (Undefined word)
+
+     <br><dt><i>parameters are not of the same type (</i><code>DO</code><i>, </i><code>?DO</code><i>, </i><code>WITHIN</code><i>):</i><dd><a name="index-parameters-are-not-of-the-same-type-_0028_0040code_007bDO_007d_002c-_0040code_007b_003fDO_007d_002c-_0040code_007bWITHIN_007d_0029-3169"></a>Gforth behaves as if they were of the same type. I.e., you can predict
+the behaviour by interpreting all parameters as, e.g., signed.
+
+     <br><dt><code>POSTPONE</code><i> or </i><code>[COMPILE]</code><i> applied to </i><code>TO</code><i>:</i><dd><a name="index-g_t_0040code_007bPOSTPONE_007d-or-_0040code_007b_005bCOMPILE_005d_007d-applied-to-_0040code_007bTO_007d-3170"></a>Assume <code>: X POSTPONE TO ; IMMEDIATE</code>. <code>X</code> performs the
+compilation semantics of <code>TO</code>.
+
+     <br><dt><i>String longer than a counted string returned by </i><code>WORD</code><i>:</i><dd><a name="index-string-longer-than-a-counted-string-returned-by-_0040code_007bWORD_007d-3171"></a><a name="index-g_t_0040code_007bWORD_007d_002c-string-overflow-3172"></a>Not checked. The string will be ok, but the count will, of course,
+contain only the least significant bits of the length.
+
+     <br><dt><i>u greater than or equal to the number of bits in a cell (</i><code>LSHIFT</code><i>, </i><code>RSHIFT</code><i>):</i><dd><a name="index-g_t_0040code_007bLSHIFT_007d_002c-large-shift-counts-3173"></a><a name="index-g_t_0040code_007bRSHIFT_007d_002c-large-shift-counts-3174"></a>Processor-dependent. Typical behaviours are returning 0 and using only
+the low bits of the shift count.
+
+     <br><dt><i>word not defined via </i><code>CREATE</code><i>:</i><dd><a name="index-g_t_0040code_007b_003eBODY_007d-of-non_002d_0040code_007bCREATE_007dd-words-3175"></a><code>&gt;BODY</code> produces the PFA of the word no matter how it was defined.
+
+     <p><a name="index-g_t_0040code_007bDOES_003e_007d-of-non_002d_0040code_007bCREATE_007dd-words-3176"></a><code>DOES&gt;</code> changes the execution semantics of the last defined word no
+matter how it was defined. E.g., <code>CONSTANT DOES&gt;</code> is equivalent to
+<code>CREATE , DOES&gt;</code>.
+
+     <br><dt><i>words improperly used outside </i><code>&lt;#</code><i> and </i><code>#&gt;</code><i>:</i><dd>Not checked. As usual, you can expect memory faults.
+
+   </dl>
+
+<!--  -->
+</body></html>
+

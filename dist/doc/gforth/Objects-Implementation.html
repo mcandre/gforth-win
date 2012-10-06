@@ -1,0 +1,181 @@
+<html lang="en">
+<head>
+<title>Objects Implementation - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Objects.html#Objects" title="Objects">
+<link rel="prev" href="Object-Interfaces.html#Object-Interfaces" title="Object Interfaces">
+<link rel="next" href="Objects-Glossary.html#Objects-Glossary" title="Objects Glossary">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Objects-Implementation"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Objects-Glossary.html#Objects-Glossary">Objects Glossary</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Object-Interfaces.html#Object-Interfaces">Object Interfaces</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Objects.html#Objects">Objects</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.23.3.11 <samp><span class="file">objects.fs</span></samp> Implementation</h5>
+
+<p><a name="index-g_t_0040file_007bobjects_002efs_007d-implementation-2498"></a>
+<a name="index-g_t_0040code_007bobject_002dmap_007d-discussion-2499"></a>An object is a piece of memory, like one of the data structures
+described with <code>struct...end-struct</code>. It has a field
+<code>object-map</code> that points to the method map for the object's
+class.
+
+   <p><a name="index-method-map-2500"></a><a name="index-virtual-function-table-2501"></a>The <em>method map</em><a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a> is an array that contains the
+execution tokens (<i>xt</i>s) of the methods for the object's class. Each
+selector contains an offset into a method map.
+
+   <p><a name="index-g_t_0040code_007bselector_007d-implementation_002c-class-2502"></a><code>selector</code> is a defining word that uses
+<code>CREATE</code> and <code>DOES&gt;</code>. The body of the
+selector contains the offset; the <code>DOES&gt;</code> action for a
+class selector is, basically:
+
+<pre class="example">     ( object addr ) @ over object-map @ + @ execute
+</pre>
+   <p>Since <code>object-map</code> is the first field of the object, it
+does not generate any code. As you can see, calling a selector has a
+small, constant cost.
+
+   <p><a name="index-g_t_0040code_007bcurrent_002dinterface_007d-discussion-2503"></a><a name="index-class-implementation-and-representation-2504"></a>A class is basically a <code>struct</code> combined with a method
+map. During the class definition the alignment and size of the class
+are passed on the stack, just as with <code>struct</code>s, so
+<code>field</code> can also be used for defining class
+fields. However, passing more items on the stack would be
+inconvenient, so <code>class</code> builds a data structure in memory,
+which is accessed through the variable
+<code>current-interface</code>. After its definition is complete, the
+class is represented on the stack by a pointer (e.g., as parameter for
+a child class definition).
+
+   <p>A new class starts off with the alignment and size of its parent,
+and a copy of the parent's method map. Defining new fields extends the
+size and alignment; likewise, defining new selectors extends the
+method map. <code>overrides</code> just stores a new <i>xt</i> in the method
+map at the offset given by the selector.
+
+   <p><a name="index-class-binding_002c-implementation-2505"></a>Class binding just gets the <i>xt</i> at the offset given by the selector
+from the class's method map and <code>compile,</code>s (in the case of
+<code>[bind]</code>) it.
+
+   <p><a name="index-g_t_0040code_007bthis_007d-implementation-2506"></a><a name="index-g_t_0040code_007bcatch_007d-and-_0040code_007bthis_007d-2507"></a><a name="index-g_t_0040code_007bthis_007d-and-_0040code_007bcatch_007d-2508"></a>I implemented <code>this</code> as a <code>value</code>. At the
+start of an <code>m:...;m</code> method the old <code>this</code> is
+stored to the return stack and restored at the end; and the object on
+the TOS is stored <code>TO this</code>. This technique has one
+disadvantage: If the user does not leave the method via
+<code>;m</code>, but via <code>throw</code> or <code>exit</code>,
+<code>this</code> is not restored (and <code>exit</code> may
+crash). To deal with the <code>throw</code> problem, I have redefined
+<code>catch</code> to save and restore <code>this</code>; the same
+should be done with any word that can catch an exception. As for
+<code>exit</code>, I simply forbid it (as a replacement, there is
+<code>exitm</code>).
+
+   <p><a name="index-g_t_0040code_007binst_002dvar_007d-implementation-2509"></a><code>inst-var</code> is just the same as <code>field</code>, with
+a different <code>DOES&gt;</code> action:
+<pre class="example">     @ this +
+</pre>
+   <p>Similar for <code>inst-value</code>.
+
+   <p><a name="index-class-scoping-implementation-2510"></a>Each class also has a word list that contains the words defined with
+<code>inst-var</code> and <code>inst-value</code>, and its protected
+words. It also has a pointer to its parent. <code>class</code> pushes
+the word lists of the class and all its ancestors onto the search order stack,
+and <code>end-class</code> drops them.
+
+   <p><a name="index-interface-implementation-2511"></a>An interface is like a class without fields, parent and protected
+words; i.e., it just has a method map. If a class implements an
+interface, its method map contains a pointer to the method map of the
+interface. The positive offsets in the map are reserved for class
+methods, therefore interface map pointers have negative
+offsets. Interfaces have offsets that are unique throughout the
+system, unlike class selectors, whose offsets are only unique for the
+classes where the selector is available (invokable).
+
+   <p>This structure means that interface selectors have to perform one
+indirection more than class selectors to find their method. Their body
+contains the interface map pointer offset in the class method map, and
+the method offset in the interface method map. The
+<code>does&gt;</code> action for an interface selector is, basically:
+
+<pre class="example">     ( object selector-body )
+     2dup selector-interface @ ( object selector-body object interface-offset )
+     swap object-map @ + @ ( object selector-body map )
+     swap selector-offset @ + @ execute
+</pre>
+   <p>where <code>object-map</code> and <code>selector-offset</code> are
+first fields and generate no code.
+
+   <p>As a concrete example, consider the following code:
+
+<pre class="example">     interface
+       selector if1sel1
+       selector if1sel2
+     end-interface if1
+     
+     object class
+       if1 implementation
+       selector cl1sel1
+       cell% inst-var cl1iv1
+     
+     ' m1 overrides construct
+     ' m2 overrides if1sel1
+     ' m3 overrides if1sel2
+     ' m4 overrides cl1sel2
+     end-class cl1
+     
+     create obj1 object dict-new drop
+     create obj2 cl1    dict-new drop
+</pre>
+   <p>The data structure created by this code (including the data structure
+for <code>object</code>) is shown in the
+<a href="objects-implementation.eps">figure</a>, assuming a cell size of 4. 
+<!-- TODO add this diagram.. -->
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> This is Self terminology; in C++
+terminology: virtual function table.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

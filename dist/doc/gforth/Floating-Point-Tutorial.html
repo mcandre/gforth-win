@@ -1,0 +1,136 @@
+<html lang="en">
+<head>
+<title>Floating Point Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Alignment-Tutorial.html#Alignment-Tutorial" title="Alignment Tutorial">
+<link rel="next" href="Files-Tutorial.html#Files-Tutorial" title="Files Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Floating-Point-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Files-Tutorial.html#Files-Tutorial">Files Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Alignment-Tutorial.html#Alignment-Tutorial">Alignment Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.26 Floating Point</h3>
+
+<p><a name="index-floating-point-tutorial-112"></a><a name="index-FP-tutorial-113"></a>
+Floating-point (FP) numbers and arithmetic in Forth works mostly as one
+might expect, but there are a few things worth noting:
+
+   <p>The first point is not specific to Forth, but so important and yet not
+universally known that I mention it here: FP numbers are not reals. 
+Many properties (e.g., arithmetic laws) that reals have and that one
+expects of all kinds of numbers do not hold for FP numbers.  If you
+want to use FP computations, you should learn about their problems and
+how to avoid them; a good starting point is <cite>David Goldberg,
+<a href="http://docs.sun.com/source/806-3568/ncg_goldberg.html">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a>, ACM
+Computing Surveys 23(1):5&minus;48, March 1991</cite>.
+
+   <p>In Forth source code literal FP numbers need an exponent, e.g.,
+<code>1e0</code>; this can also be written shorter as <code>1e</code>,
+<code>+1.0e+0</code>, and many variations in between.  The reason for this
+is that, for historical reasons, Forth interprets a decimal point
+alone (e.g., <code>1.</code>) as indicating a double-cell integer.  Another
+requirement for literal FP numbers is that the current base is
+decimal; with a hex base <code>1e</code> is interpreted as an integer.
+
+   <p>Forth has a separate stack for FP numbers.<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>  One advantage of this model is that cells are not in the
+way when accessing FP values, and vice versa.  Forth has a set of
+words for manipulating the FP stack: <code>fdup fswap fdrop fover
+frot</code> and (non-standard) <code>fnip ftuck fpick</code>.
+
+   <p>FP arithmetic words are prefixed with <code>F</code>.  There is the usual
+set <code>f+ f- f* f/ f** fnegate</code> as well as a number of words for
+other functions, e.g., <code>fsqrt fsin fln fmin</code>.  One word that you
+might expect is <code>f=</code>; but <code>f=</code> is non-standard, because FP
+computation results are usually inaccurate, so exact comparison is
+usually a mistake, and one should use approximate comparison. 
+Unfortunately, <code>f~</code>, the standard word for that purpose, is not
+well designed, so Gforth provides <code>f~abs</code> and <code>f~rel</code> as
+well.
+
+   <p>And of course there are words for accessing FP numbers in memory
+(<code>f@ f!</code>), and for address arithmetic (<code>floats float+
+faligned</code>).  There are also variants of these words with an <code>sf</code>
+and <code>df</code> prefix for accessing IEEE format single-precision and
+double-precision numbers in memory; their main purpose is for
+accessing external FP data (e.g., that has been read from or will be
+written to a file).
+
+   <p>Here is an example of a dot-product word and its use:
+
+<pre class="example">     : v* ( f_addr1 nstride1 f_addr2 nstride2 ucount -- r )
+       &gt;r swap 2swap swap 0e r&gt; 0 ?DO
+         dup f@ over + 2swap dup f@ f* f+ over + 2swap
+       LOOP
+       2drop 2drop ;
+     
+     create v 1.23e f, 4.56e f, 7.89e f,
+     
+     v 1 floats  v 1 floats  3  v* f.
+</pre>
+   <blockquote>
+<b>Assignment:</b> Write a program to solve a quadratic equation.  Then read <cite>Henry
+G. Baker,
+<a href="http://home.pipeline.com/~hbaker1/sigplannotices/sigcol05.ps.gz">You Could Learn a Lot from a Quadratic</a>, ACM SIGPLAN Notices,
+33(1):30&minus;39, January 1998</cite>, and see if you can improve your
+program.  Finally, find a test case where the original and the
+improved version produce different results. 
+</blockquote>
+
+   <p>Reference: <a href="Floating-Point.html#Floating-Point">Floating Point</a>; <a href="Floating-point-stack.html#Floating-point-stack">Floating point stack</a>;
+<a href="Number-Conversion.html#Number-Conversion">Number Conversion</a>; <a href="Memory-Access.html#Memory-Access">Memory Access</a>; <a href="Address-arithmetic.html#Address-arithmetic">Address arithmetic</a>.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> Theoretically, an
+ANS Forth system may implement the FP stack on the data stack, but
+virtually all systems implement a separate FP stack; and programming
+in a way that accommodates all models is so cumbersome that nobody
+does it.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

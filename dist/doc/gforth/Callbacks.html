@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+<title>Callbacks - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="C-Interface.html#C-Interface" title="C Interface">
+<link rel="prev" href="Declaring-OS_002dlevel-libraries.html#Declaring-OS_002dlevel-libraries" title="Declaring OS-level libraries">
+<link rel="next" href="C-interface-internals.html#C-interface-internals" title="C interface internals">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Callbacks"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="C-interface-internals.html#C-interface-internals">C interface internals</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Declaring-OS_002dlevel-libraries.html#Declaring-OS_002dlevel-libraries">Declaring OS-level libraries</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="C-Interface.html#C-Interface">C Interface</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.25.6 Callbacks</h4>
+
+<p><a name="index-Callback-functions-written-in-Forth-2917"></a><a name="index-C-function-pointers-to-Forth-words-2918"></a>
+Callbacks are not yet supported by the documented C interface.  You
+can use the undocumented <samp><span class="file">lib.fs</span></samp> interface for callbacks.
+
+   <p>In some cases you have to pass a function pointer to a C function,
+i.e., the library wants to call back to your application (and the
+pointed-to function is called a callback function).  You can pass the
+address of an existing C function (that you get with <code>lib-sym</code>,
+see <a href="Low_002dLevel-C-Interface-Words.html#Low_002dLevel-C-Interface-Words">Low-Level C Interface Words</a>), but if there is no appropriate C
+function, you probably want to define the function as a Forth word.
+
+<!-- I don't understand the existing callback interface from the example - anton -->
+<!-- > > Und dann gibt's noch die fptr-Deklaration, die einem -->
+<!-- > > C-Funktionspointer entspricht (Deklaration gleich wie bei -->
+<!-- > > Library-Funktionen, nur ohne den C-Namen, Aufruf mit der -->
+<!-- > > C-Funktionsadresse auf dem TOS). -->
+<!-- > -->
+<!-- > Ja, da bin ich dann ausgestiegen, weil ich aus dem Beispiel nicht -->
+<!-- > gesehen habe, wozu das gut ist. -->
+<!-- Irgendwie muss ich den Callback ja testen. Und es soll ja auch -->
+<!-- vorkommen, dass man von irgendwelchen kranken Interfaces einen -->
+<!-- Funktionspointer übergeben bekommt, den man dann bei Gelegenheit -->
+<!-- aufrufen muss. Also kann man den deklarieren, und das damit deklarierte -->
+<!-- Wort verhält sich dann wie ein EXECUTE für alle C-Funktionen mit -->
+<!-- demselben Prototyp. -->
+</body></html>
+

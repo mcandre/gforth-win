@@ -1,0 +1,166 @@
+<html lang="en">
+<head>
+<title>Interpreter Directives - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-Text-Interpreter.html#The-Text-Interpreter" title="The Text Interpreter">
+<link rel="prev" href="Interpret_002fCompile-states.html#Interpret_002fCompile-states" title="Interpret/Compile states">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Interpreter-Directives"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Interpret_002fCompile-states.html#Interpret_002fCompile-states">Interpret/Compile states</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-Text-Interpreter.html#The-Text-Interpreter">The Text Interpreter</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.13.4 Interpreter Directives</h4>
+
+<p><a name="index-interpreter-directives-1503"></a><a name="index-conditional-compilation-1504"></a>
+These words are usually used in interpret state; typically to control
+which parts of a source file are processed by the text
+interpreter. There are only a few ANS Forth Standard words, but Gforth
+supplements these with a rich set of immediate control structure words
+to compensate for the fact that the non-immediate versions can only be
+used in compile state (see <a href="Control-Structures.html#Control-Structures">Control Structures</a>). Typical usages:
+
+<pre class="example">     FALSE Constant HAVE-ASSEMBLER
+     .
+     .
+     HAVE-ASSEMBLER [IF]
+     : ASSEMBLER-FEATURE
+       ...
+     ;
+     [ENDIF]
+     .
+     .
+     : SEE
+       ... \ general-purpose SEE code
+       [ HAVE-ASSEMBLER [IF] ]
+       ... \ assembler-specific SEE code
+       [ [ENDIF] ]
+     ;
+</pre>
+   <p><a name="index-g_t_005bIF_005d-_0040var_007b-flag-_002d_002d---_007d--tools_002dext-1505"></a><a name="index-g_t_0040code_007b_005bIF_005d_007d-1506"></a><a name="index-g_t_005bIF_005d-1507"></a>
+<pre class="format"><code>[IF]</code>       <i>flag &ndash;  </i>       tools-ext       &ldquo;bracket-if&rdquo;
+</pre>
+   <p>If flag is <code>TRUE</code> do nothing (and therefore
+execute subsequent words as normal). If flag is <code>FALSE</code>,
+parse and discard words from the parse
+area (refilling it if necessary using
+<code>REFILL</code>) including nested instances of <code>[IF]</code>.. 
+<code>[ELSE]</code>.. <code>[THEN]</code> and <code>[IF]</code>.. <code>[THEN]</code>
+until the balancing <code>[ELSE]</code> or <code>[THEN]</code> has been
+parsed and discarded. Immediate word.
+
+   <p><a name="index-g_t_005bELSE_005d-_0040var_007b-_002d_002d---_007d--tools_002dext-1508"></a><a name="index-g_t_0040code_007b_005bELSE_005d_007d-1509"></a><a name="index-g_t_005bELSE_005d-1510"></a>
+<pre class="format"><code>[ELSE]</code>       <i>&ndash;  </i>       tools-ext       &ldquo;bracket-else&rdquo;
+</pre>
+   <p>Parse and discard words from the parse
+area (refilling it if necessary using
+<code>REFILL</code>) including nested instances of <code>[IF]</code>.. 
+<code>[ELSE]</code>.. <code>[THEN]</code> and <code>[IF]</code>.. <code>[THEN]</code>
+until the balancing <code>[THEN]</code> has been parsed and discarded. 
+<code>[ELSE]</code> only gets executed if the balancing <code>[IF]</code>
+was <code>TRUE</code>; if it was <code>FALSE</code>, <code>[IF]</code> would
+have parsed and discarded the <code>[ELSE]</code>, leaving the
+subsequent words to be executed as normal. 
+Immediate word.
+
+   <p><a name="index-g_t_005bTHEN_005d-_0040var_007b-_002d_002d---_007d--tools_002dext-1511"></a><a name="index-g_t_0040code_007b_005bTHEN_005d_007d-1512"></a><a name="index-g_t_005bTHEN_005d-1513"></a>
+<pre class="format"><code>[THEN]</code>       <i>&ndash;  </i>       tools-ext       &ldquo;bracket-then&rdquo;
+</pre>
+   <p>Do nothing; used as a marker for other words to parse
+and discard up to. Immediate word.
+
+   <p><a name="index-g_t_005bENDIF_005d-_0040var_007b-_002d_002d---_007d--gforth-1514"></a><a name="index-g_t_0040code_007b_005bENDIF_005d_007d-1515"></a><a name="index-g_t_005bENDIF_005d-1516"></a>
+<pre class="format"><code>[ENDIF]</code>       <i>&ndash;  </i>       gforth       &ldquo;bracket-end-if&rdquo;
+</pre>
+   <p>Do nothing; synonym for <code>[THEN]</code>
+
+   <p><a name="index-g_t_005bIFDEF_005d-_0040var_007b-_0022_003cspaces_003ename_0022-_002d_002d---_007d--gforth-1517"></a><a name="index-g_t_0040code_007b_005bIFDEF_005d_007d-1518"></a><a name="index-g_t_005bIFDEF_005d-1519"></a>
+<pre class="format"><code>[IFDEF]</code>       <i>"&lt;spaces&gt;name" &ndash;  </i>       gforth       &ldquo;bracket-if-def&rdquo;
+</pre>
+   <p>If name is found in the current search-order, behave like
+<code>[IF]</code> with a <code>TRUE</code> flag, otherwise behave like
+<code>[IF]</code> with a <code>FALSE</code> flag. Immediate word.
+
+   <p><a name="index-g_t_005bIFUNDEF_005d-_0040var_007b-_0022_003cspaces_003ename_0022-_002d_002d---_007d--gforth-1520"></a><a name="index-g_t_0040code_007b_005bIFUNDEF_005d_007d-1521"></a><a name="index-g_t_005bIFUNDEF_005d-1522"></a>
+<pre class="format"><code>[IFUNDEF]</code>       <i>"&lt;spaces&gt;name" &ndash;  </i>       gforth       &ldquo;bracket-if-un-def&rdquo;
+</pre>
+   <p>If name is not found in the current search-order, behave like
+<code>[IF]</code> with a <code>TRUE</code> flag, otherwise behave like
+<code>[IF]</code> with a <code>FALSE</code> flag. Immediate word.
+
+   <p><a name="index-g_t_005b_003fDO_005d-_0040var_007b-n_002dlimit-n_002dindex-_002d_002d---_007d--gforth-1523"></a><a name="index-g_t_0040code_007b_005b_003fDO_005d_007d-1524"></a><a name="index-g_t_005b_003fDO_005d-1525"></a>
+<pre class="format"><code>[?DO]</code>       <i>n-limit n-index &ndash;  </i>       gforth       &ldquo;bracket-question-do&rdquo;
+</pre>
+   <p><a name="index-g_t_005bDO_005d-_0040var_007b-n_002dlimit-n_002dindex-_002d_002d---_007d--gforth-1526"></a><a name="index-g_t_0040code_007b_005bDO_005d_007d-1527"></a><a name="index-g_t_005bDO_005d-1528"></a>
+<pre class="format"><code>[DO]</code>       <i>n-limit n-index &ndash;  </i>       gforth       &ldquo;bracket-do&rdquo;
+</pre>
+   <p><a name="index-g_t_005bFOR_005d-_0040var_007b-n-_002d_002d---_007d--gforth-1529"></a><a name="index-g_t_0040code_007b_005bFOR_005d_007d-1530"></a><a name="index-g_t_005bFOR_005d-1531"></a>
+<pre class="format"><code>[FOR]</code>       <i>n &ndash;  </i>       gforth       &ldquo;bracket-for&rdquo;
+</pre>
+   <p><a name="index-g_t_005bLOOP_005d-_0040var_007b-_002d_002d---_007d--gforth-1532"></a><a name="index-g_t_0040code_007b_005bLOOP_005d_007d-1533"></a><a name="index-g_t_005bLOOP_005d-1534"></a>
+<pre class="format"><code>[LOOP]</code>       <i>&ndash;  </i>       gforth       &ldquo;bracket-loop&rdquo;
+</pre>
+   <p><a name="index-g_t_005b_002bLOOP_005d-_0040var_007b-n-_002d_002d---_007d--gforth-1535"></a><a name="index-g_t_0040code_007b_005b_002bLOOP_005d_007d-1536"></a><a name="index-g_t_005b_002bLOOP_005d-1537"></a>
+<pre class="format"><code>[+LOOP]</code>       <i>n &ndash;  </i>       gforth       &ldquo;bracket-question-plus-loop&rdquo;
+</pre>
+   <p><a name="index-g_t_005bNEXT_005d-_0040var_007b-n-_002d_002d---_007d--gforth-1538"></a><a name="index-g_t_0040code_007b_005bNEXT_005d_007d-1539"></a><a name="index-g_t_005bNEXT_005d-1540"></a>
+<pre class="format"><code>[NEXT]</code>       <i>n &ndash;  </i>       gforth       &ldquo;bracket-next&rdquo;
+</pre>
+   <p><a name="index-g_t_005bBEGIN_005d-_0040var_007b-_002d_002d---_007d--gforth-1541"></a><a name="index-g_t_0040code_007b_005bBEGIN_005d_007d-1542"></a><a name="index-g_t_005bBEGIN_005d-1543"></a>
+<pre class="format"><code>[BEGIN]</code>       <i>&ndash;  </i>       gforth       &ldquo;bracket-begin&rdquo;
+</pre>
+   <p><a name="index-g_t_005bUNTIL_005d-_0040var_007b-flag-_002d_002d---_007d--gforth-1544"></a><a name="index-g_t_0040code_007b_005bUNTIL_005d_007d-1545"></a><a name="index-g_t_005bUNTIL_005d-1546"></a>
+<pre class="format"><code>[UNTIL]</code>       <i>flag &ndash;  </i>       gforth       &ldquo;bracket-until&rdquo;
+</pre>
+   <p><a name="index-g_t_005bAGAIN_005d-_0040var_007b-_002d_002d---_007d--gforth-1547"></a><a name="index-g_t_0040code_007b_005bAGAIN_005d_007d-1548"></a><a name="index-g_t_005bAGAIN_005d-1549"></a>
+<pre class="format"><code>[AGAIN]</code>       <i>&ndash;  </i>       gforth       &ldquo;bracket-again&rdquo;
+</pre>
+   <p><a name="index-g_t_005bWHILE_005d-_0040var_007b-flag-_002d_002d---_007d--gforth-1550"></a><a name="index-g_t_0040code_007b_005bWHILE_005d_007d-1551"></a><a name="index-g_t_005bWHILE_005d-1552"></a>
+<pre class="format"><code>[WHILE]</code>       <i>flag &ndash;  </i>       gforth       &ldquo;bracket-while&rdquo;
+</pre>
+   <p><a name="index-g_t_005bREPEAT_005d-_0040var_007b-_002d_002d---_007d--gforth-1553"></a><a name="index-g_t_0040code_007b_005bREPEAT_005d_007d-1554"></a><a name="index-g_t_005bREPEAT_005d-1555"></a>
+<pre class="format"><code>[REPEAT]</code>       <i>&ndash;  </i>       gforth       &ldquo;bracket-repeat&rdquo;
+</pre>
+   <!--  -->
+</body></html>
+

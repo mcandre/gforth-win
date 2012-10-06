@@ -1,0 +1,136 @@
+<html lang="en">
+<head>
+<title>Method conveniences - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Objects.html#Objects" title="Objects">
+<link rel="prev" href="Class-Binding.html#Class-Binding" title="Class Binding">
+<link rel="next" href="Classes-and-Scoping.html#Classes-and-Scoping" title="Classes and Scoping">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Method-conveniences"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Classes-and-Scoping.html#Classes-and-Scoping">Classes and Scoping</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Class-Binding.html#Class-Binding">Class Binding</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Objects.html#Objects">Objects</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.23.3.7 Method conveniences</h5>
+
+<p><a name="index-method-conveniences-2475"></a>
+In a method you usually access the receiving object pretty often.  If
+you define the method as a plain colon definition (e.g., with
+<code>:noname</code>), you may have to do a lot of stack
+gymnastics. To avoid this, you can define the method with <code>m:
+... ;m</code>. E.g., you could define the method for
+<code>draw</code>ing a <code>circle</code> with
+
+   <p><a name="index-g_t_0040code_007bthis_007d-usage-2476"></a><a name="index-g_t_0040code_007bm_003a_007d-usage-2477"></a><a name="index-g_t_0040code_007b_003bm_007d-usage-2478"></a>
+<pre class="example">     m: ( x y circle -- )
+       ( x y ) this circle-radius @ draw-circle ;m
+</pre>
+   <p><a name="index-g_t_0040code_007bexit_007d-in-_0040code_007bm_003a-_002e_002e_002e-_003bm_007d-2479"></a><a name="index-g_t_0040code_007bexitm_007d-discussion-2480"></a><a name="index-g_t_0040code_007bcatch_007d-in-_0040code_007bm_003a-_002e_002e_002e-_003bm_007d-2481"></a>When this method is executed, the receiver object is removed from the
+stack; you can access it with <code>this</code> (admittedly, in this
+example the use of <code>m: ... ;m</code> offers no advantage). Note
+that I specify the stack effect for the whole method (i.e. including
+the receiver object), not just for the code between <code>m:</code>
+and <code>;m</code>. You cannot use <code>exit</code> in
+<code>m:...;m</code>; instead, use
+<code>exitm</code>.<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>
+
+   <p><a name="index-g_t_0040code_007binst_002dvar_007d-usage-2482"></a>You will frequently use sequences of the form <code>this
+</code><em>field</em> (in the example above: <code>this
+circle-radius</code>). If you use the field only in this way, you can
+define it with <code>inst-var</code> and eliminate the
+<code>this</code> before the field name. E.g., the <code>circle</code>
+class above could also be defined with:
+
+<pre class="example">     graphical class
+       cell% inst-var radius
+     
+     m: ( x y circle -- )
+       radius @ draw-circle ;m
+     overrides draw
+     
+     m: ( n-radius circle -- )
+       radius ! ;m
+     overrides construct
+     
+     end-class circle
+</pre>
+   <p><code>radius</code> can only be used in <code>circle</code> and its
+descendent classes and inside <code>m:...;m</code>.
+
+   <p><a name="index-g_t_0040code_007binst_002dvalue_007d-usage-2483"></a>You can also define fields with <code>inst-value</code>, which is
+to <code>inst-var</code> what <code>value</code> is to
+<code>variable</code>.  You can change the value of such a field with
+<code>[to-inst]</code>.  E.g., we could also define the class
+<code>circle</code> like this:
+
+<pre class="example">     graphical class
+       inst-value radius
+     
+     m: ( x y circle -- )
+       radius draw-circle ;m
+     overrides draw
+     
+     m: ( n-radius circle -- )
+       [to-inst] radius ;m
+     overrides construct
+     
+     end-class circle
+</pre>
+   <!-- !! :m is easy to confuse with m:.  Another name would be better. -->
+<!-- Finally, you can define named methods with @code{:m}.  One use of this -->
+<!-- feature is the definition of words that occur only in one class and are -->
+<!-- not intended to be overridden, but which still need method context -->
+<!-- (e.g., for accessing @code{inst-var}s).  Another use is for methods that -->
+<!-- would be bound frequently, if defined anonymously. -->
+<div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> Moreover, for any word that calls
+<code>catch</code> and was defined before loading
+<code>objects.fs</code>, you have to redefine it like I redefined
+<code>catch</code>: <code>: catch this &gt;r catch r&gt; to-this ;</code></p>
+
+   <p><hr></div>
+
+   </body></html>
+

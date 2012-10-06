@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+<title>file-idef - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-optional-File_002dAccess-word-set.html#The-optional-File_002dAccess-word-set" title="The optional File-Access word set">
+<link rel="prev" href="The-optional-File_002dAccess-word-set.html#The-optional-File_002dAccess-word-set" title="The optional File-Access word set">
+<link rel="next" href="file_002dambcond.html#file_002dambcond" title="file-ambcond">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="file-idef"></a>
+<a name="file_002didef"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="file_002dambcond.html#file_002dambcond">file-ambcond</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="The-optional-File_002dAccess-word-set.html#The-optional-File_002dAccess-word-set">The optional File-Access word set</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-optional-File_002dAccess-word-set.html#The-optional-File_002dAccess-word-set">The optional File-Access word set</a>
+<hr>
+</div>
+
+<h4 class="subsection">8.6.1 Implementation Defined Options</h4>
+
+<!--  -->
+<p><a name="index-implementation_002ddefined-options_002c-file-words-3229"></a><a name="index-file-words_002c-implementation_002ddefined-options-3230"></a>
+     <dl>
+<dt><i>file access methods used:</i><dd><a name="index-file-access-methods-used-3231"></a><code>R/O</code>, <code>R/W</code> and <code>BIN</code> work as you would
+expect. <code>W/O</code> translates into the C file opening mode <code>w</code> (or
+<code>wb</code>): The file is cleared, if it exists, and created, if it does
+not (with both <code>open-file</code> and <code>create-file</code>).  Under Unix
+<code>create-file</code> creates a file with 666 permissions modified by your
+umask.
+
+     <br><dt><i>file exceptions:</i><dd><a name="index-file-exceptions-3232"></a>The file words do not raise exceptions (except, perhaps, memory access
+faults when you pass illegal addresses or file-ids).
+
+     <br><dt><i>file line terminator:</i><dd><a name="index-file-line-terminator-3233"></a>System-dependent. Gforth uses C's newline character as line
+terminator. What the actual character code(s) of this are is
+system-dependent.
+
+     <br><dt><i>file name format:</i><dd><a name="index-file-name-format-3234"></a>System dependent. Gforth just uses the file name format of your OS.
+
+     <br><dt><i>information returned by </i><code>FILE-STATUS</code><i>:</i><dd><a name="index-g_t_0040code_007bFILE_002dSTATUS_007d_002c-returned-information-3235"></a><code>FILE-STATUS</code> returns the most powerful file access mode allowed
+for the file: Either <code>R/O</code>, <code>W/O</code> or <code>R/W</code>. If the file
+cannot be accessed, <code>R/O BIN</code> is returned. <code>BIN</code> is applicable
+along with the returned mode.
+
+     <br><dt><i>input file state after an exception when including source:</i><dd><a name="index-exception-when-including-source-3236"></a>All files that are left via the exception are closed.
+
+     <br><dt><i>ior values and meaning:</i><dd><a name="index-g_t_0040i_007bior_007d-values-and-meaning-3237"></a><a name="index-g_t_0040i_007bwior_007d-values-and-meaning-3238"></a>The <i>ior</i>s returned by the file and memory allocation words are
+intended as throw codes. They typically are in the range
+-512&minus;-2047 of OS errors.  The mapping from OS error numbers to
+<i>ior</i>s is -512&minus;<i>errno</i>.
+
+     <br><dt><i>maximum depth of file input nesting:</i><dd><a name="index-maximum-depth-of-file-input-nesting-3239"></a><a name="index-file-input-nesting_002c-maximum-depth-3240"></a>limited by the amount of return stack, locals/TIB stack, and the number
+of open files available. This should not give you troubles.
+
+     <br><dt><i>maximum size of input line:</i><dd><a name="index-maximum-size-of-input-line-3241"></a><a name="index-input-line-size_002c-maximum-3242"></a><code>/line</code>. Currently 255.
+
+     <br><dt><i>methods of mapping block ranges to files:</i><dd><a name="index-mapping-block-ranges-to-files-3243"></a><a name="index-files-containing-blocks-3244"></a><a name="index-blocks-in-files-3245"></a>By default, blocks are accessed in the file <samp><span class="file">blocks.fb</span></samp> in the
+current working directory. The file can be switched with <code>USE</code>.
+
+     <br><dt><i>number of string buffers provided by </i><code>S"</code><i>:</i><dd><a name="index-g_t_0040code_007bS_0022_007d_002c-number-of-string-buffers-3246"></a>1
+
+     <br><dt><i>size of string buffer used by </i><code>S"</code><i>:</i><dd><a name="index-g_t_0040code_007bS_0022_007d_002c-size-of-string-buffer-3247"></a><code>/line</code>. currently 255.
+
+   </dl>
+
+<!--  -->
+</body></html>
+

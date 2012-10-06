@@ -1,0 +1,141 @@
+<html lang="en">
+<head>
+<title>Structure Glossary - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Structures.html#Structures" title="Structures">
+<link rel="prev" href="Structure-Implementation.html#Structure-Implementation" title="Structure Implementation">
+<link rel="next" href="Forth200x-Structures.html#Forth200x-Structures" title="Forth200x Structures">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Structure-Glossary"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Forth200x-Structures.html#Forth200x-Structures">Forth200x Structures</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Structure-Implementation.html#Structure-Implementation">Structure Implementation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Structures.html#Structures">Structures</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.22.5 Structure Glossary</h4>
+
+<p><a name="index-structure-glossary-2341"></a>
+
+   <p><a name="index-g_t_0025align-_0040var_007b-align-size-_002d_002d---_007d--gforth-2342"></a><a name="index-g_t_0040code_007b_0025align_007d-2343"></a><a name="index-g_t_0025align-2344"></a>
+<pre class="format"><code>%align</code>       <i>align size &ndash;  </i>       gforth       &ldquo;%align&rdquo;
+</pre>
+   <p>Align the data space pointer to the alignment <var>align</var>.
+
+   <p><a name="index-g_t_0025alignment-_0040var_007b-align-size-_002d_002d-align---_007d--gforth-2345"></a><a name="index-g_t_0040code_007b_0025alignment_007d-2346"></a><a name="index-g_t_0025alignment-2347"></a>
+<pre class="format"><code>%alignment</code>       <i>align size &ndash; align  </i>       gforth       &ldquo;%alignment&rdquo;
+</pre>
+   <p>The alignment of the structure.
+
+   <p><a name="index-g_t_0025alloc-_0040var_007b-align-size-_002d_002d-addr---_007d--gforth-2348"></a><a name="index-g_t_0040code_007b_0025alloc_007d-2349"></a><a name="index-g_t_0025alloc-2350"></a>
+<pre class="format"><code>%alloc</code>       <i>align size &ndash; addr  </i>       gforth       &ldquo;%alloc&rdquo;
+</pre>
+   <p>Allocate <var>size</var> address units with alignment <var>align</var>,
+giving a data block at <var>addr</var>; <code>throw</code> an ior code
+if not successful.
+
+   <p><a name="index-g_t_0025allocate-_0040var_007b-align-size-_002d_002d-addr-ior---_007d--gforth-2351"></a><a name="index-g_t_0040code_007b_0025allocate_007d-2352"></a><a name="index-g_t_0025allocate-2353"></a>
+<pre class="format"><code>%allocate</code>       <i>align size &ndash; addr ior  </i>       gforth       &ldquo;%allocate&rdquo;
+</pre>
+   <p>Allocate <var>size</var> address units with alignment <var>align</var>,
+similar to <code>allocate</code>.
+
+   <p><a name="index-g_t_0025allot-_0040var_007b-align-size-_002d_002d-addr---_007d--gforth-2354"></a><a name="index-g_t_0040code_007b_0025allot_007d-2355"></a><a name="index-g_t_0025allot-2356"></a>
+<pre class="format"><code>%allot</code>       <i>align size &ndash; addr  </i>       gforth       &ldquo;%allot&rdquo;
+</pre>
+   <p>Allot <var>size</var> address units of data space with alignment
+<var>align</var>; the resulting block of data is found at
+<var>addr</var>.
+
+   <p><a name="index-cell_0025-_0040var_007b-_002d_002d-align-size---_007d--gforth-2357"></a><a name="index-g_t_0040code_007bcell_0025_007d-2358"></a><a name="index-cell_0025-2359"></a>
+<pre class="format"><code>cell%</code>       <i>&ndash; align size  </i>       gforth       &ldquo;cell%&rdquo;
+</pre>
+   <p><a name="index-char_0025-_0040var_007b-_002d_002d-align-size---_007d--gforth-2360"></a><a name="index-g_t_0040code_007bchar_0025_007d-2361"></a><a name="index-char_0025-2362"></a>
+<pre class="format"><code>char%</code>       <i>&ndash; align size  </i>       gforth       &ldquo;char%&rdquo;
+</pre>
+   <p><a name="index-dfloat_0025-_0040var_007b-_002d_002d-align-size---_007d--gforth-2363"></a><a name="index-g_t_0040code_007bdfloat_0025_007d-2364"></a><a name="index-dfloat_0025-2365"></a>
+<pre class="format"><code>dfloat%</code>       <i>&ndash; align size  </i>       gforth       &ldquo;dfloat%&rdquo;
+</pre>
+   <p><a name="index-double_0025-_0040var_007b-_002d_002d-align-size---_007d--gforth-2366"></a><a name="index-g_t_0040code_007bdouble_0025_007d-2367"></a><a name="index-double_0025-2368"></a>
+<pre class="format"><code>double%</code>       <i>&ndash; align size  </i>       gforth       &ldquo;double%&rdquo;
+</pre>
+   <p><a name="index-end_002dstruct-_0040var_007b-align-size-_0022name_0022-_002d_002d---_007d--gforth-2369"></a><a name="index-g_t_0040code_007bend_002dstruct_007d-2370"></a><a name="index-end_002dstruct-2371"></a>
+<pre class="format"><code>end-struct</code>       <i>align size "name" &ndash;  </i>       gforth       &ldquo;end-struct&rdquo;
+</pre>
+   <p>Define a structure/type descriptor <var>name</var> with alignment
+<var>align</var> and size <var>size1</var> (<var>size</var> rounded up to be a
+multiple of <var>align</var>).<br>
+<code>name</code> execution: &ndash; <var>align size1</var><br>
+
+   <p><a name="index-field-_0040var_007b-align1-offset1-align-size-_0022name_0022-_002d_002d--align2-offset2---_007d--gforth-2372"></a><a name="index-g_t_0040code_007bfield_007d-2373"></a><a name="index-field-2374"></a>
+<pre class="format"><code>field</code>       <i>align1 offset1 align size "name" &ndash;  align2 offset2  </i>       gforth       &ldquo;field&rdquo;
+</pre>
+   <p>Create a field <var>name</var> with offset <var>offset1</var>, and the type
+given by <var>align size</var>. <var>offset2</var> is the offset of the
+next field, and <var>align2</var> is the alignment of all fields.<br>
+<code>name</code> execution: <var>addr1</var> &ndash; <var>addr2</var>.<br>
+<var>addr2</var>=<var>addr1</var>+<var>offset1</var>
+
+   <p><a name="index-float_0025-_0040var_007b-_002d_002d-align-size---_007d--gforth-2375"></a><a name="index-g_t_0040code_007bfloat_0025_007d-2376"></a><a name="index-float_0025-2377"></a>
+<pre class="format"><code>float%</code>       <i>&ndash; align size  </i>       gforth       &ldquo;float%&rdquo;
+</pre>
+   <p><a name="index-naligned-_0040var_007b-addr1-n-_002d_002d-addr2---_007d--gforth-2378"></a><a name="index-g_t_0040code_007bnaligned_007d-2379"></a><a name="index-naligned-2380"></a>
+<pre class="format"><code>naligned</code>       <i>addr1 n &ndash; addr2  </i>       gforth       &ldquo;naligned&rdquo;
+</pre>
+   <p><var>addr2</var> is the aligned version of <var>addr1</var> with respect to the
+alignment <var>n</var>.
+
+   <p><a name="index-sfloat_0025-_0040var_007b-_002d_002d-align-size---_007d--gforth-2381"></a><a name="index-g_t_0040code_007bsfloat_0025_007d-2382"></a><a name="index-sfloat_0025-2383"></a>
+<pre class="format"><code>sfloat%</code>       <i>&ndash; align size  </i>       gforth       &ldquo;sfloat%&rdquo;
+</pre>
+   <p><a name="index-g_t_0025size-_0040var_007b-align-size-_002d_002d-size---_007d--gforth-2384"></a><a name="index-g_t_0040code_007b_0025size_007d-2385"></a><a name="index-g_t_0025size-2386"></a>
+<pre class="format"><code>%size</code>       <i>align size &ndash; size  </i>       gforth       &ldquo;%size&rdquo;
+</pre>
+   <p>The size of the structure.
+
+   <p><a name="index-struct-_0040var_007b-_002d_002d-align-size---_007d--gforth-2387"></a><a name="index-g_t_0040code_007bstruct_007d-2388"></a><a name="index-struct-2389"></a>
+<pre class="format"><code>struct</code>       <i>&ndash; align size  </i>       gforth       &ldquo;struct&rdquo;
+</pre>
+   <p>An empty structure, used to start a structure definition.
+
+   </body></html>
+

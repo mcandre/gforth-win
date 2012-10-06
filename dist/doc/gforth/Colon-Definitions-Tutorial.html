@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+<title>Colon Definitions Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Comments-Tutorial.html#Comments-Tutorial" title="Comments Tutorial">
+<link rel="next" href="Decompilation-Tutorial.html#Decompilation-Tutorial" title="Decompilation Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Colon-Definitions-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Decompilation-Tutorial.html#Decompilation-Tutorial">Decompilation Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Comments-Tutorial.html#Comments-Tutorial">Comments Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.9 Colon Definitions</h3>
+
+<p><a name="index-colon-definitions_002c-tutorial-84"></a><a name="index-definitions_002c-tutorial-85"></a><a name="index-procedures_002c-tutorial-86"></a><a name="index-functions_002c-tutorial-87"></a>
+are similar to procedures and functions in other programming languages.
+
+<pre class="example">     : squared ( n -- n^2 )
+        dup * ;
+     5 squared .
+     7 squared .
+</pre>
+   <p><code>:</code> starts the colon definition; its name is <code>squared</code>.  The
+following comment describes its stack effect.  The words <code>dup *</code>
+are not executed, but compiled into the definition.  <code>;</code> ends the
+colon definition.
+
+   <p>The newly-defined word can be used like any other word, including using
+it in other definitions:
+
+<pre class="example">     : cubed ( n -- n^3 )
+        dup squared * ;
+     -5 cubed .
+     : fourth-power ( n -- n^4 )
+        squared squared ;
+     3 fourth-power .
+</pre>
+   <blockquote>
+<b>Assignment:</b> Write colon definitions for <code>nip</code>, <code>tuck</code>, <code>negate</code>, and
+<code>/mod</code> in terms of other Forth words, and check if they work (hint:
+test your tests on the originals first).  Don't let the
+`<samp><span class="samp">redefined</span></samp>'-Messages spook you, they are just warnings. 
+</blockquote>
+
+   <p>Reference: <a href="Colon-Definitions.html#Colon-Definitions">Colon Definitions</a>.
+
+   </body></html>
+

@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+<title>Redirection - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Files.html#Files" title="Files">
+<link rel="prev" href="General-files.html#General-files" title="General files">
+<link rel="next" href="Search-Paths.html#Search-Paths" title="Search Paths">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Redirection"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Search-Paths.html#Search-Paths">Search Paths</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="General-files.html#General-files">General files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Files.html#Files">Files</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.17.3 Redirection</h4>
+
+<p><a name="index-Redirection-1791"></a><a name="index-Input-Redirection-1792"></a><a name="index-Output-Redirection-1793"></a>
+You can redirect the output of <code>type</code> and <code>emit</code> and all the
+words that use them (all output words that don't have an explicit
+target file) to an arbitrary file with the <code>outfile-execute</code>,
+used like this:
+
+<pre class="example">     : some-warning ( n -- )
+         cr ." warning# " . ;
+     
+     : print-some-warning ( n -- )
+         ['] some-warning stderr outfile-execute ;
+</pre>
+   <p>After <code>some-warning</code> is executed, the original output direction
+is restored; this construct is safe against exceptions.  Similarly,
+there is <code>infile-execute</code> for redirecting the input of <code>key</code>
+and its users (any input word that does not take a file explicitly).
+
+   <p><a name="index-outfile_002dexecute-_0040var_007b-_002e_002e_002e-xt-file_002did-_002d_002d-_002e_002e_002e---_007d--gforth-1794"></a><a name="index-g_t_0040code_007boutfile_002dexecute_007d-1795"></a><a name="index-outfile_002dexecute-1796"></a>
+<pre class="format"><code>outfile-execute</code>       <i>... xt file-id &ndash; ...  </i>       gforth       &ldquo;outfile-execute&rdquo;
+</pre>
+   <p>execute <i>xt</i> with the output of <code>type</code> etc. redirected to
+<i>file-id</i>.
+
+   <p><a name="index-infile_002dexecute-_0040var_007b-_002e_002e_002e-xt-file_002did-_002d_002d-_002e_002e_002e---_007d--gforth-1797"></a><a name="index-g_t_0040code_007binfile_002dexecute_007d-1798"></a><a name="index-infile_002dexecute-1799"></a>
+<pre class="format"><code>infile-execute</code>       <i>... xt file-id &ndash; ...  </i>       gforth       &ldquo;infile-execute&rdquo;
+</pre>
+   <p>execute <i>xt</i> with the input of <code>key</code> etc. redirected to
+<i>file-id</i>.
+
+   <p>If you do not want to redirect the input or output to a file, you can
+also make use of the fact that <code>key</code>, <code>emit</code> and <code>type</code>
+are deferred words (see <a href="Deferred-Words.html#Deferred-Words">Deferred Words</a>).  However, in that case
+you have to worry about the restoration and the protection against
+exceptions yourself; also, note that for redirecting the output in
+this way, you have to redirect both <code>emit</code> and <code>type</code>.
+
+<!--  -->
+</body></html>
+

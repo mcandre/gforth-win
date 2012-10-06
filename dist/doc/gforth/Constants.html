@@ -1,0 +1,146 @@
+<html lang="en">
+<head>
+<title>Constants - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Defining-Words.html#Defining-Words" title="Defining Words">
+<link rel="prev" href="Variables.html#Variables" title="Variables">
+<link rel="next" href="Values.html#Values" title="Values">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Constants"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Values.html#Values">Values</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Variables.html#Variables">Variables</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Defining-Words.html#Defining-Words">Defining Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.9.3 Constants</h4>
+
+<p><a name="index-constants-1210"></a>
+<code>Constant</code> allows you to declare a fixed value and refer to it by
+name. For example:
+
+<pre class="example">     12 Constant INCHES-PER-FOOT
+     3E+08 fconstant SPEED-O-LIGHT
+</pre>
+   <p>A <code>Variable</code> can be both read and written, so its run-time
+behaviour is to supply an address through which its current value can be
+manipulated. In contrast, the value of a <code>Constant</code> cannot be
+changed once it has been declared<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a> so it's not necessary to supply the address &ndash; it is more
+efficient to return the value of the constant directly. That's exactly
+what happens; the run-time effect of a constant is to put its value on
+the top of the stack (You can find one
+way of implementing <code>Constant</code> in <a href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">User-defined Defining Words</a>).
+
+   <p>Forth also provides <code>2Constant</code> and <code>fconstant</code> for defining
+double and floating-point constants, respectively.
+
+   <p><a name="index-Constant-_0040var_007b-w-_0022name_0022-_002d_002d---_007d--core-1211"></a><a name="index-g_t_0040code_007bConstant_007d-1212"></a><a name="index-Constant-1213"></a>
+<pre class="format"><code>Constant</code>       <i>w "name" &ndash;  </i>       core       &ldquo;Constant&rdquo;
+</pre>
+   <p>Define a constant <i>name</i> with value <i>w</i>.
+
+   <p><i>name</i> execution: <i>&ndash; w</i>
+
+   <p><a name="index-g_t2Constant-_0040var_007b-w1-w2-_0022name_0022-_002d_002d---_007d--double-1214"></a><a name="index-g_t_0040code_007b2Constant_007d-1215"></a><a name="index-g_t2Constant-1216"></a>
+<pre class="format"><code>2Constant</code>       <i>w1 w2 "name" &ndash;  </i>       double       &ldquo;two-constant&rdquo;
+</pre>
+   <p><a name="index-fconstant-_0040var_007b-r-_0022name_0022-_002d_002d---_007d--float-1217"></a><a name="index-g_t_0040code_007bfconstant_007d-1218"></a><a name="index-fconstant-1219"></a>
+<pre class="format"><code>fconstant</code>       <i>r "name" &ndash;  </i>       float       &ldquo;f-constant&rdquo;
+</pre>
+   <!-- that's too deep, and it's not necessarily true for all ANS Forths. - anton -->
+<!-- nac-> How could that not be true in an ANS Forth? You can't define a -->
+<!-- constant, use it and then delete the definition of the constant.. -->
+<!-- anton->An ANS Forth system can compile a constant to a literal; On -->
+<!-- decompilation you would see only the number, just as if it had been used -->
+<!-- in the first place.  The word will stay, of course, but it will only be -->
+<!-- used by the text interpreter (no run-time duties, except when it is -->
+<!-- POSTPONEd or somesuch). -->
+<!-- nac: -->
+<!-- I agree that it's rather deep, but IMO it is an important difference -->
+<!-- relative to other programming languages.. often it's annoying: it -->
+<!-- certainly changes my programming style relative to C. -->
+<!-- anton: In what way? -->
+<p>Constants in Forth behave differently from their equivalents in other
+programming languages. In other languages, a constant (such as an EQU in
+assembler or a #define in C) only exists at compile-time; in the
+executable program the constant has been translated into an absolute
+number and, unless you are using a symbolic debugger, it's impossible to
+know what abstract thing that number represents. In Forth a constant has
+an entry in the header space and remains there after the code that uses
+it has been defined. In fact, it must remain in the dictionary since it
+has run-time duties to perform. For example:
+
+<pre class="example">     12 Constant INCHES-PER-FOOT
+     : FEET-TO-INCHES ( n1 -- n2 ) INCHES-PER-FOOT * ;
+</pre>
+   <p><a name="index-in_002dlining-of-constants-1220"></a>When <code>FEET-TO-INCHES</code> is executed, it will in turn execute the xt
+associated with the constant <code>INCHES-PER-FOOT</code>. If you use
+<code>see</code> to decompile the definition of <code>FEET-TO-INCHES</code>, you can
+see that it makes a call to <code>INCHES-PER-FOOT</code>. Some Forth compilers
+attempt to optimise constants by in-lining them where they are used. You
+can force Gforth to in-line a constant like this:
+
+<pre class="example">     : FEET-TO-INCHES ( n1 -- n2 ) [ INCHES-PER-FOOT ] LITERAL * ;
+</pre>
+   <p>If you use <code>see</code> to decompile <i>this</i> version of
+<code>FEET-TO-INCHES</code>, you can see that <code>INCHES-PER-FOOT</code> is no
+longer present. To understand how this works, read
+<a href="Interpret_002fCompile-states.html#Interpret_002fCompile-states">Interpret/Compile states</a>, and <a href="Literals.html#Literals">Literals</a>.
+
+   <p>In-lining constants in this way might improve execution time
+fractionally, and can ensure that a constant is now only referenced at
+compile-time. However, the definition of the constant still remains in
+the dictionary. Some Forth compilers provide a mechanism for controlling
+a second dictionary for holding transient words such that this second
+dictionary can be deleted later in order to recover memory
+space. However, there is no standard way of doing this.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> Well, often it can be &ndash; but
+not in a Standard, portable way. It's safer to use a <code>Value</code> (read
+on).</p>
+
+   <p><hr></div>
+
+   </body></html>
+

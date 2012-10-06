@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+<title>C interface internals - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="C-Interface.html#C-Interface" title="C Interface">
+<link rel="prev" href="Callbacks.html#Callbacks" title="Callbacks">
+<link rel="next" href="Low_002dLevel-C-Interface-Words.html#Low_002dLevel-C-Interface-Words" title="Low-Level C Interface Words">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="C-interface-internals"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Low_002dLevel-C-Interface-Words.html#Low_002dLevel-C-Interface-Words">Low-Level C Interface Words</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Callbacks.html#Callbacks">Callbacks</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="C-Interface.html#C-Interface">C Interface</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.25.7 How the C interface works</h4>
+
+<p>The documented C interface works by generating a C code out of the
+declarations.
+
+   <p>In particular, for every Forth word declared with <code>c-function</code>,
+it generates a wrapper function in C that takes the Forth data from
+the Forth stacks, and calls the target C function with these data as
+arguments.  The C compiler then performs an implicit conversion
+between the Forth type from the stack, and the C type for the
+parameter, which is given by the C function prototype.  After the C
+function returns, the return value is likewise implicitly converted to
+a Forth type and written back on the stack.
+
+   <p>The <code>\c</code> lines are literally included in the C code (but without
+the <code>\c</code>), and provide the necessary declarations so that the C
+compiler knows the C types and has enough information to perform the
+conversion.
+
+   <p>These wrapper functions are eventually compiled and dynamically linked
+into Gforth, and then they can be called.
+
+   <p>The libraries added with <code>add-lib</code> are used in the compile
+command line to specify dependent libraries with <code>-l</code><var>lib</var>,
+causing these libraries to be dynamically linked when the wrapper
+function is linked.
+
+   </body></html>
+

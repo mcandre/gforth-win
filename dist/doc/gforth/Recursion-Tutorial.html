@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+<title>Recursion Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Counted-loops-Tutorial.html#Counted-loops-Tutorial" title="Counted loops Tutorial">
+<link rel="next" href="Leaving-definitions-or-loops-Tutorial.html#Leaving-definitions-or-loops-Tutorial" title="Leaving definitions or loops Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Recursion-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Leaving-definitions-or-loops-Tutorial.html#Leaving-definitions-or-loops-Tutorial">Leaving definitions or loops Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Counted-loops-Tutorial.html#Counted-loops-Tutorial">Counted loops Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.20 Recursion</h3>
+
+<p><a name="index-recursion-tutorial-103"></a>
+Usually the name of a definition is not visible in the definition; but
+earlier definitions are usually visible:
+
+<pre class="example">     1 0 / . \ "Floating-point unidentified fault" in Gforth on some platforms
+     : / ( n1 n2 -- n )
+       dup 0= if
+         -10 throw \ report division by zero
+       endif
+       /           \ old version
+     ;
+     1 0 /
+</pre>
+   <p>For recursive definitions you can use <code>recursive</code> (non-standard) or
+<code>recurse</code>:
+
+<pre class="example">     : fac1 ( n -- n! ) recursive
+      dup 0&gt; if
+        dup 1- fac1 *
+      else
+        drop 1
+      endif ;
+     7 fac1 .
+     
+     : fac2 ( n -- n! )
+      dup 0&gt; if
+        dup 1- recurse *
+      else
+        drop 1
+      endif ;
+     8 fac2 .
+</pre>
+   <blockquote>
+<b>Assignment:</b> Write a recursive definition for computing the nth Fibonacci number. 
+</blockquote>
+
+   <p>Reference (including indirect recursion): See <a href="Calls-and-returns.html#Calls-and-returns">Calls and returns</a>.
+
+   </body></html>
+

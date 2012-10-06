@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+<title>Hilighting - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Emacs-and-Gforth.html#Emacs-and-Gforth" title="Emacs and Gforth">
+<link rel="prev" href="Emacs-Tags.html#Emacs-Tags" title="Emacs Tags">
+<link rel="next" href="Auto_002dIndentation.html#Auto_002dIndentation" title="Auto-Indentation">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Hilighting"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Auto_002dIndentation.html#Auto_002dIndentation">Auto-Indentation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Emacs-Tags.html#Emacs-Tags">Emacs Tags</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Emacs-and-Gforth.html#Emacs-and-Gforth">Emacs and Gforth</a>
+<hr>
+</div>
+
+<h3 class="section">12.3 Hilighting</h3>
+
+<p><a name="index-hilighting-Forth-code-in-Emacs-3381"></a><a name="index-highlighting-Forth-code-in-Emacs-3382"></a><samp><span class="file">gforth.el</span></samp> comes with a custom source hilighting engine.  When
+you open a file in <code>forth-mode</code>, it will be completely parsed,
+assigning faces to keywords, comments, strings etc.  While you edit
+the file, modified regions get parsed and updated on-the-fly.
+
+   <p>Use the variable `forth-hilight-level' to change the level of
+decoration from 0 (no hilighting at all) to 3 (the default).  Even if
+you set the hilighting level to 0, the parser will still work in the
+background, collecting information about whether regions of text are
+&ldquo;compiled&rdquo; or &ldquo;interpreted&rdquo;.  Those information are required for
+auto-indentation to work properly.  Set `forth-disable-parser' to
+non-nil if your computer is too slow to handle parsing.  This will
+have an impact on the smartness of the auto-indentation engine,
+though.
+
+   <p>Sometimes Forth sources define new features that should be hilighted,
+new control structures, defining-words etc.  You can use the variable
+`forth-custom-words' to make <code>forth-mode</code> hilight additional
+words and constructs.  See the docstring of `forth-words' for details
+(in Emacs, type <kbd>C-h v forth-words</kbd>).
+
+   <p>`forth-custom-words' is meant to be customized in your
+<samp><span class="file">.emacs</span></samp> file.  To customize hilighing in a file-specific manner,
+set `forth-local-words' in a local-variables section at the end of
+your source file (see <a href="../emacs/Local-Variables-in-Files.html#Local-Variables-in-Files">Variables</a>).
+
+   <p>Example:
+<pre class="example">     0 [IF]
+        Local Variables:
+        forth-local-words:
+           ((("t:") definition-starter (font-lock-keyword-face . 1)
+             "[ \t\n]" t name (font-lock-function-name-face . 3))
+            ((";t") definition-ender (font-lock-keyword-face . 1)))
+        End:
+     [THEN]
+</pre>
+   <!--  -->
+</body></html>
+

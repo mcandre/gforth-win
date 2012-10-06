@@ -1,0 +1,165 @@
+<html lang="en">
+<head>
+<title>Dictionary allocation - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Memory.html#Memory" title="Memory">
+<link rel="prev" href="Memory-model.html#Memory-model" title="Memory model">
+<link rel="next" href="Heap-Allocation.html#Heap-Allocation" title="Heap Allocation">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Dictionary-allocation"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Heap-Allocation.html#Heap-Allocation">Heap Allocation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Memory-model.html#Memory-model">Memory model</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Memory.html#Memory">Memory</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.7.2 Dictionary allocation</h4>
+
+<p><a name="index-reserving-data-space-777"></a><a name="index-data-space-_002d-reserving-some-778"></a>
+Dictionary allocation is a stack-oriented allocation scheme, i.e., if
+you want to deallocate X, you also deallocate everything
+allocated after X.
+
+   <p><a name="index-contiguous-regions-in-dictionary-allocation-779"></a>The allocations using the words below are contiguous and grow the region
+towards increasing addresses.  Other words that allocate dictionary
+memory of any kind (i.e., defining words including <code>:noname</code>) end
+the contiguous region and start a new one.
+
+   <p>In ANS Forth only <code>create</code>d words are guaranteed to produce an
+address that is the start of the following contiguous region.  In
+particular, the cell allocated by <code>variable</code> is not guaranteed to
+be contiguous with following <code>allot</code>ed memory.
+
+   <p>You can deallocate memory by using <code>allot</code> with a negative argument
+(with some restrictions, see <code>allot</code>). For larger deallocations use
+<code>marker</code>.
+
+   <p><a name="index-here-_0040var_007b-_002d_002d-addr---_007d--core-780"></a><a name="index-g_t_0040code_007bhere_007d-781"></a><a name="index-here-782"></a>
+<pre class="format"><code>here</code>       <i>&ndash; addr  </i>       core       &ldquo;here&rdquo;
+</pre>
+   <p>Return the address of the next free location in data space.
+
+   <p><a name="index-unused-_0040var_007b-_002d_002d-u---_007d--core_002dext-783"></a><a name="index-g_t_0040code_007bunused_007d-784"></a><a name="index-unused-785"></a>
+<pre class="format"><code>unused</code>       <i>&ndash; u  </i>       core-ext       &ldquo;unused&rdquo;
+</pre>
+   <p>Return the amount of free space remaining (in address units) in
+the region addressed by <code>here</code>.
+
+   <p><a name="index-allot-_0040var_007b-n-_002d_002d---_007d--core-786"></a><a name="index-g_t_0040code_007ballot_007d-787"></a><a name="index-allot-788"></a>
+<pre class="format"><code>allot</code>       <i>n &ndash;  </i>       core       &ldquo;allot&rdquo;
+</pre>
+   <p>Reserve <i>n</i> address units of data space without
+initialization. <i>n</i> is a signed number, passing a negative
+<i>n</i> releases memory.  In ANS Forth you can only deallocate
+memory from the current contiguous region in this way.  In
+Gforth you can deallocate anything in this way but named words. 
+The system does not check this restriction.
+
+   <p><a name="index-c_002c-_0040var_007b-c-_002d_002d---_007d--core-789"></a><a name="index-g_t_0040code_007bc_002c_007d-790"></a><a name="index-c_002c-791"></a>
+<pre class="format"><code>c,</code>       <i>c &ndash;  </i>       core       &ldquo;c-comma&rdquo;
+</pre>
+   <p>Reserve data space for one char and store <i>c</i> in the space.
+
+   <p><a name="index-f_002c-_0040var_007b-f-_002d_002d---_007d--gforth-792"></a><a name="index-g_t_0040code_007bf_002c_007d-793"></a><a name="index-f_002c-794"></a>
+<pre class="format"><code>f,</code>       <i>f &ndash;  </i>       gforth       &ldquo;f,&rdquo;
+</pre>
+   <p>Reserve data space for one floating-point number and store
+<i>f</i> in the space.
+
+   <p><a name="index-g_t_002c-_0040var_007b-w-_002d_002d---_007d--core-795"></a><a name="index-g_t_0040code_007b_002c_007d-796"></a><a name="index-g_t_002c-797"></a>
+<pre class="format"><code>,</code>       <i>w &ndash;  </i>       core       &ldquo;comma&rdquo;
+</pre>
+   <p>Reserve data space for one cell and store <i>w</i> in the space.
+
+   <p><a name="index-g_t2_002c-_0040var_007b-w1-w2-_002d_002d---_007d--gforth-798"></a><a name="index-g_t_0040code_007b2_002c_007d-799"></a><a name="index-g_t2_002c-800"></a>
+<pre class="format"><code>2,</code>       <i>w1 w2 &ndash;  </i>       gforth       &ldquo;2,&rdquo;
+</pre>
+   <p>Reserve data space for two cells and store the double <i>w1
+w2</i> there, <i>w2</i> first (lower address).
+
+   <p>Memory accesses have to be aligned (see <a href="Address-arithmetic.html#Address-arithmetic">Address arithmetic</a>). So of
+course you should allocate memory in an aligned way, too. I.e., before
+allocating allocating a cell, <code>here</code> must be cell-aligned, etc. 
+The words below align <code>here</code> if it is not already.  Basically it is
+only already aligned for a type, if the last allocation was a multiple
+of the size of this type and if <code>here</code> was aligned for this type
+before.
+
+   <p>After freshly <code>create</code>ing a word, <code>here</code> is <code>align</code>ed in
+ANS Forth (<code>maxalign</code>ed in Gforth).
+
+   <p><a name="index-align-_0040var_007b-_002d_002d---_007d--core-801"></a><a name="index-g_t_0040code_007balign_007d-802"></a><a name="index-align-803"></a>
+<pre class="format"><code>align</code>       <i>&ndash;  </i>       core       &ldquo;align&rdquo;
+</pre>
+   <p>If the data-space pointer is not aligned, reserve enough space to align it.
+
+   <p><a name="index-falign-_0040var_007b-_002d_002d---_007d--float-804"></a><a name="index-g_t_0040code_007bfalign_007d-805"></a><a name="index-falign-806"></a>
+<pre class="format"><code>falign</code>       <i>&ndash;  </i>       float       &ldquo;f-align&rdquo;
+</pre>
+   <p>If the data-space pointer is not float-aligned, reserve
+enough space to align it.
+
+   <p><a name="index-sfalign-_0040var_007b-_002d_002d---_007d--float_002dext-807"></a><a name="index-g_t_0040code_007bsfalign_007d-808"></a><a name="index-sfalign-809"></a>
+<pre class="format"><code>sfalign</code>       <i>&ndash;  </i>       float-ext       &ldquo;s-f-align&rdquo;
+</pre>
+   <p>If the data-space pointer is not single-float-aligned, reserve
+enough space to align it.
+
+   <p><a name="index-dfalign-_0040var_007b-_002d_002d---_007d--float_002dext-810"></a><a name="index-g_t_0040code_007bdfalign_007d-811"></a><a name="index-dfalign-812"></a>
+<pre class="format"><code>dfalign</code>       <i>&ndash;  </i>       float-ext       &ldquo;d-f-align&rdquo;
+</pre>
+   <p>If the data-space pointer is not double-float-aligned, reserve
+enough space to align it.
+
+   <p><a name="index-maxalign-_0040var_007b-_002d_002d---_007d--gforth-813"></a><a name="index-g_t_0040code_007bmaxalign_007d-814"></a><a name="index-maxalign-815"></a>
+<pre class="format"><code>maxalign</code>       <i>&ndash;  </i>       gforth       &ldquo;maxalign&rdquo;
+</pre>
+   <p>Align data-space pointer for all alignment requirements.
+
+   <p><a name="index-cfalign-_0040var_007b-_002d_002d---_007d--gforth-816"></a><a name="index-g_t_0040code_007bcfalign_007d-817"></a><a name="index-cfalign-818"></a>
+<pre class="format"><code>cfalign</code>       <i>&ndash;  </i>       gforth       &ldquo;cfalign&rdquo;
+</pre>
+   <p>Align data-space pointer for code field requirements (i.e., such
+that the corresponding body is maxaligned).
+
+   </body></html>
+

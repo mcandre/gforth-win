@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+<title>Store Optimization - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Input-File-Format.html#Input-File-Format" title="Input File Format">
+<link rel="prev" href="Superinstructions.html#Superinstructions" title="Superinstructions">
+<link rel="next" href="Register-Machines.html#Register-Machines" title="Register Machines">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Store-Optimization"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Register-Machines.html#Register-Machines">Register Machines</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Superinstructions.html#Superinstructions">Superinstructions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Input-File-Format.html#Input-File-Format">Input File Format</a>
+<hr>
+</div>
+
+<h3 class="section">6.4 Store Optimization</h3>
+
+<p><a name="index-store-optimization-105"></a><a name="index-optimization_002c-stack-stores-106"></a><a name="index-stack-stores_002c-optimization-107"></a><a name="index-eliminating-stack-stores-108"></a>
+This minor optimization (0.6%&ndash;0.8% reduction in executed instructions
+for Gforth) puts additional requirements on the instruction descriptions
+and is therefore disabled by default.
+
+   <p>What does it do?  Consider an instruction like
+
+<pre class="example">     dup ( n -- n n )
+</pre>
+   <p>For simplicity, also assume that we are not caching the top-of-stack in
+a register.  Now, the C code for dup first loads <code>n</code> from the
+stack, and then stores it twice to the stack, one time to the address
+where it came from; that time is unnecessary, but gcc does not optimize
+it away, so vmgen can do it instead (if you turn on the store
+optimization).
+
+   <p>Vmgen uses the stack item's name to determine if the stack item contains
+the same value as it did at the start.  Therefore, if you use the store
+optimization, you have to ensure that stack items that have the same
+name on input and output also have the same value, and are not changed
+in the C code you supply.  I.e., the following code could fail if you
+turn on the store optimization:
+
+<pre class="example">     add1 ( n -- n )
+     n++;
+</pre>
+   <p>Instead, you have to use different names, i.e.:
+
+<pre class="example">     add1 ( n1 -- n2 )
+     n2=n1+1;
+</pre>
+   <p>Similarly, the store optimization assumes that the stack pointer is only
+changed by Vmgen-erated code.  If your C code changes the stack pointer,
+use different names in input and output stack items to avoid a (probably
+wrong) store optimization, or turn the store optimization off for this
+VM instruction.
+
+   <p>To turn on the store optimization, write
+
+<pre class="example">     \E store-optimization on
+</pre>
+   <p>at the start of the file.  You can turn this optimization on or off
+between any two VM instruction descriptions.  For turning it off again,
+you can use
+
+<pre class="example">     \E store-optimization off
+</pre>
+   <!--  -->
+</body></html>
+

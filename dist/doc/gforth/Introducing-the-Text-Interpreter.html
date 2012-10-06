@@ -1,0 +1,182 @@
+<html lang="en">
+<head>
+<title>Introducing the Text Interpreter - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction.html#Introduction" title="Introduction">
+<link rel="prev" href="Introduction.html#Introduction" title="Introduction">
+<link rel="next" href="Stacks-and-Postfix-notation.html#Stacks-and-Postfix-notation" title="Stacks and Postfix notation">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Introducing-the-Text-Interpreter"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Stacks-and-Postfix-notation.html#Stacks-and-Postfix-notation">Stacks and Postfix notation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Introduction.html#Introduction">Introduction</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction.html#Introduction">Introduction</a>
+<hr>
+</div>
+
+<h3 class="section">4.1 Introducing the Text Interpreter</h3>
+
+<p><a name="index-text-interpreter-138"></a><a name="index-outer-interpreter-139"></a>
+<!-- IMO this is too detailed and the pace is too slow for -->
+<!-- an introduction.  If you know German, take a look at -->
+<!-- http://www.complang.tuwien.ac.at/anton/lvas/skriptum-stack.html -->
+<!-- to see how I do it - anton -->
+
+<!-- nac-> Where I have accepted your comments 100% and modified the text -->
+<!-- accordingly, I have deleted your comments. Elsewhere I have added a -->
+<!-- response like this to attempt to rationalise what I have done. Of -->
+<!-- course, this is a very clumsy mechanism for something that would be -->
+<!-- done far more efficiently over a beer. Please delete any dialogue -->
+<!-- you consider closed. -->
+<p>When you invoke the Forth image, you will see a startup banner printed
+and nothing else (if you have Gforth installed on your system, try
+invoking it now, by typing <kbd>gforth&lt;RET&gt;</kbd>). Forth is now running
+its command line interpreter, which is called the <dfn>Text Interpreter</dfn>
+(also known as the <dfn>Outer Interpreter</dfn>).  (You will learn a lot
+about the text interpreter as you read through this chapter, for more
+detail see <a href="The-Text-Interpreter.html#The-Text-Interpreter">The Text Interpreter</a>).
+
+   <p>Although it's not obvious, Forth is actually waiting for your
+input. Type a number and press the &lt;RET&gt; key:
+
+<pre class="example">     <kbd>45&lt;RET&gt;</kbd>  ok
+</pre>
+   <p>Rather than give you a prompt to invite you to input something, the text
+interpreter prints a status message <i>after</i> it has processed a line
+of input. The status message in this case (&ldquo;<code> ok</code>&rdquo; followed by
+carriage-return) indicates that the text interpreter was able to process
+all of your input successfully. Now type something illegal:
+
+<pre class="example">     <kbd>qwer341&lt;RET&gt;</kbd>
+     *the terminal*:2: Undefined word
+     &gt;&gt;&gt;qwer341&lt;&lt;&lt;
+     Backtrace:
+     $2A95B42A20 throw
+     $2A95B57FB8 no.extensions
+</pre>
+   <p>The exact text, other than the &ldquo;Undefined word&rdquo; may differ slightly
+on your system, but the effect is the same; when the text interpreter
+detects an error, it discards any remaining text on a line, resets
+certain internal state and prints an error message. For a detailed
+description of error messages see <a href="Error-messages.html#Error-messages">Error messages</a>.
+
+   <p>The text interpreter waits for you to press carriage-return, and then
+processes your input line. Starting at the beginning of the line, it
+breaks the line into groups of characters separated by spaces. For each
+group of characters in turn, it makes two attempts to do something:
+
+     <ul>
+<li><a name="index-name-dictionary-140"></a>It tries to treat it as a command. It does this by searching a <dfn>name
+dictionary</dfn>. If the group of characters matches an entry in the name
+dictionary, the name dictionary provides the text interpreter with
+information that allows the text interpreter perform some actions. In
+Forth jargon, we say that the group
+<a name="index-word-141"></a><a name="index-definition-142"></a><a name="index-execution-token-143"></a><a name="index-xt-144"></a>of characters names a <dfn>word</dfn>, that the dictionary search returns an
+<dfn>execution token (xt)</dfn> corresponding to the <dfn>definition</dfn> of the
+word, and that the text interpreter executes the xt. Often, the terms
+<dfn>word</dfn> and <dfn>definition</dfn> are used interchangeably. 
+<li>If the text interpreter fails to find a match in the name dictionary, it
+tries to treat the group of characters as a number in the current number
+base (when you start up Forth, the current number base is base 10). If
+the group of characters legitimately represents a number, the text
+interpreter pushes the number onto a stack (we'll learn more about that
+in the next section). 
+</ul>
+
+   <p>If the text interpreter is unable to do either of these things with any
+group of characters, it discards the group of characters and the rest of
+the line, then prints an error message. If the text interpreter reaches
+the end of the line without error, it prints the status message &ldquo;<code> ok</code>&rdquo;
+followed by carriage-return.
+
+   <p>This is the simplest command we can give to the text interpreter:
+
+<pre class="example">     &lt;RET&gt;  ok
+</pre>
+   <p>The text interpreter did everything we asked it to do (nothing) without
+an error, so it said that everything is &ldquo;<code> ok</code>&rdquo;. Try a slightly longer
+command:
+
+<pre class="example">     <kbd>12 dup fred dup&lt;RET&gt;</kbd>
+     *the terminal*:3: Undefined word
+     12 dup &gt;&gt;&gt;fred&lt;&lt;&lt; dup
+     Backtrace:
+     $2A95B42A20 throw
+     $2A95B57FB8 no.extensions
+</pre>
+   <p>When you press the carriage-return key, the text interpreter starts to
+work its way along the line:
+
+     <ul>
+<li>When it gets to the space after the <code>2</code>, it takes the group of
+characters <code>12</code> and looks them up in the name
+dictionary<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>. There is no match for this group of characters
+in the name dictionary, so it tries to treat them as a number. It is
+able to do this successfully, so it puts the number, 12, &ldquo;on the stack&rdquo;
+(whatever that means). 
+<li>The text interpreter resumes scanning the line and gets the next group
+of characters, <code>dup</code>. It looks it up in the name dictionary and
+(you'll have to take my word for this) finds it, and executes the word
+<code>dup</code> (whatever that means). 
+<li>Once again, the text interpreter resumes scanning the line and gets the
+group of characters <code>fred</code>. It looks them up in the name
+dictionary, but can't find them. It tries to treat them as a number, but
+they don't represent any legal number. 
+</ul>
+
+   <p>At this point, the text interpreter gives up and prints an error
+message. The error message shows exactly how far the text interpreter
+got in processing the line. In particular, it shows that the text
+interpreter made no attempt to do anything with the final character
+group, <code>dup</code>, even though we have good reason to believe that the
+text interpreter would have no problem looking that word up and
+executing it a second time.
+
+<!--  -->
+<div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> We can't tell if it found them or not, but assume
+for now that it did not</p>
+
+   <p><hr></div>
+
+   </body></html>
+

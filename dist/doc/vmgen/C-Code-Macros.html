@@ -1,0 +1,113 @@
+<html lang="en">
+<head>
+<title>C Code Macros - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Simple-instructions.html#Simple-instructions" title="Simple instructions">
+<link rel="prev" href="Explicit-stack-access.html#Explicit-stack-access" title="Explicit stack access">
+<link rel="next" href="C-Code-restrictions.html#C-Code-restrictions" title="C Code restrictions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="C-Code-Macros"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="C-Code-restrictions.html#C-Code-restrictions">C Code restrictions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Explicit-stack-access.html#Explicit-stack-access">Explicit stack access</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Simple-instructions.html#Simple-instructions">Simple instructions</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.2.2 C Code Macros</h4>
+
+<p><a name="index-macros-recognized-by-Vmgen-85"></a><a name="index-basic-block_002c-VM-level-86"></a>
+Vmgen recognizes the following strings in the C code part of simple
+instructions:
+
+     <dl>
+<dt><code>SET_IP</code><dd><a name="index-SET_005fIP-87"></a>As far as Vmgen is concerned, a VM instruction containing this ends a VM
+basic block (used in profiling to delimit profiled sequences).  On the C
+level, this also sets the instruction pointer.
+
+     <br><dt><code>SUPER_END</code><dd><a name="index-SUPER_005fEND-88"></a>This ends a basic block (for profiling), even if the instruction
+contains no <code>SET_IP</code>.
+
+     <br><dt><code>INST_TAIL;</code><dd><a name="index-INST_005fTAIL_003b-89"></a>Vmgen replaces `<samp><span class="samp">INST_TAIL;</span></samp>' with code for ending a VM instruction and
+dispatching the next VM instruction.  Even without a `<samp><span class="samp">INST_TAIL;</span></samp>' this
+happens automatically when control reaches the end of the C code.  If
+you want to have this in the middle of the C code, you need to use
+`<samp><span class="samp">INST_TAIL;</span></samp>'.  A typical example is a conditional VM branch:
+
+     <pre class="example">          if (branch_condition) {
+            SET_IP(target); INST_TAIL;
+          }
+          /* implicit tail follows here */
+     </pre>
+     <p>In this example, `<samp><span class="samp">INST_TAIL;</span></samp>' is not strictly necessary, because there
+is another one implicitly after the if-statement, but using it improves
+branch prediction accuracy slightly and allows other optimizations.
+
+     <br><dt><code>SUPER_CONTINUE</code><dd><a name="index-SUPER_005fCONTINUE-90"></a>This indicates that the implicit tail at the end of the VM instruction
+dispatches the sequentially next VM instruction even if there is a
+<code>SET_IP</code> in the VM instruction.  This enables an optimization that
+is not yet implemented in the vmgen-ex code (but in Gforth).  The
+typical application is in conditional VM branches:
+
+     <pre class="example">          if (branch_condition) {
+            SET_IP(target); INST_TAIL; /* now this INST_TAIL is necessary */
+          }
+          SUPER_CONTINUE;
+     </pre>
+     <!-- !! uncomment for post-0.6.2 docs -->
+<!-- @item VM_JUMP -->
+<!-- @findex VM_JUMP -->
+<!-- @code{VM_JUMP(target)} is equivalent to @code{goto *(target)}, but -->
+<!-- allows Vmgen to do dynamic superinstructions and replication.  You -->
+<!-- still need to say @code{SUPER_END}.  Also, the goto only happens at -->
+<!-- the end (wherever the VM_JUMP is).  Essentially, this just suppresses -->
+<!-- much of the ordinary dispatch mechanism. -->
+</dl>
+
+   <p>Note that Vmgen is not smart about C-level tokenization, comments,
+strings, or conditional compilation, so it will interpret even a
+commented-out SUPER_END as ending a basic block (or, e.g.,
+`<samp><span class="samp">RESET_IP;</span></samp>' as `<samp><span class="samp">SET_IP;</span></samp>').  Conversely, Vmgen requires the literal
+presence of these strings; Vmgen will not see them if they are hiding in
+a C preprocessor macro.
+
+<!--  -->
+</body></html>
+

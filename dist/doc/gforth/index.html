@@ -1,0 +1,1091 @@
+<html lang="en">
+<head>
+<title>Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being "A GNU Manual," and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     "GNU Free Documentation License."
+
+     (a) The FSF's Back-Cover Text is: "You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development."
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<h1 class="settitle">Gforth Manual</h1>
+   <div class="contents">
+<h2>Table of Contents</h2>
+<ul>
+<li><a name="toc_Top" href="index.html#Top">Gforth</a>
+<li><a name="toc_Goals" href="Goals.html#Goals">1 Goals of Gforth</a>
+<li><a name="toc_Gforth-Environment" href="Gforth-Environment.html#Gforth-Environment">2 Gforth Environment</a>
+<ul>
+<li><a href="Invoking-Gforth.html#Invoking-Gforth">2.1 Invoking Gforth</a>
+<li><a href="Leaving-Gforth.html#Leaving-Gforth">2.2 Leaving Gforth</a>
+<li><a href="Command_002dline-editing.html#Command_002dline-editing">2.3 Command-line editing</a>
+<li><a href="Environment-variables.html#Environment-variables">2.4 Environment variables</a>
+<li><a href="Gforth-Files.html#Gforth-Files">2.5 Gforth files</a>
+<li><a href="Gforth-in-pipes.html#Gforth-in-pipes">2.6 Gforth in pipes</a>
+<li><a href="Startup-speed.html#Startup-speed">2.7 Startup speed</a>
+</li></ul>
+<li><a name="toc_Tutorial" href="Tutorial.html#Tutorial">3 Forth Tutorial</a>
+<ul>
+<li><a href="Starting-Gforth-Tutorial.html#Starting-Gforth-Tutorial">3.1 Starting Gforth</a>
+<li><a href="Syntax-Tutorial.html#Syntax-Tutorial">3.2 Syntax</a>
+<li><a href="Crash-Course-Tutorial.html#Crash-Course-Tutorial">3.3 Crash Course</a>
+<li><a href="Stack-Tutorial.html#Stack-Tutorial">3.4 Stack</a>
+<li><a href="Arithmetics-Tutorial.html#Arithmetics-Tutorial">3.5 Arithmetics</a>
+<li><a href="Stack-Manipulation-Tutorial.html#Stack-Manipulation-Tutorial">3.6 Stack Manipulation</a>
+<li><a href="Using-files-for-Forth-code-Tutorial.html#Using-files-for-Forth-code-Tutorial">3.7 Using files for Forth code</a>
+<li><a href="Comments-Tutorial.html#Comments-Tutorial">3.8 Comments</a>
+<li><a href="Colon-Definitions-Tutorial.html#Colon-Definitions-Tutorial">3.9 Colon Definitions</a>
+<li><a href="Decompilation-Tutorial.html#Decompilation-Tutorial">3.10 Decompilation</a>
+<li><a href="Stack_002dEffect-Comments-Tutorial.html#Stack_002dEffect-Comments-Tutorial">3.11 Stack-Effect Comments</a>
+<li><a href="Types-Tutorial.html#Types-Tutorial">3.12 Types</a>
+<li><a href="Factoring-Tutorial.html#Factoring-Tutorial">3.13 Factoring</a>
+<li><a href="Designing-the-stack-effect-Tutorial.html#Designing-the-stack-effect-Tutorial">3.14 Designing the stack effect</a>
+<li><a href="Local-Variables-Tutorial.html#Local-Variables-Tutorial">3.15 Local Variables</a>
+<li><a href="Conditional-execution-Tutorial.html#Conditional-execution-Tutorial">3.16 Conditional execution</a>
+<li><a href="Flags-and-Comparisons-Tutorial.html#Flags-and-Comparisons-Tutorial">3.17 Flags and Comparisons</a>
+<li><a href="General-Loops-Tutorial.html#General-Loops-Tutorial">3.18 General Loops</a>
+<li><a href="Counted-loops-Tutorial.html#Counted-loops-Tutorial">3.19 Counted loops</a>
+<li><a href="Recursion-Tutorial.html#Recursion-Tutorial">3.20 Recursion</a>
+<li><a href="Leaving-definitions-or-loops-Tutorial.html#Leaving-definitions-or-loops-Tutorial">3.21 Leaving definitions or loops</a>
+<li><a href="Return-Stack-Tutorial.html#Return-Stack-Tutorial">3.22 Return Stack</a>
+<li><a href="Memory-Tutorial.html#Memory-Tutorial">3.23 Memory</a>
+<li><a href="Characters-and-Strings-Tutorial.html#Characters-and-Strings-Tutorial">3.24 Characters and Strings</a>
+<li><a href="Alignment-Tutorial.html#Alignment-Tutorial">3.25 Alignment</a>
+<li><a href="Floating-Point-Tutorial.html#Floating-Point-Tutorial">3.26 Floating Point</a>
+<li><a href="Files-Tutorial.html#Files-Tutorial">3.27 Files</a>
+<ul>
+<li><a href="Files-Tutorial.html#Files-Tutorial">3.27.1 Open file for input</a>
+<li><a href="Files-Tutorial.html#Files-Tutorial">3.27.2 Create file for output</a>
+<li><a href="Files-Tutorial.html#Files-Tutorial">3.27.3 Scan file for a particular line</a>
+<li><a href="Files-Tutorial.html#Files-Tutorial">3.27.4 Copy input to output</a>
+<li><a href="Files-Tutorial.html#Files-Tutorial">3.27.5 Close files</a>
+</li></ul>
+<li><a href="Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial.html#Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial">3.28 Interpretation and Compilation Semantics and Immediacy</a>
+<li><a href="Execution-Tokens-Tutorial.html#Execution-Tokens-Tutorial">3.29 Execution Tokens</a>
+<li><a href="Exceptions-Tutorial.html#Exceptions-Tutorial">3.30 Exceptions</a>
+<li><a href="Defining-Words-Tutorial.html#Defining-Words-Tutorial">3.31 Defining Words</a>
+<li><a href="Arrays-and-Records-Tutorial.html#Arrays-and-Records-Tutorial">3.32 Arrays and Records</a>
+<li><a href="POSTPONE-Tutorial.html#POSTPONE-Tutorial">3.33 <code>POSTPONE</code></a>
+<li><a href="Literal-Tutorial.html#Literal-Tutorial">3.34 <code>Literal</code></a>
+<li><a href="Advanced-macros-Tutorial.html#Advanced-macros-Tutorial">3.35 Advanced macros</a>
+<li><a href="Compilation-Tokens-Tutorial.html#Compilation-Tokens-Tutorial">3.36 Compilation Tokens</a>
+<li><a href="Wordlists-and-Search-Order-Tutorial.html#Wordlists-and-Search-Order-Tutorial">3.37 Wordlists and Search Order</a>
+</li></ul>
+<li><a name="toc_Introduction" href="Introduction.html#Introduction">4 An Introduction to ANS Forth</a>
+<ul>
+<li><a href="Introducing-the-Text-Interpreter.html#Introducing-the-Text-Interpreter">4.1 Introducing the Text Interpreter</a>
+<li><a href="Stacks-and-Postfix-notation.html#Stacks-and-Postfix-notation">4.2 Stacks, postfix notation and parameter passing</a>
+<li><a href="Your-first-definition.html#Your-first-definition">4.3 Your first Forth definition</a>
+<li><a href="How-does-that-work_003f.html#How-does-that-work_003f">4.4 How does that work?</a>
+<li><a href="Forth-is-written-in-Forth.html#Forth-is-written-in-Forth">4.5 Forth is written in Forth</a>
+<li><a href="Review-_002d-elements-of-a-Forth-system.html#Review-_002d-elements-of-a-Forth-system">4.6 Review - elements of a Forth system</a>
+<li><a href="Where-to-go-next.html#Where-to-go-next">4.7 Where To Go Next</a>
+<li><a href="Exercises.html#Exercises">4.8 Exercises</a>
+</li></ul>
+<li><a name="toc_Words" href="Words.html#Words">5 Forth Words</a>
+<ul>
+<li><a href="Notation.html#Notation">5.1 Notation</a>
+<li><a href="Case-insensitivity.html#Case-insensitivity">5.2 Case insensitivity</a>
+<li><a href="Comments.html#Comments">5.3 Comments</a>
+<li><a href="Boolean-Flags.html#Boolean-Flags">5.4 Boolean Flags</a>
+<li><a href="Arithmetic.html#Arithmetic">5.5 Arithmetic</a>
+<ul>
+<li><a href="Single-precision.html#Single-precision">5.5.1 Single precision</a>
+<li><a href="Double-precision.html#Double-precision">5.5.2 Double precision</a>
+<li><a href="Bitwise-operations.html#Bitwise-operations">5.5.3 Bitwise operations</a>
+<li><a href="Numeric-comparison.html#Numeric-comparison">5.5.4 Numeric comparison</a>
+<li><a href="Mixed-precision.html#Mixed-precision">5.5.5 Mixed precision</a>
+<li><a href="Floating-Point.html#Floating-Point">5.5.6 Floating Point</a>
+</li></ul>
+<li><a href="Stack-Manipulation.html#Stack-Manipulation">5.6 Stack Manipulation</a>
+<ul>
+<li><a href="Data-stack.html#Data-stack">5.6.1 Data stack</a>
+<li><a href="Floating-point-stack.html#Floating-point-stack">5.6.2 Floating point stack</a>
+<li><a href="Return-stack.html#Return-stack">5.6.3 Return stack</a>
+<li><a href="Locals-stack.html#Locals-stack">5.6.4 Locals stack</a>
+<li><a href="Stack-pointer-manipulation.html#Stack-pointer-manipulation">5.6.5 Stack pointer manipulation</a>
+</li></ul>
+<li><a href="Memory.html#Memory">5.7 Memory</a>
+<ul>
+<li><a href="Memory-model.html#Memory-model">5.7.1 ANS Forth and Gforth memory models</a>
+<li><a href="Dictionary-allocation.html#Dictionary-allocation">5.7.2 Dictionary allocation</a>
+<li><a href="Heap-Allocation.html#Heap-Allocation">5.7.3 Heap allocation</a>
+<li><a href="Memory-Access.html#Memory-Access">5.7.4 Memory Access</a>
+<li><a href="Address-arithmetic.html#Address-arithmetic">5.7.5 Address arithmetic</a>
+<li><a href="Memory-Blocks.html#Memory-Blocks">5.7.6 Memory Blocks</a>
+</li></ul>
+<li><a href="Control-Structures.html#Control-Structures">5.8 Control Structures</a>
+<ul>
+<li><a href="Selection.html#Selection">5.8.1 Selection</a>
+<li><a href="Simple-Loops.html#Simple-Loops">5.8.2 Simple Loops</a>
+<li><a href="Counted-Loops.html#Counted-Loops">5.8.3 Counted Loops</a>
+<li><a href="Arbitrary-control-structures.html#Arbitrary-control-structures">5.8.4 Arbitrary control structures</a>
+<ul>
+<li><a href="Arbitrary-control-structures.html#Arbitrary-control-structures">5.8.4.1 Programming Style</a>
+</li></ul>
+<li><a href="Calls-and-returns.html#Calls-and-returns">5.8.5 Calls and returns</a>
+<li><a href="Exception-Handling.html#Exception-Handling">5.8.6 Exception Handling</a>
+</li></ul>
+<li><a href="Defining-Words.html#Defining-Words">5.9 Defining Words</a>
+<ul>
+<li><a href="CREATE.html#CREATE">5.9.1 <code>CREATE</code></a>
+<li><a href="Variables.html#Variables">5.9.2 Variables</a>
+<li><a href="Constants.html#Constants">5.9.3 Constants</a>
+<li><a href="Values.html#Values">5.9.4 Values</a>
+<li><a href="Colon-Definitions.html#Colon-Definitions">5.9.5 Colon Definitions</a>
+<li><a href="Anonymous-Definitions.html#Anonymous-Definitions">5.9.6 Anonymous Definitions</a>
+<li><a href="Supplying-names.html#Supplying-names">5.9.7 Supplying the name of a defined word</a>
+<li><a href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">5.9.8 User-defined Defining Words</a>
+<ul>
+<li><a href="CREATE_002e_002eDOES_003e-applications.html#CREATE_002e_002eDOES_003e-applications">5.9.8.1 Applications of <code>CREATE..DOES&gt;</code></a>
+<li><a href="CREATE_002e_002eDOES_003e-details.html#CREATE_002e_002eDOES_003e-details">5.9.8.2 The gory details of <code>CREATE..DOES&gt;</code></a>
+<li><a href="Advanced-does_003e-usage-example.html#Advanced-does_003e-usage-example">5.9.8.3 Advanced does&gt; usage example</a>
+<li><a href="Const_002ddoes_003e.html#Const_002ddoes_003e">5.9.8.4 <code>Const-does&gt;</code></a>
+</li></ul>
+<li><a href="Deferred-Words.html#Deferred-Words">5.9.9 Deferred Words</a>
+<li><a href="Aliases.html#Aliases">5.9.10 Aliases</a>
+</li></ul>
+<li><a href="Interpretation-and-Compilation-Semantics.html#Interpretation-and-Compilation-Semantics">5.10 Interpretation and Compilation Semantics</a>
+<ul>
+<li><a href="Combined-words.html#Combined-words">5.10.1 Combined Words</a>
+</li></ul>
+<li><a href="Tokens-for-Words.html#Tokens-for-Words">5.11 Tokens for Words</a>
+<ul>
+<li><a href="Execution-token.html#Execution-token">5.11.1 Execution token</a>
+<li><a href="Compilation-token.html#Compilation-token">5.11.2 Compilation token</a>
+<li><a href="Name-token.html#Name-token">5.11.3 Name token</a>
+</li></ul>
+<li><a href="Compiling-words.html#Compiling-words">5.12 Compiling words</a>
+<ul>
+<li><a href="Literals.html#Literals">5.12.1 Literals</a>
+<li><a href="Macros.html#Macros">5.12.2 Macros</a>
+</li></ul>
+<li><a href="The-Text-Interpreter.html#The-Text-Interpreter">5.13 The Text Interpreter</a>
+<ul>
+<li><a href="Input-Sources.html#Input-Sources">5.13.1 Input Sources</a>
+<li><a href="Number-Conversion.html#Number-Conversion">5.13.2 Number Conversion</a>
+<li><a href="Interpret_002fCompile-states.html#Interpret_002fCompile-states">5.13.3 Interpret/Compile states</a>
+<li><a href="Interpreter-Directives.html#Interpreter-Directives">5.13.4 Interpreter Directives</a>
+</li></ul>
+<li><a href="The-Input-Stream.html#The-Input-Stream">5.14 The Input Stream</a>
+<li><a href="Word-Lists.html#Word-Lists">5.15 Word Lists</a>
+<ul>
+<li><a href="Vocabularies.html#Vocabularies">5.15.1 Vocabularies</a>
+<li><a href="Why-use-word-lists_003f.html#Why-use-word-lists_003f">5.15.2 Why use word lists?</a>
+<li><a href="Word-list-example.html#Word-list-example">5.15.3 Word list example</a>
+</li></ul>
+<li><a href="Environmental-Queries.html#Environmental-Queries">5.16 Environmental Queries</a>
+<li><a href="Files.html#Files">5.17 Files</a>
+<ul>
+<li><a href="Forth-source-files.html#Forth-source-files">5.17.1 Forth source files</a>
+<li><a href="General-files.html#General-files">5.17.2 General files</a>
+<li><a href="Redirection.html#Redirection">5.17.3 Redirection</a>
+<li><a href="Search-Paths.html#Search-Paths">5.17.4 Search Paths</a>
+<ul>
+<li><a href="Source-Search-Paths.html#Source-Search-Paths">5.17.4.1 Source Search Paths</a>
+<li><a href="General-Search-Paths.html#General-Search-Paths">5.17.4.2 General Search Paths</a>
+</li></ul>
+</li></ul>
+<li><a href="Blocks.html#Blocks">5.18 Blocks</a>
+<li><a href="Other-I_002fO.html#Other-I_002fO">5.19 Other I/O</a>
+<ul>
+<li><a href="Simple-numeric-output.html#Simple-numeric-output">5.19.1 Simple numeric output</a>
+<li><a href="Formatted-numeric-output.html#Formatted-numeric-output">5.19.2 Formatted numeric output</a>
+<li><a href="String-Formats.html#String-Formats">5.19.3 String Formats</a>
+<li><a href="Displaying-characters-and-strings.html#Displaying-characters-and-strings">5.19.4 Displaying characters and strings</a>
+<li><a href="Terminal-output.html#Terminal-output">5.19.5 Terminal output</a>
+<li><a href="Single_002dkey-input.html#Single_002dkey-input">5.19.6 Single-key input</a>
+<li><a href="Line-input-and-conversion.html#Line-input-and-conversion">5.19.7 Line input and conversion</a>
+<li><a href="Pipes.html#Pipes">5.19.8 Pipes</a>
+<li><a href="Xchars-and-Unicode.html#Xchars-and-Unicode">5.19.9 Xchars and Unicode</a>
+</li></ul>
+<li><a href="OS-command-line-arguments.html#OS-command-line-arguments">5.20 OS command line arguments</a>
+<li><a href="Locals.html#Locals">5.21 Locals</a>
+<ul>
+<li><a href="Gforth-locals.html#Gforth-locals">5.21.1 Gforth locals</a>
+<ul>
+<li><a href="Where-are-locals-visible-by-name_003f.html#Where-are-locals-visible-by-name_003f">5.21.1.1 Where are locals visible by name?</a>
+<li><a href="How-long-do-locals-live_003f.html#How-long-do-locals-live_003f">5.21.1.2 How long do locals live?</a>
+<li><a href="Locals-programming-style.html#Locals-programming-style">5.21.1.3 Locals programming style</a>
+<li><a href="Locals-implementation.html#Locals-implementation">5.21.1.4 Locals implementation</a>
+</li></ul>
+<li><a href="ANS-Forth-locals.html#ANS-Forth-locals">5.21.2 ANS Forth locals</a>
+</li></ul>
+<li><a href="Structures.html#Structures">5.22 Structures</a>
+<ul>
+<li><a href="Why-explicit-structure-support_003f.html#Why-explicit-structure-support_003f">5.22.1 Why explicit structure support?</a>
+<li><a href="Structure-Usage.html#Structure-Usage">5.22.2 Structure Usage</a>
+<li><a href="Structure-Naming-Convention.html#Structure-Naming-Convention">5.22.3 Structure Naming Convention</a>
+<li><a href="Structure-Implementation.html#Structure-Implementation">5.22.4 Structure Implementation</a>
+<li><a href="Structure-Glossary.html#Structure-Glossary">5.22.5 Structure Glossary</a>
+<li><a href="Forth200x-Structures.html#Forth200x-Structures">5.22.6 Forth200x Structures</a>
+</li></ul>
+<li><a href="Object_002doriented-Forth.html#Object_002doriented-Forth">5.23 Object-oriented Forth</a>
+<ul>
+<li><a href="Why-object_002doriented-programming_003f.html#Why-object_002doriented-programming_003f">5.23.1 Why object-oriented programming?</a>
+<li><a href="Object_002dOriented-Terminology.html#Object_002dOriented-Terminology">5.23.2 Object-Oriented Terminology</a>
+<li><a href="Objects.html#Objects">5.23.3 The <samp><span class="file">objects.fs</span></samp> model</a>
+<ul>
+<li><a href="Properties-of-the-Objects-model.html#Properties-of-the-Objects-model">5.23.3.1 Properties of the <samp><span class="file">objects.fs</span></samp> model</a>
+<li><a href="Basic-Objects-Usage.html#Basic-Objects-Usage">5.23.3.2 Basic <samp><span class="file">objects.fs</span></samp> Usage</a>
+<li><a href="The-Objects-base-class.html#The-Objects-base-class">5.23.3.3 The <samp><span class="file">object.fs</span></samp> base class</a>
+<li><a href="Creating-objects.html#Creating-objects">5.23.3.4 Creating objects</a>
+<li><a href="Object_002dOriented-Programming-Style.html#Object_002dOriented-Programming-Style">5.23.3.5 Object-Oriented Programming Style</a>
+<li><a href="Class-Binding.html#Class-Binding">5.23.3.6 Class Binding</a>
+<li><a href="Method-conveniences.html#Method-conveniences">5.23.3.7 Method conveniences</a>
+<li><a href="Classes-and-Scoping.html#Classes-and-Scoping">5.23.3.8 Classes and Scoping</a>
+<li><a href="Dividing-classes.html#Dividing-classes">5.23.3.9 Dividing classes</a>
+<li><a href="Object-Interfaces.html#Object-Interfaces">5.23.3.10 Object Interfaces</a>
+<li><a href="Objects-Implementation.html#Objects-Implementation">5.23.3.11 <samp><span class="file">objects.fs</span></samp> Implementation</a>
+<li><a href="Objects-Glossary.html#Objects-Glossary">5.23.3.12 <samp><span class="file">objects.fs</span></samp> Glossary</a>
+</li></ul>
+<li><a href="OOF.html#OOF">5.23.4 The <samp><span class="file">oof.fs</span></samp> model</a>
+<ul>
+<li><a href="Properties-of-the-OOF-model.html#Properties-of-the-OOF-model">5.23.4.1 Properties of the <samp><span class="file">oof.fs</span></samp> model</a>
+<li><a href="Basic-OOF-Usage.html#Basic-OOF-Usage">5.23.4.2 Basic <samp><span class="file">oof.fs</span></samp> Usage</a>
+<li><a href="The-OOF-base-class.html#The-OOF-base-class">5.23.4.3 The <samp><span class="file">oof.fs</span></samp> base class</a>
+<li><a href="Class-Declaration.html#Class-Declaration">5.23.4.4 Class Declaration</a>
+<li><a href="Class-Implementation.html#Class-Implementation">5.23.4.5 Class Implementation</a>
+</li></ul>
+<li><a href="Mini_002dOOF.html#Mini_002dOOF">5.23.5 The <samp><span class="file">mini-oof.fs</span></samp> model</a>
+<ul>
+<li><a href="Basic-Mini_002dOOF-Usage.html#Basic-Mini_002dOOF-Usage">5.23.5.1 Basic <samp><span class="file">mini-oof.fs</span></samp> Usage</a>
+<li><a href="Mini_002dOOF-Example.html#Mini_002dOOF-Example">5.23.5.2 Mini-OOF Example</a>
+<li><a href="Mini_002dOOF-Implementation.html#Mini_002dOOF-Implementation">5.23.5.3 <samp><span class="file">mini-oof.fs</span></samp> Implementation</a>
+</li></ul>
+<li><a href="Comparison-with-other-object-models.html#Comparison-with-other-object-models">5.23.6 Comparison with other object models</a>
+</li></ul>
+<li><a href="Programming-Tools.html#Programming-Tools">5.24 Programming Tools</a>
+<ul>
+<li><a href="Examining.html#Examining">5.24.1 Examining data and code</a>
+<li><a href="Forgetting-words.html#Forgetting-words">5.24.2 Forgetting words</a>
+<li><a href="Debugging.html#Debugging">5.24.3 Debugging</a>
+<li><a href="Assertions.html#Assertions">5.24.4 Assertions</a>
+<li><a href="Singlestep-Debugger.html#Singlestep-Debugger">5.24.5 Singlestep Debugger</a>
+</li></ul>
+<li><a href="C-Interface.html#C-Interface">5.25 C Interface</a>
+<ul>
+<li><a href="Calling-C-Functions.html#Calling-C-Functions">5.25.1 Calling C functions</a>
+<li><a href="Declaring-C-Functions.html#Declaring-C-Functions">5.25.2 Declaring C Functions</a>
+<li><a href="Calling-C-function-pointers.html#Calling-C-function-pointers">5.25.3 Calling C function pointers from Forth</a>
+<li><a href="Defining-library-interfaces.html#Defining-library-interfaces">5.25.4 Defining library interfaces</a>
+<li><a href="Declaring-OS_002dlevel-libraries.html#Declaring-OS_002dlevel-libraries">5.25.5 Declaring OS-level libraries</a>
+<li><a href="Callbacks.html#Callbacks">5.25.6 Callbacks</a>
+<li><a href="C-interface-internals.html#C-interface-internals">5.25.7 How the C interface works</a>
+<li><a href="Low_002dLevel-C-Interface-Words.html#Low_002dLevel-C-Interface-Words">5.25.8 Low-Level C Interface Words</a>
+</li></ul>
+<li><a href="Assembler-and-Code-Words.html#Assembler-and-Code-Words">5.26 Assembler and Code Words</a>
+<ul>
+<li><a href="Code-and-_003bcode.html#Code-and-_003bcode">5.26.1 <code>Code</code> and <code>;code</code></a>
+<li><a href="Common-Assembler.html#Common-Assembler">5.26.2 Common Assembler</a>
+<li><a href="Common-Disassembler.html#Common-Disassembler">5.26.3 Common Disassembler</a>
+<li><a href="386-Assembler.html#386-Assembler">5.26.4 386 Assembler</a>
+<li><a href="Alpha-Assembler.html#Alpha-Assembler">5.26.5 Alpha Assembler</a>
+<li><a href="MIPS-assembler.html#MIPS-assembler">5.26.6 MIPS assembler</a>
+<li><a href="PowerPC-assembler.html#PowerPC-assembler">5.26.7 PowerPC assembler</a>
+<li><a href="ARM-Assembler.html#ARM-Assembler">5.26.8 ARM Assembler</a>
+<li><a href="Other-assemblers.html#Other-assemblers">5.26.9 Other assemblers</a>
+</li></ul>
+<li><a href="Threading-Words.html#Threading-Words">5.27 Threading Words</a>
+<li><a href="Passing-Commands-to-the-OS.html#Passing-Commands-to-the-OS">5.28 Passing Commands to the Operating System</a>
+<li><a href="Keeping-track-of-Time.html#Keeping-track-of-Time">5.29 Keeping track of Time</a>
+<li><a href="Miscellaneous-Words.html#Miscellaneous-Words">5.30 Miscellaneous Words</a>
+</li></ul>
+<li><a name="toc_Error-messages" href="Error-messages.html#Error-messages">6 Error messages</a>
+<li><a name="toc_Tools" href="Tools.html#Tools">7 Tools</a>
+<ul>
+<li><a href="ANS-Report.html#ANS-Report">7.1 <samp><span class="file">ans-report.fs</span></samp>: Report the words used, sorted by wordset</a>
+<ul>
+<li><a href="ANS-Report.html#ANS-Report">7.1.1 Caveats</a>
+</li></ul>
+<li><a href="Stack-depth-changes.html#Stack-depth-changes">7.2 Stack depth changes during interpretation</a>
+</li></ul>
+<li><a name="toc_ANS-conformance" href="ANS-conformance.html#ANS-conformance">8 ANS conformance</a>
+<ul>
+<li><a href="The-Core-Words.html#The-Core-Words">8.1 The Core Words</a>
+<ul>
+<li><a href="core_002didef.html#core_002didef">8.1.1 Implementation Defined Options</a>
+<li><a href="core_002dambcond.html#core_002dambcond">8.1.2 Ambiguous conditions</a>
+<li><a href="core_002dother.html#core_002dother">8.1.3 Other system documentation</a>
+</li></ul>
+<li><a href="The-optional-Block-word-set.html#The-optional-Block-word-set">8.2 The optional Block word set</a>
+<ul>
+<li><a href="block_002didef.html#block_002didef">8.2.1 Implementation Defined Options</a>
+<li><a href="block_002dambcond.html#block_002dambcond">8.2.2 Ambiguous conditions</a>
+<li><a href="block_002dother.html#block_002dother">8.2.3 Other system documentation</a>
+</li></ul>
+<li><a href="The-optional-Double-Number-word-set.html#The-optional-Double-Number-word-set">8.3 The optional Double Number word set</a>
+<ul>
+<li><a href="double_002dambcond.html#double_002dambcond">8.3.1 Ambiguous conditions</a>
+</li></ul>
+<li><a href="The-optional-Exception-word-set.html#The-optional-Exception-word-set">8.4 The optional Exception word set</a>
+<ul>
+<li><a href="exception_002didef.html#exception_002didef">8.4.1 Implementation Defined Options</a>
+</li></ul>
+<li><a href="The-optional-Facility-word-set.html#The-optional-Facility-word-set">8.5 The optional Facility word set</a>
+<ul>
+<li><a href="facility_002didef.html#facility_002didef">8.5.1 Implementation Defined Options</a>
+<li><a href="facility_002dambcond.html#facility_002dambcond">8.5.2 Ambiguous conditions</a>
+</li></ul>
+<li><a href="The-optional-File_002dAccess-word-set.html#The-optional-File_002dAccess-word-set">8.6 The optional File-Access word set</a>
+<ul>
+<li><a href="file_002didef.html#file_002didef">8.6.1 Implementation Defined Options</a>
+<li><a href="file_002dambcond.html#file_002dambcond">8.6.2 Ambiguous conditions</a>
+</li></ul>
+<li><a href="The-optional-Floating_002dPoint-word-set.html#The-optional-Floating_002dPoint-word-set">8.7 The optional Floating-Point word set</a>
+<ul>
+<li><a href="floating_002didef.html#floating_002didef">8.7.1 Implementation Defined Options</a>
+<li><a href="floating_002dambcond.html#floating_002dambcond">8.7.2 Ambiguous conditions</a>
+</li></ul>
+<li><a href="The-optional-Locals-word-set.html#The-optional-Locals-word-set">8.8 The optional Locals word set</a>
+<ul>
+<li><a href="locals_002didef.html#locals_002didef">8.8.1 Implementation Defined Options</a>
+<li><a href="locals_002dambcond.html#locals_002dambcond">8.8.2 Ambiguous conditions</a>
+</li></ul>
+<li><a href="The-optional-Memory_002dAllocation-word-set.html#The-optional-Memory_002dAllocation-word-set">8.9 The optional Memory-Allocation word set</a>
+<ul>
+<li><a href="memory_002didef.html#memory_002didef">8.9.1 Implementation Defined Options</a>
+</li></ul>
+<li><a href="The-optional-Programming_002dTools-word-set.html#The-optional-Programming_002dTools-word-set">8.10 The optional Programming-Tools word set</a>
+<ul>
+<li><a href="programming_002didef.html#programming_002didef">8.10.1 Implementation Defined Options</a>
+<li><a href="programming_002dambcond.html#programming_002dambcond">8.10.2 Ambiguous conditions</a>
+</li></ul>
+<li><a href="The-optional-Search_002dOrder-word-set.html#The-optional-Search_002dOrder-word-set">8.11 The optional Search-Order word set</a>
+<ul>
+<li><a href="search_002didef.html#search_002didef">8.11.1 Implementation Defined Options</a>
+<li><a href="search_002dambcond.html#search_002dambcond">8.11.2 Ambiguous conditions</a>
+</li></ul>
+</li></ul>
+<li><a name="toc_Standard-vs-Extensions" href="Standard-vs-Extensions.html#Standard-vs-Extensions">9 Should I use Gforth extensions?</a>
+<li><a name="toc_Model" href="Model.html#Model">10 Model</a>
+<li><a name="toc_Integrating-Gforth" href="Integrating-Gforth.html#Integrating-Gforth">11 Integrating Gforth into C programs</a>
+<li><a name="toc_Emacs-and-Gforth" href="Emacs-and-Gforth.html#Emacs-and-Gforth">12 Emacs and Gforth</a>
+<ul>
+<li><a href="Installing-gforth_002eel.html#Installing-gforth_002eel">12.1 Installing gforth.el</a>
+<li><a href="Emacs-Tags.html#Emacs-Tags">12.2 Emacs Tags</a>
+<li><a href="Hilighting.html#Hilighting">12.3 Hilighting</a>
+<li><a href="Auto_002dIndentation.html#Auto_002dIndentation">12.4 Auto-Indentation</a>
+<li><a href="Blocks-Files.html#Blocks-Files">12.5 Blocks Files</a>
+</li></ul>
+<li><a name="toc_Image-Files" href="Image-Files.html#Image-Files">13 Image Files</a>
+<ul>
+<li><a href="Image-Licensing-Issues.html#Image-Licensing-Issues">13.1 Image Licensing Issues</a>
+<li><a href="Image-File-Background.html#Image-File-Background">13.2 Image File Background</a>
+<li><a href="Non_002dRelocatable-Image-Files.html#Non_002dRelocatable-Image-Files">13.3 Non-Relocatable Image Files</a>
+<li><a href="Data_002dRelocatable-Image-Files.html#Data_002dRelocatable-Image-Files">13.4 Data-Relocatable Image Files</a>
+<li><a href="Fully-Relocatable-Image-Files.html#Fully-Relocatable-Image-Files">13.5 Fully Relocatable Image Files</a>
+<ul>
+<li><a href="gforthmi.html#gforthmi">13.5.1 <samp><span class="file">gforthmi</span></samp></a>
+<li><a href="cross_002efs.html#cross_002efs">13.5.2 <samp><span class="file">cross.fs</span></samp></a>
+</li></ul>
+<li><a href="Stack-and-Dictionary-Sizes.html#Stack-and-Dictionary-Sizes">13.6 Stack and Dictionary Sizes</a>
+<li><a href="Running-Image-Files.html#Running-Image-Files">13.7 Running Image Files</a>
+<li><a href="Modifying-the-Startup-Sequence.html#Modifying-the-Startup-Sequence">13.8 Modifying the Startup Sequence</a>
+</li></ul>
+<li><a name="toc_Engine" href="Engine.html#Engine">14 Engine</a>
+<ul>
+<li><a href="Portability.html#Portability">14.1 Portability</a>
+<li><a href="Threading.html#Threading">14.2 Threading</a>
+<ul>
+<li><a href="Scheduling.html#Scheduling">14.2.1 Scheduling</a>
+<li><a href="Direct-or-Indirect-Threaded_003f.html#Direct-or-Indirect-Threaded_003f">14.2.2 Direct or Indirect Threaded?</a>
+<li><a href="Dynamic-Superinstructions.html#Dynamic-Superinstructions">14.2.3 Dynamic Superinstructions</a>
+<li><a href="DOES_003e.html#DOES_003e">14.2.4 DOES&gt;</a>
+</li></ul>
+<li><a href="Primitives.html#Primitives">14.3 Primitives</a>
+<ul>
+<li><a href="Automatic-Generation.html#Automatic-Generation">14.3.1 Automatic Generation</a>
+<li><a href="TOS-Optimization.html#TOS-Optimization">14.3.2 TOS Optimization</a>
+<li><a href="Produced-code.html#Produced-code">14.3.3 Produced code</a>
+</li></ul>
+<li><a href="Performance.html#Performance">14.4 Performance</a>
+</li></ul>
+<li><a name="toc_Cross-Compiler" href="Cross-Compiler.html#Cross-Compiler">15 Cross Compiler</a>
+<ul>
+<li><a href="Using-the-Cross-Compiler.html#Using-the-Cross-Compiler">15.1 Using the Cross Compiler</a>
+<li><a href="How-the-Cross-Compiler-Works.html#How-the-Cross-Compiler-Works">15.2 How the Cross Compiler Works</a>
+</li></ul>
+<li><a name="toc_Bugs" href="Bugs.html#Bugs">Appendix A Bugs</a>
+<li><a name="toc_Origin" href="Origin.html#Origin">Appendix B Authors and Ancestors of Gforth</a>
+<ul>
+<li><a href="Origin.html#Origin">B.1 Authors and Contributors</a>
+<li><a href="Origin.html#Origin">B.2 Pedigree</a>
+</li></ul>
+<li><a name="toc_Forth_002drelated-information" href="Forth_002drelated-information.html#Forth_002drelated-information">Appendix C Other Forth-related information</a>
+<li><a name="toc_Licenses" href="Licenses.html#Licenses">Appendix D Licenses</a>
+<ul>
+<li><a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License">D.1 GNU Free Documentation License</a>
+<ul>
+<li><a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License">D.1.1 ADDENDUM: How to use this License for your documents</a>
+</li></ul>
+<li><a href="Copying.html#Copying">D.2 GNU GENERAL PUBLIC LICENSE</a>
+</li></ul>
+<li><a name="toc_Word-Index" href="Word-Index.html#Word-Index">Word Index</a>
+<li><a name="toc_Concept-Index" href="Concept-Index.html#Concept-Index">Concept and Word Index</a>
+</li></ul>
+</div>
+
+
+
+<div class="node">
+<p>
+<a name="Top"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Goals.html#Goals">Goals</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="../index.html#dir">(dir)</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="../index.html#dir">(dir)</a>
+<hr>
+</div>
+
+<h2 class="unnumbered">Gforth</h2>
+
+<p>This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+   <p>Copyright &copy; 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+   <blockquote>
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with the Front-Cover texts being &ldquo;A GNU Manual,&rdquo;
+and with the Back-Cover Texts as in (a) below.  A copy of the
+license is included in the section entitled &ldquo;GNU Free Documentation
+License.&rdquo;
+
+        <p>(a) The FSF's Back-Cover Text is: &ldquo;You have freedom to copy and modify
+this GNU Manual, like GNU software.  Copies published by the Free
+Software Foundation raise funds for GNU development.&rdquo;
+</blockquote>
+
+<ul class="menu">
+<li><a accesskey="1" href="Goals.html#Goals">Goals</a>:                        About the Gforth Project
+<li><a accesskey="2" href="Gforth-Environment.html#Gforth-Environment">Gforth Environment</a>:           Starting (and exiting) Gforth
+<li><a accesskey="3" href="Tutorial.html#Tutorial">Tutorial</a>:                     Hands-on Forth Tutorial
+<li><a accesskey="4" href="Introduction.html#Introduction">Introduction</a>:                 An introduction to ANS Forth
+<li><a accesskey="5" href="Words.html#Words">Words</a>:                        Forth words available in Gforth
+<li><a accesskey="6" href="Error-messages.html#Error-messages">Error messages</a>:               How to interpret them
+<li><a accesskey="7" href="Tools.html#Tools">Tools</a>:                        Programming tools
+<li><a accesskey="8" href="ANS-conformance.html#ANS-conformance">ANS conformance</a>:              Implementation-defined options etc. 
+<li><a accesskey="9" href="Standard-vs-Extensions.html#Standard-vs-Extensions">Standard vs Extensions</a>:       Should I use extensions? 
+<li><a href="Model.html#Model">Model</a>:                        The abstract machine of Gforth
+<li><a href="Integrating-Gforth.html#Integrating-Gforth">Integrating Gforth</a>:           Forth as scripting language for applications
+<li><a href="Emacs-and-Gforth.html#Emacs-and-Gforth">Emacs and Gforth</a>:             The Gforth Mode
+<li><a href="Image-Files.html#Image-Files">Image Files</a>:                  <code>.fi</code> files contain compiled code
+<li><a href="Engine.html#Engine">Engine</a>:                       The inner interpreter and the primitives
+<li><a href="Cross-Compiler.html#Cross-Compiler">Cross Compiler</a>:               The Cross Compiler
+<li><a href="Bugs.html#Bugs">Bugs</a>:                         How to report them
+<li><a href="Origin.html#Origin">Origin</a>:                       Authors and ancestors of Gforth
+<li><a href="Forth_002drelated-information.html#Forth_002drelated-information">Forth-related information</a>:    Books and places to look on the WWW
+<li><a href="Licenses.html#Licenses">Licenses</a>
+<li><a href="Word-Index.html#Word-Index">Word Index</a>:                   An item for each Forth word
+<li><a href="Concept-Index.html#Concept-Index">Concept Index</a>:                A menu covering many topics
+
+</li></ul>
+<p>--- The Detailed Node Listing ---
+
+<p>Gforth Environment
+
+</p>
+<ul class="menu">
+<li><a href="Invoking-Gforth.html#Invoking-Gforth">Invoking Gforth</a>:              Getting in
+<li><a href="Leaving-Gforth.html#Leaving-Gforth">Leaving Gforth</a>:               Getting out
+<li><a href="Command_002dline-editing.html#Command_002dline-editing">Command-line editing</a>
+<li><a href="Environment-variables.html#Environment-variables">Environment variables</a>:        that affect how Gforth starts up
+<li><a href="Gforth-Files.html#Gforth-Files">Gforth Files</a>:                 What gets installed and where
+<li><a href="Gforth-in-pipes.html#Gforth-in-pipes">Gforth in pipes</a>
+<li><a href="Startup-speed.html#Startup-speed">Startup speed</a>:                When 35ms is not fast enough ...
+
+</li></ul>
+<p>Forth Tutorial
+
+</p>
+<ul class="menu">
+<li><a href="Starting-Gforth-Tutorial.html#Starting-Gforth-Tutorial">Starting Gforth Tutorial</a>
+<li><a href="Syntax-Tutorial.html#Syntax-Tutorial">Syntax Tutorial</a>
+<li><a href="Crash-Course-Tutorial.html#Crash-Course-Tutorial">Crash Course Tutorial</a>
+<li><a href="Stack-Tutorial.html#Stack-Tutorial">Stack Tutorial</a>
+<li><a href="Arithmetics-Tutorial.html#Arithmetics-Tutorial">Arithmetics Tutorial</a>
+<li><a href="Stack-Manipulation-Tutorial.html#Stack-Manipulation-Tutorial">Stack Manipulation Tutorial</a>
+<li><a href="Using-files-for-Forth-code-Tutorial.html#Using-files-for-Forth-code-Tutorial">Using files for Forth code Tutorial</a>
+<li><a href="Comments-Tutorial.html#Comments-Tutorial">Comments Tutorial</a>
+<li><a href="Colon-Definitions-Tutorial.html#Colon-Definitions-Tutorial">Colon Definitions Tutorial</a>
+<li><a href="Decompilation-Tutorial.html#Decompilation-Tutorial">Decompilation Tutorial</a>
+<li><a href="Stack_002dEffect-Comments-Tutorial.html#Stack_002dEffect-Comments-Tutorial">Stack-Effect Comments Tutorial</a>
+<li><a href="Types-Tutorial.html#Types-Tutorial">Types Tutorial</a>
+<li><a href="Factoring-Tutorial.html#Factoring-Tutorial">Factoring Tutorial</a>
+<li><a href="Designing-the-stack-effect-Tutorial.html#Designing-the-stack-effect-Tutorial">Designing the stack effect Tutorial</a>
+<li><a href="Local-Variables-Tutorial.html#Local-Variables-Tutorial">Local Variables Tutorial</a>
+<li><a href="Conditional-execution-Tutorial.html#Conditional-execution-Tutorial">Conditional execution Tutorial</a>
+<li><a href="Flags-and-Comparisons-Tutorial.html#Flags-and-Comparisons-Tutorial">Flags and Comparisons Tutorial</a>
+<li><a href="General-Loops-Tutorial.html#General-Loops-Tutorial">General Loops Tutorial</a>
+<li><a href="Counted-loops-Tutorial.html#Counted-loops-Tutorial">Counted loops Tutorial</a>
+<li><a href="Recursion-Tutorial.html#Recursion-Tutorial">Recursion Tutorial</a>
+<li><a href="Leaving-definitions-or-loops-Tutorial.html#Leaving-definitions-or-loops-Tutorial">Leaving definitions or loops Tutorial</a>
+<li><a href="Return-Stack-Tutorial.html#Return-Stack-Tutorial">Return Stack Tutorial</a>
+<li><a href="Memory-Tutorial.html#Memory-Tutorial">Memory Tutorial</a>
+<li><a href="Characters-and-Strings-Tutorial.html#Characters-and-Strings-Tutorial">Characters and Strings Tutorial</a>
+<li><a href="Alignment-Tutorial.html#Alignment-Tutorial">Alignment Tutorial</a>
+<li><a href="Floating-Point-Tutorial.html#Floating-Point-Tutorial">Floating Point Tutorial</a>
+<li><a href="Files-Tutorial.html#Files-Tutorial">Files Tutorial</a>
+<li><a href="Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial.html#Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial">Interpretation and Compilation Semantics and Immediacy Tutorial</a>
+<li><a href="Execution-Tokens-Tutorial.html#Execution-Tokens-Tutorial">Execution Tokens Tutorial</a>
+<li><a href="Exceptions-Tutorial.html#Exceptions-Tutorial">Exceptions Tutorial</a>
+<li><a href="Defining-Words-Tutorial.html#Defining-Words-Tutorial">Defining Words Tutorial</a>
+<li><a href="Arrays-and-Records-Tutorial.html#Arrays-and-Records-Tutorial">Arrays and Records Tutorial</a>
+<li><a href="POSTPONE-Tutorial.html#POSTPONE-Tutorial">POSTPONE Tutorial</a>
+<li><a href="Literal-Tutorial.html#Literal-Tutorial">Literal Tutorial</a>
+<li><a href="Advanced-macros-Tutorial.html#Advanced-macros-Tutorial">Advanced macros Tutorial</a>
+<li><a href="Compilation-Tokens-Tutorial.html#Compilation-Tokens-Tutorial">Compilation Tokens Tutorial</a>
+<li><a href="Wordlists-and-Search-Order-Tutorial.html#Wordlists-and-Search-Order-Tutorial">Wordlists and Search Order Tutorial</a>
+
+</li></ul>
+<p>An Introduction to ANS Forth
+
+</p>
+<ul class="menu">
+<li><a href="Introducing-the-Text-Interpreter.html#Introducing-the-Text-Interpreter">Introducing the Text Interpreter</a>
+<li><a href="Stacks-and-Postfix-notation.html#Stacks-and-Postfix-notation">Stacks and Postfix notation</a>
+<li><a href="Your-first-definition.html#Your-first-definition">Your first definition</a>
+<li><a href="How-does-that-work_003f.html#How-does-that-work_003f">How does that work?</a>
+<li><a href="Forth-is-written-in-Forth.html#Forth-is-written-in-Forth">Forth is written in Forth</a>
+<li><a href="Review-_002d-elements-of-a-Forth-system.html#Review-_002d-elements-of-a-Forth-system">Review - elements of a Forth system</a>
+<li><a href="Where-to-go-next.html#Where-to-go-next">Where to go next</a>
+<li><a href="Exercises.html#Exercises">Exercises</a>
+
+</li></ul>
+<p>Forth Words
+
+</p>
+<ul class="menu">
+<li><a href="Notation.html#Notation">Notation</a>
+<li><a href="Case-insensitivity.html#Case-insensitivity">Case insensitivity</a>
+<li><a href="Comments.html#Comments">Comments</a>
+<li><a href="Boolean-Flags.html#Boolean-Flags">Boolean Flags</a>
+<li><a href="Arithmetic.html#Arithmetic">Arithmetic</a>
+<li><a href="Stack-Manipulation.html#Stack-Manipulation">Stack Manipulation</a>
+<li><a href="Memory.html#Memory">Memory</a>
+<li><a href="Control-Structures.html#Control-Structures">Control Structures</a>
+<li><a href="Defining-Words.html#Defining-Words">Defining Words</a>
+<li><a href="Interpretation-and-Compilation-Semantics.html#Interpretation-and-Compilation-Semantics">Interpretation and Compilation Semantics</a>
+<li><a href="Tokens-for-Words.html#Tokens-for-Words">Tokens for Words</a>
+<li><a href="Compiling-words.html#Compiling-words">Compiling words</a>
+<li><a href="The-Text-Interpreter.html#The-Text-Interpreter">The Text Interpreter</a>
+<li><a href="The-Input-Stream.html#The-Input-Stream">The Input Stream</a>
+<li><a href="Word-Lists.html#Word-Lists">Word Lists</a>
+<li><a href="Environmental-Queries.html#Environmental-Queries">Environmental Queries</a>
+<li><a href="Files.html#Files">Files</a>
+<li><a href="Blocks.html#Blocks">Blocks</a>
+<li><a href="Other-I_002fO.html#Other-I_002fO">Other I/O</a>
+<li><a href="OS-command-line-arguments.html#OS-command-line-arguments">OS command line arguments</a>
+<li><a href="Locals.html#Locals">Locals</a>
+<li><a href="Structures.html#Structures">Structures</a>
+<li><a href="Object_002doriented-Forth.html#Object_002doriented-Forth">Object-oriented Forth</a>
+<li><a href="Programming-Tools.html#Programming-Tools">Programming Tools</a>
+<li><a href="C-Interface.html#C-Interface">C Interface</a>
+<li><a href="Assembler-and-Code-Words.html#Assembler-and-Code-Words">Assembler and Code Words</a>
+<li><a href="Threading-Words.html#Threading-Words">Threading Words</a>
+<li><a href="Passing-Commands-to-the-OS.html#Passing-Commands-to-the-OS">Passing Commands to the OS</a>
+<li><a href="Keeping-track-of-Time.html#Keeping-track-of-Time">Keeping track of Time</a>
+<li><a href="Miscellaneous-Words.html#Miscellaneous-Words">Miscellaneous Words</a>
+
+</li></ul>
+<p>Arithmetic
+
+</p>
+<ul class="menu">
+<li><a href="Single-precision.html#Single-precision">Single precision</a>
+<li><a href="Double-precision.html#Double-precision">Double precision</a>:             Double-cell integer arithmetic
+<li><a href="Bitwise-operations.html#Bitwise-operations">Bitwise operations</a>
+<li><a href="Numeric-comparison.html#Numeric-comparison">Numeric comparison</a>
+<li><a href="Mixed-precision.html#Mixed-precision">Mixed precision</a>:              Operations with single and double-cell integers
+<li><a href="Floating-Point.html#Floating-Point">Floating Point</a>
+
+</li></ul>
+<p>Stack Manipulation
+
+</p>
+<ul class="menu">
+<li><a href="Data-stack.html#Data-stack">Data stack</a>
+<li><a href="Floating-point-stack.html#Floating-point-stack">Floating point stack</a>
+<li><a href="Return-stack.html#Return-stack">Return stack</a>
+<li><a href="Locals-stack.html#Locals-stack">Locals stack</a>
+<li><a href="Stack-pointer-manipulation.html#Stack-pointer-manipulation">Stack pointer manipulation</a>
+
+</li></ul>
+<p>Memory
+
+</p>
+<ul class="menu">
+<li><a href="Memory-model.html#Memory-model">Memory model</a>
+<li><a href="Dictionary-allocation.html#Dictionary-allocation">Dictionary allocation</a>
+<li><a href="Heap-Allocation.html#Heap-Allocation">Heap Allocation</a>
+<li><a href="Memory-Access.html#Memory-Access">Memory Access</a>
+<li><a href="Address-arithmetic.html#Address-arithmetic">Address arithmetic</a>
+<li><a href="Memory-Blocks.html#Memory-Blocks">Memory Blocks</a>
+
+</li></ul>
+<p>Control Structures
+
+</p>
+<ul class="menu">
+<li><a href="Selection.html#Selection">Selection</a>:                    IF ... ELSE ... ENDIF
+<li><a href="Simple-Loops.html#Simple-Loops">Simple Loops</a>:                 BEGIN ... 
+<li><a href="Counted-Loops.html#Counted-Loops">Counted Loops</a>:                DO
+<li><a href="Arbitrary-control-structures.html#Arbitrary-control-structures">Arbitrary control structures</a>
+<li><a href="Calls-and-returns.html#Calls-and-returns">Calls and returns</a>
+<li><a href="Exception-Handling.html#Exception-Handling">Exception Handling</a>
+
+</li></ul>
+<p>Defining Words
+
+</p>
+<ul class="menu">
+<li><a href="CREATE.html#CREATE">CREATE</a>
+<li><a href="Variables.html#Variables">Variables</a>:                    Variables and user variables
+<li><a href="Constants.html#Constants">Constants</a>
+<li><a href="Values.html#Values">Values</a>:                       Initialised variables
+<li><a href="Colon-Definitions.html#Colon-Definitions">Colon Definitions</a>
+<li><a href="Anonymous-Definitions.html#Anonymous-Definitions">Anonymous Definitions</a>:        Definitions without names
+<li><a href="Supplying-names.html#Supplying-names">Supplying names</a>:              Passing definition names as strings
+<li><a href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">User-defined Defining Words</a>
+<li><a href="Deferred-Words.html#Deferred-Words">Deferred Words</a>:               Allow forward references
+<li><a href="Aliases.html#Aliases">Aliases</a>
+
+</li></ul>
+<p>User-defined Defining Words
+
+</p>
+<ul class="menu">
+<li><a href="CREATE_002e_002eDOES_003e-applications.html#CREATE_002e_002eDOES_003e-applications">CREATE..DOES&gt; applications</a>
+<li><a href="CREATE_002e_002eDOES_003e-details.html#CREATE_002e_002eDOES_003e-details">CREATE..DOES&gt; details</a>
+<li><a href="Advanced-does_003e-usage-example.html#Advanced-does_003e-usage-example">Advanced does&gt; usage example</a>
+<li><a href="Const_002ddoes_003e.html#Const_002ddoes_003e">Const-does&gt;</a>
+
+</li></ul>
+<p>Interpretation and Compilation Semantics
+
+</p>
+<ul class="menu">
+<li><a href="Combined-words.html#Combined-words">Combined words</a>
+
+</li></ul>
+<p>Tokens for Words
+
+</p>
+<ul class="menu">
+<li><a href="Execution-token.html#Execution-token">Execution token</a>:              represents execution/interpretation semantics
+<li><a href="Compilation-token.html#Compilation-token">Compilation token</a>:            represents compilation semantics
+<li><a href="Name-token.html#Name-token">Name token</a>:                   represents named words
+
+</li></ul>
+<p>Compiling words
+
+</p>
+<ul class="menu">
+<li><a href="Literals.html#Literals">Literals</a>:                     Compiling data values
+<li><a href="Macros.html#Macros">Macros</a>:                       Compiling words
+
+</li></ul>
+<p>The Text Interpreter
+
+</p>
+<ul class="menu">
+<li><a href="Input-Sources.html#Input-Sources">Input Sources</a>
+<li><a href="Number-Conversion.html#Number-Conversion">Number Conversion</a>
+<li><a href="Interpret_002fCompile-states.html#Interpret_002fCompile-states">Interpret/Compile states</a>
+<li><a href="Interpreter-Directives.html#Interpreter-Directives">Interpreter Directives</a>
+
+</li></ul>
+<p>Word Lists
+
+</p>
+<ul class="menu">
+<li><a href="Vocabularies.html#Vocabularies">Vocabularies</a>
+<li><a href="Why-use-word-lists_003f.html#Why-use-word-lists_003f">Why use word lists?</a>
+<li><a href="Word-list-example.html#Word-list-example">Word list example</a>
+
+</li></ul>
+<p>Files
+
+</p>
+<ul class="menu">
+<li><a href="Forth-source-files.html#Forth-source-files">Forth source files</a>
+<li><a href="General-files.html#General-files">General files</a>
+<li><a href="Redirection.html#Redirection">Redirection</a>
+<li><a href="Search-Paths.html#Search-Paths">Search Paths</a>
+
+</li></ul>
+<p>Search Paths
+
+</p>
+<ul class="menu">
+<li><a href="Source-Search-Paths.html#Source-Search-Paths">Source Search Paths</a>
+<li><a href="General-Search-Paths.html#General-Search-Paths">General Search Paths</a>
+
+</li></ul>
+<p>Other I/O
+
+</p>
+<ul class="menu">
+<li><a href="Simple-numeric-output.html#Simple-numeric-output">Simple numeric output</a>:        Predefined formats
+<li><a href="Formatted-numeric-output.html#Formatted-numeric-output">Formatted numeric output</a>:     Formatted (pictured) output
+<li><a href="String-Formats.html#String-Formats">String Formats</a>:               How Forth stores strings in memory
+<li><a href="Displaying-characters-and-strings.html#Displaying-characters-and-strings">Displaying characters and strings</a>:   Other stuff
+<li><a href="Terminal-output.html#Terminal-output">Terminal output</a>:              Cursor positioning etc. 
+<li><a href="Single_002dkey-input.html#Single_002dkey-input">Single-key input</a>
+<li><a href="Line-input-and-conversion.html#Line-input-and-conversion">Line input and conversion</a>
+<li><a href="Pipes.html#Pipes">Pipes</a>:                        How to create your own pipes
+<li><a href="Xchars-and-Unicode.html#Xchars-and-Unicode">Xchars and Unicode</a>:           Non-ASCII characters
+
+</li></ul>
+<p>Locals
+
+</p>
+<ul class="menu">
+<li><a href="Gforth-locals.html#Gforth-locals">Gforth locals</a>
+<li><a href="ANS-Forth-locals.html#ANS-Forth-locals">ANS Forth locals</a>
+
+</li></ul>
+<p>Gforth locals
+
+</p>
+<ul class="menu">
+<li><a href="Where-are-locals-visible-by-name_003f.html#Where-are-locals-visible-by-name_003f">Where are locals visible by name?</a>
+<li><a href="How-long-do-locals-live_003f.html#How-long-do-locals-live_003f">How long do locals live?</a>
+<li><a href="Locals-programming-style.html#Locals-programming-style">Locals programming style</a>
+<li><a href="Locals-implementation.html#Locals-implementation">Locals implementation</a>
+
+</li></ul>
+<p>Structures
+
+</p>
+<ul class="menu">
+<li><a href="Why-explicit-structure-support_003f.html#Why-explicit-structure-support_003f">Why explicit structure support?</a>
+<li><a href="Structure-Usage.html#Structure-Usage">Structure Usage</a>
+<li><a href="Structure-Naming-Convention.html#Structure-Naming-Convention">Structure Naming Convention</a>
+<li><a href="Structure-Implementation.html#Structure-Implementation">Structure Implementation</a>
+<li><a href="Structure-Glossary.html#Structure-Glossary">Structure Glossary</a>
+<li><a href="Forth200x-Structures.html#Forth200x-Structures">Forth200x Structures</a>
+
+</li></ul>
+<p>Object-oriented Forth
+
+</p>
+<ul class="menu">
+<li><a href="Why-object_002doriented-programming_003f.html#Why-object_002doriented-programming_003f">Why object-oriented programming?</a>
+<li><a href="Object_002dOriented-Terminology.html#Object_002dOriented-Terminology">Object-Oriented Terminology</a>
+<li><a href="Objects.html#Objects">Objects</a>
+<li><a href="OOF.html#OOF">OOF</a>
+<li><a href="Mini_002dOOF.html#Mini_002dOOF">Mini-OOF</a>
+<li><a href="Comparison-with-other-object-models.html#Comparison-with-other-object-models">Comparison with other object models</a>
+
+</li></ul>
+<p>The <samp><span class="file">objects.fs</span></samp> model
+
+</p>
+<ul class="menu">
+<li><a href="Properties-of-the-Objects-model.html#Properties-of-the-Objects-model">Properties of the Objects model</a>
+<li><a href="Basic-Objects-Usage.html#Basic-Objects-Usage">Basic Objects Usage</a>
+<li><a href="The-Objects-base-class.html#The-Objects-base-class">The Objects base class</a>
+<li><a href="Creating-objects.html#Creating-objects">Creating objects</a>
+<li><a href="Object_002dOriented-Programming-Style.html#Object_002dOriented-Programming-Style">Object-Oriented Programming Style</a>
+<li><a href="Class-Binding.html#Class-Binding">Class Binding</a>
+<li><a href="Method-conveniences.html#Method-conveniences">Method conveniences</a>
+<li><a href="Classes-and-Scoping.html#Classes-and-Scoping">Classes and Scoping</a>
+<li><a href="Dividing-classes.html#Dividing-classes">Dividing classes</a>
+<li><a href="Object-Interfaces.html#Object-Interfaces">Object Interfaces</a>
+<li><a href="Objects-Implementation.html#Objects-Implementation">Objects Implementation</a>
+<li><a href="Objects-Glossary.html#Objects-Glossary">Objects Glossary</a>
+
+</li></ul>
+<p>The <samp><span class="file">oof.fs</span></samp> model
+
+</p>
+<ul class="menu">
+<li><a href="Properties-of-the-OOF-model.html#Properties-of-the-OOF-model">Properties of the OOF model</a>
+<li><a href="Basic-OOF-Usage.html#Basic-OOF-Usage">Basic OOF Usage</a>
+<li><a href="The-OOF-base-class.html#The-OOF-base-class">The OOF base class</a>
+<li><a href="Class-Declaration.html#Class-Declaration">Class Declaration</a>
+<li><a href="Class-Implementation.html#Class-Implementation">Class Implementation</a>
+
+</li></ul>
+<p>The <samp><span class="file">mini-oof.fs</span></samp> model
+
+</p>
+<ul class="menu">
+<li><a href="Basic-Mini_002dOOF-Usage.html#Basic-Mini_002dOOF-Usage">Basic Mini-OOF Usage</a>
+<li><a href="Mini_002dOOF-Example.html#Mini_002dOOF-Example">Mini-OOF Example</a>
+<li><a href="Mini_002dOOF-Implementation.html#Mini_002dOOF-Implementation">Mini-OOF Implementation</a>
+
+</li></ul>
+<p>Programming Tools
+
+</p>
+<ul class="menu">
+<li><a href="Examining.html#Examining">Examining</a>:                    Data and Code. 
+<li><a href="Forgetting-words.html#Forgetting-words">Forgetting words</a>:             Usually before reloading. 
+<li><a href="Debugging.html#Debugging">Debugging</a>:                    Simple and quick. 
+<li><a href="Assertions.html#Assertions">Assertions</a>:                   Making your programs self-checking. 
+<li><a href="Singlestep-Debugger.html#Singlestep-Debugger">Singlestep Debugger</a>:          Executing your program word by word.
+
+</li></ul>
+<p>C Interface
+
+</p>
+<ul class="menu">
+<li><a href="Calling-C-Functions.html#Calling-C-Functions">Calling C Functions</a>
+<li><a href="Declaring-C-Functions.html#Declaring-C-Functions">Declaring C Functions</a>
+<li><a href="Calling-C-function-pointers.html#Calling-C-function-pointers">Calling C function pointers</a>
+<li><a href="Defining-library-interfaces.html#Defining-library-interfaces">Defining library interfaces</a>
+<li><a href="Declaring-OS_002dlevel-libraries.html#Declaring-OS_002dlevel-libraries">Declaring OS-level libraries</a>
+<li><a href="Callbacks.html#Callbacks">Callbacks</a>
+<li><a href="C-interface-internals.html#C-interface-internals">C interface internals</a>
+<li><a href="Low_002dLevel-C-Interface-Words.html#Low_002dLevel-C-Interface-Words">Low-Level C Interface Words</a>
+
+</li></ul>
+<p>Assembler and Code Words
+
+</p>
+<ul class="menu">
+<li><a href="Code-and-_003bcode.html#Code-and-_003bcode">Code and ;code</a>
+<li><a href="Common-Assembler.html#Common-Assembler">Common Assembler</a>:             Assembler Syntax
+<li><a href="Common-Disassembler.html#Common-Disassembler">Common Disassembler</a>
+<li><a href="386-Assembler.html#g_t386-Assembler">386 Assembler</a>:                Deviations and special cases
+<li><a href="Alpha-Assembler.html#Alpha-Assembler">Alpha Assembler</a>:              Deviations and special cases
+<li><a href="MIPS-assembler.html#MIPS-assembler">MIPS assembler</a>:               Deviations and special cases
+<li><a href="PowerPC-assembler.html#PowerPC-assembler">PowerPC assembler</a>:            Deviations and special cases
+<li><a href="ARM-Assembler.html#ARM-Assembler">ARM Assembler</a>:                Deviations and special cases
+<li><a href="Other-assemblers.html#Other-assemblers">Other assemblers</a>:             How to write them
+
+</li></ul>
+<p>Tools
+
+</p>
+<ul class="menu">
+<li><a href="ANS-Report.html#ANS-Report">ANS Report</a>:                   Report the words used, sorted by wordset. 
+<li><a href="Stack-depth-changes.html#Stack-depth-changes">Stack depth changes</a>:          Where does this stack item come from?
+
+</li></ul>
+<p>ANS conformance
+
+</p>
+<ul class="menu">
+<li><a href="The-Core-Words.html#The-Core-Words">The Core Words</a>
+<li><a href="The-optional-Block-word-set.html#The-optional-Block-word-set">The optional Block word set</a>
+<li><a href="The-optional-Double-Number-word-set.html#The-optional-Double-Number-word-set">The optional Double Number word set</a>
+<li><a href="The-optional-Exception-word-set.html#The-optional-Exception-word-set">The optional Exception word set</a>
+<li><a href="The-optional-Facility-word-set.html#The-optional-Facility-word-set">The optional Facility word set</a>
+<li><a href="The-optional-File_002dAccess-word-set.html#The-optional-File_002dAccess-word-set">The optional File-Access word set</a>
+<li><a href="The-optional-Floating_002dPoint-word-set.html#The-optional-Floating_002dPoint-word-set">The optional Floating-Point word set</a>
+<li><a href="The-optional-Locals-word-set.html#The-optional-Locals-word-set">The optional Locals word set</a>
+<li><a href="The-optional-Memory_002dAllocation-word-set.html#The-optional-Memory_002dAllocation-word-set">The optional Memory-Allocation word set</a>
+<li><a href="The-optional-Programming_002dTools-word-set.html#The-optional-Programming_002dTools-word-set">The optional Programming-Tools word set</a>
+<li><a href="The-optional-Search_002dOrder-word-set.html#The-optional-Search_002dOrder-word-set">The optional Search-Order word set</a>
+
+</li></ul>
+<p>The Core Words
+
+</p>
+<ul class="menu">
+<li><a href="core_002didef.html#core_002didef">core-idef</a>:                    Implementation Defined Options
+<li><a href="core_002dambcond.html#core_002dambcond">core-ambcond</a>:                 Ambiguous Conditions
+<li><a href="core_002dother.html#core_002dother">core-other</a>:                   Other System Documentation
+
+</li></ul>
+<p>The optional Block word set
+
+</p>
+<ul class="menu">
+<li><a href="block_002didef.html#block_002didef">block-idef</a>:                   Implementation Defined Options
+<li><a href="block_002dambcond.html#block_002dambcond">block-ambcond</a>:                Ambiguous Conditions
+<li><a href="block_002dother.html#block_002dother">block-other</a>:                  Other System Documentation
+
+</li></ul>
+<p>The optional Double Number word set
+
+</p>
+<ul class="menu">
+<li><a href="double_002dambcond.html#double_002dambcond">double-ambcond</a>:               Ambiguous Conditions
+
+</li></ul>
+<p>The optional Exception word set
+
+</p>
+<ul class="menu">
+<li><a href="exception_002didef.html#exception_002didef">exception-idef</a>:               Implementation Defined Options
+
+</li></ul>
+<p>The optional Facility word set
+
+</p>
+<ul class="menu">
+<li><a href="facility_002didef.html#facility_002didef">facility-idef</a>:                Implementation Defined Options
+<li><a href="facility_002dambcond.html#facility_002dambcond">facility-ambcond</a>:             Ambiguous Conditions
+
+</li></ul>
+<p>The optional File-Access word set
+
+</p>
+<ul class="menu">
+<li><a href="file_002didef.html#file_002didef">file-idef</a>:                    Implementation Defined Options
+<li><a href="file_002dambcond.html#file_002dambcond">file-ambcond</a>:                 Ambiguous Conditions
+
+</li></ul>
+<p>The optional Floating-Point word set
+
+</p>
+<ul class="menu">
+<li><a href="floating_002didef.html#floating_002didef">floating-idef</a>:                Implementation Defined Options
+<li><a href="floating_002dambcond.html#floating_002dambcond">floating-ambcond</a>:             Ambiguous Conditions
+
+</li></ul>
+<p>The optional Locals word set
+
+</p>
+<ul class="menu">
+<li><a href="locals_002didef.html#locals_002didef">locals-idef</a>:                  Implementation Defined Options
+<li><a href="locals_002dambcond.html#locals_002dambcond">locals-ambcond</a>:               Ambiguous Conditions
+
+</li></ul>
+<p>The optional Memory-Allocation word set
+
+</p>
+<ul class="menu">
+<li><a href="memory_002didef.html#memory_002didef">memory-idef</a>:                  Implementation Defined Options
+
+</li></ul>
+<p>The optional Programming-Tools word set
+
+</p>
+<ul class="menu">
+<li><a href="programming_002didef.html#programming_002didef">programming-idef</a>:             Implementation Defined Options
+<li><a href="programming_002dambcond.html#programming_002dambcond">programming-ambcond</a>:          Ambiguous Conditions
+
+</li></ul>
+<p>The optional Search-Order word set
+
+</p>
+<ul class="menu">
+<li><a href="search_002didef.html#search_002didef">search-idef</a>:                  Implementation Defined Options
+<li><a href="search_002dambcond.html#search_002dambcond">search-ambcond</a>:               Ambiguous Conditions
+
+</li></ul>
+<p>Emacs and Gforth
+
+</p>
+<ul class="menu">
+<li><a href="Installing-gforth_002eel.html#Installing-gforth_002eel">Installing gforth.el</a>:         Making Emacs aware of Forth. 
+<li><a href="Emacs-Tags.html#Emacs-Tags">Emacs Tags</a>:                   Viewing the source of a word in Emacs. 
+<li><a href="Hilighting.html#Hilighting">Hilighting</a>:                   Making Forth code look prettier. 
+<li><a href="Auto_002dIndentation.html#Auto_002dIndentation">Auto-Indentation</a>:             Customizing auto-indentation. 
+<li><a href="Blocks-Files.html#Blocks-Files">Blocks Files</a>:                 Reading and writing blocks files.
+
+</li></ul>
+<p>Image Files
+
+</p>
+<ul class="menu">
+<li><a href="Image-Licensing-Issues.html#Image-Licensing-Issues">Image Licensing Issues</a>:       Distribution terms for images. 
+<li><a href="Image-File-Background.html#Image-File-Background">Image File Background</a>:        Why have image files? 
+<li><a href="Non_002dRelocatable-Image-Files.html#Non_002dRelocatable-Image-Files">Non-Relocatable Image Files</a>:   don't always work. 
+<li><a href="Data_002dRelocatable-Image-Files.html#Data_002dRelocatable-Image-Files">Data-Relocatable Image Files</a>:   are better. 
+<li><a href="Fully-Relocatable-Image-Files.html#Fully-Relocatable-Image-Files">Fully Relocatable Image Files</a>:   better yet. 
+<li><a href="Stack-and-Dictionary-Sizes.html#Stack-and-Dictionary-Sizes">Stack and Dictionary Sizes</a>:   Setting the default sizes for an image. 
+<li><a href="Running-Image-Files.html#Running-Image-Files">Running Image Files</a>:          <code>gforth -i </code><i>file</i> or <i>file</i>. 
+<li><a href="Modifying-the-Startup-Sequence.html#Modifying-the-Startup-Sequence">Modifying the Startup Sequence</a>:   and turnkey applications.
+
+</li></ul>
+<p>Fully Relocatable Image Files
+
+</p>
+<ul class="menu">
+<li><a href="gforthmi.html#gforthmi">gforthmi</a>:                     The normal way
+<li><a href="cross_002efs.html#cross_002efs">cross.fs</a>:                     The hard way
+
+</li></ul>
+<p>Engine
+
+</p>
+<ul class="menu">
+<li><a href="Portability.html#Portability">Portability</a>
+<li><a href="Threading.html#Threading">Threading</a>
+<li><a href="Primitives.html#Primitives">Primitives</a>
+<li><a href="Performance.html#Performance">Performance</a>
+
+</li></ul>
+<p>Threading
+
+</p>
+<ul class="menu">
+<li><a href="Scheduling.html#Scheduling">Scheduling</a>
+<li><a href="Direct-or-Indirect-Threaded_003f.html#Direct-or-Indirect-Threaded_003f">Direct or Indirect Threaded?</a>
+<li><a href="Dynamic-Superinstructions.html#Dynamic-Superinstructions">Dynamic Superinstructions</a>
+<li><a href="DOES_003e.html#DOES_003e">DOES&gt;</a>
+
+</li></ul>
+<p>Primitives
+
+</p>
+<ul class="menu">
+<li><a href="Automatic-Generation.html#Automatic-Generation">Automatic Generation</a>
+<li><a href="TOS-Optimization.html#TOS-Optimization">TOS Optimization</a>
+<li><a href="Produced-code.html#Produced-code">Produced code</a>
+
+</li></ul>
+<p>Cross Compiler
+
+</p>
+<ul class="menu">
+<li><a href="Using-the-Cross-Compiler.html#Using-the-Cross-Compiler">Using the Cross Compiler</a>
+<li><a href="How-the-Cross-Compiler-Works.html#How-the-Cross-Compiler-Works">How the Cross Compiler Works</a>
+
+</li></ul>
+<p>Licenses
+
+</p>
+<ul class="menu">
+<li><a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License">GNU Free Documentation License</a>:   License for copying this manual. 
+<li><a href="Copying.html#Copying">Copying</a>:                      GPL (for copying this software).
+
+   </ul>
+
+<!--  -->
+<!-- TODO much more blurb here. -->
+<!-- ****************************************************************** -->
+</body></html>
+

@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+<title>Object Interfaces - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Objects.html#Objects" title="Objects">
+<link rel="prev" href="Dividing-classes.html#Dividing-classes" title="Dividing classes">
+<link rel="next" href="Objects-Implementation.html#Objects-Implementation" title="Objects Implementation">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Object-Interfaces"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Objects-Implementation.html#Objects-Implementation">Objects Implementation</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Dividing-classes.html#Dividing-classes">Dividing classes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Objects.html#Objects">Objects</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.23.3.10 Object Interfaces</h5>
+
+<p><a name="index-object-interfaces-2492"></a><a name="index-interfaces-for-objects-2493"></a>
+In this model you can only call selectors defined in the class of the
+receiving objects or in one of its ancestors. If you call a selector
+with a receiving object that is not in one of these classes, the
+result is undefined; if you are lucky, the program crashes
+immediately.
+
+   <p><a name="index-selectors-common-to-hardly_002drelated-classes-2494"></a>Now consider the case when you want to have a selector (or several)
+available in two classes: You would have to add the selector to a
+common ancestor class, in the worst case to <code>object</code>. You
+may not want to do this, e.g., because someone else is responsible for
+this ancestor class.
+
+   <p>The solution for this problem is interfaces. An interface is a
+collection of selectors. If a class implements an interface, the
+selectors become available to the class and its descendents. A class
+can implement an unlimited number of interfaces. For the problem
+discussed above, we would define an interface for the selector(s), and
+both classes would implement the interface.
+
+   <p>As an example, consider an interface <code>storage</code> for
+writing objects to disk and getting them back, and a class
+<code>foo</code> that implements it. The code would look like this:
+
+   <p><a name="index-g_t_0040code_007binterface_007d-usage-2495"></a><a name="index-g_t_0040code_007bend_002dinterface_007d-usage-2496"></a><a name="index-g_t_0040code_007bimplementation_007d-usage-2497"></a>
+<pre class="example">     interface
+       selector write ( file object -- )
+       selector read1 ( file object -- )
+     end-interface storage
+     
+     bar class
+       storage implementation
+     
+     ... overrides write
+     ... overrides read1
+     ...
+     end-class foo
+</pre>
+   <p class="noindent">(I would add a word <code>read</code> <i>( file &ndash; object )</i> that uses
+<code>read1</code> internally, but that's beyond the point illustrated
+here.)
+
+   <p>Note that you cannot use <code>protected</code> in an interface; and
+of course you cannot define fields.
+
+   <p>In the Neon model, all selectors are available for all classes;
+therefore it does not need interfaces. The price you pay in this model
+is slower late binding, and therefore, added complexity to avoid late
+binding.
+
+   </body></html>
+

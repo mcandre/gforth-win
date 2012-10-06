@@ -1,0 +1,107 @@
+<html lang="en">
+<head>
+<title>TOS Optimization - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Primitives.html#Primitives" title="Primitives">
+<link rel="prev" href="Automatic-Generation.html#Automatic-Generation" title="Automatic Generation">
+<link rel="next" href="Produced-code.html#Produced-code" title="Produced code">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="TOS-Optimization"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Produced-code.html#Produced-code">Produced code</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Automatic-Generation.html#Automatic-Generation">Automatic Generation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Primitives.html#Primitives">Primitives</a>
+<hr>
+</div>
+
+<h4 class="subsection">14.3.2 TOS Optimization</h4>
+
+<p><a name="index-TOS-optimization-for-primitives-3491"></a><a name="index-primitives_002c-keeping-the-TOS-in-a-register-3492"></a>
+An important optimization for stack machine emulators, e.g., Forth
+engines, is keeping  one or more of the top stack items in
+registers.  If a word has the stack effect <i>in1</i>...<i>inx</i> <code>--</code>
+<i>out1</i>...<i>outy</i>, keeping the top <i>n</i> items in registers
+     <ul>
+<li>is better than keeping <i>n-1</i> items, if <i>x&gt;=n</i> and <i>y&gt;=n</i>,
+due to fewer loads from and stores to the stack. 
+<li>is slower than keeping <i>n-1</i> items, if <i>x&lt;&gt;y</i> and <i>x&lt;n</i> and
+<i>y&lt;n</i>, due to additional moves between registers. 
+</ul>
+
+   <p><a name="index-g_t_002dDUSE_005fTOS-3493"></a><a name="index-g_t_002dDUSE_005fNO_005fTOS-3494"></a>In particular, keeping one item in a register is never a disadvantage,
+if there are enough registers. Keeping two items in registers is a
+disadvantage for frequent words like <code>?branch</code>, constants,
+variables, literals and <code>i</code>. Therefore our generator only produces
+code that keeps zero or one items in registers. The generated C code
+covers both cases; the selection between these alternatives is made at
+C-compile time using the switch <code>-DUSE_TOS</code>. <code>TOS</code> in the C
+code for <code>+</code> is just a simple variable name in the one-item case,
+otherwise it is a macro that expands into <code>sp[0]</code>. Note that the
+GNU C compiler tries to keep simple variables like <code>TOS</code> in
+registers, and it usually succeeds, if there are enough registers.
+
+   <p><a name="index-g_t_002dDUSE_005fFTOS-3495"></a><a name="index-g_t_002dDUSE_005fNO_005fFTOS-3496"></a>The primitive generator performs the TOS optimization for the
+floating-point stack, too (<code>-DUSE_FTOS</code>). For floating-point
+operations the benefit of this optimization is even larger:
+floating-point operations take quite long on most processors, but can be
+performed in parallel with other operations as long as their results are
+not used. If the FP-TOS is kept in a register, this works. If
+it is kept on the stack, i.e., in memory, the store into memory has to
+wait for the result of the floating-point operation, lengthening the
+execution time of the primitive considerably.
+
+   <p>The TOS optimization makes the automatic generation of primitives a
+bit more complicated. Just replacing all occurrences of <code>sp[0]</code> by
+<code>TOS</code> is not sufficient. There are some special cases to
+consider:
+     <ul>
+<li>In the case of <code>dup ( w -- w w )</code> the generator must not
+eliminate the store to the original location of the item on the stack,
+if the TOS optimization is turned on. 
+<li>Primitives with stack effects of the form <code>--</code>
+<i>out1</i>...<i>outy</i> must store the TOS to the stack at the start. 
+Likewise, primitives with the stack effect <i>in1</i>...<i>inx</i> <code>--</code>
+must load the TOS from the stack at the end. But for the null stack
+effect <code>--</code> no stores or loads should be generated. 
+</ul>
+
+   </body></html>
+

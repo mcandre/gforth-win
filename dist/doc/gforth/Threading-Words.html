@@ -1,0 +1,184 @@
+<html lang="en">
+<head>
+<title>Threading Words - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words" title="Assembler and Code Words">
+<link rel="next" href="Passing-Commands-to-the-OS.html#Passing-Commands-to-the-OS" title="Passing Commands to the OS">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Threading-Words"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Passing-Commands-to-the-OS.html#Passing-Commands-to-the-OS">Passing Commands to the OS</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words">Assembler and Code Words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.27 Threading Words</h3>
+
+<p><a name="index-threading-words-2958"></a>
+<a name="index-code-address-2959"></a>These words provide access to code addresses and other threading stuff
+in Gforth (and, possibly, other interpretive Forths). It more or less
+abstracts away the differences between direct and indirect threading
+(and, for direct threading, the machine dependences). However, at
+present this wordset is still incomplete. It is also pretty low-level;
+some day it will hopefully be made unnecessary by an internals wordset
+that abstracts implementation details away completely.
+
+   <p>The terminology used here stems from indirect threaded Forth systems; in
+such a system, the XT of a word is represented by the CFA (code field
+address) of a word; the CFA points to a cell that contains the code
+address.  The code address is the address of some machine code that
+performs the run-time action of invoking the word (e.g., the
+<code>dovar:</code> routine pushes the address of the body of the word (a
+variable) on the stack
+).
+
+   <p><a name="index-code-address-2960"></a><a name="index-code-field-address-2961"></a>In an indirect threaded Forth, you can get the code address of <i>name</i>
+with <code>' </code><i>name</i><code> @</code>; in Gforth you can get it with <code>' </code><i>name</i><code>
+&gt;code-address</code>, independent of the threading method.
+
+   <p><a name="index-threading_002dmethod-_0040var_007b-_002d_002d-n--_007d--gforth-2962"></a><a name="index-g_t_0040code_007bthreading_002dmethod_007d-2963"></a><a name="index-threading_002dmethod-2964"></a>
+<pre class="format"><code>threading-method</code>       <i>&ndash; n </i>       gforth       &ldquo;threading-method&rdquo;
+</pre>
+   <p>0 if the engine is direct threaded. Note that this may change during
+the lifetime of an image.
+
+   <p><a name="index-g_t_003ecode_002daddress-_0040var_007b-xt-_002d_002d-c_005faddr---_007d--gforth-2965"></a><a name="index-g_t_0040code_007b_003ecode_002daddress_007d-2966"></a><a name="index-g_t_003ecode_002daddress-2967"></a>
+<pre class="format"><code>&gt;code-address</code>       <i>xt &ndash; c_addr  </i>       gforth       &ldquo;&gt;code-address&rdquo;
+</pre>
+   <p><i>c-addr</i> is the code address of the word <i>xt</i>.
+
+   <p><a name="index-code_002daddress_0021-_0040var_007b-c_005faddr-xt-_002d_002d---_007d--gforth-2968"></a><a name="index-g_t_0040code_007bcode_002daddress_0021_007d-2969"></a><a name="index-code_002daddress_0021-2970"></a>
+<pre class="format"><code>code-address!</code>       <i>c_addr xt &ndash;  </i>       gforth       &ldquo;code-address!&rdquo;
+</pre>
+   <p>Create a code field with code address <i>c-addr</i> at <i>xt</i>.
+
+   <p><a name="index-g_t_0040code_007bdoes_003e_007d_002dhandler-2971"></a><a name="index-g_t_0040code_007bdoes_003e_007d_002dcode-2972"></a>For a word defined with <code>DOES&gt;</code>, the code address usually points to
+a jump instruction (the <dfn>does-handler</dfn>) that jumps to the dodoes
+routine (in Gforth on some platforms, it can also point to the dodoes
+routine itself).  What you are typically interested in, though, is
+whether a word is a <code>DOES&gt;</code>-defined word, and what Forth code it
+executes; <code>&gt;does-code</code> tells you that.
+
+   <p><a name="index-g_t_003edoes_002dcode-_0040var_007b-xt-_002d_002d-a_005faddr---_007d--gforth-2973"></a><a name="index-g_t_0040code_007b_003edoes_002dcode_007d-2974"></a><a name="index-g_t_003edoes_002dcode-2975"></a>
+<pre class="format"><code>&gt;does-code</code>       <i>xt &ndash; a_addr  </i>       gforth       &ldquo;&gt;does-code&rdquo;
+</pre>
+   <p>If <i>xt</i> is the execution token of a child of a <code>DOES&gt;</code> word,
+<i>a-addr</i> is the start of the Forth code after the <code>DOES&gt;</code>;
+Otherwise <i>a-addr</i> is 0.
+
+   <p>To create a <code>DOES&gt;</code>-defined word with the following basic words,
+you have to set up a <code>DOES&gt;</code>-handler with <code>does-handler!</code>;
+<code>/does-handler</code> aus behind you have to place your executable Forth
+code.  Finally you have to create a word and modify its behaviour with
+<code>does-handler!</code>.
+
+   <p><a name="index-does_002dcode_0021-_0040var_007b-a_005faddr-xt-_002d_002d---_007d--gforth-2976"></a><a name="index-g_t_0040code_007bdoes_002dcode_0021_007d-2977"></a><a name="index-does_002dcode_0021-2978"></a>
+<pre class="format"><code>does-code!</code>       <i>a_addr xt &ndash;  </i>       gforth       &ldquo;does-code!&rdquo;
+</pre>
+   <p>Create a code field at <i>xt</i> for a child of a <code>DOES&gt;</code>-word;
+<i>a-addr</i> is the start of the Forth code after <code>DOES&gt;</code>.
+
+   <p><a name="index-does_002dhandler_0021-_0040var_007b-a_005faddr-_002d_002d---_007d--gforth-2979"></a><a name="index-g_t_0040code_007bdoes_002dhandler_0021_007d-2980"></a><a name="index-does_002dhandler_0021-2981"></a>
+<pre class="format"><code>does-handler!</code>       <i>a_addr &ndash;  </i>       gforth       &ldquo;does-handler!&rdquo;
+</pre>
+   <p>Create a <code>DOES&gt;</code>-handler at address <i>a-addr</i>. Normally,
+<i>a-addr</i> points just behind a <code>DOES&gt;</code>.
+
+   <p><a name="index-g_t_002fdoes_002dhandler-_0040var_007b-_002d_002d-n---_007d--gforth-2982"></a><a name="index-g_t_0040code_007b_002fdoes_002dhandler_007d-2983"></a><a name="index-g_t_002fdoes_002dhandler-2984"></a>
+<pre class="format"><code>/does-handler</code>       <i>&ndash; n  </i>       gforth       &ldquo;/does-handler&rdquo;
+</pre>
+   <p>The size of a <code>DOES&gt;</code>-handler (includes possible padding).
+
+   <p>The code addresses produced by various defining words are produced by
+the following words:
+
+   <p><a name="index-docol_003a-_0040var_007b-_002d_002d-addr---_007d--gforth-2985"></a><a name="index-g_t_0040code_007bdocol_003a_007d-2986"></a><a name="index-docol_003a-2987"></a>
+<pre class="format"><code>docol:</code>       <i>&ndash; addr  </i>       gforth       &ldquo;docol:&rdquo;
+</pre>
+   <p>The code address of a colon definition.
+
+   <p><a name="index-docon_003a-_0040var_007b-_002d_002d-addr---_007d--gforth-2988"></a><a name="index-g_t_0040code_007bdocon_003a_007d-2989"></a><a name="index-docon_003a-2990"></a>
+<pre class="format"><code>docon:</code>       <i>&ndash; addr  </i>       gforth       &ldquo;docon:&rdquo;
+</pre>
+   <p>The code address of a <code>CONSTANT</code>.
+
+   <p><a name="index-dovar_003a-_0040var_007b-_002d_002d-addr---_007d--gforth-2991"></a><a name="index-g_t_0040code_007bdovar_003a_007d-2992"></a><a name="index-dovar_003a-2993"></a>
+<pre class="format"><code>dovar:</code>       <i>&ndash; addr  </i>       gforth       &ldquo;dovar:&rdquo;
+</pre>
+   <p>The code address of a <code>CREATE</code>d word.
+
+   <p><a name="index-douser_003a-_0040var_007b-_002d_002d-addr---_007d--gforth-2994"></a><a name="index-g_t_0040code_007bdouser_003a_007d-2995"></a><a name="index-douser_003a-2996"></a>
+<pre class="format"><code>douser:</code>       <i>&ndash; addr  </i>       gforth       &ldquo;douser:&rdquo;
+</pre>
+   <p>The code address of a <code>USER</code> variable.
+
+   <p><a name="index-dodefer_003a-_0040var_007b-_002d_002d-addr---_007d--gforth-2997"></a><a name="index-g_t_0040code_007bdodefer_003a_007d-2998"></a><a name="index-dodefer_003a-2999"></a>
+<pre class="format"><code>dodefer:</code>       <i>&ndash; addr  </i>       gforth       &ldquo;dodefer:&rdquo;
+</pre>
+   <p>The code address of a <code>defer</code>ed word.
+
+   <p><a name="index-dofield_003a-_0040var_007b-_002d_002d-addr---_007d--gforth-3000"></a><a name="index-g_t_0040code_007bdofield_003a_007d-3001"></a><a name="index-dofield_003a-3002"></a>
+<pre class="format"><code>dofield:</code>       <i>&ndash; addr  </i>       gforth       &ldquo;dofield:&rdquo;
+</pre>
+   <p>The code address of a <code>field</code>.
+
+   <p><a name="index-definer-3003"></a>The following two words generalize <code>&gt;code-address</code>,
+<code>&gt;does-code</code>, <code>code-address!</code>, and <code>does-code!</code>:
+
+   <p><a name="index-g_t_003edefiner-_0040var_007b-xt-_002d_002d-definer---_007d--gforth-3004"></a><a name="index-g_t_0040code_007b_003edefiner_007d-3005"></a><a name="index-g_t_003edefiner-3006"></a>
+<pre class="format"><code>&gt;definer</code>       <i>xt &ndash; definer  </i>       gforth       &ldquo;&gt;definer&rdquo;
+</pre>
+   <p><var>Definer</var> is a unique identifier for the way the <var>xt</var>
+was defined.  Words defined with different <code>does&gt;</code>-codes
+have different definers.  The definer can be used for
+comparison and in <code>definer!</code>.
+
+   <p><a name="index-definer_0021-_0040var_007b-definer-xt-_002d_002d---_007d--gforth-3007"></a><a name="index-g_t_0040code_007bdefiner_0021_007d-3008"></a><a name="index-definer_0021-3009"></a>
+<pre class="format"><code>definer!</code>       <i>definer xt &ndash;  </i>       gforth       &ldquo;definer!&rdquo;
+</pre>
+   <p>The word represented by <var>xt</var> changes its behaviour to the
+behaviour associated with <var>definer</var>.
+
+<!--  -->
+</body></html>
+

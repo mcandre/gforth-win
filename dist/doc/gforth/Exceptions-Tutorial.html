@@ -1,0 +1,119 @@
+<html lang="en">
+<head>
+<title>Exceptions Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Execution-Tokens-Tutorial.html#Execution-Tokens-Tutorial" title="Execution Tokens Tutorial">
+<link rel="next" href="Defining-Words-Tutorial.html#Defining-Words-Tutorial" title="Defining Words Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Exceptions-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Defining-Words-Tutorial.html#Defining-Words-Tutorial">Defining Words Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Execution-Tokens-Tutorial.html#Execution-Tokens-Tutorial">Execution Tokens Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.30 Exceptions</h3>
+
+<p><a name="index-exceptions-tutorial-121"></a>
+<code>throw ( n -- )</code> causes an exception unless n is zero.
+
+<pre class="example">     100 throw .s
+     0 throw .s
+</pre>
+   <p><code>catch ( ... xt -- ... n )</code> behaves similar to <code>execute</code>, but
+it catches exceptions and pushes the number of the exception on the
+stack (or 0, if the xt executed without exception).  If there was an
+exception, the stacks have the same depth as when entering <code>catch</code>:
+
+<pre class="example">     .s
+     3 0 ' / catch .s
+     3 2 ' / catch .s
+</pre>
+   <blockquote>
+<b>Assignment:</b> Try the same with <code>execute</code> instead of <code>catch</code>. 
+</blockquote>
+
+   <p><code>Throw</code> always jumps to the dynamically next enclosing
+<code>catch</code>, even if it has to leave several call levels to achieve
+this:
+
+<pre class="example">     : foo 100 throw ;
+     : foo1 foo ." after foo" ;
+     : bar ['] foo1 catch ;
+     bar .
+</pre>
+   <p>It is often important to restore a value upon leaving a definition, even
+if the definition is left through an exception.  You can ensure this
+like this:
+
+<pre class="example">     : ...
+        save-x
+        ['] word-changing-x catch ( ... n )
+        restore-x
+        ( ... n ) throw ;
+</pre>
+   <p>However, this is still not safe against, e.g., the user pressing
+<kbd>Ctrl-C</kbd> when execution is between the <code>catch</code> and
+<code>restore-x</code>.
+
+   <p>Gforth provides an alternative exception handling syntax that is safe
+against such cases: <code>try ... restore ... endtry</code>.  If the code
+between <code>try</code> and <code>endtry</code> has an exception, the stack
+depths are restored, the exception number is pushed on the stack, and
+the execution continues right after <code>restore</code>.
+
+   <p>The safer equivalent to the restoration code above is
+
+<pre class="example">     : ...
+       save-x
+       try
+         word-changing-x 0
+       restore
+         restore-x
+       endtry
+       throw ;
+</pre>
+   <p>Reference: <a href="Exception-Handling.html#Exception-Handling">Exception Handling</a>.
+
+   </body></html>
+

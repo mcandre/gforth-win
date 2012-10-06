@@ -1,0 +1,96 @@
+<html lang="en">
+<head>
+<title>Declaring OS-level libraries - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="C-Interface.html#C-Interface" title="C Interface">
+<link rel="prev" href="Defining-library-interfaces.html#Defining-library-interfaces" title="Defining library interfaces">
+<link rel="next" href="Callbacks.html#Callbacks" title="Callbacks">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Declaring-OS-level-libraries"></a>
+<a name="Declaring-OS_002dlevel-libraries"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Callbacks.html#Callbacks">Callbacks</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Defining-library-interfaces.html#Defining-library-interfaces">Defining library interfaces</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="C-Interface.html#C-Interface">C Interface</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.25.5 Declaring OS-level libraries</h4>
+
+<p><a name="index-Shared-libraries-in-C-interface-2908"></a><a name="index-Dynamically-linked-libraries-in-C-interface-2909"></a><a name="index-Libraries-in-C-interface-2910"></a>
+For calling some C functions, you need to link with a specific
+OS-level library that contains that function.  E.g., the <code>sin</code>
+function requires linking a special library by using the command line
+switch <code>-lm</code>.  In our C iterface you do the equivalent thing by
+calling <code>add-lib</code> as follows:
+
+<pre class="example">     clear-libs
+     s" m" add-lib
+     \c #include &lt;math.h&gt;
+     c-function sin sin r -- r
+</pre>
+   <p>First, you clear any libraries that may have been declared earlier
+(you don't need them for <code>sin</code>); then you add the <code>m</code>
+library (actually <code>libm.so</code> or somesuch) to the currently
+declared libraries; you can add as many as you need.  Finally you
+declare the function as shown above.  Typically you will use the same
+set of library declarations for many function declarations; you need
+to write only one set for that, right at the beginning.
+
+   <p>Note that you must not call <code>clear-libs</code> inside
+<code>c-library...end-c-library</code>; however, <code>c-library</code> performs
+the function of <code>clear-libs</code>, so <code>clear-libs</code> is not
+necessary, and you usually want to put <code>add-lib</code> calls inside
+<code>c-library...end-c-library</code>.
+
+   <p><a name="index-clear_002dlibs-_0040var_007b-_002d_002d---_007d--gforth-2911"></a><a name="index-g_t_0040code_007bclear_002dlibs_007d-2912"></a><a name="index-clear_002dlibs-2913"></a>
+<pre class="format"><code>clear-libs</code>       <i>&ndash;  </i>       gforth       &ldquo;clear-libs&rdquo;
+</pre>
+   <p>Clear the list of libs
+
+   <p><a name="index-add_002dlib-_0040var_007b-c_002daddr-u-_002d_002d---_007d--gforth-2914"></a><a name="index-g_t_0040code_007badd_002dlib_007d-2915"></a><a name="index-add_002dlib-2916"></a>
+<pre class="format"><code>add-lib</code>       <i>c-addr u &ndash;  </i>       gforth       &ldquo;add-lib&rdquo;
+</pre>
+   <p>Add library lib<i>string</i> to the list of libraries, where
+<i>string</i> is represented by <i>c-addr u</i>.
+
+   </body></html>
+

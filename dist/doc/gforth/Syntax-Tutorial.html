@@ -1,0 +1,80 @@
+<html lang="en">
+<head>
+<title>Syntax Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Starting-Gforth-Tutorial.html#Starting-Gforth-Tutorial" title="Starting Gforth Tutorial">
+<link rel="next" href="Crash-Course-Tutorial.html#Crash-Course-Tutorial" title="Crash Course Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Syntax-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Crash-Course-Tutorial.html#Crash-Course-Tutorial">Crash Course Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Starting-Gforth-Tutorial.html#Starting-Gforth-Tutorial">Starting Gforth Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.2 Syntax</h3>
+
+<p><a name="index-syntax-tutorial-77"></a>
+A <dfn>word</dfn> is a sequence of arbitrary characters (except white
+space).  Words are separated by white space.  E.g., each of the
+following lines contains exactly one word:
+
+<pre class="example">     word
+     !@#$%^&amp;*()
+     1234567890
+     5!a
+</pre>
+   <p>A frequent beginner's error is to leave away necessary white space,
+resulting in an error like `<samp><span class="samp">Undefined word</span></samp>'; so if you see such an
+error, check if you have put spaces wherever necessary.
+
+<pre class="example">     ." hello, world" \ correct
+     ."hello, world"  \ gives an "Undefined word" error
+</pre>
+   <p>Gforth and most other Forth systems ignore differences in case (they are
+case-insensitive), i.e., `<samp><span class="samp">word</span></samp>' is the same as `<samp><span class="samp">Word</span></samp>'.  If
+your system is case-sensitive, you may have to type all the examples
+given here in upper case.
+
+   </body></html>
+

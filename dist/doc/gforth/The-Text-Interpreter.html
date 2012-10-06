@@ -1,0 +1,257 @@
+<html lang="en">
+<head>
+<title>The Text Interpreter - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Compiling-words.html#Compiling-words" title="Compiling words">
+<link rel="next" href="The-Input-Stream.html#The-Input-Stream" title="The Input Stream">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="The-Text-Interpreter"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="The-Input-Stream.html#The-Input-Stream">The Input Stream</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Compiling-words.html#Compiling-words">Compiling words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.13 The Text Interpreter</h3>
+
+<p><a name="index-interpreter-_002d-outer-1430"></a><a name="index-text-interpreter-1431"></a><a name="index-outer-interpreter-1432"></a>
+<!-- Should we really describe all these ugly details?  IMO the text -->
+<!-- interpreter should be much cleaner, but that may not be possible within -->
+<!-- ANS Forth. - anton -->
+<!-- nac-> I wanted to explain how it works to show how you can exploit -->
+<!-- it in your own programs. When I was writing a cross-compiler, figuring out -->
+<!-- some of these gory details was very helpful to me. None of the textbooks -->
+<!-- I've seen cover it, and the most modern Forth textbook - Forth Inc's, -->
+<!-- seems to positively avoid going into too much detail for some of -->
+<!-- the internals. -->
+
+<!-- anton: ok.  I wonder, though, if this is the right place; for some stuff -->
+<!-- it is; for the ugly details, I would prefer another place.  I wonder -->
+<!-- whether we should have a chapter before "Words" that describes some -->
+<!-- basic concepts referred to in words, and a chapter after "Words" that -->
+<!-- describes implementation details. -->
+<p>The text interpreter<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a> is an endless loop
+that processes input from the current input device. It is also called
+the outer interpreter, in contrast to the inner interpreter
+(see <a href="Engine.html#Engine">Engine</a>) which executes the compiled Forth code on interpretive
+implementations.
+
+   <p><a name="index-interpret-state-1433"></a><a name="index-compile-state-1434"></a>The text interpreter operates in one of two states: <dfn>interpret
+state</dfn> and <dfn>compile state</dfn>. The current state is defined by the
+aptly-named variable <code>state</code>.
+
+   <p>This section starts by describing how the text interpreter behaves when
+it is in interpret state, processing input from the user input device &ndash;
+the keyboard. This is the mode that a Forth system is in after it starts
+up.
+
+   <p><a name="index-input-buffer-1435"></a><a name="index-terminal-input-buffer-1436"></a>The text interpreter works from an area of memory called the <dfn>input
+buffer</dfn><a rel="footnote" href="#fn-2" name="fnd-2"><sup>2</sup></a>, which stores your keyboard input when you press the
+&lt;RET&gt; key. Starting at the beginning of the input buffer, it skips
+leading spaces (called <dfn>delimiters</dfn>) then parses a string (a
+sequence of non-space characters) until it reaches either a space
+character or the end of the buffer. Having parsed a string, it makes two
+attempts to process it:
+
+   <p><a name="index-dictionary-1437"></a>
+     <ul>
+<li>It looks for the string in a <dfn>dictionary</dfn> of definitions. If the
+string is found, the string names a <dfn>definition</dfn> (also known as a
+<dfn>word</dfn>) and the dictionary search returns information that allows
+the text interpreter to perform the word's <dfn>interpretation
+semantics</dfn>. In most cases, this simply means that the word will be
+executed. 
+<li>If the string is not found in the dictionary, the text interpreter
+attempts to treat it as a number, using the rules described in
+<a href="Number-Conversion.html#Number-Conversion">Number Conversion</a>. If the string represents a legal number in the
+current radix, the number is pushed onto a parameter stack (the data
+stack for integers, the floating-point stack for floating-point
+numbers). 
+</ul>
+
+   <p>If both attempts fail, or if the word is found in the dictionary but has
+no interpretation semantics<a rel="footnote" href="#fn-3" name="fnd-3"><sup>3</sup></a> the text interpreter discards the
+remainder of the input buffer, issues an error message and waits for
+more input. If one of the attempts succeeds, the text interpreter
+repeats the parsing process until the whole of the input buffer has been
+processed, at which point it prints the status message &ldquo;<code> ok</code>&rdquo;
+and waits for more input.
+
+<!-- anton: this should be in the input stream subsection (or below it) -->
+<p><a name="index-parse-area-1438"></a>The text interpreter keeps track of its position in the input buffer by
+updating a variable called <code>&gt;IN</code> (pronounced &ldquo;to-in&rdquo;). The value
+of <code>&gt;IN</code> starts out as 0, indicating an offset of 0 from the start
+of the input buffer. The region from offset <code>&gt;IN @</code> to the end of
+the input buffer is called the <dfn>parse area</dfn><a rel="footnote" href="#fn-4" name="fnd-4"><sup>4</sup></a>. 
+This example shows how <code>&gt;IN</code> changes as the text interpreter parses
+the input buffer:
+
+<pre class="example">     : remaining &gt;IN @ SOURCE 2 PICK - -ROT + SWAP
+       CR ." -&gt;" TYPE ." &lt;-" ; IMMEDIATE
+     
+     1 2 3 remaining + remaining .
+     
+     : foo 1 2 3 remaining SWAP remaining ;
+</pre>
+   <p class="noindent">The result is:
+
+<pre class="example">     -&gt;+ remaining .&lt;-
+     -&gt;.&lt;-5  ok
+     
+     -&gt;SWAP remaining ;-&lt;
+     -&gt;;&lt;-  ok
+</pre>
+   <p><a name="index-parsing-words-1439"></a>The value of <code>&gt;IN</code> can also be modified by a word in the input
+buffer that is executed by the text interpreter.  This means that a word
+can &ldquo;trick&rdquo; the text interpreter into either skipping a section of the
+input buffer<a rel="footnote" href="#fn-5" name="fnd-5"><sup>5</sup></a> or into parsing a
+section twice. For example:
+
+<pre class="example">     : lat ." &lt;&lt;foo&gt;&gt;" ;
+     : flat ." &lt;&lt;bar&gt;&gt;" &gt;IN DUP @ 3 - SWAP ! ;
+</pre>
+   <p class="noindent">When <code>flat</code> is executed, this output is produced<a rel="footnote" href="#fn-6" name="fnd-6"><sup>6</sup></a>:
+
+<pre class="example">     &lt;&lt;bar&gt;&gt;&lt;&lt;foo&gt;&gt;
+</pre>
+   <p>This technique can be used to work around some of the interoperability
+problems of parsing words.  Of course, it's better to avoid parsing
+words where possible.
+
+<p class="noindent">Two important notes about the behaviour of the text interpreter:
+
+     <ul>
+<li>It processes each input string to completion before parsing additional
+characters from the input buffer. 
+<li>It treats the input buffer as a read-only region (and so must your code). 
+</ul>
+
+<p class="noindent">When the text interpreter is in compile state, its behaviour changes in
+these ways:
+
+     <ul>
+<li>If a parsed string is found in the dictionary, the text interpreter will
+perform the word's <dfn>compilation semantics</dfn>. In most cases, this
+simply means that the execution semantics of the word will be appended
+to the current definition. 
+<li>When a number is encountered, it is compiled into the current definition
+(as a literal) rather than being pushed onto a parameter stack. 
+<li>If an error occurs, <code>state</code> is modified to put the text interpreter
+back into interpret state. 
+<li>Each time a line is entered from the keyboard, Gforth prints
+&ldquo;<code> compiled</code>&rdquo; rather than &ldquo; <code>ok</code>&rdquo;. 
+</ul>
+
+   <p><a name="index-text-interpreter-_002d-input-sources-1440"></a>When the text interpreter is using an input device other than the
+keyboard, its behaviour changes in these ways:
+
+     <ul>
+<li>When the parse area is empty, the text interpreter attempts to refill
+the input buffer from the input source. When the input source is
+exhausted, the input source is set back to the previous input source. 
+<li>It doesn't print out &ldquo;<code> ok</code>&rdquo; or &ldquo;<code> compiled</code>&rdquo; messages each
+time the parse area is emptied. 
+<li>If an error occurs, the input source is set back to the user input
+device. 
+</ul>
+
+   <p>You can read about this in more detail in <a href="Input-Sources.html#Input-Sources">Input Sources</a>.
+
+   <p><a name="index-g_t_003ein-_0040var_007b-_002d_002d-addr---_007d--core-1441"></a><a name="index-g_t_0040code_007b_003ein_007d-1442"></a><a name="index-g_t_003ein-1443"></a>
+<pre class="format"><code>&gt;in</code>       <i>&ndash; addr  </i>       core       &ldquo;to-in&rdquo;
+</pre>
+   <p><code>input-var</code> variable &ndash; <i>a-addr</i> is the address of a
+cell containing the char offset from the start of the input
+buffer to the start of the parse area.
+
+   <p><a name="index-source-_0040var_007b-_002d_002d-addr-u---_007d--core-1444"></a><a name="index-g_t_0040code_007bsource_007d-1445"></a><a name="index-source-1446"></a>
+<pre class="format"><code>source</code>       <i>&ndash; addr u  </i>       core       &ldquo;source&rdquo;
+</pre>
+   <p>Return address <i>addr</i> and length <i>u</i> of the current input
+buffer
+
+   <p><a name="index-tib-_0040var_007b-_002d_002d-addr---_007d--core_002dext_002dobsolescent-1447"></a><a name="index-g_t_0040code_007btib_007d-1448"></a><a name="index-tib-1449"></a>
+<pre class="format"><code>tib</code>       <i>&ndash; addr  </i>       core-ext-obsolescent       &ldquo;t-i-b&rdquo;
+</pre>
+   <p><a name="index-g_t_0023tib-_0040var_007b-_002d_002d-addr---_007d--core_002dext_002dobsolescent-1450"></a><a name="index-g_t_0040code_007b_0023tib_007d-1451"></a><a name="index-g_t_0023tib-1452"></a>
+<pre class="format"><code>#tib</code>       <i>&ndash; addr  </i>       core-ext-obsolescent       &ldquo;number-t-i-b&rdquo;
+</pre>
+   <p><code>input-var</code> variable &ndash; <i>a-addr</i> is the address of a
+cell containing the number of characters in the terminal input
+buffer. OBSOLESCENT: <code>source</code> superceeds the function of
+this word.
+
+<ul class="menu">
+<li><a accesskey="1" href="Input-Sources.html#Input-Sources">Input Sources</a>
+<li><a accesskey="2" href="Number-Conversion.html#Number-Conversion">Number Conversion</a>
+<li><a accesskey="3" href="Interpret_002fCompile-states.html#Interpret_002fCompile-states">Interpret/Compile states</a>
+<li><a accesskey="4" href="Interpreter-Directives.html#Interpreter-Directives">Interpreter Directives</a>
+</ul>
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> This is an expanded version of the
+material in <a href="Introducing-the-Text-Interpreter.html#Introducing-the-Text-Interpreter">Introducing the Text Interpreter</a>.</p>
+
+   <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> When the text interpreter is processing input from the
+keyboard, this area of memory is called the <dfn>terminal input buffer</dfn>
+(TIB) and is addressed by the (obsolescent) words <code>TIB</code> and
+<code>#TIB</code>.</p>
+
+   <p class="footnote"><small>[<a name="fn-3" href="#fnd-3">3</a>]</small> This happens if the word was
+defined as <code>COMPILE-ONLY</code>.</p>
+
+   <p class="footnote"><small>[<a name="fn-4" href="#fnd-4">4</a>]</small> In other words,
+the text interpreter processes the contents of the input buffer by
+parsing strings from the parse area until the parse area is empty.</p>
+
+   <p class="footnote"><small>[<a name="fn-5" href="#fnd-5">5</a>]</small> This is how parsing words work.</p>
+
+   <p class="footnote"><small>[<a name="fn-6" href="#fnd-6">6</a>]</small> Exercise
+for the reader: what would happen if the <code>3</code> were replaced with
+<code>4</code>?</p>
+
+   <p><hr></div>
+
+   </body></html>
+

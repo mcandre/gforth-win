@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+<title>Anonymous Definitions - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Defining-Words.html#Defining-Words" title="Defining Words">
+<link rel="prev" href="Colon-Definitions.html#Colon-Definitions" title="Colon Definitions">
+<link rel="next" href="Supplying-names.html#Supplying-names" title="Supplying names">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Anonymous-Definitions"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Supplying-names.html#Supplying-names">Supplying names</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Colon-Definitions.html#Colon-Definitions">Colon Definitions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Defining-Words.html#Defining-Words">Defining Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.9.6 Anonymous Definitions</h4>
+
+<p><a name="index-colon-definitions-1234"></a><a name="index-defining-words-without-name-1235"></a>
+Sometimes you want to define an <dfn>anonymous word</dfn>; a word without a
+name. You can do this with:
+
+   <p><a name="index-g_t_003anoname-_0040var_007b-_002d_002d-xt-colon_002dsys---_007d--core_002dext-1236"></a><a name="index-g_t_0040code_007b_003anoname_007d-1237"></a>
+<pre class="format"><code>:noname</code>       <i>&ndash; xt colon-sys  </i>       core-ext       &ldquo;colon-no-name&rdquo;
+</pre>
+   <p>This leaves the execution token for the word on the stack after the
+closing <code>;</code>. Here's an example in which a deferred word is
+initialised with an <code>xt</code> from an anonymous colon definition:
+
+<pre class="example">     Defer deferred
+     :noname ( ... -- ... )
+       ... ;
+     IS deferred
+</pre>
+   <p class="noindent">Gforth provides an alternative way of doing this, using two separate
+words:
+
+   <p><a name="index-noname-_0040var_007b-_002d_002d---_007d--gforth-1238"></a><a name="index-g_t_0040code_007bnoname_007d-1239"></a><a name="index-noname-1240"></a>
+<pre class="format"><code>noname</code>       <i>&ndash;  </i>       gforth       &ldquo;noname&rdquo;
+</pre>
+   <p>The next defined word will be anonymous. The defining word will
+leave the input stream alone. The xt of the defined word will
+be given by <code>latestxt</code>.
+
+   <p><a name="index-execution-token-of-last-defined-word-1241"></a><a name="index-latestxt-_0040var_007b-_002d_002d-xt---_007d--gforth-1242"></a><a name="index-g_t_0040code_007blatestxt_007d-1243"></a><a name="index-latestxt-1244"></a>
+<pre class="format"><code>latestxt</code>       <i>&ndash; xt  </i>       gforth       &ldquo;latestxt&rdquo;
+</pre>
+   <p><i>xt</i> is the execution token of the last word defined.
+
+<p class="noindent">The previous example can be rewritten using <code>noname</code> and
+<code>latestxt</code>:
+
+<pre class="example">     Defer deferred
+     noname : ( ... -- ... )
+       ... ;
+     latestxt IS deferred
+</pre>
+   <p class="noindent"><code>noname</code> works with any defining word, not just <code>:</code>.
+
+   <p><code>latestxt</code> also works when the last word was not defined as
+<code>noname</code>.  It does not work for combined words, though.  It also has
+the useful property that is is valid as soon as the header for a
+definition has been built. Thus:
+
+<pre class="example">     latestxt . : foo [ latestxt . ] ; ' foo .
+</pre>
+   <p class="noindent">prints 3 numbers; the last two are the same.
+
+   </body></html>
+

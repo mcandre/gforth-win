@@ -1,0 +1,121 @@
+<html lang="en">
+<head>
+<title>Wordlists and Search Order Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Compilation-Tokens-Tutorial.html#Compilation-Tokens-Tutorial" title="Compilation Tokens Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Wordlists-and-Search-Order-Tutorial"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Compilation-Tokens-Tutorial.html#Compilation-Tokens-Tutorial">Compilation Tokens Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.37 Wordlists and Search Order</h3>
+
+<p><a name="index-wordlists-tutorial-134"></a><a name="index-search-order_002c-tutorial-135"></a>
+The dictionary is not just a memory area that allows you to allocate
+memory with <code>allot</code>, it also contains the Forth words, arranged in
+several wordlists.  When searching for a word in a wordlist,
+conceptually you start searching at the youngest and proceed towards
+older words (in reality most systems nowadays use hash-tables); i.e., if
+you define a word with the same name as an older word, the new word
+shadows the older word.
+
+   <p>Which wordlists are searched in which order is determined by the search
+order.  You can display the search order with <code>order</code>.  It displays
+first the search order, starting with the wordlist searched first, then
+it displays the wordlist that will contain newly defined words.
+
+   <p>You can create a new, empty wordlist with <code>wordlist ( -- wid )</code>:
+
+<pre class="example">     wordlist constant mywords
+</pre>
+   <p><code>Set-current ( wid -- )</code> sets the wordlist that will contain newly
+defined words (the <em>current</em> wordlist):
+
+<pre class="example">     mywords set-current
+     order
+</pre>
+   <p>Gforth does not display a name for the wordlist in <code>mywords</code>
+because this wordlist was created anonymously with <code>wordlist</code>.
+
+   <p>You can get the current wordlist with <code>get-current ( -- wid)</code>.  If
+you want to put something into a specific wordlist without overall
+effect on the current wordlist, this typically looks like this:
+
+<pre class="example">     get-current mywords set-current ( wid )
+     create someword
+     ( wid ) set-current
+</pre>
+   <p>You can write the search order with <code>set-order ( wid1 .. widn n --
+)</code> and read it with <code>get-order ( -- wid1 .. widn n )</code>.  The first
+searched wordlist is topmost.
+
+<pre class="example">     get-order mywords swap 1+ set-order
+     order
+</pre>
+   <p>Yes, the order of wordlists in the output of <code>order</code> is reversed
+from stack comments and the output of <code>.s</code> and thus unintuitive.
+
+   <blockquote>
+<b>Assignment:</b> Define <code>&gt;order ( wid -- )</code> with adds <code>wid</code> as first searched
+wordlist to the search order.  Define <code>previous ( -- )</code>, which
+removes the first searched wordlist from the search order.  Experiment
+with boundary conditions (you will see some crashes or situations that
+are hard or impossible to leave). 
+</blockquote>
+
+   <p>The search order is a powerful foundation for providing features similar
+to Modula-2 modules and C++ namespaces.  However, trying to modularize
+programs in this way has disadvantages for debugging and reuse/factoring
+that overcome the advantages in my experience (I don't do huge projects,
+though).  These disadvantages are not so clear in other
+languages/programming environments, because these languages are not so
+strong in debugging and reuse.
+
+<!-- !! example -->
+<p>Reference: <a href="Word-Lists.html#Word-Lists">Word Lists</a>.
+
+<!-- ****************************************************************** -->
+</body></html>
+

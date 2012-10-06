@@ -1,0 +1,155 @@
+<html lang="en">
+<head>
+<title>Environmental Queries - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Word-Lists.html#Word-Lists" title="Word Lists">
+<link rel="next" href="Files.html#Files" title="Files">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Environmental-Queries"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Files.html#Files">Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Word-Lists.html#Word-Lists">Word Lists</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.16 Environmental Queries</h3>
+
+<p><a name="index-environmental-queries-1661"></a>
+ANS Forth introduced the idea of &ldquo;environmental queries&rdquo; as a way
+for a program running on a system to determine certain characteristics of the system. 
+The Standard specifies a number of strings that might be recognised by a system.
+
+   <p>The Standard requires that the header space used for environmental queries
+be distinct from the header space used for definitions.
+
+   <p>Typically, environmental queries are supported by creating a set of
+definitions in a word list that is <i>only</i> used during environmental
+queries; that is what Gforth does. There is no Standard way of adding
+definitions to the set of recognised environmental queries, but any
+implementation that supports the loading of optional word sets must have
+some mechanism for doing this (after loading the word set, the
+associated environmental query string must return <code>true</code>). In
+Gforth, the word list used to honour environmental queries can be
+manipulated just like any other word list.
+
+   <p><a name="index-environment_003f-_0040var_007b-c_002daddr-u-_002d_002d-false-_002f-_002e_002e_002e-true---_007d--core-1662"></a><a name="index-g_t_0040code_007benvironment_003f_007d-1663"></a><a name="index-environment_003f-1664"></a>
+<pre class="format"><code>environment?</code>       <i>c-addr u &ndash; false / ... true  </i>       core       &ldquo;environment-query&rdquo;
+</pre>
+   <p><i>c-addr, u</i> specify a counted string. If the string is not
+recognised, return a <code>false</code> flag. Otherwise return a
+<code>true</code> flag and some (string-specific) information about
+the queried string.
+
+   <p><a name="index-environment_002dwordlist-_0040var_007b-_002d_002d-wid---_007d--gforth-1665"></a><a name="index-g_t_0040code_007benvironment_002dwordlist_007d-1666"></a><a name="index-environment_002dwordlist-1667"></a>
+<pre class="format"><code>environment-wordlist</code>       <i>&ndash; wid  </i>       gforth       &ldquo;environment-wordlist&rdquo;
+</pre>
+   <p><i>wid</i> identifies the word list that is searched by environmental
+queries.
+
+   <p><a name="index-gforth-_0040var_007b-_002d_002d-c_002daddr-u---_007d--gforth_002denvironment-1668"></a><a name="index-g_t_0040code_007bgforth_007d-1669"></a><a name="index-gforth-1670"></a>
+<pre class="format"><code>gforth</code>       <i>&ndash; c-addr u  </i>       gforth-environment       &ldquo;gforth&rdquo;
+</pre>
+   <p>Counted string representing a version string for this version of
+Gforth (for versions&gt;0.3.0).  The version strings of the various
+versions are guaranteed to be ordered lexicographically.
+
+   <p><a name="index-os_002dclass-_0040var_007b-_002d_002d-c_002daddr-u---_007d--gforth_002denvironment-1671"></a><a name="index-g_t_0040code_007bos_002dclass_007d-1672"></a><a name="index-os_002dclass-1673"></a>
+<pre class="format"><code>os-class</code>       <i>&ndash; c-addr u  </i>       gforth-environment       &ldquo;os-class&rdquo;
+</pre>
+   <p>Counted string representing a description of the host operating system.
+
+   <p>Note that, whilst the documentation for (e.g.) <code>gforth</code> shows it
+returning two items on the stack, querying it using <code>environment?</code>
+will return an additional item; the <code>true</code> flag that shows that the
+string was recognised.
+
+<!-- TODO Document the standard strings or note where they are documented herein -->
+<p>Here are some examples of using environmental queries:
+
+<pre class="example">     s" address-unit-bits" environment? 0=
+     [IF]
+          cr .( environmental attribute address-units-bits unknown... ) cr
+     [ELSE]
+          drop \ ensure balanced stack effect
+     [THEN]
+     
+     \ this might occur in the prelude of a standard program that uses THROW
+     s" exception" environment? [IF]
+        0= [IF]
+           : throw abort" exception thrown" ;
+        [THEN]
+     [ELSE] \ we don't know, so make sure
+        : throw abort" exception thrown" ;
+     [THEN]
+     
+     s" gforth" environment? [IF] .( Gforth version ) TYPE
+                             [ELSE] .( Not Gforth..) [THEN]
+     
+     \ a program using v*
+     s" gforth" environment? [IF]
+       s" 0.5.0" compare 0&lt; [IF] \ v* is a primitive since 0.5.0
+        : v* ( f_addr1 nstride1 f_addr2 nstride2 ucount -- r )
+          &gt;r swap 2swap swap 0e r&gt; 0 ?DO
+            dup f@ over + 2swap dup f@ f* f+ over + 2swap
+          LOOP
+          2drop 2drop ;
+       [THEN]
+     [ELSE] \
+       : v* ( f_addr1 nstride1 f_addr2 nstride2 ucount -- r )
+       ...
+     [THEN]
+</pre>
+   <p>Here is an example of adding a definition to the environment word list:
+
+<pre class="example">     get-current environment-wordlist set-current
+     true constant block
+     true constant block-ext
+     set-current
+</pre>
+   <p>You can see what definitions are in the environment word list like this:
+
+<pre class="example">     environment-wordlist &gt;order words previous
+</pre>
+   <!--  -->
+</body></html>
+

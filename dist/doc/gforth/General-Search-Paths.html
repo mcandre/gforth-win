@@ -1,0 +1,106 @@
+<html lang="en">
+<head>
+<title>General Search Paths - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Search-Paths.html#Search-Paths" title="Search Paths">
+<link rel="prev" href="Source-Search-Paths.html#Source-Search-Paths" title="Source Search Paths">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="General-Search-Paths"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Source-Search-Paths.html#Source-Search-Paths">Source Search Paths</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Search-Paths.html#Search-Paths">Search Paths</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.17.4.2 General Search Paths</h5>
+
+<p><a name="index-search-path-control_002c-source-files-1808"></a>
+Your application may need to search files in several directories, like
+<code>included</code> does. To facilitate this, Gforth allows you to define
+and use your own search paths, by providing generic equivalents of the
+Forth search path words:
+
+   <p><a name="index-open_002dpath_002dfile-_0040var_007b-addr1-u1-path_002daddr-_002d_002d-wfileid-addr2-u2-0-_007c-ior---_007d--gforth-1809"></a><a name="index-g_t_0040code_007bopen_002dpath_002dfile_007d-1810"></a><a name="index-open_002dpath_002dfile-1811"></a>
+<pre class="format"><code>open-path-file</code>       <i>addr1 u1 path-addr &ndash; wfileid addr2 u2 0 | ior  </i>       gforth       &ldquo;open-path-file&rdquo;
+</pre>
+   <p>Look in path <var>path-addr</var> for the file specified by <var>addr1
+u1</var>.  If found, the resulting path and and (read-only) open file
+descriptor are returned. If the file is not found, <var>ior</var> is
+what came back from the last attempt at opening the file (in the
+current implementation).
+
+   <p><a name="index-path_002dallot-_0040var_007b-umax-_002d_002d---_007d--gforth-1812"></a><a name="index-g_t_0040code_007bpath_002dallot_007d-1813"></a><a name="index-path_002dallot-1814"></a>
+<pre class="format"><code>path-allot</code>       <i>umax &ndash;  </i>       gforth       &ldquo;path-allot&rdquo;
+</pre>
+   <p><code>Allot</code> a path with <i>umax</i> characters capacity, initially empty.
+
+   <p><a name="index-clear_002dpath-_0040var_007b-path_002daddr-_002d_002d---_007d--gforth-1815"></a><a name="index-g_t_0040code_007bclear_002dpath_007d-1816"></a><a name="index-clear_002dpath-1817"></a>
+<pre class="format"><code>clear-path</code>       <i>path-addr &ndash;  </i>       gforth       &ldquo;clear-path&rdquo;
+</pre>
+   <p>Set the path <i>path-addr</i> to empty.
+
+   <p><a name="index-also_002dpath-_0040var_007b-c_002daddr-len-path_002daddr-_002d_002d---_007d--gforth-1818"></a><a name="index-g_t_0040code_007balso_002dpath_007d-1819"></a><a name="index-also_002dpath-1820"></a>
+<pre class="format"><code>also-path</code>       <i>c-addr len path-addr &ndash;  </i>       gforth       &ldquo;also-path&rdquo;
+</pre>
+   <p>add the directory <i>c-addr len</i> to <i>path-addr</i>.
+
+   <p><a name="index-g_t_002epath-_0040var_007b-path_002daddr-_002d_002d---_007d--gforth-1821"></a><a name="index-g_t_0040code_007b_002epath_007d-1822"></a><a name="index-g_t_002epath-1823"></a>
+<pre class="format"><code>.path</code>       <i>path-addr &ndash;  </i>       gforth       &ldquo;.path&rdquo;
+</pre>
+   <p>Display the contents of the search path <var>path-addr</var>.
+
+   <p><a name="index-path_002b-_0040var_007b-path_002daddr--_0022dir_0022-_002d_002d---_007d--gforth-1824"></a><a name="index-g_t_0040code_007bpath_002b_007d-1825"></a><a name="index-path_002b-1826"></a>
+<pre class="format"><code>path+</code>       <i>path-addr  "dir" &ndash;  </i>       gforth       &ldquo;path+&rdquo;
+</pre>
+   <p>Add the directory <var>dir</var> to the search path <var>path-addr</var>.
+
+   <p><a name="index-path_003d-_0040var_007b-path_002daddr-_0022dir1_007cdir2_007cdir3_0022---_007d--gforth-1827"></a><a name="index-g_t_0040code_007bpath_003d_007d-1828"></a><a name="index-path_003d-1829"></a>
+<pre class="format"><code>path=</code>       <i>path-addr "dir1|dir2|dir3"  </i>       gforth       &ldquo;path=&rdquo;
+</pre>
+   <p>Make a complete new search path; the path separator is |.
+
+<!-- anton: better define a word for it, say "path-allot ( ucount - path-addr ) -->
+<p>Here's an example of creating an empty search path:
+<pre class="example">     create mypath 500 path-allot \ maximum length 500 chars (is checked)
+</pre>
+   <!--  -->
+</body></html>
+

@@ -1,0 +1,110 @@
+<html lang="en">
+<head>
+<title>CREATE..DOES&gt; details - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words" title="User-defined Defining Words">
+<link rel="prev" href="CREATE_002e_002eDOES_003e-applications.html#CREATE_002e_002eDOES_003e-applications" title="CREATE..DOES> applications">
+<link rel="next" href="Advanced-does_003e-usage-example.html#Advanced-does_003e-usage-example" title="Advanced does> usage example">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="CREATE..DOES%3e-details"></a>
+<a name="CREATE_002e_002eDOES_003e-details"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Advanced-does_003e-usage-example.html#Advanced-does_003e-usage-example">Advanced does&gt; usage example</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="CREATE_002e_002eDOES_003e-applications.html#CREATE_002e_002eDOES_003e-applications">CREATE..DOES&gt; applications</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">User-defined Defining Words</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.9.8.2 The gory details of <code>CREATE..DOES&gt;</code></h5>
+
+<p><a name="index-g_t_0040code_007bCREATE_007d-_002e_002e_002e-_0040code_007bDOES_003e_007d_002c-details-1260"></a>
+<a name="index-DOES_003e-_0040var_007b-compilation-colon_002dsys1-_002d_002d-colon_002dsys2-_003b-run_002dtime-nest_002dsys-_002d_002d---_007d--core-1261"></a><a name="index-g_t_0040code_007bDOES_003e_007d-1262"></a><a name="index-DOES_003e-1263"></a>
+<pre class="format"><code>DOES&gt;</code>       <i>compilation colon-sys1 &ndash; colon-sys2 ; run-time nest-sys &ndash;  </i>       core       &ldquo;does&rdquo;
+</pre>
+   <p><a name="index-g_t_0040code_007bDOES_003e_007d-in-a-separate-definition-1264"></a>This means that you need not use <code>CREATE</code> and <code>DOES&gt;</code> in the
+same definition; you can put the <code>DOES&gt;</code>-part in a separate
+definition. This allows us to, e.g., select among different <code>DOES&gt;</code>-parts:
+<pre class="example">     : does1
+     DOES&gt; ( ... -- ... )
+         ... ;
+     
+     : does2
+     DOES&gt; ( ... -- ... )
+         ... ;
+     
+     : def-word ( ... -- ... )
+         create ...
+         IF
+            does1
+         ELSE
+            does2
+         ENDIF ;
+</pre>
+   <p>In this example, the selection of whether to use <code>does1</code> or
+<code>does2</code> is made at definition-time; at the time that the child word is
+<code>CREATE</code>d.
+
+   <p><a name="index-g_t_0040code_007bDOES_003e_007d-in-interpretation-state-1265"></a>In a standard program you can apply a <code>DOES&gt;</code>-part only if the last
+word was defined with <code>CREATE</code>. In Gforth, the <code>DOES&gt;</code>-part
+will override the behaviour of the last word defined in any case. In a
+standard program, you can use <code>DOES&gt;</code> only in a colon
+definition. In Gforth, you can also use it in interpretation state, in a
+kind of one-shot mode; for example:
+<pre class="example">     CREATE name ( ... -- ... )
+       <i>initialization</i>
+     DOES&gt;
+       <i>code</i> ;
+</pre>
+   <p class="noindent">is equivalent to the standard:
+<pre class="example">     :noname
+     DOES&gt;
+         <i>code</i> ;
+     CREATE name EXECUTE ( ... -- ... )
+         <i>initialization</i>
+</pre>
+   <p><a name="index-g_t_003ebody-_0040var_007b-xt-_002d_002d-a_005faddr---_007d--core-1266"></a><a name="index-g_t_0040code_007b_003ebody_007d-1267"></a><a name="index-g_t_003ebody-1268"></a>
+<pre class="format"><code>&gt;body</code>       <i>xt &ndash; a_addr  </i>       core       &ldquo;to-body&rdquo;
+</pre>
+   <p>Get the address of the body of the word represented by <i>xt</i> (the
+address of the word's data field).
+
+   </body></html>
+

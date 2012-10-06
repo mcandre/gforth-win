@@ -1,0 +1,248 @@
+<html lang="en">
+<head>
+<title>Stacks and Postfix notation - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction.html#Introduction" title="Introduction">
+<link rel="prev" href="Introducing-the-Text-Interpreter.html#Introducing-the-Text-Interpreter" title="Introducing the Text Interpreter">
+<link rel="next" href="Your-first-definition.html#Your-first-definition" title="Your first definition">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Stacks-and-Postfix-notation"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Your-first-definition.html#Your-first-definition">Your first definition</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Introducing-the-Text-Interpreter.html#Introducing-the-Text-Interpreter">Introducing the Text Interpreter</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction.html#Introduction">Introduction</a>
+<hr>
+</div>
+
+<h3 class="section">4.2 Stacks, postfix notation and parameter passing</h3>
+
+<p><a name="index-text-interpreter-145"></a><a name="index-outer-interpreter-146"></a>
+In procedural programming languages (like C and Pascal), the
+building-block of programs is the <dfn>function</dfn> or <dfn>procedure</dfn>. These
+functions or procedures are called with <dfn>explicit parameters</dfn>. For
+example, in C we might write:
+
+<pre class="example">     total = total + new_volume(length,height,depth);
+</pre>
+   <p class="noindent">where new_volume is a function-call to another piece of code, and total,
+length, height and depth are all variables. length, height and depth are
+parameters to the function-call.
+
+   <p>In Forth, the equivalent of the function or procedure is the
+<dfn>definition</dfn> and parameters are implicitly passed between
+definitions using a shared stack that is visible to the
+programmer. Although Forth does support variables, the existence of the
+stack means that they are used far less often than in most other
+programming languages. When the text interpreter encounters a number, it
+will place (<dfn>push</dfn>) it on the stack. There are several stacks (the
+actual number is implementation-dependent ...) and the particular stack
+used for any operation is implied unambiguously by the operation being
+performed. The stack used for all integer operations is called the <dfn>data
+stack</dfn> and, since this is the stack used most commonly, references to
+&ldquo;the data stack&rdquo; are often abbreviated to &ldquo;the stack&rdquo;.
+
+   <p>The stacks have a last-in, first-out (LIFO) organisation. If you type:
+
+<pre class="example">     <kbd>1 2 3&lt;RET&gt;</kbd>  ok
+</pre>
+   <p>Then this instructs the text interpreter to placed three numbers on the
+(data) stack. An analogy for the behaviour of the stack is to take a
+pack of playing cards and deal out the ace (1), 2 and 3 into a pile on
+the table. The 3 was the last card onto the pile (&ldquo;last-in&rdquo;) and if
+you take a card off the pile then, unless you're prepared to fiddle a
+bit, the card that you take off will be the 3 (&ldquo;first-out&rdquo;). The
+number that will be first-out of the stack is called the <dfn>top of
+stack</dfn>, which
+<a name="index-TOS-definition-147"></a>is often abbreviated to <dfn>TOS</dfn>.
+
+   <p>To understand how parameters are passed in Forth, consider the
+behaviour of the definition <code>+</code> (pronounced &ldquo;plus&rdquo;). You will not
+be surprised to learn that this definition performs addition. More
+precisely, it adds two number together and produces a result. Where does
+it get the two numbers from? It takes the top two numbers off the
+stack. Where does it place the result? On the stack. You can act-out the
+behaviour of <code>+</code> with your playing cards like this:
+
+     <ul>
+<li>Pick up two cards from the stack on the table
+<li>Stare at them intently and ask yourself &ldquo;what <i>is</i> the sum of these two
+numbers&rdquo;
+<li>Decide that the answer is 5
+<li>Shuffle the two cards back into the pack and find a 5
+<li>Put a 5 on the remaining ace that's on the table. 
+</ul>
+
+   <p>If you don't have a pack of cards handy but you do have Forth running,
+you can use the definition <code>.s</code> to show the current state of the stack,
+without affecting the stack. Type:
+
+<pre class="example">     <kbd>clearstacks 1 2 3&lt;RET&gt;</kbd> ok
+     <kbd>.s&lt;RET&gt;</kbd> &lt;3&gt; 1 2 3  ok
+</pre>
+   <p>The text interpreter looks up the word <code>clearstacks</code> and executes
+it; it tidies up the stacks and removes any entries that may have been
+left on it by earlier examples. The text interpreter pushes each of the
+three numbers in turn onto the stack. Finally, the text interpreter
+looks up the word <code>.s</code> and executes it. The effect of executing
+<code>.s</code> is to print the &ldquo;&lt;3&gt;&rdquo; (the total number of items on the stack)
+followed by a list of all the items on the stack; the item on the far
+right-hand side is the TOS.
+
+   <p>You can now type:
+
+<pre class="example">     <kbd>+ .s&lt;RET&gt;</kbd> &lt;2&gt; 1 5  ok
+</pre>
+   <p class="noindent">which is correct; there are now 2 items on the stack and the result of
+the addition is 5.
+
+   <p>If you're playing with cards, try doing a second addition: pick up the
+two cards, work out that their sum is 6, shuffle them into the pack,
+look for a 6 and place that on the table. You now have just one item on
+the stack. What happens if you try to do a third addition? Pick up the
+first card, pick up the second card &ndash; ah! There is no second card. This
+is called a <dfn>stack underflow</dfn> and consitutes an error. If you try to
+do the same thing with Forth it often reports an error (probably a Stack
+Underflow or an Invalid Memory Address error).
+
+   <p>The opposite situation to a stack underflow is a <dfn>stack overflow</dfn>,
+which simply accepts that there is a finite amount of storage space
+reserved for the stack. To stretch the playing card analogy, if you had
+enough packs of cards and you piled the cards up on the table, you would
+eventually be unable to add another card; you'd hit the ceiling. Gforth
+allows you to set the maximum size of the stacks. In general, the only
+time that you will get a stack overflow is because a definition has a
+bug in it and is generating data on the stack uncontrollably.
+
+   <p>There's one final use for the playing card analogy. If you model your
+stack using a pack of playing cards, the maximum number of items on
+your stack will be 52 (I assume you didn't use the Joker). The maximum
+<i>value</i> of any item on the stack is 13 (the King). In fact, the only
+possible numbers are positive integer numbers 1 through 13; you can't
+have (for example) 0 or 27 or 3.52 or -2. If you change the way you
+think about some of the cards, you can accommodate different
+numbers. For example, you could think of the Jack as representing 0,
+the Queen as representing -1 and the King as representing -2. Your
+<i>range</i> remains unchanged (you can still only represent a total of 13
+numbers) but the numbers that you can represent are -2 through 10.
+
+   <p>In that analogy, the limit was the amount of information that a single
+stack entry could hold, and Forth has a similar limit. In Forth, the
+size of a stack entry is called a <dfn>cell</dfn>. The actual size of a cell is
+implementation dependent and affects the maximum value that a stack
+entry can hold. A Standard Forth provides a cell size of at least
+16-bits, and most desktop systems use a cell size of 32-bits.
+
+   <p>Forth does not do any type checking for you, so you are free to
+manipulate and combine stack items in any way you wish. A convenient way
+of treating stack items is as 2's complement signed integers, and that
+is what Standard words like <code>+</code> do. Therefore you can type:
+
+<pre class="example">     <kbd>-5 12 + .s&lt;RET&gt;</kbd> &lt;1&gt; 7  ok
+</pre>
+   <p>If you use numbers and definitions like <code>+</code> in order to turn Forth
+into a great big pocket calculator, you will realise that it's rather
+different from a normal calculator. Rather than typing 2 + 3 = you had
+to type 2 3 + (ignore the fact that you had to use <code>.s</code> to see the
+result). The terminology used to describe this difference is to say that
+your calculator uses <dfn>Infix Notation</dfn> (parameters and operators are
+mixed) whilst Forth uses <dfn>Postfix Notation</dfn> (parameters and
+operators are separate), also called <dfn>Reverse Polish Notation</dfn>.
+
+   <p>Whilst postfix notation might look confusing to begin with, it has
+several important advantages:
+
+     <ul>
+<li>it is unambiguous
+<li>it is more concise
+<li>it fits naturally with a stack-based system
+</ul>
+
+   <p>To examine these claims in more detail, consider these sums:
+
+<pre class="example">     6 + 5 * 4 =
+     4 * 5 + 6 =
+</pre>
+   <p>If you're just learning maths or your maths is very rusty, you will
+probably come up with the answer 44 for the first and 26 for the
+second. If you are a bit of a whizz at maths you will remember the
+<i>convention</i> that multiplication takes precendence over addition, and
+you'd come up with the answer 26 both times. To explain the answer 26
+to someone who got the answer 44, you'd probably rewrite the first sum
+like this:
+
+<pre class="example">     6 + (5 * 4) =
+</pre>
+   <p>If what you really wanted was to perform the addition before the
+multiplication, you would have to use parentheses to force it.
+
+   <p>If you did the first two sums on a pocket calculator you would probably
+get the right answers, unless you were very cautious and entered them using
+these keystroke sequences:
+
+   <p>6 + 5 = * 4 =
+4 * 5 = + 6 =
+
+   <p>Postfix notation is unambiguous because the order that the operators
+are applied is always explicit; that also means that parentheses are
+never required. The operators are <i>active</i> (the act of quoting the
+operator makes the operation occur) which removes the need for &ldquo;=&rdquo;.
+
+   <p>The sum 6 + 5 * 4 can be written (in postfix notation) in two
+equivalent ways:
+
+<pre class="example">     6 5 4 * +      or:
+     5 4 * 6 +
+</pre>
+   <p>An important thing that you should notice about this notation is that
+the <i>order</i> of the numbers does not change; if you want to subtract
+2 from 10 you type <code>10 2 -</code>.
+
+   <p>The reason that Forth uses postfix notation is very simple to explain: it
+makes the implementation extremely simple, and it follows naturally from
+using the stack as a mechanism for passing parameters. Another way of
+thinking about this is to realise that all Forth definitions are
+<i>active</i>; they execute as they are encountered by the text
+interpreter. The result of this is that the syntax of Forth is trivially
+simple.
+
+<!--  -->
+</body></html>
+

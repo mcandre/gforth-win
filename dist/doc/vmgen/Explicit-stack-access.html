@@ -1,0 +1,106 @@
+<html lang="en">
+<head>
+<title>Explicit stack access - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Simple-instructions.html#Simple-instructions" title="Simple instructions">
+<link rel="prev" href="Simple-instructions.html#Simple-instructions" title="Simple instructions">
+<link rel="next" href="C-Code-Macros.html#C-Code-Macros" title="C Code Macros">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Explicit-stack-access"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="C-Code-Macros.html#C-Code-Macros">C Code Macros</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Simple-instructions.html#Simple-instructions">Simple instructions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Simple-instructions.html#Simple-instructions">Simple instructions</a>
+<hr>
+</div>
+
+<h4 class="subsection">6.2.1 Explicit stack access</h4>
+
+<p><a name="index-stack-access_002c-explicit-82"></a><a name="index-Stack-pointer-access-83"></a><a name="index-explicit-stack-access-84"></a>
+This feature is not needed and not supported in the 0.6.2 version of
+vmgen that is documented here (and that is invoked by default).
+
+   <p>Not all stack effects can be specified using the stack effect
+specifications above.  For VM instructions that have other stack
+effects, you can specify them explicitly by accessing the stack
+pointer in the C code; however, you have to notify Vmgen of such
+explicit stack accesses, otherwise Vmgens optimizations could conflict
+with your explicit stack accesses.
+
+   <p>You notify Vmgen by putting <code>...</code> with the appropriate stack
+prefix into the stack comment.  Then the VM instruction will first
+take the other stack items specified in the stack effect into C
+variables, then make sure that all other stack items for that stack
+are in memory, and that the stack pointer for the stack points to the
+top-of-stack (by default, unless you change the stack access
+transformation: see <a href="Stack-growth-direction.html#Stack-growth-direction">Stack growth direction</a>).
+
+   <p>The general rule is: If you mention a stack pointer in the C code of a
+VM instruction, you should put a <code>...</code> for that stack in the stack
+effect.
+
+   <p>Consider this example:
+
+<pre class="example">     return ( #iadjust S:... target afp i1 -- i2 )
+     SET_IP(target);
+     sp = (Cell *)(((char *)sp)+iadjust);
+     fp = afp;
+     i2=i1;
+</pre>
+   <p>First the variables <code>target afp i1</code> are popped off the stack,
+then the stack pointer <code>sp</code> is set correctly for the new stack
+depth, then the C code changes the stack depth and does other things,
+and finally <code>i2</code> is pushed on the stack with the new depth.
+
+   <p>The position of the <code>...</code> within the stack effect does not
+matter.  You can use several <code>...</code>s, for different stacks, and
+also several for the same stack (that has no additional effect).  If
+you use <code>...</code> without a stack prefix, this specifies all the
+stacks except the instruction stream.
+
+   <p>You cannot use <code>...</code> for the instruction stream, but that is not
+necessary: At the start of the C code, <code>IP</code> points to the start
+of the next VM instruction (i.e., right beyond the end of the current
+VM instruction), and you can change the instruction pointer with
+<code>SET_IP</code> (see <a href="VM-engine.html#VM-engine">VM engine</a>).
+
+<!--  -->
+</body></html>
+

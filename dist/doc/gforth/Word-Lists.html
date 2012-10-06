@@ -1,0 +1,265 @@
+<html lang="en">
+<head>
+<title>Word Lists - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="The-Input-Stream.html#The-Input-Stream" title="The Input Stream">
+<link rel="next" href="Environmental-Queries.html#Environmental-Queries" title="Environmental Queries">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Word-Lists"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Environmental-Queries.html#Environmental-Queries">Environmental Queries</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="The-Input-Stream.html#The-Input-Stream">The Input Stream</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.15 Word Lists</h3>
+
+<p><a name="index-word-lists-1581"></a><a name="index-header-space-1582"></a>
+A wordlist is a list of named words; you can add new words and look up
+words by name (and you can remove words in a restricted way with
+markers).  Every named (and <code>reveal</code>ed) word is in one wordlist.
+
+   <p><a name="index-search-order-stack-1583"></a>The text interpreter searches the wordlists present in the search order
+(a stack of wordlists), from the top to the bottom.  Within each
+wordlist, the search starts conceptually at the newest word; i.e., if
+two words in a wordlist have the same name, the newer word is found.
+
+   <p><a name="index-compilation-word-list-1584"></a>New words are added to the <dfn>compilation wordlist</dfn> (aka current
+wordlist).
+
+   <p><a name="index-wid-1585"></a>A word list is identified by a cell-sized word list identifier (<i>wid</i>)
+in much the same way as a file is identified by a file handle. The
+numerical value of the wid has no (portable) meaning, and might change
+from session to session.
+
+   <p>The ANS Forth &ldquo;Search order&rdquo; word set is intended to provide a set of
+low-level tools that allow various different schemes to be
+implemented. Gforth also provides <code>vocabulary</code>, a traditional Forth
+word.  <samp><span class="file">compat/vocabulary.fs</span></samp> provides an implementation in ANS
+Forth.
+
+<!-- TODO: locals section refers to here, saying that every word list (aka -->
+<!-- vocabulary) has its own methods for searching etc. Need to document that. -->
+<!-- anton: but better in a separate subsection on wordlist internals -->
+<!-- TODO: document markers, reveal, tables, mappedwordlist -->
+<!-- the gforthman- prefix is used to pick out the true definition of a -->
+<!-- word from the source files, rather than some alias. -->
+<p><a name="index-forth_002dwordlist-_0040var_007b-_002d_002d-wid---_007d--search-1586"></a><a name="index-g_t_0040code_007bforth_002dwordlist_007d-1587"></a><a name="index-forth_002dwordlist-1588"></a>
+<pre class="format"><code>forth-wordlist</code>       <i>&ndash; wid  </i>       search       &ldquo;forth-wordlist&rdquo;
+</pre>
+   <p><code>Constant</code> &ndash; <i>wid</i> identifies the word list that includes all of the standard words
+provided by Gforth. When Gforth is invoked, this word list is the compilation word
+list and is at the top of the search order.
+
+   <p><a name="index-definitions-_0040var_007b-_002d_002d---_007d--search-1589"></a><a name="index-g_t_0040code_007bdefinitions_007d-1590"></a><a name="index-definitions-1591"></a>
+<pre class="format"><code>definitions</code>       <i>&ndash;  </i>       search       &ldquo;definitions&rdquo;
+</pre>
+   <p>Set the compilation word list to be the same as the word list
+that is currently at the top of the search order.
+
+   <p><a name="index-get_002dcurrent-_0040var_007b-_002d_002d-wid---_007d--search-1592"></a><a name="index-g_t_0040code_007bget_002dcurrent_007d-1593"></a><a name="index-get_002dcurrent-1594"></a>
+<pre class="format"><code>get-current</code>       <i>&ndash; wid  </i>       search       &ldquo;get-current&rdquo;
+</pre>
+   <p><i>wid</i> is the identifier of the current compilation word list.
+
+   <p><a name="index-set_002dcurrent-_0040var_007b-wid-_002d_002d---_007d--search-1595"></a><a name="index-g_t_0040code_007bset_002dcurrent_007d-1596"></a><a name="index-set_002dcurrent-1597"></a>
+<pre class="format"><code>set-current</code>       <i>wid &ndash;  </i>       search       &ldquo;set-current&rdquo;
+</pre>
+   <p>Set the compilation word list to the word list identified by <i>wid</i>.
+
+   <p><a name="index-get_002dorder-_0040var_007b-_002d_002d-widn-_002e_002e-wid1-n---_007d--search-1598"></a><a name="index-g_t_0040code_007bget_002dorder_007d-1599"></a><a name="index-get_002dorder-1600"></a>
+<pre class="format"><code>get-order</code>       <i>&ndash; widn .. wid1 n  </i>       search       &ldquo;get-order&rdquo;
+</pre>
+   <p>Copy the search order to the data stack. The current search order
+has <i>n</i> entries, of which <i>wid1</i> represents the wordlist
+that is searched first (the word list at the top of the search
+order) and <i>widn</i> represents the wordlist that is searched
+last.
+
+   <p><a name="index-set_002dorder-_0040var_007b-widn-_002e_002e-wid1-n-_002d_002d---_007d--search-1601"></a><a name="index-g_t_0040code_007bset_002dorder_007d-1602"></a><a name="index-set_002dorder-1603"></a>
+<pre class="format"><code>set-order</code>       <i>widn .. wid1 n &ndash;  </i>       search       &ldquo;set-order&rdquo;
+</pre>
+   <p>If <var>n</var>=0, empty the search order.  If <var>n</var>=-1, set the
+search order to the implementation-defined minimum search order
+(for Gforth, this is the word list <code>Root</code>). Otherwise,
+replace the existing search order with the <var>n</var> wid entries
+such that <var>wid1</var> represents the word list that will be
+searched first and <var>widn</var> represents the word list that will
+be searched last.
+
+   <p><a name="index-wordlist-_0040var_007b-_002d_002d-wid---_007d--search-1604"></a><a name="index-g_t_0040code_007bwordlist_007d-1605"></a><a name="index-wordlist-1606"></a>
+<pre class="format"><code>wordlist</code>       <i>&ndash; wid  </i>       search       &ldquo;wordlist&rdquo;
+</pre>
+   <p>Create a new, empty word list represented by <i>wid</i>.
+
+   <p><a name="index-table-_0040var_007b-_002d_002d-wid---_007d--gforth-1607"></a><a name="index-g_t_0040code_007btable_007d-1608"></a><a name="index-table-1609"></a>
+<pre class="format"><code>table</code>       <i>&ndash; wid  </i>       gforth       &ldquo;table&rdquo;
+</pre>
+   <p>Create a case-sensitive wordlist.
+
+   <p><a name="index-g_t_003eorder-_0040var_007b-wid-_002d_002d---_007d--gforth-1610"></a><a name="index-g_t_0040code_007b_003eorder_007d-1611"></a><a name="index-g_t_003eorder-1612"></a>
+<pre class="format"><code>&gt;order</code>       <i>wid &ndash;  </i>       gforth       &ldquo;to-order&rdquo;
+</pre>
+   <p>Push <var>wid</var> on the search order.
+
+   <p><a name="index-previous-_0040var_007b-_002d_002d---_007d--search_002dext-1613"></a><a name="index-g_t_0040code_007bprevious_007d-1614"></a><a name="index-previous-1615"></a>
+<pre class="format"><code>previous</code>       <i>&ndash;  </i>       search-ext       &ldquo;previous&rdquo;
+</pre>
+   <p>Drop the wordlist at the top of the search order.
+
+   <p><a name="index-also-_0040var_007b-_002d_002d---_007d--search_002dext-1616"></a><a name="index-g_t_0040code_007balso_007d-1617"></a><a name="index-also-1618"></a>
+<pre class="format"><code>also</code>       <i>&ndash;  </i>       search-ext       &ldquo;also&rdquo;
+</pre>
+   <p>Like <code>DUP</code> for the search order. Usually used before a
+vocabulary (e.g., <code>also Forth</code>); the combined effect is to push
+the wordlist represented by the vocabulary on the search order.
+
+   <p><a name="index-Forth-_0040var_007b-_002d_002d---_007d--search_002dext-1619"></a><a name="index-g_t_0040code_007bForth_007d-1620"></a><a name="index-Forth-1621"></a>
+<pre class="format"><code>Forth</code>       <i>&ndash;  </i>       search-ext       &ldquo;Forth&rdquo;
+</pre>
+   <p>Replace the <i>wid</i> at the top of the search order with the
+<i>wid</i> associated with the word list <code>forth-wordlist</code>.
+
+   <p><a name="index-Only-_0040var_007b-_002d_002d---_007d--search_002dext-1622"></a><a name="index-g_t_0040code_007bOnly_007d-1623"></a><a name="index-Only-1624"></a>
+<pre class="format"><code>Only</code>       <i>&ndash;  </i>       search-ext       &ldquo;Only&rdquo;
+</pre>
+   <p>Set the search order to the implementation-defined minimum search
+order (for Gforth, this is the word list <code>Root</code>).
+
+   <p><a name="index-order-_0040var_007b-_002d_002d---_007d--search_002dext-1625"></a><a name="index-g_t_0040code_007border_007d-1626"></a><a name="index-order-1627"></a>
+<pre class="format"><code>order</code>       <i>&ndash;  </i>       search-ext       &ldquo;order&rdquo;
+</pre>
+   <p>Print the search order and the compilation word list.  The
+word lists are printed in the order in which they are searched
+(which is reversed with respect to the conventional way of
+displaying stacks). The compilation word list is displayed last.
+
+   <p><a name="index-find-_0040var_007b-c_002daddr-_002d_002d-xt-_002b_002d1-_007c-c_002daddr-0---_007d--core_002csearch-1628"></a><a name="index-g_t_0040code_007bfind_007d-1629"></a><a name="index-find-1630"></a>
+<pre class="format"><code>find</code>       <i>c-addr &ndash; xt +-1 | c-addr 0  </i>       core,search       &ldquo;find&rdquo;
+</pre>
+   <p>Search all word lists in the current search order for the
+definition named by the counted string at <i>c-addr</i>.  If the
+definition is not found, return 0. If the definition is found
+return 1 (if the definition has non-default compilation
+semantics) or -1 (if the definition has default compilation
+semantics).  The <i>xt</i> returned in interpret state represents
+the interpretation semantics.  The <i>xt</i> returned in compile
+state represented either the compilation semantics (for
+non-default compilation semantics) or the run-time semantics
+that the compilation semantics would <code>compile,</code> (for
+default compilation semantics).  The ANS Forth standard does
+not specify clearly what the returned <i>xt</i> represents (and
+also talks about immediacy instead of non-default compilation
+semantics), so this word is questionable in portable programs. 
+If non-portability is ok, <code>find-name</code> and friends are
+better (see <a href="Name-token.html#Name-token">Name token</a>).
+
+   <p><a name="index-search_002dwordlist-_0040var_007b-c_002daddr-count-wid-_002d_002d-0-_007c-xt-_002b_002d1---_007d--search-1631"></a><a name="index-g_t_0040code_007bsearch_002dwordlist_007d-1632"></a><a name="index-search_002dwordlist-1633"></a>
+<pre class="format"><code>search-wordlist</code>       <i>c-addr count wid &ndash; 0 | xt +-1  </i>       search       &ldquo;search-wordlist&rdquo;
+</pre>
+   <p>Search the word list identified by <i>wid</i> for the definition
+named by the string at <i>c-addr count</i>.  If the definition is
+not found, return 0. If the definition is found return 1 (if
+the definition is immediate) or -1 (if the definition is not
+immediate) together with the <i>xt</i>.  In Gforth, the <i>xt</i>
+returned represents the interpretation semantics.  ANS Forth
+does not specify clearly what <i>xt</i> represents.
+
+   <p><a name="index-words-_0040var_007b-_002d_002d---_007d--tools-1634"></a><a name="index-g_t_0040code_007bwords_007d-1635"></a><a name="index-words-1636"></a>
+<pre class="format"><code>words</code>       <i>&ndash;  </i>       tools       &ldquo;words&rdquo;
+</pre>
+   <p>Display a list of all of the definitions in the word list at the top
+of the search order.
+
+   <p><a name="index-vlist-_0040var_007b-_002d_002d---_007d--gforth-1637"></a><a name="index-g_t_0040code_007bvlist_007d-1638"></a><a name="index-vlist-1639"></a>
+<pre class="format"><code>vlist</code>       <i>&ndash;  </i>       gforth       &ldquo;vlist&rdquo;
+</pre>
+   <p>Old (pre-Forth-83) name for <code>WORDS</code>.
+
+<!-- doc-words-deferred -->
+<!-- doc-mappedwordlist @c map-structure undefined, implemantation-specific -->
+<p><a name="index-Root-_0040var_007b-_002d_002d---_007d--gforth-1640"></a><a name="index-g_t_0040code_007bRoot_007d-1641"></a><a name="index-Root-1642"></a>
+<pre class="format"><code>Root</code>       <i>&ndash;  </i>       gforth       &ldquo;Root&rdquo;
+</pre>
+   <p>Add the root wordlist to the search order stack.  This vocabulary
+makes up the minimum search order and contains only a
+search-order words.
+
+   <p><a name="index-Vocabulary-_0040var_007b-_0022name_0022-_002d_002d---_007d--gforth-1643"></a><a name="index-g_t_0040code_007bVocabulary_007d-1644"></a><a name="index-Vocabulary-1645"></a>
+<pre class="format"><code>Vocabulary</code>       <i>"name" &ndash;  </i>       gforth       &ldquo;Vocabulary&rdquo;
+</pre>
+   <p>Create a definition "name" and associate a new word list with it. 
+The run-time effect of "name" is to replace the <i>wid</i> at the
+top of the search order with the <i>wid</i> associated with the new
+word list.
+
+   <p><a name="index-seal-_0040var_007b-_002d_002d---_007d--gforth-1646"></a><a name="index-g_t_0040code_007bseal_007d-1647"></a><a name="index-seal-1648"></a>
+<pre class="format"><code>seal</code>       <i>&ndash;  </i>       gforth       &ldquo;seal&rdquo;
+</pre>
+   <p>Remove all word lists from the search order stack other than the word
+list that is currently on the top of the search order stack.
+
+   <p><a name="index-vocs-_0040var_007b-_002d_002d---_007d--gforth-1649"></a><a name="index-g_t_0040code_007bvocs_007d-1650"></a><a name="index-vocs-1651"></a>
+<pre class="format"><code>vocs</code>       <i>&ndash;  </i>       gforth       &ldquo;vocs&rdquo;
+</pre>
+   <p>List vocabularies and wordlists defined in the system.
+
+   <p><a name="index-current-_0040var_007b-_002d_002d-addr---_007d--gforth-1652"></a><a name="index-g_t_0040code_007bcurrent_007d-1653"></a><a name="index-current-1654"></a>
+<pre class="format"><code>current</code>       <i>&ndash; addr  </i>       gforth       &ldquo;current&rdquo;
+</pre>
+   <p><code>Variable</code> &ndash; holds the <i>wid</i> of the compilation word list.
+
+   <p><a name="index-context-_0040var_007b-_002d_002d-addr---_007d--gforth-1655"></a><a name="index-g_t_0040code_007bcontext_007d-1656"></a><a name="index-context-1657"></a>
+<pre class="format"><code>context</code>       <i>&ndash; addr  </i>       gforth       &ldquo;context&rdquo;
+</pre>
+   <p><code>context</code> <code>@</code> is the <i>wid</i> of the word list at the
+top of the search order.
+
+<ul class="menu">
+<li><a accesskey="1" href="Vocabularies.html#Vocabularies">Vocabularies</a>
+<li><a accesskey="2" href="Why-use-word-lists_003f.html#Why-use-word-lists_003f">Why use word lists?</a>
+<li><a accesskey="3" href="Word-list-example.html#Word-list-example">Word list example</a>
+</ul>
+
+   </body></html>
+

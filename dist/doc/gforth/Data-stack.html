@@ -1,0 +1,119 @@
+<html lang="en">
+<head>
+<title>Data stack - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Stack-Manipulation.html#Stack-Manipulation" title="Stack Manipulation">
+<link rel="prev" href="Stack-Manipulation.html#Stack-Manipulation" title="Stack Manipulation">
+<link rel="next" href="Floating-point-stack.html#Floating-point-stack" title="Floating point stack">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Data-stack"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Floating-point-stack.html#Floating-point-stack">Floating point stack</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Stack-Manipulation.html#Stack-Manipulation">Stack Manipulation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Stack-Manipulation.html#Stack-Manipulation">Stack Manipulation</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.6.1 Data stack</h4>
+
+<p><a name="index-data-stack-manipulation-words-624"></a><a name="index-stack-manipulations-words_002c-data-stack-625"></a>
+
+   <p><a name="index-drop-_0040var_007b-w-_002d_002d--_007d--core-626"></a><a name="index-g_t_0040code_007bdrop_007d-627"></a><a name="index-drop-628"></a>
+<pre class="format"><code>drop</code>       <i>w &ndash; </i>       core       &ldquo;drop&rdquo;
+</pre>
+   <p><a name="index-nip-_0040var_007b-w1-w2-_002d_002d-w2--_007d--core_002dext-629"></a><a name="index-g_t_0040code_007bnip_007d-630"></a><a name="index-nip-631"></a>
+<pre class="format"><code>nip</code>       <i>w1 w2 &ndash; w2 </i>       core-ext       &ldquo;nip&rdquo;
+</pre>
+   <p><a name="index-dup-_0040var_007b-w-_002d_002d-w-w--_007d--core-632"></a><a name="index-g_t_0040code_007bdup_007d-633"></a><a name="index-dup-634"></a>
+<pre class="format"><code>dup</code>       <i>w &ndash; w w </i>       core       &ldquo;dupe&rdquo;
+</pre>
+   <p><a name="index-over-_0040var_007b-w1-w2-_002d_002d-w1-w2-w1--_007d--core-635"></a><a name="index-g_t_0040code_007bover_007d-636"></a><a name="index-over-637"></a>
+<pre class="format"><code>over</code>       <i>w1 w2 &ndash; w1 w2 w1 </i>       core       &ldquo;over&rdquo;
+</pre>
+   <p><a name="index-tuck-_0040var_007b-w1-w2-_002d_002d-w2-w1-w2--_007d--core_002dext-638"></a><a name="index-g_t_0040code_007btuck_007d-639"></a><a name="index-tuck-640"></a>
+<pre class="format"><code>tuck</code>       <i>w1 w2 &ndash; w2 w1 w2 </i>       core-ext       &ldquo;tuck&rdquo;
+</pre>
+   <p><a name="index-swap-_0040var_007b-w1-w2-_002d_002d-w2-w1--_007d--core-641"></a><a name="index-g_t_0040code_007bswap_007d-642"></a><a name="index-swap-643"></a>
+<pre class="format"><code>swap</code>       <i>w1 w2 &ndash; w2 w1 </i>       core       &ldquo;swap&rdquo;
+</pre>
+   <p><a name="index-pick-_0040var_007b-S_003a_002e_002e_002e-u-_002d_002d-S_003a_002e_002e_002e-w--_007d--core_002dext-644"></a><a name="index-g_t_0040code_007bpick_007d-645"></a><a name="index-pick-646"></a>
+<pre class="format"><code>pick</code>       <i>S:... u &ndash; S:... w </i>       core-ext       &ldquo;pick&rdquo;
+</pre>
+   <p>Actually the stack effect is <code> x0 ... xu u -- x0 ... xu x0 </code>.
+
+   <p><a name="index-rot-_0040var_007b-w1-w2-w3-_002d_002d-w2-w3-w1--_007d--core-647"></a><a name="index-g_t_0040code_007brot_007d-648"></a><a name="index-rot-649"></a>
+<pre class="format"><code>rot</code>       <i>w1 w2 w3 &ndash; w2 w3 w1 </i>       core       &ldquo;rote&rdquo;
+</pre>
+   <p><a name="index-g_t_002drot-_0040var_007b-w1-w2-w3-_002d_002d-w3-w1-w2--_007d--gforth-650"></a><a name="index-g_t_0040code_007b_002drot_007d-651"></a><a name="index-g_t_002drot-652"></a>
+<pre class="format"><code>-rot</code>       <i>w1 w2 w3 &ndash; w3 w1 w2 </i>       gforth       &ldquo;not-rote&rdquo;
+</pre>
+   <p><a name="index-g_t_003fdup-_0040var_007b-w-_002d_002d-S_003a_002e_002e_002e-w--_007d--core-653"></a><a name="index-g_t_0040code_007b_003fdup_007d-654"></a><a name="index-g_t_003fdup-655"></a>
+<pre class="format"><code>?dup</code>       <i>w &ndash; S:... w </i>       core       &ldquo;question-dupe&rdquo;
+</pre>
+   <p>Actually the stack effect is: <code>( w -- 0 | w w )</code>.  It performs a
+<code>dup</code> if w is nonzero.
+
+   <p><a name="index-roll-_0040var_007b-x0-x1-_002e_002e-xn-n-_002d_002d-x1-_002e_002e-xn-x0---_007d--core_002dext-656"></a><a name="index-g_t_0040code_007broll_007d-657"></a><a name="index-roll-658"></a>
+<pre class="format"><code>roll</code>       <i>x0 x1 .. xn n &ndash; x1 .. xn x0  </i>       core-ext       &ldquo;roll&rdquo;
+</pre>
+   <p><a name="index-g_t2drop-_0040var_007b-w1-w2-_002d_002d--_007d--core-659"></a><a name="index-g_t_0040code_007b2drop_007d-660"></a><a name="index-g_t2drop-661"></a>
+<pre class="format"><code>2drop</code>       <i>w1 w2 &ndash; </i>       core       &ldquo;two-drop&rdquo;
+</pre>
+   <p><a name="index-g_t2nip-_0040var_007b-w1-w2-w3-w4-_002d_002d-w3-w4--_007d--gforth-662"></a><a name="index-g_t_0040code_007b2nip_007d-663"></a><a name="index-g_t2nip-664"></a>
+<pre class="format"><code>2nip</code>       <i>w1 w2 w3 w4 &ndash; w3 w4 </i>       gforth       &ldquo;two-nip&rdquo;
+</pre>
+   <p><a name="index-g_t2dup-_0040var_007b-w1-w2-_002d_002d-w1-w2-w1-w2--_007d--core-665"></a><a name="index-g_t_0040code_007b2dup_007d-666"></a><a name="index-g_t2dup-667"></a>
+<pre class="format"><code>2dup</code>       <i>w1 w2 &ndash; w1 w2 w1 w2 </i>       core       &ldquo;two-dupe&rdquo;
+</pre>
+   <p><a name="index-g_t2over-_0040var_007b-w1-w2-w3-w4-_002d_002d-w1-w2-w3-w4-w1-w2--_007d--core-668"></a><a name="index-g_t_0040code_007b2over_007d-669"></a><a name="index-g_t2over-670"></a>
+<pre class="format"><code>2over</code>       <i>w1 w2 w3 w4 &ndash; w1 w2 w3 w4 w1 w2 </i>       core       &ldquo;two-over&rdquo;
+</pre>
+   <p><a name="index-g_t2tuck-_0040var_007b-w1-w2-w3-w4-_002d_002d-w3-w4-w1-w2-w3-w4--_007d--gforth-671"></a><a name="index-g_t_0040code_007b2tuck_007d-672"></a><a name="index-g_t2tuck-673"></a>
+<pre class="format"><code>2tuck</code>       <i>w1 w2 w3 w4 &ndash; w3 w4 w1 w2 w3 w4 </i>       gforth       &ldquo;two-tuck&rdquo;
+</pre>
+   <p><a name="index-g_t2swap-_0040var_007b-w1-w2-w3-w4-_002d_002d-w3-w4-w1-w2--_007d--core-674"></a><a name="index-g_t_0040code_007b2swap_007d-675"></a><a name="index-g_t2swap-676"></a>
+<pre class="format"><code>2swap</code>       <i>w1 w2 w3 w4 &ndash; w3 w4 w1 w2 </i>       core       &ldquo;two-swap&rdquo;
+</pre>
+   <p><a name="index-g_t2rot-_0040var_007b-w1-w2-w3-w4-w5-w6-_002d_002d-w3-w4-w5-w6-w1-w2--_007d--double_002dext-677"></a><a name="index-g_t_0040code_007b2rot_007d-678"></a><a name="index-g_t2rot-679"></a>
+<pre class="format"><code>2rot</code>       <i>w1 w2 w3 w4 w5 w6 &ndash; w3 w4 w5 w6 w1 w2 </i>       double-ext       &ldquo;two-rote&rdquo;
+</pre>
+   </body></html>
+

@@ -1,0 +1,109 @@
+<html lang="en">
+<head>
+<title>ANS Forth locals - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Locals.html#Locals" title="Locals">
+<link rel="prev" href="Gforth-locals.html#Gforth-locals" title="Gforth locals">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="ANS-Forth-locals"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Gforth-locals.html#Gforth-locals">Gforth locals</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Locals.html#Locals">Locals</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.21.2 ANS Forth locals</h4>
+
+<p><a name="index-locals_002c-ANS-Forth-style-2318"></a>
+The ANS Forth locals wordset does not define a syntax for locals, but
+words that make it possible to define various syntaxes. One of the
+possible syntaxes is a subset of the syntax we used in the Gforth locals
+wordset, i.e.:
+
+<pre class="example">     { local1 local2 ... -- comment }
+</pre>
+   <p class="noindent">or
+<pre class="example">     { local1 local2 ... }
+</pre>
+   <p>The order of the locals corresponds to the order in a stack comment. The
+restrictions are:
+
+     <ul>
+<li>Locals can only be cell-sized values (no type specifiers are allowed). 
+<li>Locals can be defined only outside control structures. 
+<li>Locals can interfere with explicit usage of the return stack. For the
+exact (and long) rules, see the standard. If you don't use return stack
+accessing words in a definition using locals, you will be all right. The
+purpose of this rule is to make locals implementation on the return
+stack easier. 
+<li>The whole definition must be in one line. 
+</ul>
+
+   <p>Locals defined in ANS Forth behave like <code>VALUE</code>s
+(see <a href="Values.html#Values">Values</a>). I.e., they are initialized from the stack. Using their
+name produces their value. Their value can be changed using <code>TO</code>.
+
+   <p>Since the syntax above is supported by Gforth directly, you need not do
+anything to use it. If you want to port a program using this syntax to
+another ANS Forth system, use <samp><span class="file">compat/anslocal.fs</span></samp> to implement the
+syntax on the other system.
+
+   <p>Note that a syntax shown in the standard, section A.13 looks
+similar, but is quite different in having the order of locals
+reversed. Beware!
+
+   <p>The ANS Forth locals wordset itself consists of one word:
+
+   <p><a name="index-g_t_0028local_0029-_0040var_007b-addr-u-_002d_002d---_007d--local-2319"></a><a name="index-g_t_0040code_007b_0028local_0029_007d-2320"></a><a name="index-g_t_0028local_0029-2321"></a>
+<pre class="format"><code>(local)</code>       <i>addr u &ndash;  </i>       local       &ldquo;paren-local-paren&rdquo;
+</pre>
+   <p>The ANS Forth locals extension wordset defines a syntax using
+<code>locals|</code>, but it is so awful that we strongly recommend not to use
+it. We have implemented this syntax to make porting to Gforth easy, but
+do not document it here. The problem with this syntax is that the locals
+are defined in an order reversed with respect to the standard stack
+comment notation, making programs harder to read, and easier to misread
+and miswrite. The only merit of this syntax is that it is easy to
+implement using the ANS Forth locals wordset.
+
+<!--  -->
+</body></html>
+

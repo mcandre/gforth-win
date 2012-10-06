@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+<title>file-ambcond - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-optional-File_002dAccess-word-set.html#The-optional-File_002dAccess-word-set" title="The optional File-Access word set">
+<link rel="prev" href="file_002didef.html#file_002didef" title="file-idef">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="file-ambcond"></a>
+<a name="file_002dambcond"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="file_002didef.html#file_002didef">file-idef</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-optional-File_002dAccess-word-set.html#The-optional-File_002dAccess-word-set">The optional File-Access word set</a>
+<hr>
+</div>
+
+<h4 class="subsection">8.6.2 Ambiguous conditions</h4>
+
+<!--  -->
+<p><a name="index-file-words_002c-ambiguous-conditions-3248"></a><a name="index-ambiguous-conditions_002c-file-words-3249"></a>
+     <dl>
+<dt><i>attempting to position a file outside its boundaries:</i><dd><a name="index-g_t_0040code_007bREPOSITION_002dFILE_007d_002c-outside-the-file_0027s-boundaries-3250"></a><code>REPOSITION-FILE</code> is performed as usual: Afterwards,
+<code>FILE-POSITION</code> returns the value given to <code>REPOSITION-FILE</code>.
+
+     <br><dt><i>attempting to read from file positions not yet written:</i><dd><a name="index-reading-from-file-positions-not-yet-written-3251"></a>End-of-file, i.e., zero characters are read and no error is reported.
+
+     <br><dt><i>file-id is invalid (</i><code>INCLUDE-FILE</code><i>):</i><dd><a name="index-g_t_0040code_007bINCLUDE_002dFILE_007d_002c-_0040i_007bfile_002did_007d-is-invalid-3252"></a>An appropriate exception may be thrown, but a memory fault or other
+problem is more probable.
+
+     <br><dt><i>I/O exception reading or closing file-id (</i><code>INCLUDE-FILE</code><i>, </i><code>INCLUDED</code><i>):</i><dd><a name="index-g_t_0040code_007bINCLUDE_002dFILE_007d_002c-I_002fO-exception-reading-or-closing-_0040i_007bfile_002did_007d-3253"></a><a name="index-g_t_0040code_007bINCLUDED_007d_002c-I_002fO-exception-reading-or-closing-_0040i_007bfile_002did_007d-3254"></a>The <i>ior</i> produced by the operation, that discovered the problem, is
+thrown.
+
+     <br><dt><i>named file cannot be opened (</i><code>INCLUDED</code><i>):</i><dd><a name="index-g_t_0040code_007bINCLUDED_007d_002c-named-file-cannot-be-opened-3255"></a>The <i>ior</i> produced by <code>open-file</code> is thrown.
+
+     <br><dt><i>requesting an unmapped block number:</i><dd><a name="index-unmapped-block-numbers-3256"></a>There are no unmapped legal block numbers. On some operating systems,
+writing a block with a large number may overflow the file system and
+have an error message as consequence.
+
+     <br><dt><i>using </i><code>source-id</code><i> when </i><code>blk</code><i> is non-zero:</i><dd><a name="index-g_t_0040code_007bSOURCE_002dID_007d_002c-behaviour-when-_0040code_007bBLK_007d-is-non_002dzero-3257"></a><code>source-id</code> performs its function. Typically it will give the id of
+the source which loaded the block. (Better ideas?)
+
+   </dl>
+
+<!-- ===================================================================== -->
+</body></html>
+

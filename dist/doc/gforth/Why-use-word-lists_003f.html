@@ -1,0 +1,124 @@
+<html lang="en">
+<head>
+<title>Why use word lists? - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Word-Lists.html#Word-Lists" title="Word Lists">
+<link rel="prev" href="Vocabularies.html#Vocabularies" title="Vocabularies">
+<link rel="next" href="Word-list-example.html#Word-list-example" title="Word list example">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Why-use-word-lists%3f"></a>
+<a name="Why-use-word-lists_003f"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Word-list-example.html#Word-list-example">Word list example</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Vocabularies.html#Vocabularies">Vocabularies</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Word-Lists.html#Word-Lists">Word Lists</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.15.2 Why use word lists?</h4>
+
+<p><a name="index-word-lists-_002d-why-use-them_003f-1659"></a>
+Here are some reasons why people use wordlists:
+
+     <ul>
+<!-- anton: Gforth's hashing implementation makes the search speed -->
+<!-- independent from the number of words.  But it is linear with the number -->
+<!-- of wordlists that have to be searched, so in effect using more wordlists -->
+<!-- actually slows down compilation. -->
+
+     <!-- @item -->
+<!-- To improve compilation speed by reducing the number of header space -->
+<!-- entries that must be searched. This is achieved by creating a new -->
+<!-- word list that contains all of the definitions that are used in the -->
+<!-- definition of a Forth system but which would not usually be used by -->
+<!-- programs running on that system. That word list would be on the search -->
+<!-- list when the Forth system was compiled but would be removed from the -->
+<!-- search list for normal operation. This can be a useful technique for -->
+<!-- low-performance systems (for example, 8-bit processors in embedded -->
+<!-- systems) but is unlikely to be necessary in high-performance desktop -->
+<!-- systems. -->
+<li>To prevent a set of words from being used outside the context in which
+they are valid. Two classic examples of this are an integrated editor
+(all of the edit commands are defined in a separate word list; the
+search order is set to the editor word list when the editor is invoked;
+the old search order is restored when the editor is terminated) and an
+integrated assembler (the op-codes for the machine are defined in a
+separate word list which is used when a <code>CODE</code> word is defined).
+
+     <li>To organize the words of an application or library into a user-visible
+set (in <code>forth-wordlist</code> or some other common wordlist) and a set
+of helper words used just for the implementation (hidden in a separate
+wordlist).  This keeps <code>words</code>' output smaller, separates
+implementation and interface, and reduces the chance of name conflicts
+within the common wordlist.
+
+     <li>To prevent a name-space clash between multiple definitions with the same
+name. For example, when building a cross-compiler you might have a word
+<code>IF</code> that generates conditional code for your target system. By
+placing this definition in a different word list you can control whether
+the host system's <code>IF</code> or the target system's <code>IF</code> get used in
+any particular context by controlling the order of the word lists on the
+search order stack.
+
+   </ul>
+
+   <p>The downsides of using wordlists are:
+
+     <ul>
+<li>Debugging becomes more cumbersome.
+
+     <li>Name conflicts worked around with wordlists are still there, and you
+have to arrange the search order carefully to get the desired results;
+if you forget to do that, you get hard-to-find errors (as in any case
+where you read the code differently from the compiler; <code>see</code> can
+help seeing which of several possible words the name resolves to in such
+cases).  <code>See</code> displays just the name of the words, not what
+wordlist they belong to, so it might be misleading.  Using unique names
+is a better approach to avoid name conflicts.
+
+     <li>You have to explicitly undo any changes to the search order.  In many
+cases it would be more convenient if this happened implicitly.  Gforth
+currently does not provide such a feature, but it may do so in the
+future. 
+</ul>
+
+   </body></html>
+

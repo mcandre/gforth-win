@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+<title>Installing gforth.el - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Emacs-and-Gforth.html#Emacs-and-Gforth" title="Emacs and Gforth">
+<link rel="prev" href="Emacs-and-Gforth.html#Emacs-and-Gforth" title="Emacs and Gforth">
+<link rel="next" href="Emacs-Tags.html#Emacs-Tags" title="Emacs Tags">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Installing-gforth.el"></a>
+<a name="Installing-gforth_002eel"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Emacs-Tags.html#Emacs-Tags">Emacs Tags</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Emacs-and-Gforth.html#Emacs-and-Gforth">Emacs and Gforth</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Emacs-and-Gforth.html#Emacs-and-Gforth">Emacs and Gforth</a>
+<hr>
+</div>
+
+<h3 class="section">12.1 Installing gforth.el</h3>
+
+<p><a name="index-g_t_0040file_007b_002eemacs_007d-3374"></a><a name="index-g_t_0040file_007bgforth_002eel_007d_002c-installation-3375"></a>To make the features from <samp><span class="file">gforth.el</span></samp> available in Emacs, add
+the following lines to your <samp><span class="file">.emacs</span></samp> file:
+
+<pre class="example">     (autoload 'forth-mode "gforth.el")
+     (setq auto-mode-alist (cons '("\\.fs\\'" . forth-mode)
+     			    auto-mode-alist))
+     (autoload 'forth-block-mode "gforth.el")
+     (setq auto-mode-alist (cons '("\\.fb\\'" . forth-block-mode)
+     			    auto-mode-alist))
+     (add-hook 'forth-mode-hook (function (lambda ()
+        ;; customize variables here:
+        (setq forth-indent-level 4)
+        (setq forth-minor-indent-level 2)
+        (setq forth-hilight-level 3)
+        ;;; ...
+     )))
+</pre>
+   <!--  -->
+</body></html>
+

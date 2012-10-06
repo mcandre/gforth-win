@@ -1,0 +1,151 @@
+<html lang="en">
+<head>
+<title>Defining Words Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Exceptions-Tutorial.html#Exceptions-Tutorial" title="Exceptions Tutorial">
+<link rel="next" href="Arrays-and-Records-Tutorial.html#Arrays-and-Records-Tutorial" title="Arrays and Records Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Defining-Words-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Arrays-and-Records-Tutorial.html#Arrays-and-Records-Tutorial">Arrays and Records Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Exceptions-Tutorial.html#Exceptions-Tutorial">Exceptions Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.31 Defining Words</h3>
+
+<p><a name="index-defining-words-tutorial-122"></a><a name="index-does_003e-tutorial-123"></a><a name="index-create_002e_002e_002edoes_003e-tutorial-124"></a>
+<!-- before semantics? -->
+
+   <p><code>:</code>, <code>create</code>, and <code>variable</code> are definition words: They
+define other words.  <code>Constant</code> is another definition word:
+
+<pre class="example">     5 constant foo
+     foo .
+</pre>
+   <p>You can also use the prefixes <code>2</code> (double-cell) and <code>f</code>
+(floating point) with <code>variable</code> and <code>constant</code>.
+
+   <p>You can also define your own defining words.  E.g.:
+
+<pre class="example">     : variable ( "name" -- )
+       create 0 , ;
+</pre>
+   <p>You can also define defining words that create words that do something
+other than just producing their address:
+
+<pre class="example">     : constant ( n "name" -- )
+       create ,
+     does&gt; ( -- n )
+       ( addr ) @ ;
+     
+     5 constant foo
+     foo .
+</pre>
+   <p>The definition of <code>constant</code> above ends at the <code>does&gt;</code>; i.e.,
+<code>does&gt;</code> replaces <code>;</code>, but it also does something else: It
+changes the last defined word such that it pushes the address of the
+body of the word and then performs the code after the <code>does&gt;</code>
+whenever it is called.
+
+   <p>In the example above, <code>constant</code> uses <code>,</code> to store 5 into the
+body of <code>foo</code>.  When <code>foo</code> executes, it pushes the address of
+the body onto the stack, then (in the code after the <code>does&gt;</code>)
+fetches the 5 from there.
+
+   <p>The stack comment near the <code>does&gt;</code> reflects the stack effect of the
+defined word, not the stack effect of the code after the <code>does&gt;</code>
+(the difference is that the code expects the address of the body that
+the stack comment does not show).
+
+   <p>You can use these definition words to do factoring in cases that involve
+(other) definition words.  E.g., a field offset is always added to an
+address.  Instead of defining
+
+<pre class="example">     2 cells constant offset-field1
+</pre>
+   <p>and using this like
+
+<pre class="example">     ( addr ) offset-field1 +
+</pre>
+   <p>you can define a definition word
+
+<pre class="example">     : simple-field ( n "name" -- )
+       create ,
+     does&gt; ( n1 -- n1+n )
+       ( addr ) @ + ;
+</pre>
+   <p>Definition and use of field offsets now look like this:
+
+<pre class="example">     2 cells simple-field field1
+     create mystruct 4 cells allot
+     mystruct .s field1 .s drop
+</pre>
+   <p>If you want to do something with the word without performing the code
+after the <code>does&gt;</code>, you can access the body of a <code>create</code>d word
+with <code>&gt;body ( xt -- addr )</code>:
+
+<pre class="example">     : value ( n "name" -- )
+       create ,
+     does&gt; ( -- n1 )
+       @ ;
+     : to ( n "name" -- )
+       ' &gt;body ! ;
+     
+     5 value foo
+     foo .
+     7 to foo
+     foo .
+</pre>
+   <blockquote>
+<b>Assignment:</b> Define <code>defer ( "name" -- )</code>, which creates a word that stores an
+XT (at the start the XT of <code>abort</code>), and upon execution
+<code>execute</code>s the XT.  Define <code>is ( xt "name" -- )</code> that stores
+<code>xt</code> into <code>name</code>, a word defined with <code>defer</code>.  Indirect
+recursion is one application of <code>defer</code>. 
+</blockquote>
+
+   <p>Reference: <a href="User_002ddefined-Defining-Words.html#User_002ddefined-Defining-Words">User-defined Defining Words</a>.
+
+   </body></html>
+

@@ -1,0 +1,76 @@
+<html lang="en">
+<head>
+<title>Low-Level C Interface Words - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="C-Interface.html#C-Interface" title="C Interface">
+<link rel="prev" href="C-interface-internals.html#C-interface-internals" title="C interface internals">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Low-Level-C-Interface-Words"></a>
+<a name="Low_002dLevel-C-Interface-Words"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="C-interface-internals.html#C-interface-internals">C interface internals</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="C-Interface.html#C-Interface">C Interface</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.25.8 Low-Level C Interface Words</h4>
+
+<p><a name="index-open_002dlib-_0040var_007b-c_002daddr1-u1-_002d_002d-u2--_007d--gforth-2919"></a><a name="index-g_t_0040code_007bopen_002dlib_007d-2920"></a><a name="index-open_002dlib-2921"></a>
+<pre class="format"><code>open-lib</code>       <i>c-addr1 u1 &ndash; u2 </i>       gforth       &ldquo;open-lib&rdquo;
+</pre>
+   <p><a name="index-lib_002dsym-_0040var_007b-c_002daddr1-u1-u2-_002d_002d-u3--_007d--gforth-2922"></a><a name="index-g_t_0040code_007blib_002dsym_007d-2923"></a><a name="index-lib_002dsym-2924"></a>
+<pre class="format"><code>lib-sym</code>       <i>c-addr1 u1 u2 &ndash; u3 </i>       gforth       &ldquo;lib-sym&rdquo;
+</pre>
+   <p><a name="index-lib_002derror-_0040var_007b-_002d_002d-c_002daddr-u--_007d--gforth-2925"></a><a name="index-g_t_0040code_007blib_002derror_007d-2926"></a><a name="index-lib_002derror-2927"></a>
+<pre class="format"><code>lib-error</code>       <i>&ndash; c-addr u </i>       gforth       &ldquo;lib-error&rdquo;
+</pre>
+   <p>Error message for last failed <code>open-lib</code> or <code>lib-sym</code>.
+
+   <p><a name="index-call_002dc-_0040var_007b-_002e_002e_002e-w-_002d_002d-_002e_002e_002e--_007d--gforth-2928"></a><a name="index-g_t_0040code_007bcall_002dc_007d-2929"></a><a name="index-call_002dc-2930"></a>
+<pre class="format"><code>call-c</code>       <i>... w &ndash; ... </i>       gforth       &ldquo;call-c&rdquo;
+</pre>
+   <p>Call the C function pointed to by <i>w</i>. The C function has to
+access the stack itself. The stack pointers are exported in the global
+variables <code>gforth_SP</code> and <code>gforth_FP</code>.
+
+<!--  -->
+</body></html>
+

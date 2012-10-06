@@ -1,0 +1,114 @@
+<html lang="en">
+<head>
+<title>Interpret/Compile states - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-Text-Interpreter.html#The-Text-Interpreter" title="The Text Interpreter">
+<link rel="prev" href="Number-Conversion.html#Number-Conversion" title="Number Conversion">
+<link rel="next" href="Interpreter-Directives.html#Interpreter-Directives" title="Interpreter Directives">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Interpret%2fCompile-states"></a>
+<a name="Interpret_002fCompile-states"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Interpreter-Directives.html#Interpreter-Directives">Interpreter Directives</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Number-Conversion.html#Number-Conversion">Number Conversion</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-Text-Interpreter.html#The-Text-Interpreter">The Text Interpreter</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.13.3 Interpret/Compile states</h4>
+
+<p><a name="index-Interpret_002fCompile-states-1502"></a>
+A standard program is not permitted to change <code>state</code>
+explicitly. However, it can change <code>state</code> implicitly, using the
+words <code>[</code> and <code>]</code>. When <code>[</code> is executed it switches
+<code>state</code> to interpret state, and therefore the text interpreter
+starts interpreting. When <code>]</code> is executed it switches <code>state</code>
+to compile state and therefore the text interpreter starts
+compiling. The most common usage for these words is for switching into
+interpret state and back from within a colon definition; this technique
+can be used to compile a literal (for an example, see <a href="Literals.html#Literals">Literals</a>) or
+for conditional compilation (for an example, see <a href="Interpreter-Directives.html#Interpreter-Directives">Interpreter Directives</a>).
+
+<!-- This is a bad example: It's non-standard, and it's not necessary. -->
+<!-- However, I can't think of a good example for switching into compile -->
+<!-- state when there is no current word (@code{state}-smart words are not a -->
+<!-- good reason).  So maybe we should use an example for switching into -->
+<!-- interpret @code{state} in a colon def. - anton -->
+<!-- nac-> I agree. I started out by putting in the example, then realised -->
+<!-- that it was non-ANS, so wrote more words around it. I hope this -->
+<!-- re-written version is acceptable to you. I do want to keep the example -->
+<!-- as it is helpful for showing what is and what is not portable, particularly -->
+<!-- where it outlaws a style in common use. -->
+<!-- anton: it's more important to show what's portable.  After we have done -->
+<!-- that, we can also show what's not.  In any case, I have written a -->
+<!-- section Compiling Words which also deals with [ ]. -->
+<!-- !! The following example does not work in Gforth 0.5.9 or later. -->
+<!-- @code{[} and @code{]} also give you the ability to switch into compile -->
+<!-- state and back, but we cannot think of any useful Standard application -->
+<!-- for this ability. Pre-ANS Forth textbooks have examples like this: -->
+<!-- @example -->
+<!-- : AA ." this is A" ; -->
+<!-- : BB ." this is B" ; -->
+<!-- : CC ." this is C" ; -->
+<!-- create table ] aa bb cc [ -->
+<!-- : go ( n - ) \ n is offset into table.. 0 for 1st entry -->
+<!-- cells table + @@ execute ; -->
+<!-- @end example -->
+<!-- This example builds a jump table; @code{0 go} will display ``@code{this -->
+<!-- is A}''. Using @code{[} and @code{]} in this example is equivalent to -->
+<!-- defining @code{table} like this: -->
+<!-- @example -->
+<!-- create table ' aa COMPILE, ' bb COMPILE, ' cc COMPILE, -->
+<!-- @end example -->
+<!-- The problem with this code is that the definition of @code{table} is not -->
+<!-- portable - it @i{compile}s execution tokens into code space. Whilst it -->
+<!-- @i{may} work on systems where code space and data space co-incide, the -->
+<!-- Standard only allows data space to be assigned for a @code{CREATE}d -->
+<!-- word. In addition, the Standard only allows @code{@@} to access data -->
+<!-- space, whilst this example is using it to access code space. The only -->
+<!-- portable, Standard way to build this table is to build it in data space, -->
+<!-- like this: -->
+<!-- @example -->
+<!-- create table ' aa , ' bb , ' cc , -->
+<!-- @end example -->
+<!-- doc-state -->
+</body></html>
+

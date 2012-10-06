@@ -1,0 +1,102 @@
+<html lang="en">
+<head>
+<title>Debugging - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Programming-Tools.html#Programming-Tools" title="Programming Tools">
+<link rel="prev" href="Forgetting-words.html#Forgetting-words" title="Forgetting words">
+<link rel="next" href="Assertions.html#Assertions" title="Assertions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Debugging"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Assertions.html#Assertions">Assertions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Forgetting-words.html#Forgetting-words">Forgetting words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Programming-Tools.html#Programming-Tools">Programming Tools</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.24.3 Debugging</h4>
+
+<p><a name="index-debugging-2837"></a>
+Languages with a slow edit/compile/link/test development loop tend to
+require sophisticated tracing/stepping debuggers to facilate debugging.
+
+   <p>A much better (faster) way in fast-compiling languages is to add
+printing code at well-selected places, let the program run, look at
+the output, see where things went wrong, add more printing code, etc.,
+until the bug is found.
+
+   <p>The simple debugging aids provided in <samp><span class="file">debugs.fs</span></samp>
+are meant to support this style of debugging.
+
+   <p>The word <code>~~</code> prints debugging information (by default the source
+location and the stack contents). It is easy to insert. If you use Emacs
+it is also easy to remove (<kbd>C-x ~</kbd> in the Emacs Forth mode to
+query-replace them with nothing). The deferred words
+<code>printdebugdata</code> and <code>.debugline</code> control the output of
+<code>~~</code>. The default source location output format works well with
+Emacs' compilation mode, so you can step through the program at the
+source level using <kbd>C-x `</kbd> (the advantage over a stepping debugger
+is that you can step in any direction and you know where the crash has
+happened or where the strange data has occurred).
+
+   <p><a name="index-g_t_007e_007e-_0040var_007b-_002d_002d---_007d--gforth-2838"></a><a name="index-g_t_0040code_007b_007e_007e_007d-2839"></a><a name="index-g_t_007e_007e-2840"></a>
+<pre class="format"><code>~~</code>       <i>&ndash;  </i>       gforth       &ldquo;tilde-tilde&rdquo;
+</pre>
+   <p>Prints the source code location of the <code>~~</code> and the stack
+contents with <code>.debugline</code>.
+
+   <p><a name="index-printdebugdata-_0040var_007b-_002d_002d---_007d--gforth-2841"></a><a name="index-g_t_0040code_007bprintdebugdata_007d-2842"></a><a name="index-printdebugdata-2843"></a>
+<pre class="format"><code>printdebugdata</code>       <i>&ndash;  </i>       gforth       &ldquo;print-debug-data&rdquo;
+</pre>
+   <p><a name="index-g_t_002edebugline-_0040var_007b-nfile-nline-_002d_002d---_007d--gforth-2844"></a><a name="index-g_t_0040code_007b_002edebugline_007d-2845"></a><a name="index-g_t_002edebugline-2846"></a>
+<pre class="format"><code>.debugline</code>       <i>nfile nline &ndash;  </i>       gforth       &ldquo;print-debug-line&rdquo;
+</pre>
+   <p>Print the source code location indicated by <var>nfile nline</var>, and
+additional debugging information; the default <code>.debugline</code>
+prints the additional information with <code>printdebugdata</code>.
+
+   <p><a name="index-filenames-in-_0040code_007b_007e_007e_007d-output-2847"></a><code>~~</code> (and assertions) will usually print the wrong file name if a
+marker is executed in the same file after their occurance.  They will
+print `<samp><span class="samp">*somewhere*</span></samp>' as file name if a marker is executed in the
+same file before their occurance.
+
+   </body></html>
+

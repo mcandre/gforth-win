@@ -1,0 +1,123 @@
+<html lang="en">
+<head>
+<title>Input File Grammar - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Input-File-Format.html#Input-File-Format" title="Input File Format">
+<link rel="prev" href="Input-File-Format.html#Input-File-Format" title="Input File Format">
+<link rel="next" href="Simple-instructions.html#Simple-instructions" title="Simple instructions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Input-File-Grammar"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Simple-instructions.html#Simple-instructions">Simple instructions</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Input-File-Format.html#Input-File-Format">Input File Format</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Input-File-Format.html#Input-File-Format">Input File Format</a>
+<hr>
+</div>
+
+<h3 class="section">6.1 Input File Grammar</h3>
+
+<p><a name="index-grammar_002c-input-file-49"></a><a name="index-input-file-grammar-50"></a>
+The grammar is in EBNF format, with <var>a</var><code>|</code><var>b</var> meaning
+&ldquo;<var>a</var> or <var>b</var>&rdquo;, <code>{</code><var>c</var><code>}</code> meaning 0 or more repetitions
+of <var>c</var> and <code>[</code><var>d</var><code>]</code> meaning 0 or 1 repetitions of <var>d</var>.
+
+   <p><a name="index-free_002dformat_002c-not-51"></a><a name="index-newlines_002c-significance-in-syntax-52"></a>Vmgen input is not free-format, so you have to take care where you put
+newlines (and, in a few cases, white space).
+
+<pre class="example">     description: {instruction|comment|eval-escape|c-escape}
+     
+     instruction: simple-inst|superinst
+     
+     simple-inst: ident '(' stack-effect ')' newline c-code newline newline
+     
+     stack-effect: {ident} '--' {ident}
+     
+     super-inst: ident '=' ident {ident}
+     
+     comment:      '\ '  text newline
+     
+     eval-escape:  '\E ' text newline
+     
+     c-escape:     '\C ' text newline
+</pre>
+   <!-- \+ \- \g \f \c -->
+<p>Note that the <code>\</code>s in this grammar are meant literally, not as
+C-style encodings for non-printable characters.
+
+   <p>There are two ways to delimit the C code in <code>simple-inst</code>:
+
+     <ul>
+<li>If you start it with a `<samp><span class="samp">{</span></samp>' at the start of a line (i.e., not even
+white space before it), you have to end it with a `<samp><span class="samp">}</span></samp>' at the start
+of a line (followed by a newline).  In this case you may have empty
+lines within the C code (typically used between variable definitions and
+statements).
+
+     <li>You do not start it with `<samp><span class="samp">{</span></samp>'.  Then the C code ends at the first
+empty line, so you cannot have empty lines within this code.
+
+   </ul>
+
+   <p>The text in <code>comment</code>, <code>eval-escape</code> and <code>c-escape</code> must
+not contain a newline.  <code>Ident</code> must conform to the usual
+conventions of C identifiers (otherwise the C compiler would choke on
+the Vmgen output), except that idents in <code>stack-effect</code> may have a
+stack prefix (for stack prefix syntax, see <a href="Eval-escapes.html#Eval-escapes">Eval escapes</a>).
+
+   <p><a name="index-C-escape-53"></a><a name="index-g_t_0040code_007b_005cC_007d-54"></a><a name="index-conditional-compilation-of-Vmgen-output-55"></a>The <code>c-escape</code> passes the text through to each output file (without
+the `<samp><span class="samp">\C</span></samp>').  This is useful mainly for conditional compilation
+(i.e., you write `<samp><span class="samp">\C #if ...</span></samp>' etc.).
+
+   <p><a name="index-sync-lines-56"></a><a name="index-g_t_0040code_007b_0023line_007d-57"></a>In addition to the syntax given in the grammer, Vmgen also processes
+sync lines (lines starting with `<samp><span class="samp">#line</span></samp>'), as produced by `<samp><span class="samp">m4
+-s</span></samp>' (see <a href="../m4/Invoking-m4.html#Invoking-m4">Invoking m4</a>) and similar
+tools.  This allows associating C compiler error messages with the
+original source of the C code.
+
+   <p>Vmgen understands a few extensions beyond the grammar given here, but
+these extensions are only useful for building Gforth.  You can find a
+description of the format used for Gforth in <samp><span class="file">prim</span></samp>.
+
+<ul class="menu">
+<li><a accesskey="1" href="Eval-escapes.html#Eval-escapes">Eval escapes</a>:                 what follows \E
+</ul>
+
+   </body></html>
+

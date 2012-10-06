@@ -1,0 +1,114 @@
+<html lang="en">
+<head>
+<title>Running Image Files - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Image-Files.html#Image-Files" title="Image Files">
+<link rel="prev" href="Stack-and-Dictionary-Sizes.html#Stack-and-Dictionary-Sizes" title="Stack and Dictionary Sizes">
+<link rel="next" href="Modifying-the-Startup-Sequence.html#Modifying-the-Startup-Sequence" title="Modifying the Startup Sequence">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Running-Image-Files"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Modifying-the-Startup-Sequence.html#Modifying-the-Startup-Sequence">Modifying the Startup Sequence</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Stack-and-Dictionary-Sizes.html#Stack-and-Dictionary-Sizes">Stack and Dictionary Sizes</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Image-Files.html#Image-Files">Image Files</a>
+<hr>
+</div>
+
+<h3 class="section">13.7 Running Image Files</h3>
+
+<p><a name="index-running-image-files-3428"></a><a name="index-invoking-image-files-3429"></a><a name="index-image-file-invocation-3430"></a>
+<a name="index-g_t_002di_002c-invoke-image-file-3431"></a><a name="index-g_t_002d_002dimage-file_002c-invoke-image-file-3432"></a>You can invoke Gforth with an image file <i>image</i> instead of the
+default <samp><span class="file">gforth.fi</span></samp> with the <code>-i</code> flag (see <a href="Invoking-Gforth.html#Invoking-Gforth">Invoking Gforth</a>):
+<pre class="example">     gforth -i <i>image</i>
+</pre>
+   <p><a name="index-executable-image-file-3433"></a><a name="index-image-file_002c-executable-3434"></a>If your operating system supports starting scripts with a line of the
+form <code>#! ...</code>, you just have to type the image file name to start
+Gforth with this image file (note that the file extension <code>.fi</code> is
+just a convention). I.e., to run Gforth with the image file <i>image</i>,
+you can just type <i>image</i> instead of <code>gforth -i </code><i>image</i>. 
+This works because every <code>.fi</code> file starts with a line of this
+format:
+
+<pre class="example">     #! /usr/local/bin/gforth-0.4.0 -i
+</pre>
+   <p>The file and pathname for the Gforth engine specified on this line is
+the specific Gforth executable that it was built against; i.e. the value
+of the environment variable <code>GFORTH</code> at the time that
+<samp><span class="file">gforthmi</span></samp> was executed.
+
+   <p>You can make use of the same shell capability to make a Forth source
+file into an executable. For example, if you place this text in a file:
+
+<pre class="example">     #! /usr/local/bin/gforth
+     
+     ." Hello, world" CR
+     bye
+</pre>
+   <p class="noindent">and then make the file executable (chmod +x in Unix), you can run it
+directly from the command line. The sequence <code>#!</code> is used in two
+ways; firstly, it is recognised as a &ldquo;magic sequence&rdquo; by the operating
+system<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a> secondly it is treated as a comment character by
+Gforth. Because of the second usage, a space is required between
+<code>#!</code> and the path to the executable (moreover, some Unixes
+require the sequence <code>#! /</code>).
+
+   <p>The disadvantage of this latter technique, compared with using
+<samp><span class="file">gforthmi</span></samp>, is that it is slightly slower; the Forth source code is
+compiled on-the-fly, each time the program is invoked.
+
+   <p><a name="index-g_t_0023_0021-_0040var_007b-_002d_002d---_007d--gforth-3435"></a><a name="index-g_t_0040code_007b_0023_0021_007d-3436"></a><a name="index-g_t_0023_0021-3437"></a>
+<pre class="format"><code>#!</code>       <i>&ndash;  </i>       gforth       &ldquo;hash-bang&rdquo;
+</pre>
+   <p>An alias for <code>\</code>
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> The Unix kernel actually recognises two types of files:
+executable files and files of data, where the data is processed by an
+interpreter that is specified on the &ldquo;interpreter line&rdquo; &ndash; the first
+line of the file, starting with the sequence #!. There may be a small
+limit (e.g., 32) on the number of characters that may be specified on
+the interpreter line.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

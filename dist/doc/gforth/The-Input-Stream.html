@@ -1,0 +1,154 @@
+<html lang="en">
+<head>
+<title>The Input Stream - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="The-Text-Interpreter.html#The-Text-Interpreter" title="The Text Interpreter">
+<link rel="next" href="Word-Lists.html#Word-Lists" title="Word Lists">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="The-Input-Stream"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Word-Lists.html#Word-Lists">Word Lists</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="The-Text-Interpreter.html#The-Text-Interpreter">The Text Interpreter</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.14 The Input Stream</h3>
+
+<p><a name="index-input-stream-1556"></a>
+<!-- !! integrate this better with the "Text Interpreter" section -->
+The text interpreter reads from the input stream, which can come from
+several sources (see <a href="Input-Sources.html#Input-Sources">Input Sources</a>).  Some words, in particular
+defining words, but also words like <code>'</code>, read parameters from the
+input stream instead of from the stack.
+
+   <p>Such words are called parsing words, because they parse the input
+stream.  Parsing words are hard to use in other words, because it is
+hard to pass program-generated parameters through the input stream. 
+They also usually have an unintuitive combination of interpretation and
+compilation semantics when implemented naively, leading to various
+approaches that try to produce a more intuitive behaviour
+(see <a href="Combined-words.html#Combined-words">Combined words</a>).
+
+   <p>It should be obvious by now that parsing words are a bad idea.  If you
+want to implement a parsing word for convenience, also provide a factor
+of the word that does not parse, but takes the parameters on the stack. 
+To implement the parsing word on top if it, you can use the following
+words:
+
+<!-- anton: these belong in the input stream section -->
+<p><a name="index-parse-_0040var_007b-char-_0022ccc_003cchar_003e_0022-_002d_002d-c_002daddr-u---_007d--core_002dext-1557"></a><a name="index-g_t_0040code_007bparse_007d-1558"></a><a name="index-parse-1559"></a>
+<pre class="format"><code>parse</code>       <i>char "ccc&lt;char&gt;" &ndash; c-addr u  </i>       core-ext       &ldquo;parse&rdquo;
+</pre>
+   <p>Parse <i>ccc</i>, delimited by <i>char</i>, in the parse
+area. <i>c-addr u</i> specifies the parsed string within the
+parse area. If the parse area was empty, <i>u</i> is 0.
+
+   <p><a name="index-parse_002dname-_0040var_007b-_0022name_0022-_002d_002d-c_002daddr-u---_007d--gforth-1560"></a><a name="index-g_t_0040code_007bparse_002dname_007d-1561"></a><a name="index-parse_002dname-1562"></a>
+<pre class="format"><code>parse-name</code>       <i>"name" &ndash; c-addr u  </i>       gforth       &ldquo;parse-name&rdquo;
+</pre>
+   <p>Get the next word from the input buffer
+
+   <p><a name="index-parse_002dword-_0040var_007b-_002d_002d-c_002daddr-u---_007d--gforth_002dobsolete-1563"></a><a name="index-g_t_0040code_007bparse_002dword_007d-1564"></a><a name="index-parse_002dword-1565"></a>
+<pre class="format"><code>parse-word</code>       <i>&ndash; c-addr u  </i>       gforth-obsolete       &ldquo;parse-word&rdquo;
+</pre>
+   <p>old name for <code>parse-name</code>
+
+   <p><a name="index-name-_0040var_007b-_002d_002d-c_002daddr-u---_007d--gforth_002dobsolete-1566"></a><a name="index-g_t_0040code_007bname_007d-1567"></a><a name="index-name-1568"></a>
+<pre class="format"><code>name</code>       <i>&ndash; c-addr u  </i>       gforth-obsolete       &ldquo;name&rdquo;
+</pre>
+   <p>old name for <code>parse-name</code>
+
+   <p><a name="index-word-_0040var_007b-char-_0022_003cchars_003eccc_003cchar_003e_002d_002d-c_002daddr---_007d--core-1569"></a><a name="index-g_t_0040code_007bword_007d-1570"></a><a name="index-word-1571"></a>
+<pre class="format"><code>word</code>       <i>char "&lt;chars&gt;ccc&lt;char&gt;&ndash; c-addr  </i>       core       &ldquo;word&rdquo;
+</pre>
+   <p>Skip leading delimiters. Parse <i>ccc</i>, delimited by
+<i>char</i>, in the parse area. <i>c-addr</i> is the address of a
+transient region containing the parsed string in
+counted-string format. If the parse area was empty or
+contained no characters other than delimiters, the resulting
+string has zero length. A program may replace characters within
+the counted string. OBSOLESCENT: the counted string has a
+trailing space that is not included in its length.
+
+   <p><a name="index-refill-_0040var_007b-_002d_002d-flag---_007d--core_002dext_002cblock_002dext_002cfile_002dext-1572"></a><a name="index-g_t_0040code_007brefill_007d-1573"></a><a name="index-refill-1574"></a>
+<pre class="format"><code>refill</code>       <i>&ndash; flag  </i>       core-ext,block-ext,file-ext       &ldquo;refill&rdquo;
+</pre>
+   <p>Attempt to fill the input buffer from the input source.  When
+the input source is the user input device, attempt to receive
+input into the terminal input device. If successful, make the
+result the input buffer, set <code>&gt;IN</code> to 0 and return true;
+otherwise return false. When the input source is a block, add 1
+to the value of <code>BLK</code> to make the next block the input
+source and current input buffer, and set <code>&gt;IN</code> to 0;
+return true if the new value of <code>BLK</code> is a valid block
+number, false otherwise. When the input source is a text file,
+attempt to read the next line from the file. If successful,
+make the result the current input buffer, set <code>&gt;IN</code> to 0
+and return true; otherwise, return false.  A successful result
+includes receipt of a line containing 0 characters.
+
+   <p>Conversely, if you have the bad luck (or lack of foresight) to have to
+deal with parsing words without having such factors, how do you pass a
+string that is not in the input stream to it?
+
+   <p><a name="index-execute_002dparsing-_0040var_007b-_002e_002e_002e-addr-u-xt-_002d_002d-_002e_002e_002e---_007d--gforth-1575"></a><a name="index-g_t_0040code_007bexecute_002dparsing_007d-1576"></a><a name="index-execute_002dparsing-1577"></a>
+<pre class="format"><code>execute-parsing</code>       <i>... addr u xt &ndash; ...  </i>       gforth       &ldquo;execute-parsing&rdquo;
+</pre>
+   <p>Make <i>addr u</i> the current input source, execute <i>xt </i><code>(
+... -- ... )</code>, then restore the previous input source.
+
+   <p>A definition of this word in ANS Forth is provided in
+<samp><span class="file">compat/execute-parsing.fs</span></samp>.
+
+   <p>If you want to run a parsing word on a file, the following word should
+help:
+
+   <p><a name="index-execute_002dparsing_002dfile-_0040var_007b-i_002ax-fileid-xt-_002d_002d-j_002ax---_007d--gforth-1578"></a><a name="index-g_t_0040code_007bexecute_002dparsing_002dfile_007d-1579"></a><a name="index-execute_002dparsing_002dfile-1580"></a>
+<pre class="format"><code>execute-parsing-file</code>       <i>i*x fileid xt &ndash; j*x  </i>       gforth       &ldquo;execute-parsing-file&rdquo;
+</pre>
+   <p>Make <i>fileid</i> the current input source, execute <i>xt </i><code>( i*x
+-- j*x )</code>, then restore the previous input source.
+
+<!--  -->
+</body></html>
+

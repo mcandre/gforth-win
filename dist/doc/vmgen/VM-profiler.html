@@ -1,0 +1,127 @@
+<html lang="en">
+<head>
+<title>VM profiler - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Using-the-generated-code.html#Using-the-generated-code" title="Using the generated code">
+<link rel="prev" href="VM-disassembler.html#VM-disassembler" title="VM disassembler">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="VM-profiler"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="VM-disassembler.html#VM-disassembler">VM disassembler</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Using-the-generated-code.html#Using-the-generated-code">Using the generated code</a>
+<hr>
+</div>
+
+<h3 class="section">8.6 VM profiler</h3>
+
+<p><a name="index-VM-profiler-189"></a><a name="index-profiling-for-selecting-superinstructions-190"></a><a name="index-superinstructions-and-profiling-191"></a><a name="index-g_t_0040file_007bprofile_002ec_007d-192"></a><a name="index-g_t_0040file_007b_002dprofile_002ei_007d-output-file-193"></a>
+The VM profiler is designed for getting execution and occurence counts
+for VM instruction sequences, and these counts can then be used for
+selecting sequences as superinstructions.  The VM profiler is probably
+not useful as profiling tool for the interpretive system.  I.e., the VM
+profiler is useful for the developers, but not the users of the
+interpretive system.
+
+   <p>The output of the profiler is: for each basic block (executed at least
+once), it produces the dynamic execution count of that basic block and
+all its subsequences; e.g.,
+
+<pre class="example">            9227465  lit storelocal
+            9227465  storelocal branch
+            9227465  lit storelocal branch
+</pre>
+   <p>I.e., a basic block consisting of `<samp><span class="samp">lit storelocal branch</span></samp>' is
+executed 9227465 times.
+
+   <p><a name="index-g_t_0040file_007bstat_002eawk_007d-194"></a><a name="index-g_t_0040file_007bseq2rule_002eawk_007d-195"></a>This output can be combined in various ways.  E.g.,
+<samp><span class="file">vmgen-ex/stat.awk</span></samp> adds up the occurences of a given sequence wrt
+dynamic execution, static occurence, and per-program occurence.  E.g.,
+
+<pre class="example">           2      16        36910041 loadlocal lit
+</pre>
+   <p class="noindent">indicates that the sequence `<samp><span class="samp">loadlocal lit</span></samp>' occurs in 2 programs,
+in 16 places, and has been executed 36910041 times.  Now you can select
+superinstructions in any way you like (note that compile time and space
+typically limit the number of superinstructions to 100&ndash;1000).  After
+you have done that, <samp><span class="file">vmgen/seq2rule.awk</span></samp> turns lines of the form
+above into rules for inclusion in a Vmgen input file.  Note that this
+script does not ensure that all prefixes are defined, so you have to do
+that in other ways.  So, an overall script for turning profiles into
+superinstructions can look like this:
+
+<pre class="example">     awk -f stat.awk fib.prof test.prof|
+     awk '$3&gt;=10000'|                #select sequences
+     fgrep -v -f peephole-blacklist| #eliminate wrong instructions
+     awk -f seq2rule.awk|            #turn into superinstructions
+     sort -k 3 &gt;mini-super.vmg       #sort sequences
+</pre>
+   <p>Here the dynamic count is used for selecting sequences (preliminary
+results indicate that the static count gives better results, though);
+the third line eliminates sequences containing instructions that must not
+occur in a superinstruction, because they access a stack directly.  The
+dynamic count selection ensures that all subsequences (including
+prefixes) of longer sequences occur (because subsequences have at least
+the same count as the longer sequences); the sort in the last line
+ensures that longer superinstructions occur after their prefixes.
+
+   <p>But before using this, you have to have the profiler.  Vmgen supports its
+creation by generating <samp><var>file</var><span class="file">-profile.i</span></samp>; you also need the
+wrapper file <samp><span class="file">vmgen-ex/profile.c</span></samp> that you can use almost verbatim.
+
+   <p><a name="index-g_t_0040code_007bSUPER_005fEND_007d-in-profiling-196"></a><a name="index-g_t_0040code_007bBB_005fBOUNDARY_007d-in-profiling-197"></a>The profiler works by recording the targets of all VM control flow
+changes (through <code>SUPER_END</code> during execution, and through
+<code>BB_BOUNDARY</code> in the front end), and counting (through
+<code>SUPER_END</code>) how often they were targeted.  After the program run,
+the numbers are corrected such that each VM basic block has the correct
+count (entering a block without executing a branch does not increase the
+count, and the correction fixes that), then the subsequences of all
+basic blocks are printed.  To get all this, you just have to define
+<code>SUPER_END</code> (and <code>BB_BOUNDARY</code>) appropriately, and call
+<code>vm_print_profile(FILE *file)</code> when you want to output the profile
+on <code>file</code>.
+
+   <p><a name="index-g_t_0040code_007bVM_005fIS_005fINST_007d-in-profiling-198"></a>The <samp><var>file</var><span class="file">-profile.i</span></samp> is similar to the disassembler file, and
+it uses variables and functions defined in <samp><span class="file">vmgen-ex/profile.c</span></samp>,
+plus <code>VM_IS_INST</code> already defined for the VM disassembler
+(see <a href="VM-disassembler.html#VM-disassembler">VM disassembler</a>).
+
+<!-- ********************************************************** -->
+</body></html>
+

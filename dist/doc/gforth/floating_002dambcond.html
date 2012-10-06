@@ -1,0 +1,116 @@
+<html lang="en">
+<head>
+<title>floating-ambcond - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-optional-Floating_002dPoint-word-set.html#The-optional-Floating_002dPoint-word-set" title="The optional Floating-Point word set">
+<link rel="prev" href="floating_002didef.html#floating_002didef" title="floating-idef">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="floating-ambcond"></a>
+<a name="floating_002dambcond"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="floating_002didef.html#floating_002didef">floating-idef</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-optional-Floating_002dPoint-word-set.html#The-optional-Floating_002dPoint-word-set">The optional Floating-Point word set</a>
+<hr>
+</div>
+
+<h4 class="subsection">8.7.2 Ambiguous conditions</h4>
+
+<!--  -->
+<p><a name="index-floating_002dpoint-words_002c-ambiguous-conditions-3270"></a><a name="index-ambiguous-conditions_002c-floating_002dpoint-words-3271"></a>
+     <dl>
+<dt><code>df@</code><i> or </i><code>df!</code><i> used with an address that is not double-float  aligned:</i><dd><a name="index-g_t_0040code_007bdf_0040_0040_007d-or-_0040code_007bdf_0021_007d-used-with-an-address-that-is-not-double_002dfloat--aligned-3272"></a>System-dependent. Typically results in a <code>-23 THROW</code> like other
+alignment violations.
+
+     <br><dt><code>f@</code><i> or </i><code>f!</code><i> used with an address that is not float  aligned:</i><dd><a name="index-g_t_0040code_007bf_0040_0040_007d-used-with-an-address-that-is-not-float-aligned-3273"></a><a name="index-g_t_0040code_007bf_0021_007d-used-with-an-address-that-is-not-float-aligned-3274"></a>System-dependent. Typically results in a <code>-23 THROW</code> like other
+alignment violations.
+
+     <br><dt><i>floating-point result out of range:</i><dd><a name="index-floating_002dpoint-result-out-of-range-3275"></a>System-dependent. Can result in a <code>-43 throw</code> (floating point
+overflow), <code>-54 throw</code> (floating point underflow), <code>-41 throw</code>
+(floating point inexact result), <code>-55 THROW</code> (Floating-point
+unidentified fault), or can produce a special value representing, e.g.,
+Infinity.
+
+     <br><dt><code>sf@</code><i> or </i><code>sf!</code><i> used with an address that is not single-float  aligned:</i><dd><a name="index-g_t_0040code_007bsf_0040_0040_007d-or-_0040code_007bsf_0021_007d-used-with-an-address-that-is-not-single_002dfloat--aligned-3276"></a>System-dependent. Typically results in an alignment fault like other
+alignment violations.
+
+     <br><dt><code>base</code><i> is not decimal (</i><code>REPRESENT</code><i>, </i><code>F.</code><i>, </i><code>FE.</code><i>, </i><code>FS.</code><i>):</i><dd><a name="index-g_t_0040code_007bbase_007d-is-not-decimal-_0028_0040code_007bREPRESENT_007d_002c-_0040code_007bF_002e_007d_002c-_0040code_007bFE_002e_007d_002c-_0040code_007bFS_002e_007d_0029-3277"></a>The floating-point number is converted into decimal nonetheless.
+
+     <br><dt><i>Both arguments are equal to zero (</i><code>FATAN2</code><i>):</i><dd><a name="index-g_t_0040code_007bFATAN2_007d_002c-both-arguments-are-equal-to-zero-3278"></a>System-dependent. <code>FATAN2</code> is implemented using the C library
+function <code>atan2()</code>.
+
+     <br><dt><i>Using </i><code>FTAN</code><i> on an argument r1 where cos(r1) is zero:</i><dd><a name="index-g_t_0040code_007bFTAN_007d-on-an-argument-_0040i_007br1_007d-where-cos_0028_0040i_007br1_007d_0029-is-zero-3279"></a>System-dependent. Anyway, typically the cos of <i>r1</i> will not be zero
+because of small errors and the tan will be a very large (or very small)
+but finite number.
+
+     <br><dt><i>d cannot be presented precisely as a float in </i><code>D&gt;F</code><i>:</i><dd><a name="index-g_t_0040code_007bD_003eF_007d_002c-_0040i_007bd_007d-cannot-be-presented-precisely-as-a-float-3280"></a>The result is rounded to the nearest float.
+
+     <br><dt><i>dividing by zero:</i><dd><a name="index-dividing-by-zero_002c-floating_002dpoint-3281"></a><a name="index-floating_002dpoint-dividing-by-zero-3282"></a><a name="index-floating_002dpoint-unidentified-fault_002c-FP-divide_002dby_002dzero-3283"></a>Platform-dependent; can produce an Infinity, NaN, <code>-42 throw</code>
+(floating point divide by zero) or <code>-55 throw</code> (Floating-point
+unidentified fault).
+
+     <br><dt><i>exponent too big for conversion (</i><code>DF!</code><i>, </i><code>DF@</code><i>, </i><code>SF!</code><i>, </i><code>SF@</code><i>):</i><dd><a name="index-exponent-too-big-for-conversion-_0028_0040code_007bDF_0021_007d_002c-_0040code_007bDF_0040_0040_007d_002c-_0040code_007bSF_0021_007d_002c-_0040code_007bSF_0040_0040_007d_0029-3284"></a>System dependent. On IEEE-FP based systems the number is converted into
+an infinity.
+
+     <br><dt><i>float&lt;1 (</i><code>FACOSH</code><i>):</i><dd><a name="index-g_t_0040code_007bFACOSH_007d_002c-_0040i_007bfloat_007d_003c1-3285"></a><a name="index-floating_002dpoint-unidentified-fault_002c-_0040code_007bFACOSH_007d-3286"></a>Platform-dependent; on IEEE-FP systems typically produces a NaN.
+
+     <br><dt><i>float=&lt;-1 (</i><code>FLNP1</code><i>):</i><dd><a name="index-g_t_0040code_007bFLNP1_007d_002c-_0040i_007bfloat_007d_003d_003c_002d1-3287"></a><a name="index-floating_002dpoint-unidentified-fault_002c-_0040code_007bFLNP1_007d-3288"></a>Platform-dependent; on IEEE-FP systems typically produces a NaN (or a
+negative infinity for <i>float</i>=-1).
+
+     <br><dt><i>float=&lt;0 (</i><code>FLN</code><i>, </i><code>FLOG</code><i>):</i><dd><a name="index-g_t_0040code_007bFLN_007d_002c-_0040i_007bfloat_007d_003d_003c0-3289"></a><a name="index-g_t_0040code_007bFLOG_007d_002c-_0040i_007bfloat_007d_003d_003c0-3290"></a><a name="index-floating_002dpoint-unidentified-fault_002c-_0040code_007bFLN_007d-or-_0040code_007bFLOG_007d-3291"></a>Platform-dependent; on IEEE-FP systems typically produces a NaN (or a
+negative infinity for <i>float</i>=0).
+
+     <br><dt><i>float&lt;0 (</i><code>FASINH</code><i>, </i><code>FSQRT</code><i>):</i><dd><a name="index-g_t_0040code_007bFASINH_007d_002c-_0040i_007bfloat_007d_003c0-3292"></a><a name="index-g_t_0040code_007bFSQRT_007d_002c-_0040i_007bfloat_007d_003c0-3293"></a><a name="index-floating_002dpoint-unidentified-fault_002c-_0040code_007bFASINH_007d-or-_0040code_007bFSQRT_007d-3294"></a>Platform-dependent; for <code>fsqrt</code> this typically gives a NaN, for
+<code>fasinh</code> some platforms produce a NaN, others a number (bug in the
+C library?).
+
+     <br><dt><i>|float|&gt;1 (</i><code>FACOS</code><i>, </i><code>FASIN</code><i>, </i><code>FATANH</code><i>):</i><dd><a name="index-g_t_0040code_007bFACOS_007d_002c-_007c_0040i_007bfloat_007d_007c_003e1-3295"></a><a name="index-g_t_0040code_007bFASIN_007d_002c-_007c_0040i_007bfloat_007d_007c_003e1-3296"></a><a name="index-g_t_0040code_007bFATANH_007d_002c-_007c_0040i_007bfloat_007d_007c_003e1-3297"></a><a name="index-floating_002dpoint-unidentified-fault_002c-_0040code_007bFACOS_007d_002c-_0040code_007bFASIN_007d-or-_0040code_007bFATANH_007d-3298"></a>Platform-dependent; IEEE-FP systems typically produce a NaN.
+
+     <br><dt><i>integer part of float cannot be represented by d in </i><code>F&gt;D</code><i>:</i><dd><a name="index-g_t_0040code_007bF_003eD_007d_002c-integer-part-of-float-cannot-be-represented-by-_0040i_007bd_007d-3299"></a><a name="index-floating_002dpoint-unidentified-fault_002c-_0040code_007bF_003eD_007d-3300"></a>Platform-dependent; typically, some double number is produced and no
+error is reported.
+
+     <br><dt><i>string larger than pictured numeric output area (</i><code>f.</code><i>, </i><code>fe.</code><i>, </i><code>fs.</code><i>):</i><dd><a name="index-string-larger-than-pictured-numeric-output-area-_0028_0040code_007bf_002e_007d_002c-_0040code_007bfe_002e_007d_002c-_0040code_007bfs_002e_007d_0029-3301"></a><code>Precision</code> characters of the numeric output area are used.  If
+<code>precision</code> is too high, these words will smash the data or code
+close to <code>here</code>. 
+</dl>
+
+<!-- ===================================================================== -->
+</body></html>
+

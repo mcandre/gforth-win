@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+<title>Compilation Tokens Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Advanced-macros-Tutorial.html#Advanced-macros-Tutorial" title="Advanced macros Tutorial">
+<link rel="next" href="Wordlists-and-Search-Order-Tutorial.html#Wordlists-and-Search-Order-Tutorial" title="Wordlists and Search Order Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Compilation-Tokens-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Wordlists-and-Search-Order-Tutorial.html#Wordlists-and-Search-Order-Tutorial">Wordlists and Search Order Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Advanced-macros-Tutorial.html#Advanced-macros-Tutorial">Advanced macros Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.36 Compilation Tokens</h3>
+
+<p><a name="index-compilation-tokens_002c-tutorial-132"></a><a name="index-CT_002c-tutorial-133"></a>
+This section is Gforth-specific.  You can skip it.
+
+   <p><code>' word compile,</code> compiles the interpretation semantics.  For words
+with default compilation semantics this is the same as performing the
+compilation semantics.  To represent the compilation semantics of other
+words (e.g., words like <code>if</code> that have no interpretation
+semantics), Gforth has the concept of a compilation token (CT,
+consisting of two cells), and words <code>comp'</code> and <code>[comp']</code>. 
+You can perform the compilation semantics represented by a CT with
+<code>execute</code>:
+
+<pre class="example">     : foo2 ( n1 n2 -- n )
+        [ comp' + execute ] ;
+     see foo
+</pre>
+   <p>You can compile the compilation semantics represented by a CT with
+<code>postpone,</code>:
+
+<pre class="example">     : foo3 ( -- )
+       [ comp' + postpone, ] ;
+     see foo3
+</pre>
+   <p><code>[ comp' word postpone, ]</code> is equivalent to <code>POSTPONE word</code>. 
+<code>comp'</code> is particularly useful for words that have no
+interpretation semantics:
+
+<pre class="example">     ' if
+     comp' if .s 2drop
+</pre>
+   <p>Reference: <a href="Tokens-for-Words.html#Tokens-for-Words">Tokens for Words</a>.
+
+   </body></html>
+

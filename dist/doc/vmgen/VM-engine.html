@@ -1,0 +1,223 @@
+<html lang="en">
+<head>
+<title>VM engine - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Using-the-generated-code.html#Using-the-generated-code" title="Using the generated code">
+<link rel="prev" href="Using-the-generated-code.html#Using-the-generated-code" title="Using the generated code">
+<link rel="next" href="VM-instruction-table.html#VM-instruction-table" title="VM instruction table">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="VM-engine"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="VM-instruction-table.html#VM-instruction-table">VM instruction table</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Using-the-generated-code.html#Using-the-generated-code">Using the generated code</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Using-the-generated-code.html#Using-the-generated-code">Using the generated code</a>
+<hr>
+</div>
+
+<h3 class="section">8.1 VM engine</h3>
+
+<p><a name="index-VM-instruction-execution-122"></a><a name="index-engine-123"></a><a name="index-executing-VM-code-124"></a><a name="index-g_t_0040file_007bengine_002ec_007d-125"></a><a name="index-g_t_0040file_007b_002dvm_002ei_007d-output-file-126"></a>
+The VM engine is the VM interpreter that executes the VM code.  It is
+essential for an interpretive system.
+
+   <p>Vmgen supports two methods of VM instruction dispatch: <em>threaded
+code</em> (fast, but gcc-specific), and <em>switch dispatch</em> (slow, but
+portable across C compilers); you can use conditional compilation
+(`<samp><span class="samp">defined(__GNUC__)</span></samp>') to choose between these methods, and our
+example does so.
+
+   <p>For both methods, the VM engine is contained in a C-level function. 
+Vmgen generates most of the contents of the function for you
+(<samp><var>name</var><span class="file">-vm.i</span></samp>), but you have to define this function, and
+macros and variables used in the engine, and initialize the variables. 
+In our example the engine function also includes
+<samp><var>name</var><span class="file">-labels.i</span></samp> (see <a href="VM-instruction-table.html#VM-instruction-table">VM instruction table</a>).
+
+   <p><a name="index-tracing-VM-code-127"></a><a name="index-superinstructions-and-tracing-128"></a>In addition to executing the code, the VM engine can optionally also
+print out a trace of the executed instructions, their arguments and
+results.  For superinstructions it prints the trace as if only component
+instructions were executed; this allows to introduce new
+superinstructions while keeping the traces comparable to old ones
+(important for regression tests).
+
+   <p>It costs significant performance to check in each instruction whether to
+print tracing code, so we recommend producing two copies of the engine:
+one for fast execution, and one for tracing.  See the rules for
+<samp><span class="file">engine.o</span></samp> and <samp><span class="file">engine-debug.o</span></samp> in <samp><span class="file">vmgen-ex/Makefile</span></samp>
+for an example.
+
+   <p>The following macros and variables are used in <samp><var>name</var><span class="file">-vm.i</span></samp>:
+
+     
+<a name="index-LABEL-129"></a>
+<dl><dt><code>LABEL(</code><var>inst_name</var><code>)</code><dd>This is used just before each VM instruction to provide a jump or
+<code>switch</code> label (the `<samp><span class="samp">:</span></samp>' is provided by Vmgen).  For switch
+dispatch this should expand to `<samp><span class="samp">case </span><var>label</var><span class="samp">:</span></samp>'; for
+threaded-code dispatch this should just expand to `<samp><var>label</var><span class="samp">:</span></samp>'. 
+In either case <var>label</var> is usually the <var>inst_name</var> with some
+prefix or suffix to avoid naming conflicts.
+
+     <p><a name="index-LABEL2-130"></a><br><dt><code>LABEL2(</code><var>inst_name</var><code>)</code><dd>This will be used for dynamic superinstructions; at the moment, this
+should expand to nothing.
+
+     <p><a name="index-NAME-131"></a><br><dt><code>NAME(</code><var>inst_name_string</var><code>)</code><dd>Called on entering a VM instruction with a string containing the name of
+the VM instruction as parameter.  In normal execution this should be
+expand to nothing, but for tracing this usually prints the name, and
+possibly other information (several VM registers in our example).
+
+     <p><a name="index-DEF_005fCA-132"></a><br><dt><code>DEF_CA</code><dd>Usually empty.  Called just inside a new scope at the start of a VM
+instruction.  Can be used to define variables that should be visible
+during every VM instruction.  If you define this macro as non-empty, you
+have to provide the finishing `<samp><span class="samp">;</span></samp>' in the macro.
+
+     <p><a name="index-NEXT_005fP0-133"></a><a name="index-NEXT_005fP1-134"></a><a name="index-NEXT_005fP2-135"></a><br><dt><code>NEXT_P0 NEXT_P1 NEXT_P2</code><dd>The three parts of instruction dispatch.  They can be defined in
+different ways for best performance on various processors (see
+<samp><span class="file">engine.c</span></samp> in the example or <samp><span class="file">engine/threaded.h</span></samp> in Gforth). 
+`<samp><span class="samp">NEXT_P0</span></samp>' is invoked right at the start of the VM instruction (but
+after `<samp><span class="samp">DEF_CA</span></samp>'), `<samp><span class="samp">NEXT_P1</span></samp>' right after the user-supplied C
+code, and `<samp><span class="samp">NEXT_P2</span></samp>' at the end.  The actual jump has to be
+performed by `<samp><span class="samp">NEXT_P2</span></samp>' (if you would do it earlier, important parts
+of the VM instruction would not be executed).
+
+     <p>The simplest variant is if `<samp><span class="samp">NEXT_P2</span></samp>' does everything and the other
+macros do nothing.  Then also related macros like `<samp><span class="samp">IP</span></samp>',
+`<samp><span class="samp">SET_IP</span></samp>', `<samp><span class="samp">IP</span></samp>', `<samp><span class="samp">INC_IP</span></samp>' and `<samp><span class="samp">IPTOS</span></samp>' are very
+straightforward to define.  For switch dispatch this code consists just
+of a jump to the dispatch code (`<samp><span class="samp">goto next_inst;</span></samp>' in our example);
+for direct threaded code it consists of something like
+`<samp><span class="samp">({cfa=*ip++; goto *cfa;})</span></samp>'.
+
+     <p>Pulling code (usually the `<samp><span class="samp">cfa=*ip++;</span></samp>') up into `<samp><span class="samp">NEXT_P1</span></samp>'
+usually does not cause problems, but pulling things up into
+`<samp><span class="samp">NEXT_P0</span></samp>' usually requires changing the other macros (and, at least
+for Gforth on Alpha, it does not buy much, because the compiler often
+manages to schedule the relevant stuff up by itself).  An even more
+extreme variant is to pull code up even further, into, e.g., NEXT_P1 of
+the previous VM instruction (prefetching, useful on PowerPCs).
+
+     <p><a name="index-INC_005fIP-136"></a><br><dt><code>INC_IP(</code><var>n</var><code>)</code><dd>This increments <code>IP</code> by <var>n</var>.
+
+     <p><a name="index-SET_005fIP-137"></a><br><dt><code>SET_IP(</code><var>target</var><code>)</code><dd>This sets <code>IP</code> to <var>target</var>.
+
+     <p><a name="index-type-cast-macro-138"></a><a name="index-vm_005f_0040var_007bA_007d2_0040var_007bB_007d-139"></a><br><dt><code>vm_</code><var>A</var><code>2</code><var>B</var><code>(a,b)</code><dd>Type casting macro that assigns `<samp><span class="samp">a</span></samp>' (of type <var>A</var>) to `<samp><span class="samp">b</span></samp>'
+(of type <var>B</var>).  This is mainly used for getting stack items into
+variables and back.  So you need to define macros for every combination
+of stack basic type (<code>Cell</code> in our example) and type-prefix types
+used with that stack (in both directions).  For the type-prefix type,
+you use the type-prefix (not the C type string) as type name (e.g.,
+`<samp><span class="samp">vm_Cell2i</span></samp>', not `<samp><span class="samp">vm_Cell2Cell</span></samp>').  In addition, you have to
+define a vm_<var>X</var>2<var>X</var> macro for the stack's basic type <var>X</var>
+(used in superinstructions).
+
+     <p><a name="index-instruction-stream_002c-basic-type-140"></a>The stack basic type for the predefined `<samp><span class="samp">inst-stream</span></samp>' is
+`<samp><span class="samp">Cell</span></samp>'.  If you want a stack with the same item size, making its
+basic type `<samp><span class="samp">Cell</span></samp>' usually reduces the number of macros you have to
+define.
+
+     <p><a name="index-unions-in-type-cast-macros-141"></a><a name="index-casts-in-type-cast-macros-142"></a><a name="index-type-casting-between-floats-and-integers-143"></a>Here our examples differ a lot: <samp><span class="file">vmgen-ex</span></samp> uses casts in these
+macros, whereas <samp><span class="file">vmgen-ex2</span></samp> uses union-field selection (or
+assignment to union fields).  Note that casting floats into integers and
+vice versa changes the bit pattern (and you do not want that).  In this
+case your options are to use a (temporary) union, or to take the address
+of the value, cast the pointer, and dereference that (not always
+possible, and sometimes expensive).
+
+     <p><a name="index-vm_005ftwo_0040var_007bA_007d2_0040var_007bB_007d-144"></a><a name="index-vm_005f_0040var_007bB_007d2two_0040var_007bA_007d-145"></a><br><dt><code>vm_two</code><var>A</var><code>2</code><var>B</var><code>(a1,a2,b)</code><br><dt><code>vm_</code><var>B</var><code>2two</code><var>A</var><code>(b,a1,a2)</code><dd>Type casting between two stack items (<code>a1</code>, <code>a2</code>) and a
+variable <code>b</code> of a type that takes two stack items.  This does not
+occur in our small examples, but you can look at Gforth for examples
+(see <code>vm_twoCell2d</code> in <samp><span class="file">engine/forth.h</span></samp>).
+
+     <p><a name="index-stack-pointer-definition-146"></a><a name="index-instruction-pointer-definition-147"></a><br><dt><var>stackpointer</var><dd>For each stack used, the stackpointer name given in the stack
+declaration is used.  For a regular stack this must be an l-expression;
+typically it is a variable declared as a pointer to the stack's basic
+type.  For `<samp><span class="samp">inst-stream</span></samp>', the name is `<samp><span class="samp">IP</span></samp>', and it can be a
+plain r-value; typically it is a macro that abstracts away the
+differences between the various implementations of <code>NEXT_P*</code>.
+
+     <p><a name="index-IMM_005fARG-148"></a><a name="index-IMM_005fARG-149"></a><br><dt><code>IMM_ARG(access,value)</code><dd>Define this to expland to &ldquo;(access)&rdquo;.  This is just a placeholder for
+future extensions.
+
+     <p><a name="index-top-of-stack-caching-150"></a><a name="index-stack-caching-151"></a><a name="index-TOS-152"></a><a name="index-IPTOS-153"></a><br><dt><var>stackpointer</var><code>TOS</code><dd>The top-of-stack for the stack pointed to by <var>stackpointer</var>.  If you
+are using top-of-stack caching for that stack, this should be defined as
+variable; if you are not using top-of-stack caching for that stack, this
+should be a macro expanding to `<samp><var>stackpointer</var><span class="samp">[0]</span></samp>'.  The stack
+pointer for the predefined `<samp><span class="samp">inst-stream</span></samp>' is called `<samp><span class="samp">IP</span></samp>', so
+the top-of-stack is called `<samp><span class="samp">IPTOS</span></samp>'.
+
+     <p><a name="index-IF_005f_0040var_007bstackpointer_007dTOS-154"></a><br><dt><code>IF_</code><var>stackpointer</var><code>TOS(</code><var>expr</var><code>)</code><dd>Macro for executing <var>expr</var>, if top-of-stack caching is used for the
+<var>stackpointer</var> stack.  I.e., this should do <var>expr</var> if there is
+top-of-stack caching for <var>stackpointer</var>; otherwise it should do
+nothing.
+
+     <p><a name="index-SUPER_005fEND-155"></a><br><dt><code>SUPER_END</code><dd>This is used by the VM profiler (see <a href="VM-profiler.html#VM-profiler">VM profiler</a>); it should not do
+anything in normal operation, and call <code>vm_count_block(IP)</code> for
+profiling.
+
+     <p><a name="index-SUPER_005fCONTINUE-156"></a><br><dt><code>SUPER_CONTINUE</code><dd>This is just a hint to Vmgen and does nothing at the C level.
+
+     <p><a name="index-MAYBE_005fUNUSED-157"></a><br><dt><code>MAYBE_UNUSED</code><dd>This should be defined as <code>__attribute__((unused))</code> for gcc-2.7 and
+higher.  It suppresses the warnings about unused variables in the code
+for superinstructions.  You need to define this only if you are using
+superinstructions.
+
+     <p><a name="index-VM_005fDEBUG-158"></a><br><dt><code>VM_DEBUG</code><dd>If this is defined, the tracing code will be compiled in (slower
+interpretation, but better debugging).  Our example compiles two
+versions of the engine, a fast-running one that cannot trace, and one
+with potential tracing and profiling.
+
+     <p><a name="index-vm_005fdebug-159"></a><br><dt><code>vm_debug</code><dd>Needed only if `<samp><span class="samp">VM_DEBUG</span></samp>' is defined.  If this variable contains
+true, the VM instructions produce trace output.  It can be turned on or
+off at any time.
+
+     <p><a name="index-vm_005fout-160"></a><br><dt><code>vm_out</code><dd>Needed only if `<samp><span class="samp">VM_DEBUG</span></samp>' is defined.  Specifies the file on which
+to print the trace output (type `<samp><span class="samp">FILE *</span></samp>').
+
+     <p><a name="index-printarg_005f_0040var_007btype_007d-161"></a><br><dt><code>printarg_</code><var>type</var><code>(</code><var>value</var><code>)</code><dd>Needed only if `<samp><span class="samp">VM_DEBUG</span></samp>' is defined.  Macro or function for
+printing <var>value</var> in a way appropriate for the <var>type</var>.  This is
+used for printing the values of stack items during tracing.  <var>Type</var>
+is normally the type prefix specified in a <code>type-prefix</code> definition
+(e.g., `<samp><span class="samp">printarg_i</span></samp>'); in superinstructions it is currently the
+basic type of the stack.
+
+   </dl>
+
+<!--  -->
+</body></html>
+

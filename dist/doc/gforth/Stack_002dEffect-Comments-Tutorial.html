@@ -1,0 +1,126 @@
+<html lang="en">
+<head>
+<title>Stack-Effect Comments Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Decompilation-Tutorial.html#Decompilation-Tutorial" title="Decompilation Tutorial">
+<link rel="next" href="Types-Tutorial.html#Types-Tutorial" title="Types Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Stack-Effect-Comments-Tutorial"></a>
+<a name="Stack_002dEffect-Comments-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Types-Tutorial.html#Types-Tutorial">Types Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Decompilation-Tutorial.html#Decompilation-Tutorial">Decompilation Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.11 Stack-Effect Comments</h3>
+
+<p><a name="index-stack_002deffect-comments_002c-tutorial-90"></a><a name="index-g_t_002d_002d_002c-tutorial-91"></a>By convention the comment after the name of a definition describes the
+stack effect: The part in front of the `<samp><span class="samp">--</span></samp>' describes the state of
+the stack before the execution of the definition, i.e., the parameters
+that are passed into the colon definition; the part behind the `<samp><span class="samp">--</span></samp>'
+is the state of the stack after the execution of the definition, i.e.,
+the results of the definition.  The stack comment only shows the top
+stack items that the definition accesses and/or changes.
+
+   <p>You should put a correct stack effect on every definition, even if it is
+just <code>( -- )</code>.  You should also add some descriptive comment to
+more complicated words (I usually do this in the lines following
+<code>:</code>).  If you don't do this, your code becomes unreadable (because
+you have to work through every definition before you can understand
+any).
+
+   <blockquote>
+<b>Assignment:</b> The stack effect of <code>swap</code> can be written like this: <code>x1 x2 --
+x2 x1</code>.  Describe the stack effect of <code>-</code>, <code>drop</code>, <code>dup</code>,
+<code>over</code>, <code>rot</code>, <code>nip</code>, and <code>tuck</code>.  Hint: When you
+are done, you can compare your stack effects to those in this manual
+(see <a href="Word-Index.html#Word-Index">Word Index</a>). 
+</blockquote>
+
+   <p>Sometimes programmers put comments at various places in colon
+definitions that describe the contents of the stack at that place (stack
+comments); i.e., they are like the first part of a stack-effect
+comment. E.g.,
+
+<pre class="example">     : cubed ( n -- n^3 )
+        dup squared  ( n n^2 ) * ;
+</pre>
+   <p>In this case the stack comment is pretty superfluous, because the word
+is simple enough.  If you think it would be a good idea to add such a
+comment to increase readability, you should also consider factoring the
+word into several simpler words (see <a href="Factoring-Tutorial.html#Factoring-Tutorial">Factoring</a>), which typically eliminates the need for the stack comment;
+however, if you decide not to refactor it, then having such a comment is
+better than not having it.
+
+   <p>The names of the stack items in stack-effect and stack comments in the
+standard, in this manual, and in many programs specify the type through
+a type prefix, similar to Fortran and Hungarian notation.  The most
+frequent prefixes are:
+
+     <dl>
+<dt><code>n</code><dd>signed integer
+<br><dt><code>u</code><dd>unsigned integer
+<br><dt><code>c</code><dd>character
+<br><dt><code>f</code><dd>Boolean flags, i.e. <code>false</code> or <code>true</code>. 
+<br><dt><code>a-addr,a-</code><dd>Cell-aligned address
+<br><dt><code>c-addr,c-</code><dd>Char-aligned address (note that a Char may have two bytes in Windows NT)
+<br><dt><code>xt</code><dd>Execution token, same size as Cell
+<br><dt><code>w,x</code><dd>Cell, can contain an integer or an address.  It usually takes 32, 64 or
+16 bits (depending on your platform and Forth system). A cell is more
+commonly known as machine word, but the term <em>word</em> already means
+something different in Forth. 
+<br><dt><code>d</code><dd>signed double-cell integer
+<br><dt><code>ud</code><dd>unsigned double-cell integer
+<br><dt><code>r</code><dd>Float (on the FP stack)
+</dl>
+
+   <p>You can find a more complete list in <a href="Notation.html#Notation">Notation</a>.
+
+   <blockquote>
+<b>Assignment:</b> Write stack-effect comments for all definitions you have written up to
+now. 
+</blockquote>
+
+   </body></html>
+

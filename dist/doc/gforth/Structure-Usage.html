@@ -1,0 +1,148 @@
+<html lang="en">
+<head>
+<title>Structure Usage - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Structures.html#Structures" title="Structures">
+<link rel="prev" href="Why-explicit-structure-support_003f.html#Why-explicit-structure-support_003f" title="Why explicit structure support?">
+<link rel="next" href="Structure-Naming-Convention.html#Structure-Naming-Convention" title="Structure Naming Convention">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Structure-Usage"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Structure-Naming-Convention.html#Structure-Naming-Convention">Structure Naming Convention</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Why-explicit-structure-support_003f.html#Why-explicit-structure-support_003f">Why explicit structure support?</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Structures.html#Structures">Structures</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.22.2 Structure Usage</h4>
+
+<p><a name="index-structure-usage-2326"></a>
+<a name="index-g_t_0040code_007bfield_007d-usage-2327"></a><a name="index-g_t_0040code_007bstruct_007d-usage-2328"></a><a name="index-g_t_0040code_007bend_002dstruct_007d-usage-2329"></a>You can define a structure for a (data-less) linked list with:
+<pre class="example">     struct
+         cell% field list-next
+     end-struct list%
+</pre>
+   <p>With the address of the list node on the stack, you can compute the
+address of the field that contains the address of the next node with
+<code>list-next</code>. E.g., you can determine the length of a list
+with:
+
+<pre class="example">     : list-length ( list -- n )
+     \ "list" is a pointer to the first element of a linked list
+     \ "n" is the length of the list
+         0 BEGIN ( list1 n1 )
+             over
+         WHILE ( list1 n1 )
+             1+ swap list-next @ swap
+         REPEAT
+         nip ;
+</pre>
+   <p>You can reserve memory for a list node in the dictionary with
+<code>list% %allot</code>, which leaves the address of the list node on the
+stack. For the equivalent allocation on the heap you can use <code>list%
+%alloc</code> (or, for an <code>allocate</code>-like stack effect (i.e., with ior),
+use <code>list% %allocate</code>). You can get the the size of a list
+node with <code>list% %size</code> and its alignment with <code>list%
+%alignment</code>.
+
+   <p>Note that in ANS Forth the body of a <code>create</code>d word is
+<code>aligned</code> but not necessarily <code>faligned</code>;
+therefore, if you do a:
+
+<pre class="example">     create <em>name</em> foo% %allot drop
+</pre>
+   <p class="noindent">then the memory alloted for <code>foo%</code> is guaranteed to start at the
+body of <em>name</em> only if <code>foo%</code> contains only character,
+cell and double fields.  Therefore, if your structure contains floats,
+better use
+
+<pre class="example">     foo% %allot constant <em>name</em>
+</pre>
+   <p><a name="index-structures-containing-structures-2330"></a>You can include a structure <code>foo%</code> as a field of
+another structure, like this:
+<pre class="example">     struct
+     ...
+         foo% field ...
+     ...
+     end-struct ...
+</pre>
+   <p><a name="index-structure-extension-2331"></a><a name="index-extended-records-2332"></a>Instead of starting with an empty structure, you can extend an
+existing structure. E.g., a plain linked list without data, as defined
+above, is hardly useful; You can extend it to a linked list of integers,
+like this:<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>
+
+<pre class="example">     list%
+         cell% field intlist-int
+     end-struct intlist%
+</pre>
+   <p><code>intlist%</code> is a structure with two fields:
+<code>list-next</code> and <code>intlist-int</code>.
+
+   <p><a name="index-structures-containing-arrays-2333"></a>You can specify an array type containing <em>n</em> elements of
+type <code>foo%</code> like this:
+
+<pre class="example">     foo% <em>n</em> *
+</pre>
+   <p>You can use this array type in any place where you can use a normal
+type, e.g., when defining a <code>field</code>, or with
+<code>%allot</code>.
+
+   <p><a name="index-first-field-optimization-2334"></a>The first field is at the base address of a structure and the word for
+this field (e.g., <code>list-next</code>) actually does not change the address
+on the stack. You may be tempted to leave it away in the interest of
+run-time and space efficiency. This is not necessary, because the
+structure package optimizes this case: If you compile a first-field
+words, no code is generated. So, in the interest of readability and
+maintainability you should include the word for the field when accessing
+the field.
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> This feature is also known as <em>extended
+records</em>. It is the main innovation in the Oberon language; in other
+words, adding this feature to Modula-2 led Wirth to create a new
+language, write a new compiler etc.  Adding this feature to Forth just
+required a few lines of code.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

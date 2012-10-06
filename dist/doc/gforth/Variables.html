@@ -1,0 +1,108 @@
+<html lang="en">
+<head>
+<title>Variables - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Defining-Words.html#Defining-Words" title="Defining Words">
+<link rel="prev" href="CREATE.html#CREATE" title="CREATE">
+<link rel="next" href="Constants.html#Constants" title="Constants">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Variables"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Constants.html#Constants">Constants</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="CREATE.html#CREATE">CREATE</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Defining-Words.html#Defining-Words">Defining Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.9.2 Variables</h4>
+
+<p><a name="index-variables-1195"></a>
+The previous section showed how a sequence of commands could be used to
+generate a variable.  As a final refinement, the whole code sequence can
+be wrapped up in a defining word (pre-empting the subject of the next
+section), making it easier to create new variables:
+
+<pre class="example">     : myvariableX ( "name" -- a-addr ) CREATE 1 cells allot ;
+     : myvariable0 ( "name" -- a-addr ) CREATE 0 , ;
+     
+     myvariableX foo \ variable foo starts off with an unknown value
+     myvariable0 joe \ whilst joe is initialised to 0
+     
+     45 3 * foo !   \ set foo to 135
+     1234 joe !     \ set joe to 1234
+     3 joe +!       \ increment joe by 3.. to 1237
+</pre>
+   <p>Not surprisingly, there is no need to define <code>myvariable</code>, since
+Forth already has a definition <code>Variable</code>. ANS Forth does not
+guarantee that a <code>Variable</code> is initialised when it is created
+(i.e., it may behave like <code>myvariableX</code>). In contrast, Gforth's
+<code>Variable</code> initialises the variable to 0 (i.e., it behaves exactly
+like <code>myvariable0</code>). Forth also provides <code>2Variable</code> and
+<code>fvariable</code> for double and floating-point variables, respectively
+&ndash; they are initialised to 0. and 0e in Gforth. If you use a <code>Variable</code> to
+store a boolean, you can use <code>on</code> and <code>off</code> to toggle its
+state.
+
+   <p><a name="index-Variable-_0040var_007b-_0022name_0022-_002d_002d---_007d--core-1196"></a><a name="index-g_t_0040code_007bVariable_007d-1197"></a><a name="index-Variable-1198"></a>
+<pre class="format"><code>Variable</code>       <i>"name" &ndash;  </i>       core       &ldquo;Variable&rdquo;
+</pre>
+   <p><a name="index-g_t2Variable-_0040var_007b-_0022name_0022-_002d_002d---_007d--double-1199"></a><a name="index-g_t_0040code_007b2Variable_007d-1200"></a><a name="index-g_t2Variable-1201"></a>
+<pre class="format"><code>2Variable</code>       <i>"name" &ndash;  </i>       double       &ldquo;two-variable&rdquo;
+</pre>
+   <p><a name="index-fvariable-_0040var_007b-_0022name_0022-_002d_002d---_007d--float-1202"></a><a name="index-g_t_0040code_007bfvariable_007d-1203"></a><a name="index-fvariable-1204"></a>
+<pre class="format"><code>fvariable</code>       <i>"name" &ndash;  </i>       float       &ldquo;f-variable&rdquo;
+</pre>
+   <p><a name="index-user-variables-1205"></a><a name="index-user-space-1206"></a>The defining word <code>User</code> behaves in the same way as <code>Variable</code>. 
+The difference is that it reserves space in <i>user (data) space</i> rather
+than normal data space. In a Forth system that has a multi-tasker, each
+task has its own set of user variables.
+
+   <p><a name="index-User-_0040var_007b-_0022name_0022-_002d_002d---_007d--gforth-1207"></a><a name="index-g_t_0040code_007bUser_007d-1208"></a><a name="index-User-1209"></a>
+<pre class="format"><code>User</code>       <i>"name" &ndash;  </i>       gforth       &ldquo;User&rdquo;
+</pre>
+   <!-- doc-udp -->
+<!-- doc-uallot -->
+<!-- TODO is that stuff about user variables strictly correct? Is it -->
+<!-- just terminal tasks that have user variables? -->
+<!-- should document tasker.fs (with some examples) elsewhere -->
+<!-- in this manual, then expand on user space and user variables. -->
+</body></html>
+

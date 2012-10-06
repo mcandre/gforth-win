@@ -1,0 +1,179 @@
+<html lang="en">
+<head>
+<title>Combined words - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Interpretation-and-Compilation-Semantics.html#Interpretation-and-Compilation-Semantics" title="Interpretation and Compilation Semantics">
+<link rel="prev" href="Interpretation-and-Compilation-Semantics.html#Interpretation-and-Compilation-Semantics" title="Interpretation and Compilation Semantics">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Combined-words"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Interpretation-and-Compilation-Semantics.html#Interpretation-and-Compilation-Semantics">Interpretation and Compilation Semantics</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Interpretation-and-Compilation-Semantics.html#Interpretation-and-Compilation-Semantics">Interpretation and Compilation Semantics</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.10.1 Combined Words</h4>
+
+<p><a name="index-combined-words-1310"></a>
+Gforth allows you to define <dfn>combined words</dfn> &ndash; words that have an
+arbitrary combination of interpretation and compilation semantics.
+
+   <p><a name="index-interpret_002fcompile_003a-_0040var_007b-interp_002dxt-comp_002dxt-_0022name_0022-_002d_002d---_007d--gforth-1311"></a><a name="index-g_t_0040code_007binterpret_002fcompile_003a_007d-1312"></a><a name="index-interpret_002fcompile_003a-1313"></a>
+<pre class="format"><code>interpret/compile:</code>       <i>interp-xt comp-xt "name" &ndash;  </i>       gforth       &ldquo;interpret/compile:&rdquo;
+</pre>
+   <p>This feature was introduced for implementing <code>TO</code> and <code>S"</code>. I
+recommend that you do not define such words, as cute as they may be:
+they make it hard to get at both parts of the word in some contexts. 
+E.g., assume you want to get an execution token for the compilation
+part. Instead, define two words, one that embodies the interpretation
+part, and one that embodies the compilation part.  Once you have done
+that, you can define a combined word with <code>interpret/compile:</code> for
+the convenience of your users.
+
+   <p>You might try to use this feature to provide an optimizing
+implementation of the default compilation semantics of a word. For
+example, by defining:
+<pre class="example">     :noname
+        foo bar ;
+     :noname
+        POSTPONE foo POSTPONE bar ;
+     interpret/compile: opti-foobar
+</pre>
+   <p class="noindent">as an optimizing version of:
+
+<pre class="example">     : foobar
+         foo bar ;
+</pre>
+   <p>Unfortunately, this does not work correctly with <code>[compile]</code>,
+because <code>[compile]</code> assumes that the compilation semantics of all
+<code>interpret/compile:</code> words are non-default. I.e., <code>[compile]
+opti-foobar</code> would compile compilation semantics, whereas
+<code>[compile] foobar</code> would compile interpretation semantics.
+
+   <p><a name="index-state_002dsmart-words-_0028are-a-bad-idea_0029-1314"></a><a name="state_002dsmartness"></a>
+Some people try to use <dfn>state-smart</dfn> words to emulate the feature provided
+by <code>interpret/compile:</code> (words are state-smart if they check
+<code>STATE</code> during execution). E.g., they would try to code
+<code>foobar</code> like this:
+
+<pre class="example">     : foobar
+       STATE @
+       IF ( compilation state )
+         POSTPONE foo POSTPONE bar
+       ELSE
+         foo bar
+       ENDIF ; immediate
+</pre>
+   <p>Although this works if <code>foobar</code> is only processed by the text
+interpreter, it does not work in other contexts (like <code>'</code> or
+<code>POSTPONE</code>). E.g., <code>' foobar</code> will produce an execution token
+for a state-smart word, not for the interpretation semantics of the
+original <code>foobar</code>; when you execute this execution token (directly
+with <code>EXECUTE</code> or indirectly through <code>COMPILE,</code>) in compile
+state, the result will not be what you expected (i.e., it will not
+perform <code>foo bar</code>). State-smart words are a bad idea. Simply don't
+write them<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>!
+
+   <p><a name="index-defining-words-with-arbitrary-semantics-combinations-1315"></a>It is also possible to write defining words that define words with
+arbitrary combinations of interpretation and compilation semantics. In
+general, they look like this:
+
+<pre class="example">     : def-word
+         create-interpret/compile
+         <i>code1</i>
+     interpretation&gt;
+         <i>code2</i>
+     &lt;interpretation
+     compilation&gt;
+         <i>code3</i>
+     &lt;compilation ;
+</pre>
+   <p>For a <i>word</i> defined with <code>def-word</code>, the interpretation
+semantics are to push the address of the body of <i>word</i> and perform
+<i>code2</i>, and the compilation semantics are to push the address of
+the body of <i>word</i> and perform <i>code3</i>. E.g., <code>constant</code>
+can also be defined like this (except that the defined constants don't
+behave correctly when <code>[compile]</code>d):
+
+<pre class="example">     : constant ( n "name" -- )
+         create-interpret/compile
+         ,
+     interpretation&gt; ( -- n )
+         @
+     &lt;interpretation
+     compilation&gt; ( compilation. -- ; run-time. -- n )
+         @ postpone literal
+     &lt;compilation ;
+</pre>
+   <p><a name="index-create_002dinterpret_002fcompile-_0040var_007b-_0022name_0022-_002d_002d---_007d--gforth-1316"></a><a name="index-g_t_0040code_007bcreate_002dinterpret_002fcompile_007d-1317"></a><a name="index-create_002dinterpret_002fcompile-1318"></a>
+<pre class="format"><code>create-interpret/compile</code>       <i>"name" &ndash;  </i>       gforth       &ldquo;create-interpret/compile&rdquo;
+</pre>
+   <p><a name="index-interpretation_003e-_0040var_007b-compilation_002e-_002d_002d-orig-colon_002dsys---_007d--gforth-1319"></a><a name="index-g_t_0040code_007binterpretation_003e_007d-1320"></a><a name="index-interpretation_003e-1321"></a>
+<pre class="format"><code>interpretation&gt;</code>       <i>compilation. &ndash; orig colon-sys  </i>       gforth       &ldquo;interpretation&gt;&rdquo;
+</pre>
+   <p><a name="index-g_t_003cinterpretation-_0040var_007b-compilation_002e-orig-colon_002dsys-_002d_002d---_007d--gforth-1322"></a><a name="index-g_t_0040code_007b_003cinterpretation_007d-1323"></a><a name="index-g_t_003cinterpretation-1324"></a>
+<pre class="format"><code>&lt;interpretation</code>       <i>compilation. orig colon-sys &ndash;  </i>       gforth       &ldquo;&lt;interpretation&rdquo;
+</pre>
+   <p><a name="index-compilation_003e-_0040var_007b-compilation_002e-_002d_002d-orig-colon_002dsys---_007d--gforth-1325"></a><a name="index-g_t_0040code_007bcompilation_003e_007d-1326"></a><a name="index-compilation_003e-1327"></a>
+<pre class="format"><code>compilation&gt;</code>       <i>compilation. &ndash; orig colon-sys  </i>       gforth       &ldquo;compilation&gt;&rdquo;
+</pre>
+   <p><a name="index-g_t_003ccompilation-_0040var_007b-compilation_002e-orig-colon_002dsys-_002d_002d---_007d--gforth-1328"></a><a name="index-g_t_0040code_007b_003ccompilation_007d-1329"></a><a name="index-g_t_003ccompilation-1330"></a>
+<pre class="format"><code>&lt;compilation</code>       <i>compilation. orig colon-sys &ndash;  </i>       gforth       &ldquo;&lt;compilation&rdquo;
+</pre>
+   <p>Words defined with <code>interpret/compile:</code> and
+<code>create-interpret/compile</code> have an extended header structure that
+differs from other words; however, unless you try to access them with
+plain address arithmetic, you should not notice this. Words for
+accessing the header structure usually know how to deal with this; e.g.,
+<code>'</code> <i>word</i> <code>&gt;body</code> also gives you the body of a word created
+with <code>create-interpret/compile</code>.
+
+<!--  -->
+<div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> For a more detailed discussion of this topic, see
+M. Anton Ertl,
+<cite><a href="http://www.complang.tuwien.ac.at/papers/ertl98.ps.gz"></cite><code>State</code><cite>-smartness&mdash;Why it is Evil and How to Exorcise it</a></cite>, EuroForth '98.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

@@ -1,0 +1,99 @@
+<html lang="en">
+<head>
+<title>Forth is written in Forth - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction.html#Introduction" title="Introduction">
+<link rel="prev" href="How-does-that-work_003f.html#How-does-that-work_003f" title="How does that work?">
+<link rel="next" href="Review-_002d-elements-of-a-Forth-system.html#Review-_002d-elements-of-a-Forth-system" title="Review - elements of a Forth system">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Forth-is-written-in-Forth"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Review-_002d-elements-of-a-Forth-system.html#Review-_002d-elements-of-a-Forth-system">Review - elements of a Forth system</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="How-does-that-work_003f.html#How-does-that-work_003f">How does that work?</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction.html#Introduction">Introduction</a>
+<hr>
+</div>
+
+<h3 class="section">4.5 Forth is written in Forth</h3>
+
+<p><a name="index-structure-of-Forth-programs-158"></a>
+When you start up a Forth compiler, a large number of definitions
+already exist. In Forth, you develop a new application using bottom-up
+programming techniques to create new definitions that are defined in
+terms of existing definitions. As you create each definition you can
+test and debug it interactively.
+
+   <p>If you have tried out the examples in this section, you will probably
+have typed them in by hand; when you leave Gforth, your definitions will
+be lost. You can avoid this by using a text editor to enter Forth source
+code into a file, and then loading code from the file using
+<code>include</code> (see <a href="Forth-source-files.html#Forth-source-files">Forth source files</a>). A Forth source file is
+processed by the text interpreter, just as though you had typed it in by
+hand<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>.
+
+   <p>Gforth also supports the traditional Forth alternative to using text
+files for program entry (see <a href="Blocks.html#Blocks">Blocks</a>).
+
+   <p>In common with many, if not most, Forth compilers, most of Gforth is
+actually written in Forth. All of the <samp><span class="file">.fs</span></samp> files in the
+installation directory<a rel="footnote" href="#fn-2" name="fnd-2"><sup>2</sup></a> are Forth source files, which you can
+study to see examples of Forth programming.
+
+   <p>Gforth maintains a history file that records every line that you type to
+the text interpreter. This file is preserved between sessions, and is
+used to provide a command-line recall facility. If you enter long
+definitions by hand, you can use a text editor to paste them out of the
+history file into a Forth source file for reuse at a later time
+(for more information see <a href="Command_002dline-editing.html#Command_002dline-editing">Command-line editing</a>).
+
+<!--  -->
+<div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> Actually, there are some subtle differences &ndash; see
+<a href="The-Text-Interpreter.html#The-Text-Interpreter">The Text Interpreter</a>.</p>
+
+   <p class="footnote"><small>[<a name="fn-2" href="#fnd-2">2</a>]</small> For example,
+<samp><span class="file">/usr/local/share/gforth...</span></samp></p>
+
+   <p><hr></div>
+
+   </body></html>
+

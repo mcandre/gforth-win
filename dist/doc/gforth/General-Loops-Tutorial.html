@@ -1,0 +1,121 @@
+<html lang="en">
+<head>
+<title>General Loops Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Flags-and-Comparisons-Tutorial.html#Flags-and-Comparisons-Tutorial" title="Flags and Comparisons Tutorial">
+<link rel="next" href="Counted-loops-Tutorial.html#Counted-loops-Tutorial" title="Counted loops Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="General-Loops-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Counted-loops-Tutorial.html#Counted-loops-Tutorial">Counted loops Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Flags-and-Comparisons-Tutorial.html#Flags-and-Comparisons-Tutorial">Flags and Comparisons Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.18 General Loops</h3>
+
+<p><a name="index-loops_002c-indefinite_002c-tutorial-101"></a>
+The endless loop is the most simple one:
+
+<pre class="example">     : endless ( -- )
+       0 begin
+         dup . 1+
+       again ;
+     endless
+</pre>
+   <p>Terminate this loop by pressing <kbd>Ctrl-C</kbd> (in Gforth).  <code>begin</code>
+does nothing at run-time, <code>again</code> jumps back to <code>begin</code>.
+
+   <p>A loop with one exit at any place looks like this:
+
+<pre class="example">     : log2 ( +n1 -- n2 )
+     \ logarithmus dualis of n1&gt;0, rounded down to the next integer
+       assert( dup 0&gt; )
+       2/ 0 begin
+         over 0&gt; while
+           1+ swap 2/ swap
+       repeat
+       nip ;
+     7 log2 .
+     8 log2 .
+</pre>
+   <p>At run-time <code>while</code> consumes a flag; if it is 0, execution
+continues behind the <code>repeat</code>; if the flag is non-zero, execution
+continues behind the <code>while</code>.  <code>Repeat</code> jumps back to
+<code>begin</code>, just like <code>again</code>.
+
+   <p>In Forth there are many combinations/abbreviations, like <code>1+</code>. 
+However, <code>2/</code> is not one of them; it shifts its argument right by
+one bit (arithmetic shift right):
+
+<pre class="example">     -5 2 / .
+     -5 2/ .
+</pre>
+   <p><code>assert(</code> is no standard word, but you can get it on systems other
+than Gforth by including <samp><span class="file">compat/assert.fs</span></samp>.  You can see what it
+does by trying
+
+<pre class="example">     0 log2 .
+</pre>
+   <p>Here's a loop with an exit at the end:
+
+<pre class="example">     : log2 ( +n1 -- n2 )
+     \ logarithmus dualis of n1&gt;0, rounded down to the next integer
+       assert( dup 0 &gt; )
+       -1 begin
+         1+ swap 2/ swap
+         over 0 &lt;=
+       until
+       nip ;
+</pre>
+   <p><code>Until</code> consumes a flag; if it is non-zero, execution continues at
+the <code>begin</code>, otherwise after the <code>until</code>.
+
+   <blockquote>
+<b>Assignment:</b> Write a definition for computing the greatest common divisor. 
+</blockquote>
+
+   <p>Reference: <a href="Simple-Loops.html#Simple-Loops">Simple Loops</a>.
+
+   </body></html>
+

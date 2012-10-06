@@ -1,0 +1,137 @@
+<html lang="en">
+<head>
+<title>Image File Background - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Image-Files.html#Image-Files" title="Image Files">
+<link rel="prev" href="Image-Licensing-Issues.html#Image-Licensing-Issues" title="Image Licensing Issues">
+<link rel="next" href="Non_002dRelocatable-Image-Files.html#Non_002dRelocatable-Image-Files" title="Non-Relocatable Image Files">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Image-File-Background"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Non_002dRelocatable-Image-Files.html#Non_002dRelocatable-Image-Files">Non-Relocatable Image Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Image-Licensing-Issues.html#Image-Licensing-Issues">Image Licensing Issues</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Image-Files.html#Image-Files">Image Files</a>
+<hr>
+</div>
+
+<h3 class="section">13.2 Image File Background</h3>
+
+<p><a name="index-image-file-background-3393"></a>
+Gforth consists not only of primitives (in the engine), but also of
+definitions written in Forth. Since the Forth compiler itself belongs to
+those definitions, it is not possible to start the system with the
+engine and the Forth source alone. Therefore we provide the Forth
+code as an image file in nearly executable form. When Gforth starts up,
+a C routine loads the image file into memory, optionally relocates the
+addresses, then sets up the memory (stacks etc.) according to
+information in the image file, and (finally) starts executing Forth
+code.
+
+   <p>The image file variants represent different compromises between the
+goals of making it easy to generate image files and making them
+portable.
+
+   <p><a name="index-relocation-at-run_002dtime-3394"></a>Win32Forth 3.4 and Mitch Bradley's <code>cforth</code> use relocation at
+run-time. This avoids many of the complications discussed below (image
+files are data relocatable without further ado), but costs performance
+(one addition per memory access).
+
+   <p><a name="index-relocation-at-load_002dtime-3395"></a>By contrast, the Gforth loader performs relocation at image load time. The
+loader also has to replace tokens that represent primitive calls with the
+appropriate code-field addresses (or code addresses in the case of
+direct threading).
+
+   <p>There are three kinds of image files, with different degrees of
+relocatability: non-relocatable, data-relocatable, and fully relocatable
+image files.
+
+   <p><a name="index-image-file-loader-3396"></a><a name="index-relocating-loader-3397"></a><a name="index-loader-for-image-files-3398"></a>These image file variants have several restrictions in common; they are
+caused by the design of the image file loader:
+
+     <ul>
+<li>There is only one segment; in particular, this means, that an image file
+cannot represent <code>ALLOCATE</code>d memory chunks (and pointers to
+them). The contents of the stacks are not represented, either.
+
+     <li>The only kinds of relocation supported are: adding the same offset to
+all cells that represent data addresses; and replacing special tokens
+with code addresses or with pieces of machine code.
+
+     <p>If any complex computations involving addresses are performed, the
+results cannot be represented in the image file. Several applications that
+use such computations come to mind:
+          <ul>
+<li>Hashing addresses (or data structures which contain addresses) for table
+lookup. If you use Gforth's <code>table</code>s or <code>wordlist</code>s for this
+purpose, you will have no problem, because the hash tables are
+recomputed automatically when the system is started. If you use your own
+hash tables, you will have to do something similar.
+
+          <li>There's a cute implementation of doubly-linked lists that uses
+<code>XOR</code>ed addresses. You could represent such lists as singly-linked
+in the image file, and restore the doubly-linked representation on
+startup.<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>
+
+          <li>The code addresses of run-time routines like <code>docol:</code> cannot be
+represented in the image file (because their tokens would be replaced by
+machine code in direct threaded implementations). As a workaround,
+compute these addresses at run-time with <code>&gt;code-address</code> from the
+executions tokens of appropriate words (see the definitions of
+<code>docol:</code> and friends in <samp><span class="file">kernel/getdoers.fs</span></samp>).
+
+          <li>On many architectures addresses are represented in machine code in some
+shifted or mangled form. You cannot put <code>CODE</code> words that contain
+absolute addresses in this form in a relocatable image file. Workarounds
+are representing the address in some relative form (e.g., relative to
+the CFA, which is present in some register), or loading the address from
+a place where it is stored in a non-mangled form. 
+</ul>
+     </ul>
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> In my opinion, though, you should think thrice before
+using a doubly-linked list (whatever implementation).</p>
+
+   <p><hr></div>
+
+   </body></html>
+

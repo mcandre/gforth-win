@@ -1,0 +1,150 @@
+<html lang="en">
+<head>
+<title>Performance - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Engine.html#Engine" title="Engine">
+<link rel="prev" href="Primitives.html#Primitives" title="Primitives">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Performance"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Primitives.html#Primitives">Primitives</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Engine.html#Engine">Engine</a>
+<hr>
+</div>
+
+<h3 class="section">14.4 Performance</h3>
+
+<p><a name="index-performance-of-some-Forth-interpreters-3499"></a><a name="index-engine-performance-3500"></a><a name="index-benchmarking-Forth-systems-3501"></a><a name="index-Gforth-performance-3502"></a>
+On RISCs the Gforth engine is very close to optimal; i.e., it is usually
+impossible to write a significantly faster threaded-code engine.
+
+   <p>On register-starved machines like the 386 architecture processors
+improvements are possible, because <code>gcc</code> does not utilize the
+registers as well as a human, even with explicit register declarations;
+e.g., Bernd Beuster wrote a Forth system fragment in assembly language
+and hand-tuned it for the 486; this system is 1.19 times faster on the
+Sieve benchmark on a 486DX2/66 than Gforth compiled with
+<code>gcc-2.6.3</code> with <code>-DFORCE_REG</code>.  The situation has improved
+with gcc-2.95 and gforth-0.4.9; now the most important virtual machine
+registers fit in real registers (and we can even afford to use the TOS
+optimization), resulting in a speedup of 1.14 on the sieve over the
+earlier results.  And dynamic superinstructions provide another speedup
+(but only around a factor 1.2 on the 486).
+
+   <p><a name="index-Win32Forth-performance-3503"></a><a name="index-NT-Forth-performance-3504"></a><a name="index-eforth-performance-3505"></a><a name="index-ThisForth-performance-3506"></a><a name="index-PFE-performance-3507"></a><a name="index-TILE-performance-3508"></a>The potential advantage of assembly language implementations is not
+necessarily realized in complete Forth systems: We compared Gforth-0.5.9
+(direct threaded, compiled with <code>gcc-2.95.1</code> and
+<code>-DFORCE_REG</code>) with Win32Forth 1.2093 (newer versions are
+reportedly much faster), LMI's NT Forth (Beta, May 1994) and Eforth
+(with and without peephole (aka pinhole) optimization of the threaded
+code); all these systems were written in assembly language. We also
+compared Gforth with three systems written in C: PFE-0.9.14 (compiled
+with <code>gcc-2.6.3</code> with the default configuration for Linux:
+<code>-O2 -fomit-frame-pointer -DUSE_REGS -DUNROLL_NEXT</code>), ThisForth
+Beta (compiled with <code>gcc-2.6.3 -O3 -fomit-frame-pointer</code>; ThisForth
+employs peephole optimization of the threaded code) and TILE (compiled
+with <code>make opt</code>). We benchmarked Gforth, PFE, ThisForth and TILE on
+a 486DX2/66 under Linux. Kenneth O'Heskin kindly provided the results
+for Win32Forth and NT Forth on a 486DX2/66 with similar memory
+performance under Windows NT. Marcel Hendrix ported Eforth to Linux,
+then extended it to run the benchmarks, added the peephole optimizer,
+ran the benchmarks and reported the results.
+
+   <p>We used four small benchmarks: the ubiquitous Sieve; bubble-sorting and
+matrix multiplication come from the Stanford integer benchmarks and have
+been translated into Forth by Martin Fraeman; we used the versions
+included in the TILE Forth package, but with bigger data set sizes; and
+a recursive Fibonacci number computation for benchmarking calling
+performance. The following table shows the time taken for the benchmarks
+scaled by the time taken by Gforth (in other words, it shows the speedup
+factor that Gforth achieved over the other systems).
+
+<pre class="example">     relative       Win32-    NT       eforth       This-
+     time     Gforth Forth Forth eforth  +opt   PFE Forth  TILE
+     sieve      1.00  2.16  1.78   2.16  1.32  2.46  4.96 13.37
+     bubble     1.00  1.93  2.07   2.18  1.29  2.21        5.70
+     matmul     1.00  1.92  1.76   1.90  0.96  2.06        5.32
+     fib        1.00  2.32  2.03   1.86  1.31  2.64  4.55  6.54
+</pre>
+   <p>You may be quite surprised by the good performance of Gforth when
+compared with systems written in assembly language. One important reason
+for the disappointing performance of these other systems is probably
+that they are not written optimally for the 486 (e.g., they use the
+<code>lods</code> instruction). In addition, Win32Forth uses a comfortable,
+but costly method for relocating the Forth image: like <code>cforth</code>, it
+computes the actual addresses at run time, resulting in two address
+computations per <code>NEXT</code> (see <a href="Image-File-Background.html#Image-File-Background">Image File Background</a>).
+
+   <p>The speedup of Gforth over PFE, ThisForth and TILE can be easily
+explained with the self-imposed restriction of the latter systems to
+standard C, which makes efficient threading impossible (however, the
+measured implementation of PFE uses a GNU C extension: see <a href="../gcc/Global-Reg-Vars.html#Global-Reg-Vars">Defining Global Register Variables</a>). 
+Moreover, current C compilers have a hard time optimizing other aspects
+of the ThisForth and the TILE source.
+
+   <p>The performance of Gforth on 386 architecture processors varies widely
+with the version of <code>gcc</code> used. E.g., <code>gcc-2.5.8</code> failed to
+allocate any of the virtual machine registers into real machine
+registers by itself and would not work correctly with explicit register
+declarations, giving a significantly slower engine (on a 486DX2/66
+running the Sieve) than the one measured above.
+
+   <p>Note that there have been several releases of Win32Forth since the
+release presented here, so the results presented above may have little
+predictive value for the performance of Win32Forth today (results for
+the current release on an i486DX2/66 are welcome).
+
+   <p><a name="index-g_t_0040file_007bBenchres_007d-3509"></a>In
+<cite><a href="http://www.complang.tuwien.ac.at/papers/ertl&amp;maierhofer95.ps.gz">Translating Forth to Efficient C</a></cite> by M. Anton Ertl and Martin
+Maierhofer (presented at EuroForth '95), an indirect threaded version of
+Gforth is compared with Win32Forth, NT Forth, PFE, ThisForth, and
+several native code systems; that version of Gforth is slower on a 486
+than the version used here. You can find a newer version of these
+measurements at
+<a href="http://www.complang.tuwien.ac.at/forth/performance.html">http://www.complang.tuwien.ac.at/forth/performance.html</a>. You can
+find numbers for Gforth on various machines in <samp><span class="file">Benchres</span></samp>.
+
+<!-- ****************************************************************** -->
+<!-- @node Binding to System Library, Cross Compiler, Engine, Top -->
+<!-- @chapter Binding to System Library -->
+<!-- **************************************************************** -->
+</body></html>
+

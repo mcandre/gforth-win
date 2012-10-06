@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+<title>Search Paths - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Files.html#Files" title="Files">
+<link rel="prev" href="Redirection.html#Redirection" title="Redirection">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Search-Paths"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Redirection.html#Redirection">Redirection</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Files.html#Files">Files</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.17.4 Search Paths</h4>
+
+<p><a name="index-path-for-_0040code_007bincluded_007d-1800"></a><a name="index-file-search-path-1801"></a><a name="index-g_t_0040code_007binclude_007d-search-path-1802"></a><a name="index-search-path-for-files-1803"></a>
+If you specify an absolute filename (i.e., a filename starting with
+<samp><span class="file">/</span></samp> or <samp><span class="file">~</span></samp>, or with <samp><span class="file">:</span></samp> in the second position (as in
+`<samp><span class="samp">C:...</span></samp>')) for <code>included</code> and friends, that file is included
+just as you would expect.
+
+   <p>If the filename starts with <samp><span class="file">./</span></samp>, this refers to the directory that
+the present file was <code>included</code> from.  This allows files to include
+other files relative to their own position (irrespective of the current
+working directory or the absolute position).  This feature is essential
+for libraries consisting of several files, where a file may include
+other files from the library.  It corresponds to <code>#include "..."</code>
+in C. If the current input source is not a file, <samp><span class="file">.</span></samp> refers to the
+directory of the innermost file being included, or, if there is no file
+being included, to the current working directory.
+
+   <p>For relative filenames (not starting with <samp><span class="file">./</span></samp>), Gforth uses a
+search path similar to Forth's search order (see <a href="Word-Lists.html#Word-Lists">Word Lists</a>). It
+tries to find the given filename in the directories present in the path,
+and includes the first one it finds. There are separate search paths for
+Forth source files and general files.  If the search path contains the
+directory <samp><span class="file">.</span></samp>, this refers to the directory of the current file, or
+the working directory, as if the file had been specified with <samp><span class="file">./</span></samp>.
+
+   <p>Use <samp><span class="file">~+</span></samp> to refer to the current working directory (as in the
+<code>bash</code>).
+
+<!-- anton: fold the following subsubsections into this subsection? -->
+<ul class="menu">
+<li><a accesskey="1" href="Source-Search-Paths.html#Source-Search-Paths">Source Search Paths</a>
+<li><a accesskey="2" href="General-Search-Paths.html#General-Search-Paths">General Search Paths</a>
+</ul>
+
+<!--  -->
+</body></html>
+

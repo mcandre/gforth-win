@@ -1,0 +1,122 @@
+<html lang="en">
+<head>
+<title>Singlestep Debugger - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Programming-Tools.html#Programming-Tools" title="Programming Tools">
+<link rel="prev" href="Assertions.html#Assertions" title="Assertions">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Singlestep-Debugger"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Assertions.html#Assertions">Assertions</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Programming-Tools.html#Programming-Tools">Programming Tools</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.24.5 Singlestep Debugger</h4>
+
+<p><a name="index-singlestep-Debugger-2871"></a><a name="index-debugging-Singlestep-2872"></a>
+The singlestep debugger works only with the engine <code>gforth-itc</code>.
+
+   <p>When you create a new word there's often the need to check whether it
+behaves correctly or not. You can do this by typing <code>dbg
+badword</code>. A debug session might look like this:
+
+<pre class="example">     : badword 0 DO i . LOOP ;  ok
+     2 dbg badword
+     : badword
+     Scanning code...
+     
+     Nesting debugger ready!
+     
+     400D4738  8049BC4 0              -&gt; [ 2 ] 00002 00000
+     400D4740  8049F68 DO             -&gt; [ 0 ]
+     400D4744  804A0C8 i              -&gt; [ 1 ] 00000
+     400D4748 400C5E60 .              -&gt; 0 [ 0 ]
+     400D474C  8049D0C LOOP           -&gt; [ 0 ]
+     400D4744  804A0C8 i              -&gt; [ 1 ] 00001
+     400D4748 400C5E60 .              -&gt; 1 [ 0 ]
+     400D474C  8049D0C LOOP           -&gt; [ 0 ]
+     400D4758  804B384 ;              -&gt;  ok
+</pre>
+   <p>Each line displayed is one step. You always have to hit return to
+execute the next word that is displayed. If you don't want to execute
+the next word in a whole, you have to type <kbd>n</kbd> for <code>nest</code>. Here is
+an overview what keys are available:
+
+     <dl>
+<dt><i>&lt;RET&gt;</i><dd>Next; Execute the next word.
+
+     <br><dt><i>n</i><dd>Nest; Single step through next word.
+
+     <br><dt><i>u</i><dd>Unnest; Stop debugging and execute rest of word. If we got to this word
+with nest, continue debugging with the calling word.
+
+     <br><dt><i>d</i><dd>Done; Stop debugging and execute rest.
+
+     <br><dt><i>s</i><dd>Stop; Abort immediately.
+
+   </dl>
+
+   <p>Debugging large application with this mechanism is very difficult, because
+you have to nest very deeply into the program before the interesting part
+begins. This takes a lot of time.
+
+   <p>To do it more directly put a <code>BREAK:</code> command into your source code. 
+When program execution reaches <code>BREAK:</code> the single step debugger is
+invoked and you have all the features described above.
+
+   <p>If you have more than one part to debug it is useful to know where the
+program has stopped at the moment. You can do this by the
+<code>BREAK" string"</code> command. This behaves like <code>BREAK:</code> except that
+string is typed out when the &ldquo;breakpoint&rdquo; is reached.
+
+   <p><a name="index-dbg-_0040var_007b-_0022name_0022-_002d_002d---_007d--gforth-2873"></a><a name="index-g_t_0040code_007bdbg_007d-2874"></a><a name="index-dbg-2875"></a>
+<pre class="format"><code>dbg</code>       <i>"name" &ndash;  </i>       gforth       &ldquo;dbg&rdquo;
+</pre>
+   <p><a name="index-break_003a-_0040var_007b-_002d_002d---_007d--gforth-2876"></a><a name="index-g_t_0040code_007bbreak_003a_007d-2877"></a><a name="index-break_003a-2878"></a>
+<pre class="format"><code>break:</code>       <i>&ndash;  </i>       gforth       &ldquo;break:&rdquo;
+</pre>
+   <p><a name="index-break_0022-_0040var_007b-_0027ccc_0022_0027-_002d_002d---_007d--gforth-2879"></a><a name="index-g_t_0040code_007bbreak_0022_007d-2880"></a><a name="index-break_0022-2881"></a>
+<pre class="format"><code>break"</code>       <i>'ccc"' &ndash;  </i>       gforth       &ldquo;break"&rdquo;
+</pre>
+   <!--  -->
+</body></html>
+

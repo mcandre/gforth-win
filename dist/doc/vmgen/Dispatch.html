@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+<title>Dispatch - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Concepts.html#Concepts" title="Concepts">
+<link rel="prev" href="Data-handling.html#Data-handling" title="Data handling">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Dispatch"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Data-handling.html#Data-handling">Data handling</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Concepts.html#Concepts">Concepts</a>
+<hr>
+</div>
+
+<h3 class="section">3.3 Dispatch</h3>
+
+<p><a name="index-Dispatch-of-VM-instructions-28"></a><a name="index-main-interpreter-loop-29"></a>
+Understanding this section is probably not necessary for using Vmgen,
+but it may help.  You may want to skip it now, and read it if you find statements about dispatch methods confusing.
+
+   <p>After executing one VM instruction, the VM interpreter has to dispatch
+the next VM instruction (Vmgen calls the dispatch routine `<samp><span class="samp">NEXT</span></samp>'). 
+Vmgen supports two methods of dispatch:
+
+     <dl>
+<dt><strong>switch dispatch</strong><dd><a name="index-switch-dispatch-30"></a>In this method the VM interpreter contains a giant <code>switch</code>
+statement, with one <code>case</code> for each VM instruction.  The VM
+instruction opcodes are represented by integers (e.g., produced by an
+<code>enum</code>) in the VM code, and dispatch occurs by loading the next
+opcode, <code>switch</code>ing on it, and continuing at the appropriate
+<code>case</code>; after executing the VM instruction, the VM interpreter
+jumps back to the dispatch code.
+
+     <br><dt><strong>threaded code</strong><dd><a name="index-threaded-code-31"></a>This method represents a VM instruction opcode by the address of the
+start of the machine code fragment for executing the VM instruction. 
+Dispatch consists of loading this address, jumping to it, and
+incrementing the VM instruction pointer.  Typically the threaded-code
+dispatch code is appended directly to the code for executing the VM
+instruction.  Threaded code cannot be implemented in ANSI C, but it can
+be implemented using GNU C's labels-as-values extension (see <a href="../gcc/Labels-as-Values.html#Labels-as-Values">Labels as Values</a>).
+
+     <!-- call threading -->
+</dl>
+
+   <p>Threaded code can be twice as fast as switch dispatch, depending on the
+interpreter, the benchmark, and the machine.
+
+<!-- ************************************************************* -->
+</body></html>
+

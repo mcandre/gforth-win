@@ -1,0 +1,220 @@
+<html lang="en">
+<head>
+<title>Address arithmetic - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Memory.html#Memory" title="Memory">
+<link rel="prev" href="Memory-Access.html#Memory-Access" title="Memory Access">
+<link rel="next" href="Memory-Blocks.html#Memory-Blocks" title="Memory Blocks">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Address-arithmetic"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Memory-Blocks.html#Memory-Blocks">Memory Blocks</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Memory-Access.html#Memory-Access">Memory Access</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Memory.html#Memory">Memory</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.7.5 Address arithmetic</h4>
+
+<p><a name="index-address-arithmetic-words-890"></a>
+Address arithmetic is the foundation on which you can build data
+structures like arrays, records (see <a href="Structures.html#Structures">Structures</a>) and objects
+(see <a href="Object_002doriented-Forth.html#Object_002doriented-Forth">Object-oriented Forth</a>).
+
+   <p><a name="index-address-unit-891"></a><a name="index-au-_0028address-unit_0029-892"></a>ANS Forth does not specify the sizes of the data types. Instead, it
+offers a number of words for computing sizes and doing address
+arithmetic. Address arithmetic is performed in terms of address units
+(aus); on most systems the address unit is one byte. Note that a
+character may have more than one au, so <code>chars</code> is no noop (on
+platforms where it is a noop, it compiles to nothing).
+
+   <p>The basic address arithmetic words are <code>+</code> and <code>-</code>.  E.g., if
+you have the address of a cell, perform <code>1 cells +</code>, and you will
+have the address of the next cell.
+
+   <p><a name="index-contiguous-regions-and-address-arithmetic-893"></a>In ANS Forth you can perform address arithmetic only within a contiguous
+region, i.e., if you have an address into one region, you can only add
+and subtract such that the result is still within the region; you can
+only subtract or compare addresses from within the same contiguous
+region.  Reasons: several contiguous regions can be arranged in memory
+in any way; on segmented systems addresses may have unusual
+representations, such that address arithmetic only works within a
+region.  Gforth provides a few more guarantees (linear address space,
+dictionary grows upwards), but in general I have found it easy to stay
+within contiguous regions (exception: computing and comparing to the
+address just beyond the end of an array).
+
+   <p><a name="index-alignment-of-addresses-for-types-894"></a>ANS Forth also defines words for aligning addresses for specific
+types. Many computers require that accesses to specific data types
+must only occur at specific addresses; e.g., that cells may only be
+accessed at addresses divisible by 4. Even if a machine allows unaligned
+accesses, it can usually perform aligned accesses faster.
+
+   <p>For the performance-conscious: alignment operations are usually only
+necessary during the definition of a data structure, not during the
+(more frequent) accesses to it.
+
+   <p>ANS Forth defines no words for character-aligning addresses. This is not
+an oversight, but reflects the fact that addresses that are not
+char-aligned have no use in the standard and therefore will not be
+created.
+
+   <p><a name="index-g_t_0040code_007bCREATE_007d-and-alignment-895"></a>ANS Forth guarantees that addresses returned by <code>CREATE</code>d words
+are cell-aligned; in addition, Gforth guarantees that these addresses
+are aligned for all purposes.
+
+   <p>Note that the ANS Forth word <code>char</code> has nothing to do with address
+arithmetic.
+
+   <p><a name="index-chars-_0040var_007b-n1-_002d_002d-n2---_007d--core-896"></a><a name="index-g_t_0040code_007bchars_007d-897"></a><a name="index-chars-898"></a>
+<pre class="format"><code>chars</code>       <i>n1 &ndash; n2  </i>       core       &ldquo;chars&rdquo;
+</pre>
+   <p><i>n2</i> is the number of address units of <i>n1</i> chars.""
+
+   <p><a name="index-char_002b-_0040var_007b-c_002daddr1-_002d_002d-c_002daddr2--_007d--core-899"></a><a name="index-g_t_0040code_007bchar_002b_007d-900"></a><a name="index-char_002b-901"></a>
+<pre class="format"><code>char+</code>       <i>c-addr1 &ndash; c-addr2 </i>       core       &ldquo;char-plus&rdquo;
+</pre>
+   <p><code>1 chars +</code>.
+
+   <p><a name="index-cells-_0040var_007b-n1-_002d_002d-n2--_007d--core-902"></a><a name="index-g_t_0040code_007bcells_007d-903"></a><a name="index-cells-904"></a>
+<pre class="format"><code>cells</code>       <i>n1 &ndash; n2 </i>       core       &ldquo;cells&rdquo;
+</pre>
+   <p><i>n2</i> is the number of address units of <i>n1</i> cells.
+
+   <p><a name="index-cell_002b-_0040var_007b-a_002daddr1-_002d_002d-a_002daddr2--_007d--core-905"></a><a name="index-g_t_0040code_007bcell_002b_007d-906"></a><a name="index-cell_002b-907"></a>
+<pre class="format"><code>cell+</code>       <i>a-addr1 &ndash; a-addr2 </i>       core       &ldquo;cell-plus&rdquo;
+</pre>
+   <p><code>1 cells +</code>
+
+   <p><a name="index-cell-_0040var_007b-_002d_002d-u---_007d--gforth-908"></a><a name="index-g_t_0040code_007bcell_007d-909"></a><a name="index-cell-910"></a>
+<pre class="format"><code>cell</code>       <i>&ndash; u  </i>       gforth       &ldquo;cell&rdquo;
+</pre>
+   <p><code>Constant</code> &ndash; <code>1 cells</code>
+
+   <p><a name="index-aligned-_0040var_007b-c_002daddr-_002d_002d-a_002daddr--_007d--core-911"></a><a name="index-g_t_0040code_007baligned_007d-912"></a><a name="index-aligned-913"></a>
+<pre class="format"><code>aligned</code>       <i>c-addr &ndash; a-addr </i>       core       &ldquo;aligned&rdquo;
+</pre>
+   <p><i>a-addr</i> is the first aligned address greater than or equal to <i>c-addr</i>.
+
+   <p><a name="index-floats-_0040var_007b-n1-_002d_002d-n2--_007d--float-914"></a><a name="index-g_t_0040code_007bfloats_007d-915"></a><a name="index-floats-916"></a>
+<pre class="format"><code>floats</code>       <i>n1 &ndash; n2 </i>       float       &ldquo;floats&rdquo;
+</pre>
+   <p><i>n2</i> is the number of address units of <i>n1</i> floats.
+
+   <p><a name="index-float_002b-_0040var_007b-f_002daddr1-_002d_002d-f_002daddr2--_007d--float-917"></a><a name="index-g_t_0040code_007bfloat_002b_007d-918"></a><a name="index-float_002b-919"></a>
+<pre class="format"><code>float+</code>       <i>f-addr1 &ndash; f-addr2 </i>       float       &ldquo;float-plus&rdquo;
+</pre>
+   <p><code>1 floats +</code>.
+
+   <p><a name="index-float-_0040var_007b-_002d_002d-u---_007d--gforth-920"></a><a name="index-g_t_0040code_007bfloat_007d-921"></a><a name="index-float-922"></a>
+<pre class="format"><code>float</code>       <i>&ndash; u  </i>       gforth       &ldquo;float&rdquo;
+</pre>
+   <p><code>Constant</code> &ndash; the number of address units corresponding to a floating-point number.
+
+   <p><a name="index-faligned-_0040var_007b-c_002daddr-_002d_002d-f_002daddr--_007d--float-923"></a><a name="index-g_t_0040code_007bfaligned_007d-924"></a><a name="index-faligned-925"></a>
+<pre class="format"><code>faligned</code>       <i>c-addr &ndash; f-addr </i>       float       &ldquo;f-aligned&rdquo;
+</pre>
+   <p><i>f-addr</i> is the first float-aligned address greater than or equal to <i>c-addr</i>.
+
+   <p><a name="index-sfloats-_0040var_007b-n1-_002d_002d-n2--_007d--float_002dext-926"></a><a name="index-g_t_0040code_007bsfloats_007d-927"></a><a name="index-sfloats-928"></a>
+<pre class="format"><code>sfloats</code>       <i>n1 &ndash; n2 </i>       float-ext       &ldquo;s-floats&rdquo;
+</pre>
+   <p><i>n2</i> is the number of address units of <i>n1</i>
+single-precision IEEE floating-point numbers.
+
+   <p><a name="index-sfloat_002b-_0040var_007b-sf_002daddr1-_002d_002d-sf_002daddr2---_007d--float_002dext-929"></a><a name="index-g_t_0040code_007bsfloat_002b_007d-930"></a><a name="index-sfloat_002b-931"></a>
+<pre class="format"><code>sfloat+</code>       <i>sf-addr1 &ndash; sf-addr2  </i>       float-ext       &ldquo;s-float-plus&rdquo;
+</pre>
+   <p><code>1 sfloats +</code>.
+
+   <p><a name="index-sfaligned-_0040var_007b-c_002daddr-_002d_002d-sf_002daddr--_007d--float_002dext-932"></a><a name="index-g_t_0040code_007bsfaligned_007d-933"></a><a name="index-sfaligned-934"></a>
+<pre class="format"><code>sfaligned</code>       <i>c-addr &ndash; sf-addr </i>       float-ext       &ldquo;s-f-aligned&rdquo;
+</pre>
+   <p><i>sf-addr</i> is the first single-float-aligned address greater
+than or equal to <i>c-addr</i>.
+
+   <p><a name="index-dfloats-_0040var_007b-n1-_002d_002d-n2--_007d--float_002dext-935"></a><a name="index-g_t_0040code_007bdfloats_007d-936"></a><a name="index-dfloats-937"></a>
+<pre class="format"><code>dfloats</code>       <i>n1 &ndash; n2 </i>       float-ext       &ldquo;d-floats&rdquo;
+</pre>
+   <p><i>n2</i> is the number of address units of <i>n1</i>
+double-precision IEEE floating-point numbers.
+
+   <p><a name="index-dfloat_002b-_0040var_007b-df_002daddr1-_002d_002d-df_002daddr2---_007d--float_002dext-938"></a><a name="index-g_t_0040code_007bdfloat_002b_007d-939"></a><a name="index-dfloat_002b-940"></a>
+<pre class="format"><code>dfloat+</code>       <i>df-addr1 &ndash; df-addr2  </i>       float-ext       &ldquo;d-float-plus&rdquo;
+</pre>
+   <p><code>1 dfloats +</code>.
+
+   <p><a name="index-dfaligned-_0040var_007b-c_002daddr-_002d_002d-df_002daddr--_007d--float_002dext-941"></a><a name="index-g_t_0040code_007bdfaligned_007d-942"></a><a name="index-dfaligned-943"></a>
+<pre class="format"><code>dfaligned</code>       <i>c-addr &ndash; df-addr </i>       float-ext       &ldquo;d-f-aligned&rdquo;
+</pre>
+   <p><i>df-addr</i> is the first double-float-aligned address greater
+than or equal to <i>c-addr</i>.
+
+   <p><a name="index-maxaligned-_0040var_007b-addr1-_002d_002d-addr2---_007d--gforth-944"></a><a name="index-g_t_0040code_007bmaxaligned_007d-945"></a><a name="index-maxaligned-946"></a>
+<pre class="format"><code>maxaligned</code>       <i>addr1 &ndash; addr2  </i>       gforth       &ldquo;maxaligned&rdquo;
+</pre>
+   <p><i>addr2</i> is the first address after <i>addr1</i> that satisfies
+all alignment restrictions. 
+maxaligned"
+
+   <p><a name="index-cfaligned-_0040var_007b-addr1-_002d_002d-addr2---_007d--gforth-947"></a><a name="index-g_t_0040code_007bcfaligned_007d-948"></a><a name="index-cfaligned-949"></a>
+<pre class="format"><code>cfaligned</code>       <i>addr1 &ndash; addr2  </i>       gforth       &ldquo;cfaligned&rdquo;
+</pre>
+   <p><i>addr2</i> is the first address after <i>addr1</i> that is aligned for
+a code field (i.e., such that the corresponding body is maxaligned).
+
+   <p><a name="index-ADDRESS_002dUNIT_002dBITS-_0040var_007b-_002d_002d-n---_007d--environment-950"></a><a name="index-g_t_0040code_007bADDRESS_002dUNIT_002dBITS_007d-951"></a><a name="index-ADDRESS_002dUNIT_002dBITS-952"></a>
+<pre class="format"><code>ADDRESS-UNIT-BITS</code>       <i>&ndash; n  </i>       environment       &ldquo;ADDRESS-UNIT-BITS&rdquo;
+</pre>
+   <p>Size of one address unit, in bits.
+
+   <p><a name="index-g_t_002fw-_0040var_007b-_002d_002d-u---_007d--gforth-953"></a><a name="index-g_t_0040code_007b_002fw_007d-954"></a><a name="index-g_t_002fw-955"></a>
+<pre class="format"><code>/w</code>       <i>&ndash; u  </i>       gforth       &ldquo;slash-w&rdquo;
+</pre>
+   <p>address units for a 16-bit value
+
+   <p><a name="index-g_t_002fl-_0040var_007b-_002d_002d-u---_007d--gforth-956"></a><a name="index-g_t_0040code_007b_002fl_007d-957"></a><a name="index-g_t_002fl-958"></a>
+<pre class="format"><code>/l</code>       <i>&ndash; u  </i>       gforth       &ldquo;slash-l&rdquo;
+</pre>
+   <p>address units for a 32-bit value
+
+   </body></html>
+

@@ -1,0 +1,93 @@
+<html lang="en">
+<head>
+<title>Passing Commands to the OS - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Words.html#Words" title="Words">
+<link rel="prev" href="Threading-Words.html#Threading-Words" title="Threading Words">
+<link rel="next" href="Keeping-track-of-Time.html#Keeping-track-of-Time" title="Keeping track of Time">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Passing-Commands-to-the-OS"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Keeping-track-of-Time.html#Keeping-track-of-Time">Keeping track of Time</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Threading-Words.html#Threading-Words">Threading Words</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Words.html#Words">Words</a>
+<hr>
+</div>
+
+<h3 class="section">5.28 Passing Commands to the Operating System</h3>
+
+<p><a name="index-operating-system-_002d-passing-commands-3010"></a><a name="index-shell-commands-3011"></a>
+Gforth allows you to pass an arbitrary string to the host operating
+system shell (if such a thing exists) for execution.
+
+   <p><a name="index-sh-_0040var_007b-_0022_002e_002e_002e_0022-_002d_002d---_007d--gforth-3012"></a><a name="index-g_t_0040code_007bsh_007d-3013"></a><a name="index-sh-3014"></a>
+<pre class="format"><code>sh</code>       <i>"..." &ndash;  </i>       gforth       &ldquo;sh&rdquo;
+</pre>
+   <p>Parse a string and use <code>system</code> to pass it to the host
+operating system for execution in a sub-shell.
+
+   <p><a name="index-system-_0040var_007b-c_002daddr-u-_002d_002d---_007d--gforth-3015"></a><a name="index-g_t_0040code_007bsystem_007d-3016"></a><a name="index-system-3017"></a>
+<pre class="format"><code>system</code>       <i>c-addr u &ndash;  </i>       gforth       &ldquo;system&rdquo;
+</pre>
+   <p>Pass the string specified by <var>c-addr u</var> to the host operating
+system for execution in a sub-shell.  The value of the environment
+variable <code>GFORTHSYSTEMPREFIX</code> (or its default value) is
+prepended to the string (mainly to support using <code>command.com</code>
+as shell in Windows instead of whatever shell Cygwin uses by
+default; see <a href="Environment-variables.html#Environment-variables">Environment variables</a>).
+
+   <p><a name="index-g_t_0024_003f-_0040var_007b-_002d_002d-n---_007d--gforth-3018"></a><a name="index-g_t_0040code_007b_0024_003f_007d-3019"></a><a name="index-g_t_0024_003f-3020"></a>
+<pre class="format"><code>$?</code>       <i>&ndash; n  </i>       gforth       &ldquo;dollar-question&rdquo;
+</pre>
+   <p><code>Value</code> &ndash; the exit status returned by the most recently executed
+<code>system</code> command.
+
+   <p><a name="index-getenv-_0040var_007b-c_002daddr1-u1-_002d_002d-c_002daddr2-u2--_007d--gforth-3021"></a><a name="index-g_t_0040code_007bgetenv_007d-3022"></a><a name="index-getenv-3023"></a>
+<pre class="format"><code>getenv</code>       <i>c-addr1 u1 &ndash; c-addr2 u2 </i>       gforth       &ldquo;getenv&rdquo;
+</pre>
+   <p>The string <i>c-addr1 u1</i> specifies an environment variable. The string <i>c-addr2 u2</i>
+is the host operating system's expansion of that environment variable. If the
+environment variable does not exist, <i>c-addr2 u2</i> specifies a string 0 characters
+in length.
+
+<!--  -->
+</body></html>
+

@@ -1,0 +1,157 @@
+<html lang="en">
+<head>
+<title>Files Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Floating-Point-Tutorial.html#Floating-Point-Tutorial" title="Floating Point Tutorial">
+<link rel="next" href="Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial.html#Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial" title="Interpretation and Compilation Semantics and Immediacy Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Files-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial.html#Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial">Interpretation and Compilation Semantics and Immediacy Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Floating-Point-Tutorial.html#Floating-Point-Tutorial">Floating Point Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.27 Files</h3>
+
+<p><a name="index-files-tutorial-114"></a>
+This section gives a short introduction into how to use files inside
+Forth. It's broken up into five easy steps:
+
+     <ol type=1 start=1>
+<li>Opened an ASCII text file for input
+<li>Opened a file for output
+<li>Read input file until string matched (or some other condition matched)
+<li>Wrote some lines from input ( modified or not) to output
+<li>Closed the files.
+        </ol>
+
+   <p>Reference: <a href="General-files.html#General-files">General files</a>.
+
+<h4 class="subsection">3.27.1 Open file for input</h4>
+
+<pre class="example">     s" foo.in"  r/o open-file throw Value fd-in
+</pre>
+<h4 class="subsection">3.27.2 Create file for output</h4>
+
+<pre class="example">     s" foo.out" w/o create-file throw Value fd-out
+</pre>
+   <p>The available file modes are r/o for read-only access, r/w for
+read-write access, and w/o for write-only access. You could open both
+files with r/w, too, if you like. All file words return error codes; for
+most applications, it's best to pass there error codes with <code>throw</code>
+to the outer error handler.
+
+   <p>If you want words for opening and assigning, define them as follows:
+
+<pre class="example">     0 Value fd-in
+     0 Value fd-out
+     : open-input ( addr u -- )  r/o open-file throw to fd-in ;
+     : open-output ( addr u -- )  w/o create-file throw to fd-out ;
+</pre>
+   <p>Usage example:
+
+<pre class="example">     s" foo.in" open-input
+     s" foo.out" open-output
+</pre>
+   <h4 class="subsection">3.27.3 Scan file for a particular line</h4>
+
+<pre class="example">     256 Constant max-line
+     Create line-buffer  max-line 2 + allot
+     
+     : scan-file ( addr u -- )
+       begin
+           line-buffer max-line fd-in read-line throw
+       while
+              &gt;r 2dup line-buffer r&gt; compare 0=
+          until
+       else
+          drop
+       then
+       2drop ;
+</pre>
+   <p><code>read-line ( addr u1 fd -- u2 flag ior )</code> reads up to u1 bytes into
+the buffer at addr, and returns the number of bytes read, a flag that is
+false when the end of file is reached, and an error code.
+
+   <p><code>compare ( addr1 u1 addr2 u2 -- n )</code> compares two strings and
+returns zero if both strings are equal. It returns a positive number if
+the first string is lexically greater, a negative if the second string
+is lexically greater.
+
+   <p>We haven't seen this loop here; it has two exits. Since the <code>while</code>
+exits with the number of bytes read on the stack, we have to clean up
+that separately; that's after the <code>else</code>.
+
+   <p>Usage example:
+
+<pre class="example">     s" The text I search is here" scan-file
+</pre>
+   <h4 class="subsection">3.27.4 Copy input to output</h4>
+
+<pre class="example">     : copy-file ( -- )
+       begin
+           line-buffer max-line fd-in read-line throw
+       while
+           line-buffer swap fd-out write-line throw
+       repeat ;
+</pre>
+<!-- !! does not handle long lines, no newline at end of file -->
+<h4 class="subsection">3.27.5 Close files</h4>
+
+<pre class="example">     fd-in close-file throw
+     fd-out close-file throw
+</pre>
+   <p>Likewise, you can put that into definitions, too:
+
+<pre class="example">     : close-input ( -- )  fd-in close-file throw ;
+     : close-output ( -- )  fd-out close-file throw ;
+</pre>
+   <blockquote>
+<b>Assignment:</b> How could you modify <code>copy-file</code> so that it copies until a second line is
+matched? Can you write a program that extracts a section of a text file,
+given the line that starts and the line that terminates that section? 
+</blockquote>
+
+   </body></html>
+

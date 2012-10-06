@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+<title>Emacs and Gforth - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Integrating-Gforth.html#Integrating-Gforth" title="Integrating Gforth">
+<link rel="next" href="Image-Files.html#Image-Files" title="Image Files">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Emacs-and-Gforth"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Image-Files.html#Image-Files">Image Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Integrating-Gforth.html#Integrating-Gforth">Integrating Gforth</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">12 Emacs and Gforth</h2>
+
+<p><a name="index-Emacs-and-Gforth-3359"></a>
+<a name="index-g_t_0040file_007bgforth_002eel_007d-3360"></a><a name="index-g_t_0040file_007bforth_002eel_007d-3361"></a><a name="index-Rydqvist_002c-Goran-3362"></a><a name="index-Kuehling_002c-David-3363"></a><a name="index-comment-editing-commands-3364"></a><a name="index-g_t_0040code_007b_005c_007d_002c-editing-with-Emacs-3365"></a><a name="index-debug-tracer-editing-commands-3366"></a><a name="index-g_t_0040code_007b_007e_007e_007d_002c-removal-with-Emacs-3367"></a><a name="index-Forth-mode-in-Emacs-3368"></a>
+Gforth comes with <samp><span class="file">gforth.el</span></samp>, an improved version of
+<samp><span class="file">forth.el</span></samp> by Goran Rydqvist (included in the TILE package). The
+improvements are:
+
+     <ul>
+<li>A better handling of indentation. 
+<li>A custom hilighting engine for Forth-code. 
+<li>Comment paragraph filling (<kbd>M-q</kbd>)
+<li>Commenting (<kbd>C-x \</kbd>) and uncommenting (<kbd>C-u C-x \</kbd>) of regions
+<li>Removal of debugging tracers (<kbd>C-x ~</kbd>, see <a href="Debugging.html#Debugging">Debugging</a>). 
+<li>Support of the <code>info-lookup</code> feature for looking up the
+documentation of a word. 
+<li>Support for reading and writing blocks files. 
+</ul>
+
+   <p>To get a basic description of these features, enter Forth mode and
+type <kbd>C-h m</kbd>.
+
+   <p><a name="index-source-location-of-error-or-debugging-output-in-Emacs-3369"></a><a name="index-error-output_002c-finding-the-source-location-in-Emacs-3370"></a><a name="index-debugging-output_002c-finding-the-source-location-in-Emacs-3371"></a>In addition, Gforth supports Emacs quite well: The source code locations
+given in error messages, debugging output (from <code>~~</code>) and failed
+assertion messages are in the right format for Emacs' compilation mode
+(see <a href="../emacs/Compilation.html#Compilation">Running Compilations under Emacs</a>) so the source location corresponding to an error or other
+message is only a few keystrokes away (<kbd>C-x `</kbd> for the next error,
+<kbd>C-c C-c</kbd> for the error under the cursor).
+
+   <p><a name="index-viewing-the-documentation-of-a-word-in-Emacs-3372"></a><a name="index-context_002dsensitive-help-3373"></a>Moreover, for words documented in this manual, you can look up the
+glossary entry quickly by using <kbd>C-h TAB</kbd>
+(<code>info-lookup-symbol</code>, see <a href="../emacs/Documentation.html#Documentation">Documentation Commands</a>).  This feature requires Emacs 20.3 or
+later and does not work for words containing <code>:</code>.
+
+<ul class="menu">
+<li><a accesskey="1" href="Installing-gforth_002eel.html#Installing-gforth_002eel">Installing gforth.el</a>:         Making Emacs aware of Forth. 
+<li><a accesskey="2" href="Emacs-Tags.html#Emacs-Tags">Emacs Tags</a>:                   Viewing the source of a word in Emacs. 
+<li><a accesskey="3" href="Hilighting.html#Hilighting">Hilighting</a>:                   Making Forth code look prettier. 
+<li><a accesskey="4" href="Auto_002dIndentation.html#Auto_002dIndentation">Auto-Indentation</a>:             Customizing auto-indentation. 
+<li><a accesskey="5" href="Blocks-Files.html#Blocks-Files">Blocks Files</a>:                 Reading and writing blocks files. 
+</ul>
+
+<!--  -->
+</body></html>
+

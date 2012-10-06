@@ -1,0 +1,128 @@
+<html lang="en">
+<head>
+<title>Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Gforth-Environment.html#Gforth-Environment" title="Gforth Environment">
+<link rel="next" href="Introduction.html#Introduction" title="Introduction">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Introduction.html#Introduction">Introduction</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Gforth-Environment.html#Gforth-Environment">Gforth Environment</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<h2 class="chapter">3 Forth Tutorial</h2>
+
+<p><a name="index-Tutorial-74"></a><a name="index-Forth-Tutorial-75"></a>
+<!-- Topics from nac's Introduction that could be mentioned: -->
+<!-- press <ret> after each line -->
+<!-- Prompt -->
+<!-- numbers vs. words in dictionary on text interpretation -->
+<!-- what happens on redefinition -->
+<!-- parsing words (in particular, defining words) -->
+
+   <p>The difference of this chapter from the Introduction
+(see <a href="Introduction.html#Introduction">Introduction</a>) is that this tutorial is more fast-paced, should
+be used while sitting in front of a computer, and covers much more
+material, but does not explain how the Forth system works.
+
+   <p>This tutorial can be used with any ANS-compliant Forth; any
+Gforth-specific features are marked as such and you can skip them if you
+work with another Forth.  This tutorial does not explain all features of
+Forth, just enough to get you started and give you some ideas about the
+facilities available in Forth.  Read the rest of the manual and the
+standard when you are through this.
+
+   <p>The intended way to use this tutorial is that you work through it while
+sitting in front of the console, take a look at the examples and predict
+what they will do, then try them out; if the outcome is not as expected,
+find out why (e.g., by trying out variations of the example), so you
+understand what's going on.  There are also some assignments that you
+should solve.
+
+   <p>This tutorial assumes that you have programmed before and know what,
+e.g., a loop is.
+
+<!-- !! explain compat library -->
+<ul class="menu">
+<li><a accesskey="1" href="Starting-Gforth-Tutorial.html#Starting-Gforth-Tutorial">Starting Gforth Tutorial</a>
+<li><a accesskey="2" href="Syntax-Tutorial.html#Syntax-Tutorial">Syntax Tutorial</a>
+<li><a accesskey="3" href="Crash-Course-Tutorial.html#Crash-Course-Tutorial">Crash Course Tutorial</a>
+<li><a accesskey="4" href="Stack-Tutorial.html#Stack-Tutorial">Stack Tutorial</a>
+<li><a accesskey="5" href="Arithmetics-Tutorial.html#Arithmetics-Tutorial">Arithmetics Tutorial</a>
+<li><a accesskey="6" href="Stack-Manipulation-Tutorial.html#Stack-Manipulation-Tutorial">Stack Manipulation Tutorial</a>
+<li><a accesskey="7" href="Using-files-for-Forth-code-Tutorial.html#Using-files-for-Forth-code-Tutorial">Using files for Forth code Tutorial</a>
+<li><a accesskey="8" href="Comments-Tutorial.html#Comments-Tutorial">Comments Tutorial</a>
+<li><a accesskey="9" href="Colon-Definitions-Tutorial.html#Colon-Definitions-Tutorial">Colon Definitions Tutorial</a>
+<li><a href="Decompilation-Tutorial.html#Decompilation-Tutorial">Decompilation Tutorial</a>
+<li><a href="Stack_002dEffect-Comments-Tutorial.html#Stack_002dEffect-Comments-Tutorial">Stack-Effect Comments Tutorial</a>
+<li><a href="Types-Tutorial.html#Types-Tutorial">Types Tutorial</a>
+<li><a href="Factoring-Tutorial.html#Factoring-Tutorial">Factoring Tutorial</a>
+<li><a href="Designing-the-stack-effect-Tutorial.html#Designing-the-stack-effect-Tutorial">Designing the stack effect Tutorial</a>
+<li><a href="Local-Variables-Tutorial.html#Local-Variables-Tutorial">Local Variables Tutorial</a>
+<li><a href="Conditional-execution-Tutorial.html#Conditional-execution-Tutorial">Conditional execution Tutorial</a>
+<li><a href="Flags-and-Comparisons-Tutorial.html#Flags-and-Comparisons-Tutorial">Flags and Comparisons Tutorial</a>
+<li><a href="General-Loops-Tutorial.html#General-Loops-Tutorial">General Loops Tutorial</a>
+<li><a href="Counted-loops-Tutorial.html#Counted-loops-Tutorial">Counted loops Tutorial</a>
+<li><a href="Recursion-Tutorial.html#Recursion-Tutorial">Recursion Tutorial</a>
+<li><a href="Leaving-definitions-or-loops-Tutorial.html#Leaving-definitions-or-loops-Tutorial">Leaving definitions or loops Tutorial</a>
+<li><a href="Return-Stack-Tutorial.html#Return-Stack-Tutorial">Return Stack Tutorial</a>
+<li><a href="Memory-Tutorial.html#Memory-Tutorial">Memory Tutorial</a>
+<li><a href="Characters-and-Strings-Tutorial.html#Characters-and-Strings-Tutorial">Characters and Strings Tutorial</a>
+<li><a href="Alignment-Tutorial.html#Alignment-Tutorial">Alignment Tutorial</a>
+<li><a href="Floating-Point-Tutorial.html#Floating-Point-Tutorial">Floating Point Tutorial</a>
+<li><a href="Files-Tutorial.html#Files-Tutorial">Files Tutorial</a>
+<li><a href="Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial.html#Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial">Interpretation and Compilation Semantics and Immediacy Tutorial</a>
+<li><a href="Execution-Tokens-Tutorial.html#Execution-Tokens-Tutorial">Execution Tokens Tutorial</a>
+<li><a href="Exceptions-Tutorial.html#Exceptions-Tutorial">Exceptions Tutorial</a>
+<li><a href="Defining-Words-Tutorial.html#Defining-Words-Tutorial">Defining Words Tutorial</a>
+<li><a href="Arrays-and-Records-Tutorial.html#Arrays-and-Records-Tutorial">Arrays and Records Tutorial</a>
+<li><a href="POSTPONE-Tutorial.html#POSTPONE-Tutorial">POSTPONE Tutorial</a>
+<li><a href="Literal-Tutorial.html#Literal-Tutorial">Literal Tutorial</a>
+<li><a href="Advanced-macros-Tutorial.html#Advanced-macros-Tutorial">Advanced macros Tutorial</a>
+<li><a href="Compilation-Tokens-Tutorial.html#Compilation-Tokens-Tutorial">Compilation Tokens Tutorial</a>
+<li><a href="Wordlists-and-Search-Order-Tutorial.html#Wordlists-and-Search-Order-Tutorial">Wordlists and Search Order Tutorial</a>
+</ul>
+
+   </body></html>
+

@@ -1,0 +1,94 @@
+<html lang="en">
+<head>
+<title>Terminal output - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-I_002fO.html#Other-I_002fO" title="Other I/O">
+<link rel="prev" href="Displaying-characters-and-strings.html#Displaying-characters-and-strings" title="Displaying characters and strings">
+<link rel="next" href="Single_002dkey-input.html#Single_002dkey-input" title="Single-key input">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Terminal-output"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Single_002dkey-input.html#Single_002dkey-input">Single-key input</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Displaying-characters-and-strings.html#Displaying-characters-and-strings">Displaying characters and strings</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-I_002fO.html#Other-I_002fO">Other I/O</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.19.5 Terminal output</h4>
+
+<p><a name="index-output-to-terminal-2041"></a><a name="index-terminal-output-2042"></a>
+If you are outputting to a terminal, you may want to control the
+positioning of the cursor:
+<a name="index-cursor-positioning-2043"></a>
+<a name="index-at_002dxy-_0040var_007b-u1-u2-_002d_002d---_007d--facility-2044"></a><a name="index-g_t_0040code_007bat_002dxy_007d-2045"></a><a name="index-at_002dxy-2046"></a>
+<pre class="format"><code>at-xy</code>       <i>u1 u2 &ndash;  </i>       facility       &ldquo;at-x-y&rdquo;
+</pre>
+   <p>Position the cursor so that subsequent text output will take
+place at column <var>u1</var>, row <var>u2</var> of the display. (column 0,
+row 0 is the top left-hand corner of the display).
+
+   <p>In order to know where to position the cursor, it is often helpful to
+know the size of the screen:
+<a name="index-terminal-size-2047"></a>
+<a name="index-form-_0040var_007b-_002d_002d-urows-ucols--_007d--gforth-2048"></a><a name="index-g_t_0040code_007bform_007d-2049"></a><a name="index-form-2050"></a>
+<pre class="format"><code>form</code>       <i>&ndash; urows ucols </i>       gforth       &ldquo;form&rdquo;
+</pre>
+   <p>The number of lines and columns in the terminal. These numbers may
+change with the window size.  Note that it depends on the OS whether
+this reflects the actual size and changes with the window size
+(currently only on Unix-like OSs).  On other OSs you just get a
+default, and can tell Gforth the terminal size by setting the
+environment variables <code>COLUMNS</code> and <code>LINES</code> before starting
+Gforth.
+
+   <p>And sometimes you want to use:
+<a name="index-clear-screen-2051"></a>
+<a name="index-page-_0040var_007b-_002d_002d---_007d--facility-2052"></a><a name="index-g_t_0040code_007bpage_007d-2053"></a><a name="index-page-2054"></a>
+<pre class="format"><code>page</code>       <i>&ndash;  </i>       facility       &ldquo;page&rdquo;
+</pre>
+   <p>Clear the display and set the cursor to the top left-hand
+corner.
+
+   <p>Note that on non-terminals you should use <code>12 emit</code>, not
+<code>page</code>, to get a form feed.
+
+   </body></html>
+

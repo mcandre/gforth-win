@@ -1,0 +1,149 @@
+<html lang="en">
+<head>
+<title>Dynamic Superinstructions - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Threading.html#Threading" title="Threading">
+<link rel="prev" href="Direct-or-Indirect-Threaded_003f.html#Direct-or-Indirect-Threaded_003f" title="Direct or Indirect Threaded?">
+<link rel="next" href="DOES_003e.html#DOES_003e" title="DOES>">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Dynamic-Superinstructions"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="DOES_003e.html#DOES_003e">DOES&gt;</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Direct-or-Indirect-Threaded_003f.html#Direct-or-Indirect-Threaded_003f">Direct or Indirect Threaded?</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Threading.html#Threading">Threading</a>
+<hr>
+</div>
+
+<h4 class="subsection">14.2.3 Dynamic Superinstructions</h4>
+
+<p><a name="index-Dynamic-superinstructions-with-replication-3476"></a><a name="index-Superinstructions-3477"></a><a name="index-Replication-3478"></a>
+The engines <samp><span class="command">gforth</span></samp> and <samp><span class="command">gforth-fast</span></samp> use another
+optimization: Dynamic superinstructions with replication.  As an
+example, consider the following colon definition:
+
+<pre class="example">     : squared ( n1 -- n2 )
+       dup * ;
+</pre>
+   <p>Gforth compiles this into the threaded code sequence
+
+<pre class="example">     dup
+     *
+     ;s
+</pre>
+   <p>In normal direct threaded code there is a code address occupying one
+cell for each of these primitives.  Each code address points to a
+machine code routine, and the interpreter jumps to this machine code in
+order to execute the primitive.  The routines for these three
+primitives are (in <samp><span class="command">gforth-fast</span></samp> on the 386):
+
+<pre class="example">     Code dup
+     ( $804B950 )  add     esi , # -4  \ $83 $C6 $FC
+     ( $804B953 )  add     ebx , # 4  \ $83 $C3 $4
+     ( $804B956 )  mov     dword ptr 4 [esi] , ecx  \ $89 $4E $4
+     ( $804B959 )  jmp     dword ptr FC [ebx]  \ $FF $63 $FC
+     end-code
+     Code *
+     ( $804ACC4 )  mov     eax , dword ptr 4 [esi]  \ $8B $46 $4
+     ( $804ACC7 )  add     esi , # 4  \ $83 $C6 $4
+     ( $804ACCA )  add     ebx , # 4  \ $83 $C3 $4
+     ( $804ACCD )  imul    ecx , eax  \ $F $AF $C8
+     ( $804ACD0 )  jmp     dword ptr FC [ebx]  \ $FF $63 $FC
+     end-code
+     Code ;s
+     ( $804A693 )  mov     eax , dword ptr [edi]  \ $8B $7
+     ( $804A695 )  add     edi , # 4  \ $83 $C7 $4
+     ( $804A698 )  lea     ebx , dword ptr 4 [eax]  \ $8D $58 $4
+     ( $804A69B )  jmp     dword ptr FC [ebx]  \ $FF $63 $FC
+     end-code
+</pre>
+   <p>With dynamic superinstructions and replication the compiler does not
+just lay down the threaded code, but also copies the machine code
+fragments, usually without the jump at the end.
+
+<pre class="example">     ( $4057D27D )  add     esi , # -4  \ $83 $C6 $FC
+     ( $4057D280 )  add     ebx , # 4  \ $83 $C3 $4
+     ( $4057D283 )  mov     dword ptr 4 [esi] , ecx  \ $89 $4E $4
+     ( $4057D286 )  mov     eax , dword ptr 4 [esi]  \ $8B $46 $4
+     ( $4057D289 )  add     esi , # 4  \ $83 $C6 $4
+     ( $4057D28C )  add     ebx , # 4  \ $83 $C3 $4
+     ( $4057D28F )  imul    ecx , eax  \ $F $AF $C8
+     ( $4057D292 )  mov     eax , dword ptr [edi]  \ $8B $7
+     ( $4057D294 )  add     edi , # 4  \ $83 $C7 $4
+     ( $4057D297 )  lea     ebx , dword ptr 4 [eax]  \ $8D $58 $4
+     ( $4057D29A )  jmp     dword ptr FC [ebx]  \ $FF $63 $FC
+</pre>
+   <p>Only when a threaded-code control-flow change happens (e.g., in
+<code>;s</code>), the jump is appended.  This optimization eliminates many of
+these jumps and makes the rest much more predictable.  The speedup
+depends on the processor and the application; on the Athlon and Pentium
+III this optimization typically produces a speedup by a factor of 2.
+
+   <p>The code addresses in the direct-threaded code are set to point to the
+appropriate points in the copied machine code, in this example like
+this:
+
+<pre class="example">     primitive  code address
+        dup       $4057D27D
+        *         $4057D286
+        ;s        $4057D292
+</pre>
+   <p>Thus there can be threaded-code jumps to any place in this piece of
+code.  This also simplifies decompilation quite a bit.
+
+   <p><a name="index-g_t_002d_002dno_002ddynamic-command_002dline-option-3479"></a><a name="index-g_t_002d_002dno_002dsuper-command_002dline-option-3480"></a>You can disable this optimization with <samp><span class="option">--no-dynamic</span></samp>.  You can
+use the copying without eliminating the jumps (i.e., dynamic
+replication, but without superinstructions) with <samp><span class="option">--no-super</span></samp>;
+this gives the branch prediction benefit alone; the effect on
+performance depends on the CPU; on the Athlon and Pentium III the
+speedup is a little less than for dynamic superinstructions with
+replication.
+
+   <p><a name="index-patching-threaded-code-3481"></a>One use of these options is if you want to patch the threaded code. 
+With superinstructions, many of the dispatch jumps are eliminated, so
+patching often has no effect.  These options preserve all the dispatch
+jumps.
+
+   <p><a name="index-g_t_002d_002ddynamic-command_002dline-option-3482"></a>On some machines dynamic superinstructions are disabled by default,
+because it is unsafe on these machines.  However, if you feel
+adventurous, you can enable it with <samp><span class="option">--dynamic</span></samp>.
+
+   </body></html>
+

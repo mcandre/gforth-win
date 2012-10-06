@@ -1,0 +1,139 @@
+<html lang="en">
+<head>
+<title>Your first definition - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction.html#Introduction" title="Introduction">
+<link rel="prev" href="Stacks-and-Postfix-notation.html#Stacks-and-Postfix-notation" title="Stacks and Postfix notation">
+<link rel="next" href="How-does-that-work_003f.html#How-does-that-work_003f" title="How does that work?">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Your-first-definition"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="How-does-that-work_003f.html#How-does-that-work_003f">How does that work?</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Stacks-and-Postfix-notation.html#Stacks-and-Postfix-notation">Stacks and Postfix notation</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction.html#Introduction">Introduction</a>
+<hr>
+</div>
+
+<h3 class="section">4.3 Your first Forth definition</h3>
+
+<p><a name="index-first-definition-148"></a>
+Until now, the examples we've seen have been trivial; we've just been
+using Forth as a bigger-than-pocket calculator. Also, each calculation
+we've shown has been a &ldquo;one-off&rdquo; &ndash; to repeat it we'd need to type it in
+again<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a> In this section we'll see how to add new
+words to Forth's vocabulary.
+
+   <p>The easiest way to create a new word is to use a <dfn>colon
+definition</dfn>. We'll define a few and try them out before worrying too
+much about how they work. Try typing in these examples; be careful to
+copy the spaces accurately:
+
+<pre class="example">     : add-two 2 + . ;
+     : greet ." Hello and welcome" ;
+     : demo 5 add-two ;
+</pre>
+   <p class="noindent">Now try them out:
+
+<pre class="example">     <kbd>greet&lt;RET&gt;</kbd> Hello and welcome  ok
+     <kbd>greet greet&lt;RET&gt;</kbd> Hello and welcomeHello and welcome  ok
+     <kbd>4 add-two&lt;RET&gt;</kbd> 6  ok
+     <kbd>demo&lt;RET&gt;</kbd> 7  ok
+     <kbd>9 greet demo add-two&lt;RET&gt;</kbd> Hello and welcome7 11  ok
+</pre>
+   <p>The first new thing that we've introduced here is the pair of words
+<code>:</code> and <code>;</code>. These are used to start and terminate a new
+definition, respectively. The first word after the <code>:</code> is the name
+for the new definition.
+
+   <p>As you can see from the examples, a definition is built up of words that
+have already been defined; Forth makes no distinction between
+definitions that existed when you started the system up, and those that
+you define yourself.
+
+   <p>The examples also introduce the words <code>.</code> (dot), <code>."</code>
+(dot-quote) and <code>dup</code> (dewp). Dot takes the value from the top of
+the stack and displays it. It's like <code>.s</code> except that it only
+displays the top item of the stack and it is destructive; after it has
+executed, the number is no longer on the stack. There is always one
+space printed after the number, and no spaces before it. Dot-quote
+defines a string (a sequence of characters) that will be printed when
+the word is executed. The string can contain any printable characters
+except <code>"</code>. A <code>"</code> has a special function; it is not a Forth
+word but it acts as a delimiter (the way that delimiters work is
+described in the next section). Finally, <code>dup</code> duplicates the value
+at the top of the stack. Try typing <code>5 dup .s</code> to see what it does.
+
+   <p>We already know that the text interpreter searches through the
+dictionary to locate names. If you've followed the examples earlier, you
+will already have a definition called <code>add-two</code>. Lets try modifying
+it by typing in a new definition:
+
+<pre class="example">     <kbd>: add-two dup . ." + 2 =" 2 + . ;&lt;RET&gt;</kbd> redefined add-two  ok
+</pre>
+   <p>Forth recognised that we were defining a word that already exists, and
+printed a message to warn us of that fact. Let's try out the new
+definition:
+
+<pre class="example">     <kbd>9 add-two&lt;RET&gt;</kbd> 9 + 2 =11  ok
+</pre>
+   <p class="noindent">All that we've actually done here, though, is to create a new
+definition, with a particular name. The fact that there was already a
+definition with the same name did not make any difference to the way
+that the new definition was created (except that Forth printed a warning
+message). The old definition of add-two still exists (try <code>demo</code>
+again to see that this is true). Any new definition will use the new
+definition of <code>add-two</code>, but old definitions continue to use the
+version that already existed at the time that they were <code>compiled</code>.
+
+   <p>Before you go on to the next section, try defining and redefining some
+words of your own.
+
+<!--  -->
+<div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> That's not quite true. If you press the up-arrow key on
+your keyboard you should be able to scroll back to any earlier command,
+edit it and re-enter it.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

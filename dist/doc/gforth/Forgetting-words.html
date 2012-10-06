@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+<title>Forgetting words - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Programming-Tools.html#Programming-Tools" title="Programming Tools">
+<link rel="prev" href="Examining.html#Examining" title="Examining">
+<link rel="next" href="Debugging.html#Debugging" title="Debugging">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Forgetting-words"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Debugging.html#Debugging">Debugging</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Examining.html#Examining">Examining</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Programming-Tools.html#Programming-Tools">Programming Tools</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.24.2 Forgetting words</h4>
+
+<p><a name="index-words_002c-forgetting-2832"></a><a name="index-forgeting-words-2833"></a>
+<!-- anton: other, maybe better places for this subsection: Defining Words; -->
+<!-- Dictionary allocation.  At least a reference should be there. -->
+
+   <p>Forth allows you to forget words (and everything that was alloted in the
+dictonary after them) in a LIFO manner.
+
+   <p><a name="index-marker-_0040var_007b-_0022_003cspaces_003e-name_0022-_002d_002d---_007d--core_002dext-2834"></a><a name="index-g_t_0040code_007bmarker_007d-2835"></a><a name="index-marker-2836"></a>
+<pre class="format"><code>marker</code>       <i>"&lt;spaces&gt; name" &ndash;  </i>       core-ext       &ldquo;marker&rdquo;
+</pre>
+   <p>Create a definition, <i>name</i> (called a <i>mark</i>) whose
+execution semantics are to remove itself and everything
+defined after it.
+
+   <p>The most common use of this feature is during progam development: when
+you change a source file, forget all the words it defined and load it
+again (since you also forget everything defined after the source file
+was loaded, you have to reload that, too).  Note that effects like
+storing to variables and destroyed system words are not undone when you
+forget words.  With a system like Gforth, that is fast enough at
+starting up and compiling, I find it more convenient to exit and restart
+Gforth, as this gives me a clean slate.
+
+   <p>Here's an example of using <code>marker</code> at the start of a source file
+that you are debugging; it ensures that you only ever have one copy of
+the file's definitions compiled at any time:
+
+<pre class="example">     [IFDEF] my-code
+         my-code
+     [ENDIF]
+     
+     marker my-code
+     init-included-files
+     
+     \ .. definitions start here
+     \ .
+     \ .
+     \ end
+</pre>
+   </body></html>
+

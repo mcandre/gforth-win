@@ -1,0 +1,232 @@
+<html lang="en">
+<head>
+<title>Formatted numeric output - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Other-I_002fO.html#Other-I_002fO" title="Other I/O">
+<link rel="prev" href="Simple-numeric-output.html#Simple-numeric-output" title="Simple numeric output">
+<link rel="next" href="String-Formats.html#String-Formats" title="String Formats">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Formatted-numeric-output"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="String-Formats.html#String-Formats">String Formats</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Simple-numeric-output.html#Simple-numeric-output">Simple numeric output</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Other-I_002fO.html#Other-I_002fO">Other I/O</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.19.2 Formatted numeric output</h4>
+
+<p><a name="index-formatted-numeric-output-1945"></a><a name="index-pictured-numeric-output-1946"></a><a name="index-numeric-output-_002d-formatted-1947"></a>
+Forth traditionally uses a technique called <dfn>pictured numeric
+output</dfn> for formatted printing of integers.  In this technique, digits
+are extracted from the number (using the current output radix defined by
+<code>base</code>), converted to ASCII codes and appended to a string that is
+built in a scratch-pad area of memory (see <a href="core_002didef.html#core_002didef">Implementation-defined options</a>). Arbitrary characters can be appended to the string during the
+extraction process. The completed string is specified by an address
+and length and can be manipulated (<code>TYPE</code>ed, copied, modified)
+under program control.
+
+   <p>All of the integer output words described in the previous section
+(see <a href="Simple-numeric-output.html#Simple-numeric-output">Simple numeric output</a>) are implemented in Gforth using pictured
+numeric output.
+
+   <p>Three important things to remember about pictured numeric output:
+
+     <ul>
+<li>It always operates on double-precision numbers; to display a
+single-precision number, convert it first (for ways of doing this
+see <a href="Double-precision.html#Double-precision">Double precision</a>). 
+<li>It always treats the double-precision number as though it were
+unsigned. The examples below show ways of printing signed numbers. 
+<li>The string is built up from right to left; least significant digit first. 
+</ul>
+
+   <p><a name="index-g_t_003c_0023-_0040var_007b-_002d_002d---_007d--core-1948"></a><a name="index-g_t_0040code_007b_003c_0023_007d-1949"></a><a name="index-g_t_003c_0023-1950"></a>
+<pre class="format"><code>&lt;#</code>       <i>&ndash;  </i>       core       &ldquo;less-number-sign&rdquo;
+</pre>
+   <p>Initialise/clear the pictured numeric output string.
+
+   <p><a name="index-g_t_003c_003c_0023-_0040var_007b-_002d_002d---_007d--gforth-1951"></a><a name="index-g_t_0040code_007b_003c_003c_0023_007d-1952"></a><a name="index-g_t_003c_003c_0023-1953"></a>
+<pre class="format"><code>&lt;&lt;#</code>       <i>&ndash;  </i>       gforth       &ldquo;less-less-number-sign&rdquo;
+</pre>
+   <p>Start a hold area that ends with <code>#&gt;&gt;</code>. Can be nested in
+each other and in <code>&lt;#</code>.  Note: if you do not match up the
+<code>&lt;&lt;#</code>s with <code>#&gt;&gt;</code>s, you will eventually run out of
+hold area; you can reset the hold area to empty with <code>&lt;#</code>.
+
+   <p><a name="index-g_t_0023-_0040var_007b-ud1-_002d_002d-ud2---_007d--core-1954"></a><a name="index-g_t_0040code_007b_0023_007d-1955"></a><a name="index-g_t_0023-1956"></a>
+<pre class="format"><code>#</code>       <i>ud1 &ndash; ud2  </i>       core       &ldquo;number-sign&rdquo;
+</pre>
+   <p>Used within <code>&lt;#</code> and <code>#&gt;</code>. Add the next
+least-significant digit to the pictured numeric output
+string. This is achieved by dividing <var>ud1</var> by the number in
+<code>base</code> to leave quotient <var>ud2</var> and remainder <var>n</var>;
+<var>n</var> is converted to the appropriate display code (eg ASCII
+code) and appended to the string. If the number has been fully
+converted, <var>ud1</var> will be 0 and <code>#</code> will append a &ldquo;0&rdquo;
+to the string.
+
+   <p><a name="index-g_t_0023s-_0040var_007b-ud-_002d_002d-0-0---_007d--core-1957"></a><a name="index-g_t_0040code_007b_0023s_007d-1958"></a><a name="index-g_t_0023s-1959"></a>
+<pre class="format"><code>#s</code>       <i>ud &ndash; 0 0  </i>       core       &ldquo;number-sign-s&rdquo;
+</pre>
+   <p>Used within <code>&lt;#</code> and <code>#&gt;</code>. Convert all remaining digits
+using the same algorithm as for <code>#</code>. <code>#s</code> will convert
+at least one digit. Therefore, if <var>ud</var> is 0, <code>#s</code> will append
+a &ldquo;0&rdquo; to the pictured numeric output string.
+
+   <p><a name="index-hold-_0040var_007b-char-_002d_002d---_007d--core-1960"></a><a name="index-g_t_0040code_007bhold_007d-1961"></a><a name="index-hold-1962"></a>
+<pre class="format"><code>hold</code>       <i>char &ndash;  </i>       core       &ldquo;hold&rdquo;
+</pre>
+   <p>Used within <code>&lt;#</code> and <code>#&gt;</code>. Append the character
+<var>char</var> to the pictured numeric output string.
+
+   <p><a name="index-sign-_0040var_007b-n-_002d_002d---_007d--core-1963"></a><a name="index-g_t_0040code_007bsign_007d-1964"></a><a name="index-sign-1965"></a>
+<pre class="format"><code>sign</code>       <i>n &ndash;  </i>       core       &ldquo;sign&rdquo;
+</pre>
+   <p>Used within <code>&lt;#</code> and <code>#&gt;</code>. If <var>n</var> (a <var>single</var>
+number) is negative, append the display code for a minus sign
+to the pictured numeric output string. Since the string is
+built up &ldquo;backwards&rdquo; this is usually used immediately prior
+to <code>#&gt;</code>, as shown in the examples below.
+
+   <p><a name="index-g_t_0023_003e-_0040var_007b-xd-_002d_002d-addr-u---_007d--core-1966"></a><a name="index-g_t_0040code_007b_0023_003e_007d-1967"></a><a name="index-g_t_0023_003e-1968"></a>
+<pre class="format"><code>#&gt;</code>       <i>xd &ndash; addr u  </i>       core       &ldquo;number-sign-greater&rdquo;
+</pre>
+   <p>Complete the pictured numeric output string by discarding
+<var>xd</var> and returning <var>addr u</var>; the address and length of
+the formatted string. A Standard program may modify characters
+within the string.
+
+   <p><a name="index-g_t_0023_003e_003e-_0040var_007b-_002d_002d---_007d--gforth-1969"></a><a name="index-g_t_0040code_007b_0023_003e_003e_007d-1970"></a><a name="index-g_t_0023_003e_003e-1971"></a>
+<pre class="format"><code>#&gt;&gt;</code>       <i>&ndash;  </i>       gforth       &ldquo;number-sign-greater-greater&rdquo;
+</pre>
+   <p>Release the hold area started with <code>&lt;&lt;#</code>.
+
+   <p><a name="index-represent-_0040var_007b-r-c_002daddr-u-_002d_002d-n-f1-f2--_007d--float-1972"></a><a name="index-g_t_0040code_007brepresent_007d-1973"></a><a name="index-represent-1974"></a>
+<pre class="format"><code>represent</code>       <i>r c-addr u &ndash; n f1 f2 </i>       float       &ldquo;represent&rdquo;
+</pre>
+   <p><a name="index-f_003estr_002drdp-_0040var_007b-rf-_002bnr-_002bnd-_002bnp-_002d_002d-c_002daddr-nr---_007d--gforth-1975"></a><a name="index-g_t_0040code_007bf_003estr_002drdp_007d-1976"></a><a name="index-f_003estr_002drdp-1977"></a>
+<pre class="format"><code>f&gt;str-rdp</code>       <i>rf +nr +nd +np &ndash; c-addr nr  </i>       gforth       &ldquo;f&gt;str-rdp&rdquo;
+</pre>
+   <p>Convert <i>rf</i> into a string at <i>c-addr nr</i>.  The conversion
+rules and the meanings of <i>nr +nd np</i> are the same as for
+<code>f.rdp</code>.  The result in in the pictured numeric output buffer
+and will be destroyed by anything destroying that buffer.
+
+   <p><a name="index-f_003ebuf_002drdp-_0040var_007b-rf-c_002daddr-_002bnr-_002bnd-_002bnp-_002d_002d---_007d--gforth-1978"></a><a name="index-g_t_0040code_007bf_003ebuf_002drdp_007d-1979"></a><a name="index-f_003ebuf_002drdp-1980"></a>
+<pre class="format"><code>f&gt;buf-rdp</code>       <i>rf c-addr +nr +nd +np &ndash;  </i>       gforth       &ldquo;f&gt;buf-rdp&rdquo;
+</pre>
+   <p>Convert <i>rf</i> into a string at <i>c-addr nr</i>.  The conversion
+rules and the meanings of <i>nr nd np</i> are the same as for
+<code>f.rdp</code>.
+
+<p class="noindent">Here are some examples of using pictured numeric output:
+
+<pre class="example">     : my-u. ( u -- )
+       \ Simplest use of pns.. behaves like Standard u.
+       0              \ convert to unsigned double
+       &lt;&lt;#            \ start conversion
+       #s             \ convert all digits
+       #&gt;             \ complete conversion
+       TYPE SPACE     \ display, with trailing space
+       #&gt;&gt; ;          \ release hold area
+     
+     : cents-only ( u -- )
+       0              \ convert to unsigned double
+       &lt;&lt;#            \ start conversion
+       # #            \ convert two least-significant digits
+       #&gt;             \ complete conversion, discard other digits
+       TYPE SPACE     \ display, with trailing space
+       #&gt;&gt; ;          \ release hold area
+     
+     : dollars-and-cents ( u -- )
+       0              \ convert to unsigned double
+       &lt;&lt;#            \ start conversion
+       # #            \ convert two least-significant digits
+       [char] . hold  \ insert decimal point
+       #s             \ convert remaining digits
+       [char] $ hold  \ append currency symbol
+       #&gt;             \ complete conversion
+       TYPE SPACE     \ display, with trailing space
+       #&gt;&gt; ;          \ release hold area
+     
+     : my-. ( n -- )
+       \ handling negatives.. behaves like Standard .
+       s&gt;d            \ convert to signed double
+       swap over dabs \ leave sign byte followed by unsigned double
+       &lt;&lt;#            \ start conversion
+       #s             \ convert all digits
+       rot sign       \ get at sign byte, append "-" if needed
+       #&gt;             \ complete conversion
+       TYPE SPACE     \ display, with trailing space
+       #&gt;&gt; ;          \ release hold area
+     
+     : account. ( n -- )
+       \ accountants don't like minus signs, they use parentheses
+       \ for negative numbers
+       s&gt;d            \ convert to signed double
+       swap over dabs \ leave sign byte followed by unsigned double
+       &lt;&lt;#            \ start conversion
+       2 pick         \ get copy of sign byte
+       0&lt; IF [char] ) hold THEN \ right-most character of output
+       #s             \ convert all digits
+       rot            \ get at sign byte
+       0&lt; IF [char] ( hold THEN
+       #&gt;             \ complete conversion
+       TYPE SPACE     \ display, with trailing space
+       #&gt;&gt; ;          \ release hold area
+     
+</pre>
+   <p>Here are some examples of using these words:
+
+<pre class="example">     1 my-u. 1
+     hex -1 my-u. decimal FFFFFFFF
+     1 cents-only 01
+     1234 cents-only 34
+     2 dollars-and-cents $0.02
+     1234 dollars-and-cents $12.34
+     123 my-. 123
+     -123 my. -123
+     123 account. 123
+     -456 account. (456)
+</pre>
+   </body></html>
+

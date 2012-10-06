@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+<title>Where to go next - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Introduction.html#Introduction" title="Introduction">
+<link rel="prev" href="Review-_002d-elements-of-a-Forth-system.html#Review-_002d-elements-of-a-Forth-system" title="Review - elements of a Forth system">
+<link rel="next" href="Exercises.html#Exercises" title="Exercises">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Where-to-go-next"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Exercises.html#Exercises">Exercises</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Review-_002d-elements-of-a-Forth-system.html#Review-_002d-elements-of-a-Forth-system">Review - elements of a Forth system</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Introduction.html#Introduction">Introduction</a>
+<hr>
+</div>
+
+<h3 class="section">4.7 Where To Go Next</h3>
+
+<p><a name="index-where-to-go-next-160"></a>
+Amazing as it may seem, if you have read (and understood) this far, you
+know almost all the fundamentals about the inner workings of a Forth
+system. You certainly know enough to be able to read and understand the
+rest of this manual and the ANS Forth document, to learn more about the
+facilities that Forth in general and Gforth in particular provide. Even
+scarier, you know almost enough to implement your own Forth system. 
+However, that's not a good idea just yet... better to try writing some
+programs in Gforth.
+
+   <p>Forth has such a rich vocabulary that it can be hard to know where to
+start in learning it. This section suggests a few sets of words that are
+enough to write small but useful programs. Use the word index in this
+document to learn more about each word, then try it out and try to write
+small definitions using it. Start by experimenting with these words:
+
+     <ul>
+<li>Arithmetic: <code>+ - * / /MOD */ ABS INVERT</code>
+<li>Comparison: <code>MIN MAX =</code>
+<li>Logic: <code>AND OR XOR NOT</code>
+<li>Stack manipulation: <code>DUP DROP SWAP OVER</code>
+<li>Loops and decisions: <code>IF ELSE ENDIF ?DO I LOOP</code>
+<li>Input/Output: <code>. ." EMIT CR KEY</code>
+<li>Defining words: <code>: ; CREATE</code>
+<li>Memory allocation words: <code>ALLOT ,</code>
+<li>Tools: <code>SEE WORDS .S MARKER</code>
+</ul>
+
+   <p>When you have mastered those, go on to:
+
+     <ul>
+<li>More defining words: <code>VARIABLE CONSTANT VALUE TO CREATE DOES&gt;</code>
+<li>Memory access: <code>@ !</code>
+</ul>
+
+   <p>When you have mastered these, there's nothing for it but to read through
+the whole of this manual and find out what you've missed.
+
+<!--  -->
+</body></html>
+

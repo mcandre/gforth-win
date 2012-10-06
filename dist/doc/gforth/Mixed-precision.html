@@ -1,0 +1,100 @@
+<html lang="en">
+<head>
+<title>Mixed precision - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Arithmetic.html#Arithmetic" title="Arithmetic">
+<link rel="prev" href="Numeric-comparison.html#Numeric-comparison" title="Numeric comparison">
+<link rel="next" href="Floating-Point.html#Floating-Point" title="Floating Point">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Mixed-precision"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Floating-Point.html#Floating-Point">Floating Point</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Numeric-comparison.html#Numeric-comparison">Numeric comparison</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Arithmetic.html#Arithmetic">Arithmetic</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.5.5 Mixed precision</h4>
+
+<p><a name="index-mixed-precision-arithmetic-words-418"></a>
+
+   <p><a name="index-m_002b-_0040var_007b-d1-n-_002d_002d-d2--_007d--double-419"></a><a name="index-g_t_0040code_007bm_002b_007d-420"></a><a name="index-m_002b-421"></a>
+<pre class="format"><code>m+</code>       <i>d1 n &ndash; d2 </i>       double       &ldquo;m-plus&rdquo;
+</pre>
+   <p><a name="index-g_t_002a_002f-_0040var_007b-n1-n2-n3-_002d_002d-n4--_007d--core-422"></a><a name="index-g_t_0040code_007b_002a_002f_007d-423"></a><a name="index-g_t_002a_002f-424"></a>
+<pre class="format"><code>*/</code>       <i>n1 n2 n3 &ndash; n4 </i>       core       &ldquo;star-slash&rdquo;
+</pre>
+   <p>n4=(n1*n2)/n3, with the intermediate result being double.
+
+   <p><a name="index-g_t_002a_002fmod-_0040var_007b-n1-n2-n3-_002d_002d-n4-n5--_007d--core-425"></a><a name="index-g_t_0040code_007b_002a_002fmod_007d-426"></a><a name="index-g_t_002a_002fmod-427"></a>
+<pre class="format"><code>*/mod</code>       <i>n1 n2 n3 &ndash; n4 n5 </i>       core       &ldquo;star-slash-mod&rdquo;
+</pre>
+   <p>n1*n2=n3*n5+n4, with the intermediate result (n1*n2) being double.
+
+   <p><a name="index-m_002a-_0040var_007b-n1-n2-_002d_002d-d--_007d--core-428"></a><a name="index-g_t_0040code_007bm_002a_007d-429"></a><a name="index-m_002a-430"></a>
+<pre class="format"><code>m*</code>       <i>n1 n2 &ndash; d </i>       core       &ldquo;m-star&rdquo;
+</pre>
+   <p><a name="index-um_002a-_0040var_007b-u1-u2-_002d_002d-ud--_007d--core-431"></a><a name="index-g_t_0040code_007bum_002a_007d-432"></a><a name="index-um_002a-433"></a>
+<pre class="format"><code>um*</code>       <i>u1 u2 &ndash; ud </i>       core       &ldquo;u-m-star&rdquo;
+</pre>
+   <p><a name="index-m_002a_002f-_0040var_007b-d1-n2-u3-_002d_002d-dquot---_007d--double-434"></a><a name="index-g_t_0040code_007bm_002a_002f_007d-435"></a><a name="index-m_002a_002f-436"></a>
+<pre class="format"><code>m*/</code>       <i>d1 n2 u3 &ndash; dquot  </i>       double       &ldquo;m-star-slash&rdquo;
+</pre>
+   <p>dquot=(d1*n2)/u3, with the intermediate result being triple-precision. 
+In ANS Forth u3 can only be a positive signed number.
+
+   <p><a name="index-um_002fmod-_0040var_007b-ud-u1-_002d_002d-u2-u3--_007d--core-437"></a><a name="index-g_t_0040code_007bum_002fmod_007d-438"></a><a name="index-um_002fmod-439"></a>
+<pre class="format"><code>um/mod</code>       <i>ud u1 &ndash; u2 u3 </i>       core       &ldquo;u-m-slash-mod&rdquo;
+</pre>
+   <p>ud=u3*u1+u2, u1&gt;u2&gt;=0
+
+   <p><a name="index-fm_002fmod-_0040var_007b-d1-n1-_002d_002d-n2-n3--_007d--core-440"></a><a name="index-g_t_0040code_007bfm_002fmod_007d-441"></a><a name="index-fm_002fmod-442"></a>
+<pre class="format"><code>fm/mod</code>       <i>d1 n1 &ndash; n2 n3 </i>       core       &ldquo;f-m-slash-mod&rdquo;
+</pre>
+   <p>Floored division: <i>d1</i> = <i>n3</i>*<i>n1</i>+<i>n2</i>, <i>n1</i>&gt;<i>n2</i>&gt;=0 or 0&gt;=<i>n2</i>&gt;<i>n1</i>.
+
+   <p><a name="index-sm_002frem-_0040var_007b-d1-n1-_002d_002d-n2-n3--_007d--core-443"></a><a name="index-g_t_0040code_007bsm_002frem_007d-444"></a><a name="index-sm_002frem-445"></a>
+<pre class="format"><code>sm/rem</code>       <i>d1 n1 &ndash; n2 n3 </i>       core       &ldquo;s-m-slash-rem&rdquo;
+</pre>
+   <p>Symmetric division: <i>d1</i> = <i>n3</i>*<i>n1</i>+<i>n2</i>, sign(<i>n2</i>)=sign(<i>d1</i>) or 0.
+
+   </body></html>
+

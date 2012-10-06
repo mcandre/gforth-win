@@ -1,0 +1,100 @@
+<html lang="en">
+<head>
+<title>Floating point stack - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Stack-Manipulation.html#Stack-Manipulation" title="Stack Manipulation">
+<link rel="prev" href="Data-stack.html#Data-stack" title="Data stack">
+<link rel="next" href="Return-stack.html#Return-stack" title="Return stack">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Floating-point-stack"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Return-stack.html#Return-stack">Return stack</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Data-stack.html#Data-stack">Data stack</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Stack-Manipulation.html#Stack-Manipulation">Stack Manipulation</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.6.2 Floating point stack</h4>
+
+<p><a name="index-floating_002dpoint-stack-manipulation-words-680"></a><a name="index-stack-manipulation-words_002c-floating_002dpoint-stack-681"></a>
+Whilst every sane Forth has a separate floating-point stack, it is not
+strictly required; an ANS Forth system could theoretically keep
+floating-point numbers on the data stack. As an additional difficulty,
+you don't know how many cells a floating-point number takes. It is
+reportedly possible to write words in a way that they work also for a
+unified stack model, but we do not recommend trying it. Instead, just
+say that your program has an environmental dependency on a separate
+floating-point stack.
+
+   <p><a name="index-floating_002dstack-_0040var_007b-_002d_002d-n---_007d--environment-682"></a><a name="index-g_t_0040code_007bfloating_002dstack_007d-683"></a><a name="index-floating_002dstack-684"></a>
+<pre class="format"><code>floating-stack</code>       <i>&ndash; n  </i>       environment       &ldquo;floating-stack&rdquo;
+</pre>
+   <p><var>n</var> is non-zero, showing that Gforth maintains a separate
+floating-point stack of depth <var>n</var>.
+
+   <p><a name="index-fdrop-_0040var_007b-r-_002d_002d--_007d--float-685"></a><a name="index-g_t_0040code_007bfdrop_007d-686"></a><a name="index-fdrop-687"></a>
+<pre class="format"><code>fdrop</code>       <i>r &ndash; </i>       float       &ldquo;f-drop&rdquo;
+</pre>
+   <p><a name="index-fnip-_0040var_007b-r1-r2-_002d_002d-r2--_007d--gforth-688"></a><a name="index-g_t_0040code_007bfnip_007d-689"></a><a name="index-fnip-690"></a>
+<pre class="format"><code>fnip</code>       <i>r1 r2 &ndash; r2 </i>       gforth       &ldquo;f-nip&rdquo;
+</pre>
+   <p><a name="index-fdup-_0040var_007b-r-_002d_002d-r-r--_007d--float-691"></a><a name="index-g_t_0040code_007bfdup_007d-692"></a><a name="index-fdup-693"></a>
+<pre class="format"><code>fdup</code>       <i>r &ndash; r r </i>       float       &ldquo;f-dupe&rdquo;
+</pre>
+   <p><a name="index-fover-_0040var_007b-r1-r2-_002d_002d-r1-r2-r1--_007d--float-694"></a><a name="index-g_t_0040code_007bfover_007d-695"></a><a name="index-fover-696"></a>
+<pre class="format"><code>fover</code>       <i>r1 r2 &ndash; r1 r2 r1 </i>       float       &ldquo;f-over&rdquo;
+</pre>
+   <p><a name="index-ftuck-_0040var_007b-r1-r2-_002d_002d-r2-r1-r2--_007d--gforth-697"></a><a name="index-g_t_0040code_007bftuck_007d-698"></a><a name="index-ftuck-699"></a>
+<pre class="format"><code>ftuck</code>       <i>r1 r2 &ndash; r2 r1 r2 </i>       gforth       &ldquo;f-tuck&rdquo;
+</pre>
+   <p><a name="index-fswap-_0040var_007b-r1-r2-_002d_002d-r2-r1--_007d--float-700"></a><a name="index-g_t_0040code_007bfswap_007d-701"></a><a name="index-fswap-702"></a>
+<pre class="format"><code>fswap</code>       <i>r1 r2 &ndash; r2 r1 </i>       float       &ldquo;f-swap&rdquo;
+</pre>
+   <p><a name="index-fpick-_0040var_007b-f_003a_002e_002e_002e-u-_002d_002d-f_003a_002e_002e_002e-r--_007d--gforth-703"></a><a name="index-g_t_0040code_007bfpick_007d-704"></a><a name="index-fpick-705"></a>
+<pre class="format"><code>fpick</code>       <i>f:... u &ndash; f:... r </i>       gforth       &ldquo;fpick&rdquo;
+</pre>
+   <p>Actually the stack effect is <code> r0 ... ru u -- r0 ... ru r0 </code>.
+
+   <p><a name="index-frot-_0040var_007b-r1-r2-r3-_002d_002d-r2-r3-r1--_007d--float-706"></a><a name="index-g_t_0040code_007bfrot_007d-707"></a><a name="index-frot-708"></a>
+<pre class="format"><code>frot</code>       <i>r1 r2 r3 &ndash; r2 r3 r1 </i>       float       &ldquo;f-rote&rdquo;
+</pre>
+   </body></html>
+

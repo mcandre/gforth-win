@@ -1,0 +1,143 @@
+<html lang="en">
+<head>
+<title>Memory Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Return-Stack-Tutorial.html#Return-Stack-Tutorial" title="Return Stack Tutorial">
+<link rel="next" href="Characters-and-Strings-Tutorial.html#Characters-and-Strings-Tutorial" title="Characters and Strings Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Memory-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Characters-and-Strings-Tutorial.html#Characters-and-Strings-Tutorial">Characters and Strings Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Return-Stack-Tutorial.html#Return-Stack-Tutorial">Return Stack Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.23 Memory</h3>
+
+<p><a name="index-memory-access_002fallocation-tutorial-107"></a>
+You can create a global variable <code>v</code> with
+
+<pre class="example">     variable v ( -- addr )
+</pre>
+   <p><code>v</code> pushes the address of a cell in memory on the stack.  This cell
+was reserved by <code>variable</code>.  You can use <code>!</code> (store) to store
+values into this cell and <code>@</code> (fetch) to load the value from the
+stack into memory:
+
+<pre class="example">     v .
+     5 v ! .s
+     v @ .
+</pre>
+   <p>You can see a raw dump of memory with <code>dump</code>:
+
+<pre class="example">     v 1 cells .s dump
+</pre>
+   <p><code>Cells ( n1 -- n2 )</code> gives you the number of bytes (or, more
+generally, address units (aus)) that <code>n1 cells</code> occupy.  You can
+also reserve more memory:
+
+<pre class="example">     create v2 20 cells allot
+     v2 20 cells dump
+</pre>
+   <p>creates a word <code>v2</code> and reserves 20 uninitialized cells; the
+address pushed by <code>v2</code> points to the start of these 20 cells.  You
+can use address arithmetic to access these cells:
+
+<pre class="example">     3 v2 5 cells + !
+     v2 20 cells dump
+</pre>
+   <p>You can reserve and initialize memory with <code>,</code>:
+
+<pre class="example">     create v3
+       5 , 4 , 3 , 2 , 1 ,
+     v3 @ .
+     v3 cell+ @ .
+     v3 2 cells + @ .
+     v3 5 cells dump
+</pre>
+   <blockquote>
+<b>Assignment:</b> Write a definition <code>vsum ( addr u -- n )</code> that computes the sum of
+<code>u</code> cells, with the first of these cells at <code>addr</code>, the next
+one at <code>addr cell+</code> etc. 
+</blockquote>
+
+   <p>You can also reserve memory without creating a new word:
+
+<pre class="example">     here 10 cells allot .
+     here .
+</pre>
+   <p><code>Here</code> pushes the start address of the memory area.  You should
+store it somewhere, or you will have a hard time finding the memory area
+again.
+
+   <p><code>Allot</code> manages dictionary memory.  The dictionary memory contains
+the system's data structures for words etc. on Gforth and most other
+Forth systems.  It is managed like a stack: You can free the memory that
+you have just <code>allot</code>ed with
+
+<pre class="example">     -10 cells allot
+     here .
+</pre>
+   <p>Note that you cannot do this if you have created a new word in the
+meantime (because then your <code>allot</code>ed memory is no longer on the
+top of the dictionary &ldquo;stack&rdquo;).
+
+   <p>Alternatively, you can use <code>allocate</code> and <code>free</code> which allow
+freeing memory in any order:
+
+<pre class="example">     10 cells allocate throw .s
+     20 cells allocate throw .s
+     swap
+     free throw
+     free throw
+</pre>
+   <p>The <code>throw</code>s deal with errors (e.g., out of memory).
+
+   <p>And there is also a
+<a href="http://www.complang.tuwien.ac.at/forth/garbage-collection.zip">garbage collector</a>, which eliminates the need to <code>free</code> memory
+explicitly.
+
+   <p>Reference: <a href="Memory.html#Memory">Memory</a>.
+
+   </body></html>
+

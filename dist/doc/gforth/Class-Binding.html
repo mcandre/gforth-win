@@ -1,0 +1,110 @@
+<html lang="en">
+<head>
+<title>Class Binding - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Objects.html#Objects" title="Objects">
+<link rel="prev" href="Object_002dOriented-Programming-Style.html#Object_002dOriented-Programming-Style" title="Object-Oriented Programming Style">
+<link rel="next" href="Method-conveniences.html#Method-conveniences" title="Method conveniences">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Class-Binding"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Method-conveniences.html#Method-conveniences">Method conveniences</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Object_002dOriented-Programming-Style.html#Object_002dOriented-Programming-Style">Object-Oriented Programming Style</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Objects.html#Objects">Objects</a>
+<hr>
+</div>
+
+<h5 class="subsubsection">5.23.3.6 Class Binding</h5>
+
+<p><a name="index-class-binding-2465"></a><a name="index-early-binding-2466"></a>
+<a name="index-late-binding-2467"></a>Normal selector invocations determine the method at run-time depending
+on the class of the receiving object. This run-time selection is called
+<i>late binding</i>.
+
+   <p>Sometimes it's preferable to invoke a different method. For example,
+you might want to use the simple method for <code>print</code>ing
+<code>object</code>s instead of the possibly long-winded <code>print</code> method
+of the receiver class. You can achieve this by replacing the invocation
+of <code>print</code> with:
+
+   <p><a name="index-g_t_0040code_007b_005bbind_005d_007d-usage-2468"></a>
+<pre class="example">     [bind] object print
+</pre>
+   <p class="noindent">in compiled code or:
+
+   <p><a name="index-g_t_0040code_007bbind_007d-usage-2469"></a>
+<pre class="example">     bind object print
+</pre>
+   <p><a name="index-class-binding_002c-alternative-to-2470"></a>in interpreted code. Alternatively, you can define the method with a
+name (e.g., <code>print-object</code>), and then invoke it through the
+name. Class binding is just a (often more convenient) way to achieve
+the same effect; it avoids name clutter and allows you to invoke
+methods directly without naming them first.
+
+   <p><a name="index-superclass-binding-2471"></a><a name="index-parent-class-binding-2472"></a>A frequent use of class binding is this: When we define a method
+for a selector, we often want the method to do what the selector does
+in the parent class, and a little more. There is a special word for
+this purpose: <code>[parent]</code>; <code>[parent]
+</code><em>selector</em> is equivalent to <code>[bind] </code><em>parent
+selector</em>, where <em>parent</em> is the parent
+class of the current class. E.g., a method definition might look like:
+
+   <p><a name="index-g_t_0040code_007b_005bparent_005d_007d-usage-2473"></a>
+<pre class="example">     :noname
+       dup [parent] foo \ do parent's foo on the receiving object
+       ... \ do some more
+     ; overrides foo
+</pre>
+   <p><a name="index-class-binding-as-optimization-2474"></a>In <cite>Object-oriented programming in ANS Forth</cite> (Forth Dimensions,
+March 1997), Andrew McKewan presents class binding as an optimization
+technique. I recommend not using it for this purpose unless you are in
+an emergency. Late binding is pretty fast with this model anyway, so the
+benefit of using class binding is small; the cost of using class binding
+where it is not appropriate is reduced maintainability.
+
+   <p>While we are at programming style questions: You should bind
+selectors only to ancestor classes of the receiving object. E.g., say,
+you know that the receiving object is of class <code>foo</code> or its
+descendents; then you should bind only to <code>foo</code> and its
+ancestors.
+
+   </body></html>
+

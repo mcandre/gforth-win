@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+<title>Image Licensing Issues - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Image-Files.html#Image-Files" title="Image Files">
+<link rel="prev" href="Image-Files.html#Image-Files" title="Image Files">
+<link rel="next" href="Image-File-Background.html#Image-File-Background" title="Image File Background">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Image-Licensing-Issues"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Image-File-Background.html#Image-File-Background">Image File Background</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Image-Files.html#Image-Files">Image Files</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Image-Files.html#Image-Files">Image Files</a>
+<hr>
+</div>
+
+<h3 class="section">13.1 Image Licensing Issues</h3>
+
+<p><a name="index-license-for-images-3391"></a><a name="index-image-license-3392"></a>
+An image created with <code>gforthmi</code> (see <a href="gforthmi.html#gforthmi">gforthmi</a>) or
+<code>savesystem</code> (see <a href="Non_002dRelocatable-Image-Files.html#Non_002dRelocatable-Image-Files">Non-Relocatable Image Files</a>) includes the
+original image; i.e., according to copyright law it is a derived work of
+the original image.
+
+   <p>Since Gforth is distributed under the GNU GPL, the newly created image
+falls under the GNU GPL, too. In particular, this means that if you
+distribute the image, you have to make all of the sources for the image
+available, including those you wrote.  For details see <a href="Copying.html#Copying">GNU General Public License (Section 3)</a>.
+
+   <p>If you create an image with <code>cross</code> (see <a href="cross_002efs.html#cross_002efs">cross.fs</a>), the image
+contains only code compiled from the sources you gave it; if none of
+these sources is under the GPL, the terms discussed above do not apply
+to the image. However, if your image needs an engine (a gforth binary)
+that is under the GPL, you should make sure that you distribute both in
+a way that is at most a <em>mere aggregation</em>, if you don't want the
+terms of the GPL to apply to the image.
+
+   </body></html>
+

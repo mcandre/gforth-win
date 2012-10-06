@@ -1,0 +1,102 @@
+<html lang="en">
+<head>
+<title>Introduction - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="prev" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="next" href="Words.html#Words" title="Words">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Introduction"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Words.html#Words">Words</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Tutorial.html#Tutorial">Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="index.html#Top">Top</a>
+<hr>
+</div>
+
+<!-- node-name,     next,           previous, up -->
+<h2 class="chapter">4 An Introduction to ANS Forth</h2>
+
+<p><a name="index-Forth-_002d-an-introduction-136"></a>
+The difference of this chapter from the Tutorial (see <a href="Tutorial.html#Tutorial">Tutorial</a>) is
+that it is slower-paced in its examples, but uses them to dive deep into
+explaining Forth internals (not covered by the Tutorial).  Apart from
+that, this chapter covers far less material.  It is suitable for reading
+without using a computer.
+
+   <p>The primary purpose of this manual is to document Gforth. However, since
+Forth is not a widely-known language and there is a lack of up-to-date
+teaching material, it seems worthwhile to provide some introductory
+material.  For other sources of Forth-related
+information, see <a href="Forth_002drelated-information.html#Forth_002drelated-information">Forth-related information</a>.
+
+   <p>The examples in this section should work on any ANS Forth; the
+output shown was produced using Gforth. Each example attempts to
+reproduce the exact output that Gforth produces. If you try out the
+examples (and you should), what you should type is shown <kbd>like this</kbd>
+and Gforth's response is shown <code>like this</code>. The single exception is
+that, where the example shows &lt;RET&gt; it means that you should
+press the &ldquo;carriage return&rdquo; key. Unfortunately, some output formats for
+this manual cannot show the difference between <kbd>this</kbd> and
+<code>this</code> which will make trying out the examples harder (but not
+impossible).
+
+   <p>Forth is an unusual language. It provides an interactive development
+environment which includes both an interpreter and compiler. Forth
+programming style encourages you to break a problem down into many
+<a name="index-factoring-137"></a>small fragments (<dfn>factoring</dfn>), and then to develop and test each
+fragment interactively. Forth advocates assert that breaking the
+edit-compile-test cycle used by conventional programming languages can
+lead to great productivity improvements.
+
+<ul class="menu">
+<li><a accesskey="1" href="Introducing-the-Text-Interpreter.html#Introducing-the-Text-Interpreter">Introducing the Text Interpreter</a>
+<li><a accesskey="2" href="Stacks-and-Postfix-notation.html#Stacks-and-Postfix-notation">Stacks and Postfix notation</a>
+<li><a accesskey="3" href="Your-first-definition.html#Your-first-definition">Your first definition</a>
+<li><a accesskey="4" href="How-does-that-work_003f.html#How-does-that-work_003f">How does that work?</a>
+<li><a accesskey="5" href="Forth-is-written-in-Forth.html#Forth-is-written-in-Forth">Forth is written in Forth</a>
+<li><a accesskey="6" href="Review-_002d-elements-of-a-Forth-system.html#Review-_002d-elements-of-a-Forth-system">Review - elements of a Forth system</a>
+<li><a accesskey="7" href="Where-to-go-next.html#Where-to-go-next">Where to go next</a>
+<li><a accesskey="8" href="Exercises.html#Exercises">Exercises</a>
+</ul>
+
+<!--  -->
+</body></html>
+

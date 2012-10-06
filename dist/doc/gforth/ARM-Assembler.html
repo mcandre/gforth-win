@@ -1,0 +1,157 @@
+<html lang="en">
+<head>
+<title>ARM Assembler - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words" title="Assembler and Code Words">
+<link rel="prev" href="PowerPC-assembler.html#PowerPC-assembler" title="PowerPC assembler">
+<link rel="next" href="Other-assemblers.html#Other-assemblers" title="Other assemblers">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="ARM-Assembler"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Other-assemblers.html#Other-assemblers">Other assemblers</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="PowerPC-assembler.html#PowerPC-assembler">PowerPC assembler</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Assembler-and-Code-Words.html#Assembler-and-Code-Words">Assembler and Code Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.26.8 ARM Assembler</h4>
+
+<p>The ARM assembler included in Gforth was written from scratch by David
+Kuehling.
+
+   <p>The assembler includes all instruction of ARM architecture version 4,
+but does not (yet) have support for Thumb instructions.  It also lacks
+support for any co-processors.
+
+   <p>The assembler uses a postfix syntax with the target operand specified
+last.  For load/store instructions the last operand will be the
+register(s) to be loaded from/stored to.
+
+   <p>Registers are specified by their names <code>r0</code> through <code>r15</code>,
+with the aliases <code>pc</code>, <code>lr</code>, <code>sp</code>, <code>ip</code> and
+<code>fp</code> provided for convenience.  Note that <code>ip</code> means intra
+procedure call scratch register (<code>r12</code>) and does not refer to the
+instruction pointer.
+
+   <p>Condition codes can be specified anywhere in the instruction, but will
+be most readable if specified just in front of the mnemonic.  The 'S'
+flag is not a separate word, but encoded into instruction mnemonics,
+ie. just use <code>adds,</code> instead of <code>add,</code> if you want the
+status register to be updated.
+
+   <p>The following table lists the syntax of operands for general
+instructions:
+
+<pre class="example">     Gforth          normal assembler      description
+     123 #           #123                  immediate
+     r12             r12                   register
+     r12 4 #LSL      r12, LSL #4           shift left by immediate
+     r12 r1 #LSL     r12, LSL r1           shift left by register
+     r12 4 #LSR      r12, LSR #4           shift right by immediate
+     r12 r1 #LSR     r12, LSR r1           shift right by register
+     r12 4 #ASR      r12, ASR #4           arithmetic shift right
+     r12 r1 #ASR     r12, ASR r1           ... by register
+     r12 4 #ROR      r12, ROR #4           rotate right by immediate
+     r12 r1 #ROR     r12, ROR r1           ... by register
+     r12 RRX         r12, RRX              rotate right with extend by 1
+</pre>
+   <p>Memory operand syntax is listed in this table:
+
+<pre class="example">     Gforth            normal assembler      description
+     r4 ]              [r4]                  register
+     r4 4 #]           [r4, #+4]             register with immediate offset
+     r4 -4 #]          [r4, #-4]             with negative offset
+     r4 r1 +]          [r4, +r1]             register with register offset
+     r4 r1 -]          [r4, -r1]             with negated register offset
+     r4 r1 2 #LSL -]   [r4, -r1, LSL #2]     with negated and shifted offset
+     r4 4 #]!          [r4, #+4]!            immediate preincrement
+     r4 r1 +]!         [r4, +r1]!            register preincrement
+     r4 r1 -]!         [r4, +r1]!            register predecrement
+     r4 r1 2 #LSL +]!  [r4, +r1, LSL #2]!    shifted preincrement
+     r4 -4 ]#          [r4], #-4             immediate postdecrement
+     r4 r1 ]+          [r4], r1              register postincrement
+     r4 r1 ]-          [r4], -r1             register postdecrement
+     r4 r1 2 #LSL ]-   [r4], -r1, LSL #2     shifted postdecrement
+     ' xyz &gt;body [#]   xyz                   PC-relative addressing
+</pre>
+   <p>Register lists for load/store multiple instructions are started and
+terminated by using the words <code>{</code> and <code>}</code>
+respectivly.  Between braces, register names can be listed one by one,
+or register ranges can be formed by using the postfix operator
+<code>r-r</code>.  The <code>^</code> flag is not encoded in the register list
+operand, but instead directly encoded into the instruction mnemonic,
+ie. use <code>^ldm,</code> and <code>^stm,</code>.
+
+   <p>Addressing modes for load/store multiple are not encoded as
+instruction suffixes, but instead specified after the register that
+supplies the address.  Use one of <code>DA</code>, <code>IA</code>, <code>DB</code>,
+<code>IB</code>, <code>DA!</code>, <code>IA!</code>, <code>DB!</code> or <code>IB!</code>.
+
+   <p>The following table gives some examples:
+
+<pre class="example">     Gforth                           normal assembler
+     { r0 r7 r8 }  r4 ia  stm,        stmia    {r0,r7,r8}, r4
+     { r0 r7 r8 }  r4 db!  ldm,       ldmdb    {r0,r7,r8}, r4!
+     { r0 r15 r-r }  sp ia!  ^ldm,    ldmfd    {r0-r15}^, sp!
+</pre>
+   <p>Conditions for control structure words are specified in front of a
+word:
+
+<pre class="example">     r1 r2 cmp,    \ compare r1 and r2
+     eq if,        \ equal?
+        ...          \ code executed if r1 == r2
+     then,
+</pre>
+   <p>Here is an example of a <code>code</code> word (assumes that the stack
+pointer is in <code>r9</code>, and that <code>r2</code> and <code>r3</code> can be
+clobbered):
+
+<pre class="example">     code my+ ( n1 n2 --  n3 )
+        r9 IA!       { r2 r3 } ldm,  \ pop r2 = n2, r3 = n1
+        r2   r3      r3        add,  \ r3 = n2+n1
+        r9 -4 #]!    r3        str,  \ push r3
+        next,
+     end-code
+</pre>
+   <p>Look at <samp><span class="file">arch/arm/asm-example.fs</span></samp> for more examples.
+
+   </body></html>
+

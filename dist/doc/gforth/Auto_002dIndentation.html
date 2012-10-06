@@ -1,0 +1,93 @@
+<html lang="en">
+<head>
+<title>Auto-Indentation - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Emacs-and-Gforth.html#Emacs-and-Gforth" title="Emacs and Gforth">
+<link rel="prev" href="Hilighting.html#Hilighting" title="Hilighting">
+<link rel="next" href="Blocks-Files.html#Blocks-Files" title="Blocks Files">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Auto-Indentation"></a>
+<a name="Auto_002dIndentation"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Blocks-Files.html#Blocks-Files">Blocks Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Hilighting.html#Hilighting">Hilighting</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Emacs-and-Gforth.html#Emacs-and-Gforth">Emacs and Gforth</a>
+<hr>
+</div>
+
+<h3 class="section">12.4 Auto-Indentation</h3>
+
+<p><a name="index-auto_002dindentation-of-Forth-code-in-Emacs-3383"></a><a name="index-indentation-of-Forth-code-in-Emacs-3384"></a><code>forth-mode</code> automatically tries to indent lines in a smart way,
+whenever you type &lt;TAB&gt; or break a line with <kbd>C-m</kbd>.
+
+   <p>Simple customization can be achieved by setting
+`forth-indent-level' and `forth-minor-indent-level' in your
+<samp><span class="file">.emacs</span></samp> file. For historical reasons <samp><span class="file">gforth.el</span></samp> indents
+per default by multiples of 4 columns.  To use the more traditional
+3-column indentation, add the following lines to your <samp><span class="file">.emacs</span></samp>:
+
+<pre class="example">     (add-hook 'forth-mode-hook (function (lambda ()
+        ;; customize variables here:
+        (setq forth-indent-level 3)
+        (setq forth-minor-indent-level 1)
+     )))
+</pre>
+   <p>If you want indentation to recognize non-default words, customize it
+by setting `forth-custom-indent-words' in your <samp><span class="file">.emacs</span></samp>.  See the
+docstring of `forth-indent-words' for details (in Emacs, type <kbd>C-h
+v forth-indent-words</kbd>).
+
+   <p>To customize indentation in a file-specific manner, set
+`forth-local-indent-words' in a local-variables section at the end of
+your source file (see <a href="../emacs/Local-Variables-in-Files.html#Local-Variables-in-Files">Variables</a>).
+
+   <p>Example:
+<pre class="example">     0 [IF]
+        Local Variables:
+        forth-local-indent-words:
+           ((("t:") (0 . 2) (0 . 2))
+            ((";t") (-2 . 0) (0 . -2)))
+        End:
+     [THEN]
+</pre>
+   <!--  -->
+</body></html>
+

@@ -1,0 +1,296 @@
+<html lang="en">
+<head>
+<title>Floating Point - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Arithmetic.html#Arithmetic" title="Arithmetic">
+<link rel="prev" href="Mixed-precision.html#Mixed-precision" title="Mixed precision">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Floating-Point"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Mixed-precision.html#Mixed-precision">Mixed precision</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Arithmetic.html#Arithmetic">Arithmetic</a>
+<hr>
+</div>
+
+<h4 class="subsection">5.5.6 Floating Point</h4>
+
+<p><a name="index-floating-point-arithmetic-words-446"></a>
+For the rules used by the text interpreter for
+recognising floating-point numbers see <a href="Number-Conversion.html#Number-Conversion">Number Conversion</a>.
+
+   <p>Gforth has a separate floating point stack, but the documentation uses
+the unified notation.<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>
+
+   <p><a name="index-floating_002dpoint-arithmetic_002c-pitfalls-447"></a>Floating point numbers have a number of unpleasant surprises for the
+unwary (e.g., floating point addition is not associative) and even a
+few for the wary. You should not use them unless you know what you are
+doing or you don't care that the results you get are totally bogus. If
+you want to learn about the problems of floating point numbers (and
+how to avoid them), you might start with <cite>David Goldberg,
+<a href="http://docs.sun.com/source/806-3568/ncg_goldberg.html">What Every Computer Scientist Should Know About Floating-Point Arithmetic</a>, ACM
+Computing Surveys 23(1):5&minus;48, March 1991</cite>.
+
+   <p><a name="index-d_003ef-_0040var_007b-d-_002d_002d-r--_007d--float-448"></a><a name="index-g_t_0040code_007bd_003ef_007d-449"></a><a name="index-d_003ef-450"></a>
+<pre class="format"><code>d&gt;f</code>       <i>d &ndash; r </i>       float       &ldquo;d-to-f&rdquo;
+</pre>
+   <p><a name="index-f_003ed-_0040var_007b-r-_002d_002d-d--_007d--float-451"></a><a name="index-g_t_0040code_007bf_003ed_007d-452"></a><a name="index-f_003ed-453"></a>
+<pre class="format"><code>f&gt;d</code>       <i>r &ndash; d </i>       float       &ldquo;f-to-d&rdquo;
+</pre>
+   <p><a name="index-f_002b-_0040var_007b-r1-r2-_002d_002d-r3--_007d--float-454"></a><a name="index-g_t_0040code_007bf_002b_007d-455"></a><a name="index-f_002b-456"></a>
+<pre class="format"><code>f+</code>       <i>r1 r2 &ndash; r3 </i>       float       &ldquo;f-plus&rdquo;
+</pre>
+   <p><a name="index-f_002d-_0040var_007b-r1-r2-_002d_002d-r3--_007d--float-457"></a><a name="index-g_t_0040code_007bf_002d_007d-458"></a><a name="index-f_002d-459"></a>
+<pre class="format"><code>f-</code>       <i>r1 r2 &ndash; r3 </i>       float       &ldquo;f-minus&rdquo;
+</pre>
+   <p><a name="index-f_002a-_0040var_007b-r1-r2-_002d_002d-r3--_007d--float-460"></a><a name="index-g_t_0040code_007bf_002a_007d-461"></a><a name="index-f_002a-462"></a>
+<pre class="format"><code>f*</code>       <i>r1 r2 &ndash; r3 </i>       float       &ldquo;f-star&rdquo;
+</pre>
+   <p><a name="index-f_002f-_0040var_007b-r1-r2-_002d_002d-r3--_007d--float-463"></a><a name="index-g_t_0040code_007bf_002f_007d-464"></a><a name="index-f_002f-465"></a>
+<pre class="format"><code>f/</code>       <i>r1 r2 &ndash; r3 </i>       float       &ldquo;f-slash&rdquo;
+</pre>
+   <p><a name="index-fnegate-_0040var_007b-r1-_002d_002d-r2--_007d--float-466"></a><a name="index-g_t_0040code_007bfnegate_007d-467"></a><a name="index-fnegate-468"></a>
+<pre class="format"><code>fnegate</code>       <i>r1 &ndash; r2 </i>       float       &ldquo;f-negate&rdquo;
+</pre>
+   <p><a name="index-fabs-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-469"></a><a name="index-g_t_0040code_007bfabs_007d-470"></a><a name="index-fabs-471"></a>
+<pre class="format"><code>fabs</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-abs&rdquo;
+</pre>
+   <p><a name="index-fmax-_0040var_007b-r1-r2-_002d_002d-r3--_007d--float-472"></a><a name="index-g_t_0040code_007bfmax_007d-473"></a><a name="index-fmax-474"></a>
+<pre class="format"><code>fmax</code>       <i>r1 r2 &ndash; r3 </i>       float       &ldquo;f-max&rdquo;
+</pre>
+   <p><a name="index-fmin-_0040var_007b-r1-r2-_002d_002d-r3--_007d--float-475"></a><a name="index-g_t_0040code_007bfmin_007d-476"></a><a name="index-fmin-477"></a>
+<pre class="format"><code>fmin</code>       <i>r1 r2 &ndash; r3 </i>       float       &ldquo;f-min&rdquo;
+</pre>
+   <p><a name="index-floor-_0040var_007b-r1-_002d_002d-r2--_007d--float-478"></a><a name="index-g_t_0040code_007bfloor_007d-479"></a><a name="index-floor-480"></a>
+<pre class="format"><code>floor</code>       <i>r1 &ndash; r2 </i>       float       &ldquo;floor&rdquo;
+</pre>
+   <p>Round towards the next smaller integral value, i.e., round toward negative infinity.
+
+   <p><a name="index-fround-_0040var_007b-r1-_002d_002d-r2--_007d--float-481"></a><a name="index-g_t_0040code_007bfround_007d-482"></a><a name="index-fround-483"></a>
+<pre class="format"><code>fround</code>       <i>r1 &ndash; r2 </i>       float       &ldquo;f-round&rdquo;
+</pre>
+   <p>Round to the nearest integral value.
+
+   <p><a name="index-f_002a_002a-_0040var_007b-r1-r2-_002d_002d-r3--_007d--float_002dext-484"></a><a name="index-g_t_0040code_007bf_002a_002a_007d-485"></a><a name="index-f_002a_002a-486"></a>
+<pre class="format"><code>f**</code>       <i>r1 r2 &ndash; r3 </i>       float-ext       &ldquo;f-star-star&rdquo;
+</pre>
+   <p><i>r3</i> is <i>r1</i> raised to the <i>r2</i>th power.
+
+   <p><a name="index-fsqrt-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-487"></a><a name="index-g_t_0040code_007bfsqrt_007d-488"></a><a name="index-fsqrt-489"></a>
+<pre class="format"><code>fsqrt</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-square-root&rdquo;
+</pre>
+   <p><a name="index-fexp-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-490"></a><a name="index-g_t_0040code_007bfexp_007d-491"></a><a name="index-fexp-492"></a>
+<pre class="format"><code>fexp</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-e-x-p&rdquo;
+</pre>
+   <p><a name="index-fexpm1-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-493"></a><a name="index-g_t_0040code_007bfexpm1_007d-494"></a><a name="index-fexpm1-495"></a>
+<pre class="format"><code>fexpm1</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-e-x-p-m-one&rdquo;
+</pre>
+   <p><i>r2</i>=<i>e</i>**<i>r1</i>&minus;1
+
+   <p><a name="index-fln-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-496"></a><a name="index-g_t_0040code_007bfln_007d-497"></a><a name="index-fln-498"></a>
+<pre class="format"><code>fln</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-l-n&rdquo;
+</pre>
+   <p><a name="index-flnp1-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-499"></a><a name="index-g_t_0040code_007bflnp1_007d-500"></a><a name="index-flnp1-501"></a>
+<pre class="format"><code>flnp1</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-l-n-p-one&rdquo;
+</pre>
+   <p><i>r2</i>=ln(<i>r1</i>+1)
+
+   <p><a name="index-flog-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-502"></a><a name="index-g_t_0040code_007bflog_007d-503"></a><a name="index-flog-504"></a>
+<pre class="format"><code>flog</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-log&rdquo;
+</pre>
+   <p>The decimal logarithm.
+
+   <p><a name="index-falog-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-505"></a><a name="index-g_t_0040code_007bfalog_007d-506"></a><a name="index-falog-507"></a>
+<pre class="format"><code>falog</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-a-log&rdquo;
+</pre>
+   <p><i>r2</i>=10**<i>r1</i>
+
+   <p><a name="index-f2_002a-_0040var_007b-r1-_002d_002d-r2---_007d--gforth-508"></a><a name="index-g_t_0040code_007bf2_002a_007d-509"></a><a name="index-f2_002a-510"></a>
+<pre class="format"><code>f2*</code>       <i>r1 &ndash; r2  </i>       gforth       &ldquo;f2*&rdquo;
+</pre>
+   <p>Multiply <i>r1</i> by 2.0e0
+
+   <p><a name="index-f2_002f-_0040var_007b-r1-_002d_002d-r2---_007d--gforth-511"></a><a name="index-g_t_0040code_007bf2_002f_007d-512"></a><a name="index-f2_002f-513"></a>
+<pre class="format"><code>f2/</code>       <i>r1 &ndash; r2  </i>       gforth       &ldquo;f2/&rdquo;
+</pre>
+   <p>Multiply <i>r1</i> by 0.5e0
+
+   <p><a name="index-g_t1_002ff-_0040var_007b-r1-_002d_002d-r2---_007d--gforth-514"></a><a name="index-g_t_0040code_007b1_002ff_007d-515"></a><a name="index-g_t1_002ff-516"></a>
+<pre class="format"><code>1/f</code>       <i>r1 &ndash; r2  </i>       gforth       &ldquo;1/f&rdquo;
+</pre>
+   <p>Divide 1.0e0 by <i>r1</i>.
+
+   <p><a name="index-precision-_0040var_007b-_002d_002d-u---_007d--float_002dext-517"></a><a name="index-g_t_0040code_007bprecision_007d-518"></a><a name="index-precision-519"></a>
+<pre class="format"><code>precision</code>       <i>&ndash; u  </i>       float-ext       &ldquo;precision&rdquo;
+</pre>
+   <p><i>u</i> is the number of significant digits currently used by
+<code>F.</code> <code>FE.</code> and <code>FS.</code>
+
+   <p><a name="index-set_002dprecision-_0040var_007b-u-_002d_002d---_007d--float_002dext-520"></a><a name="index-g_t_0040code_007bset_002dprecision_007d-521"></a><a name="index-set_002dprecision-522"></a>
+<pre class="format"><code>set-precision</code>       <i>u &ndash;  </i>       float-ext       &ldquo;set-precision&rdquo;
+</pre>
+   <p>Set the number of significant digits currently used by
+<code>F.</code> <code>FE.</code> and <code>FS.</code> to <i>u</i>.
+
+   <p><a name="index-angles-in-trigonometric-operations-523"></a><a name="index-trigonometric-operations-524"></a>Angles in floating point operations are given in radians (a full circle
+has 2 pi radians).
+
+   <p><a name="index-fsin-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-525"></a><a name="index-g_t_0040code_007bfsin_007d-526"></a><a name="index-fsin-527"></a>
+<pre class="format"><code>fsin</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-sine&rdquo;
+</pre>
+   <p><a name="index-fcos-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-528"></a><a name="index-g_t_0040code_007bfcos_007d-529"></a><a name="index-fcos-530"></a>
+<pre class="format"><code>fcos</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-cos&rdquo;
+</pre>
+   <p><a name="index-fsincos-_0040var_007b-r1-_002d_002d-r2-r3--_007d--float_002dext-531"></a><a name="index-g_t_0040code_007bfsincos_007d-532"></a><a name="index-fsincos-533"></a>
+<pre class="format"><code>fsincos</code>       <i>r1 &ndash; r2 r3 </i>       float-ext       &ldquo;f-sine-cos&rdquo;
+</pre>
+   <p><i>r2</i>=sin(<i>r1</i>), <i>r3</i>=cos(<i>r1</i>)
+
+   <p><a name="index-ftan-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-534"></a><a name="index-g_t_0040code_007bftan_007d-535"></a><a name="index-ftan-536"></a>
+<pre class="format"><code>ftan</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-tan&rdquo;
+</pre>
+   <p><a name="index-fasin-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-537"></a><a name="index-g_t_0040code_007bfasin_007d-538"></a><a name="index-fasin-539"></a>
+<pre class="format"><code>fasin</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-a-sine&rdquo;
+</pre>
+   <p><a name="index-facos-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-540"></a><a name="index-g_t_0040code_007bfacos_007d-541"></a><a name="index-facos-542"></a>
+<pre class="format"><code>facos</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-a-cos&rdquo;
+</pre>
+   <p><a name="index-fatan-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-543"></a><a name="index-g_t_0040code_007bfatan_007d-544"></a><a name="index-fatan-545"></a>
+<pre class="format"><code>fatan</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-a-tan&rdquo;
+</pre>
+   <p><a name="index-fatan2-_0040var_007b-r1-r2-_002d_002d-r3--_007d--float_002dext-546"></a><a name="index-g_t_0040code_007bfatan2_007d-547"></a><a name="index-fatan2-548"></a>
+<pre class="format"><code>fatan2</code>       <i>r1 r2 &ndash; r3 </i>       float-ext       &ldquo;f-a-tan-two&rdquo;
+</pre>
+   <p><i>r1/r2</i>=tan(<i>r3</i>). ANS Forth does not require, but probably
+intends this to be the inverse of <code>fsincos</code>. In gforth it is.
+
+   <p><a name="index-fsinh-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-549"></a><a name="index-g_t_0040code_007bfsinh_007d-550"></a><a name="index-fsinh-551"></a>
+<pre class="format"><code>fsinh</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-cinch&rdquo;
+</pre>
+   <p><a name="index-fcosh-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-552"></a><a name="index-g_t_0040code_007bfcosh_007d-553"></a><a name="index-fcosh-554"></a>
+<pre class="format"><code>fcosh</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-cosh&rdquo;
+</pre>
+   <p><a name="index-ftanh-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-555"></a><a name="index-g_t_0040code_007bftanh_007d-556"></a><a name="index-ftanh-557"></a>
+<pre class="format"><code>ftanh</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-tan-h&rdquo;
+</pre>
+   <p><a name="index-fasinh-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-558"></a><a name="index-g_t_0040code_007bfasinh_007d-559"></a><a name="index-fasinh-560"></a>
+<pre class="format"><code>fasinh</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-a-cinch&rdquo;
+</pre>
+   <p><a name="index-facosh-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-561"></a><a name="index-g_t_0040code_007bfacosh_007d-562"></a><a name="index-facosh-563"></a>
+<pre class="format"><code>facosh</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-a-cosh&rdquo;
+</pre>
+   <p><a name="index-fatanh-_0040var_007b-r1-_002d_002d-r2--_007d--float_002dext-564"></a><a name="index-g_t_0040code_007bfatanh_007d-565"></a><a name="index-fatanh-566"></a>
+<pre class="format"><code>fatanh</code>       <i>r1 &ndash; r2 </i>       float-ext       &ldquo;f-a-tan-h&rdquo;
+</pre>
+   <p><a name="index-pi-_0040var_007b-_002d_002d-r---_007d--gforth-567"></a><a name="index-g_t_0040code_007bpi_007d-568"></a><a name="index-pi-569"></a>
+<pre class="format"><code>pi</code>       <i>&ndash; r  </i>       gforth       &ldquo;pi&rdquo;
+</pre>
+   <p><code>Fconstant</code> &ndash; <i>r</i> is the value pi; the ratio of a circle's area
+to its diameter.
+
+   <p><a name="index-equality-of-floats-570"></a><a name="index-floating_002dpoint-comparisons-571"></a>One particular problem with floating-point arithmetic is that comparison
+for equality often fails when you would expect it to succeed.  For this
+reason approximate equality is often preferred (but you still have to
+know what you are doing).  Also note that IEEE NaNs may compare
+differently from what you might expect.  The comparison words are:
+
+   <p><a name="index-f_007erel-_0040var_007b-r1-r2-r3-_002d_002d-flag---_007d--gforth-572"></a><a name="index-g_t_0040code_007bf_007erel_007d-573"></a><a name="index-f_007erel-574"></a>
+<pre class="format"><code>f~rel</code>       <i>r1 r2 r3 &ndash; flag  </i>       gforth       &ldquo;f~rel&rdquo;
+</pre>
+   <p>Approximate equality with relative error: |r1-r2|&lt;r3*|r1+r2|.
+
+   <p><a name="index-f_007eabs-_0040var_007b-r1-r2-r3-_002d_002d-flag---_007d--gforth-575"></a><a name="index-g_t_0040code_007bf_007eabs_007d-576"></a><a name="index-f_007eabs-577"></a>
+<pre class="format"><code>f~abs</code>       <i>r1 r2 r3 &ndash; flag  </i>       gforth       &ldquo;f~abs&rdquo;
+</pre>
+   <p>Approximate equality with absolute error: |r1-r2|&lt;r3.
+
+   <p><a name="index-f_007e-_0040var_007b-r1-r2-r3-_002d_002d-flag---_007d--float_002dext-578"></a><a name="index-g_t_0040code_007bf_007e_007d-579"></a><a name="index-f_007e-580"></a>
+<pre class="format"><code>f~</code>       <i>r1 r2 r3 &ndash; flag  </i>       float-ext       &ldquo;f-proximate&rdquo;
+</pre>
+   <p>ANS Forth medley for comparing r1 and r2 for equality: r3&gt;0:
+<code>f~abs</code>; r3=0: bitwise comparison; r3&lt;0: <code>fnegate f~rel</code>.
+
+   <p><a name="index-f_003d-_0040var_007b-r1-r2-_002d_002d-f--_007d--gforth-581"></a><a name="index-g_t_0040code_007bf_003d_007d-582"></a><a name="index-f_003d-583"></a>
+<pre class="format"><code>f=</code>       <i>r1 r2 &ndash; f </i>       gforth       &ldquo;f-equals&rdquo;
+</pre>
+   <p><a name="index-f_003c_003e-_0040var_007b-r1-r2-_002d_002d-f--_007d--gforth-584"></a><a name="index-g_t_0040code_007bf_003c_003e_007d-585"></a><a name="index-f_003c_003e-586"></a>
+<pre class="format"><code>f&lt;&gt;</code>       <i>r1 r2 &ndash; f </i>       gforth       &ldquo;f-not-equals&rdquo;
+</pre>
+   <p><a name="index-f_003c-_0040var_007b-r1-r2-_002d_002d-f--_007d--float-587"></a><a name="index-g_t_0040code_007bf_003c_007d-588"></a><a name="index-f_003c-589"></a>
+<pre class="format"><code>f&lt;</code>       <i>r1 r2 &ndash; f </i>       float       &ldquo;f-less-than&rdquo;
+</pre>
+   <p><a name="index-f_003c_003d-_0040var_007b-r1-r2-_002d_002d-f--_007d--gforth-590"></a><a name="index-g_t_0040code_007bf_003c_003d_007d-591"></a><a name="index-f_003c_003d-592"></a>
+<pre class="format"><code>f&lt;=</code>       <i>r1 r2 &ndash; f </i>       gforth       &ldquo;f-less-or-equal&rdquo;
+</pre>
+   <p><a name="index-f_003e-_0040var_007b-r1-r2-_002d_002d-f--_007d--gforth-593"></a><a name="index-g_t_0040code_007bf_003e_007d-594"></a><a name="index-f_003e-595"></a>
+<pre class="format"><code>f&gt;</code>       <i>r1 r2 &ndash; f </i>       gforth       &ldquo;f-greater-than&rdquo;
+</pre>
+   <p><a name="index-f_003e_003d-_0040var_007b-r1-r2-_002d_002d-f--_007d--gforth-596"></a><a name="index-g_t_0040code_007bf_003e_003d_007d-597"></a><a name="index-f_003e_003d-598"></a>
+<pre class="format"><code>f&gt;=</code>       <i>r1 r2 &ndash; f </i>       gforth       &ldquo;f-greater-or-equal&rdquo;
+</pre>
+   <p><a name="index-f0_003c-_0040var_007b-r-_002d_002d-f--_007d--float-599"></a><a name="index-g_t_0040code_007bf0_003c_007d-600"></a><a name="index-f0_003c-601"></a>
+<pre class="format"><code>f0&lt;</code>       <i>r &ndash; f </i>       float       &ldquo;f-zero-less-than&rdquo;
+</pre>
+   <p><a name="index-f0_003c_003d-_0040var_007b-r-_002d_002d-f--_007d--gforth-602"></a><a name="index-g_t_0040code_007bf0_003c_003d_007d-603"></a><a name="index-f0_003c_003d-604"></a>
+<pre class="format"><code>f0&lt;=</code>       <i>r &ndash; f </i>       gforth       &ldquo;f-zero-less-or-equal&rdquo;
+</pre>
+   <p><a name="index-f0_003c_003e-_0040var_007b-r-_002d_002d-f--_007d--gforth-605"></a><a name="index-g_t_0040code_007bf0_003c_003e_007d-606"></a><a name="index-f0_003c_003e-607"></a>
+<pre class="format"><code>f0&lt;&gt;</code>       <i>r &ndash; f </i>       gforth       &ldquo;f-zero-not-equals&rdquo;
+</pre>
+   <p><a name="index-f0_003d-_0040var_007b-r-_002d_002d-f--_007d--float-608"></a><a name="index-g_t_0040code_007bf0_003d_007d-609"></a><a name="index-f0_003d-610"></a>
+<pre class="format"><code>f0=</code>       <i>r &ndash; f </i>       float       &ldquo;f-zero-equals&rdquo;
+</pre>
+   <p><a name="index-f0_003e-_0040var_007b-r-_002d_002d-f--_007d--gforth-611"></a><a name="index-g_t_0040code_007bf0_003e_007d-612"></a><a name="index-f0_003e-613"></a>
+<pre class="format"><code>f0&gt;</code>       <i>r &ndash; f </i>       gforth       &ldquo;f-zero-greater-than&rdquo;
+</pre>
+   <p><a name="index-f0_003e_003d-_0040var_007b-r-_002d_002d-f--_007d--gforth-614"></a><a name="index-g_t_0040code_007bf0_003e_003d_007d-615"></a><a name="index-f0_003e_003d-616"></a>
+<pre class="format"><code>f0&gt;=</code>       <i>r &ndash; f </i>       gforth       &ldquo;f-zero-greater-or-equal&rdquo;
+</pre>
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> It's easy to generate the separate
+notation from that by just separating the floating-point numbers out:
+e.g. <code>( n r1 u r2 -- r3 )</code> becomes <code>( n u -- ) ( F: r1 r2 --
+r3 )</code>.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

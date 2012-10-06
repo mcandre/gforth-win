@@ -1,0 +1,1020 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DOCUMENT Type="Advanced Installer" CreateVersion="9.5" version="9.6" Modules="simple" RootPath="." Language="en" Id="{CF417C92-A2B5-42A8-AD84-C198A051E735}">
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
+    <ROW Property="ALLUSERS" Value="1"/>
+    <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
+    <ROW Property="ARPPRODUCTICON" Value="forth.exe" Type="8"/>
+    <ROW Property="ARPURLINFOABOUT" Value="http://bernd-paysan.de/gforth.html"/>
+    <ROW Property="Manufacturer" Value="GNU"/>
+    <ROW Property="ProductCode" Value="1033:{E5CEA659-E32B-4C5D-9B04-082AD2BEBA36} " Type="16"/>
+    <ROW Property="ProductLanguage" Value="1033"/>
+    <ROW Property="ProductName" Value="gforth"/>
+    <ROW Property="ProductVersion" Value="0.7.0" Type="32"/>
+    <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
+    <ROW Property="UpgradeCode" Value="{96F8E080-35BA-4D28-BBAB-5BE2190DD971}"/>
+    <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
+    <ROW Property="WindowsType9XDisplay" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
+    <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
+    <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
+    <ROW Directory="__1_Dir" Directory_Parent="arch_Dir" DefaultDir="6502"/>
+    <ROW Directory="__2_Dir" Directory_Parent="gforth_1_Dir" DefaultDir="07~1.0|0.7.0"/>
+    <ROW Directory="__Dir" Directory_Parent="arch_Dir" DefaultDir="386"/>
+    <ROW Directory="alpha_Dir" Directory_Parent="arch_Dir" DefaultDir="alpha"/>
+    <ROW Directory="amd64_Dir" Directory_Parent="arch_Dir" DefaultDir="amd64"/>
+    <ROW Directory="arch_Dir" Directory_Parent="APPDIR" DefaultDir="arch"/>
+    <ROW Directory="arm_Dir" Directory_Parent="arch_Dir" DefaultDir="arm"/>
+    <ROW Directory="asm_Dir" Directory_Parent="APPDIR" DefaultDir="asm"/>
+    <ROW Directory="compat_Dir" Directory_Parent="APPDIR" DefaultDir="compat"/>
+    <ROW Directory="doc_Dir" Directory_Parent="APPDIR" DefaultDir="doc"/>
+    <ROW Directory="ec_Dir" Directory_Parent="APPDIR" DefaultDir="ec"/>
+    <ROW Directory="engine_Dir" Directory_Parent="APPDIR" DefaultDir="engine"/>
+    <ROW Directory="generic_Dir" Directory_Parent="arch_Dir" DefaultDir="generic"/>
+    <ROW Directory="gforth_1_Dir" Directory_Parent="lib_Dir" DefaultDir="gforth"/>
+    <ROW Directory="gforth_Dir" Directory_Parent="doc_Dir" DefaultDir="gforth"/>
+    <ROW Directory="hppa_Dir" Directory_Parent="arch_Dir" DefaultDir="hppa"/>
+    <ROW Directory="ia64_Dir" Directory_Parent="arch_Dir" DefaultDir="ia64"/>
+    <ROW Directory="kernel_Dir" Directory_Parent="APPDIR" DefaultDir="kernel"/>
+    <ROW Directory="lib_Dir" Directory_Parent="APPDIR" DefaultDir="lib"/>
+    <ROW Directory="libccnamed_Dir" Directory_Parent="__2_Dir" DefaultDir="libcc-~1|libcc-named"/>
+    <ROW Directory="m68k_Dir" Directory_Parent="arch_Dir" DefaultDir="m68k"/>
+    <ROW Directory="mips_Dir" Directory_Parent="arch_Dir" DefaultDir="mips"/>
+    <ROW Directory="misc_Dir" Directory_Parent="arch_Dir" DefaultDir="misc"/>
+    <ROW Directory="power_Dir" Directory_Parent="arch_Dir" DefaultDir="power"/>
+    <ROW Directory="r8c_Dir" Directory_Parent="arch_Dir" DefaultDir="r8c"/>
+    <ROW Directory="sharc_Dir" Directory_Parent="arch_Dir" DefaultDir="sharc"/>
+    <ROW Directory="shboom_Dir" Directory_Parent="arch_Dir" DefaultDir="shboom"/>
+    <ROW Directory="sparc_Dir" Directory_Parent="arch_Dir" DefaultDir="sparc"/>
+    <ROW Directory="stack_Dir" Directory_Parent="arch_Dir" DefaultDir="4stack"/>
+    <ROW Directory="test_Dir" Directory_Parent="APPDIR" DefaultDir="test"/>
+    <ROW Directory="unix_Dir" Directory_Parent="APPDIR" DefaultDir="unix"/>
+    <ROW Directory="vmgen_Dir" Directory_Parent="doc_Dir" DefaultDir="vmgen"/>
+    <ROW Directory="vmgenex2_Dir" Directory_Parent="APPDIR" DefaultDir="vmgen-~1|vmgen-ex2"/>
+    <ROW Directory="vmgenex_Dir" Directory_Parent="APPDIR" DefaultDir="vmgen-ex"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
+    <ROW Component="Assembler.html" ComponentId="{697F9A1C-10F0-48E2-9C91-6CE503B58952}" Directory_="gforth_Dir" Attributes="0" KeyPath="Assembler.html" Type="0"/>
+    <ROW Component="CCodeMacros.html" ComponentId="{4106CAF2-E34F-4352-BDDB-24DC8750DA04}" Directory_="vmgen_Dir" Attributes="0" KeyPath="CCodeMacros.html" Type="0"/>
+    <ROW Component="ProductInformation" ComponentId="{F9FB7CF7-3172-4A4B-A825-6A6AD3F6CFDD}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
+    <ROW Component="accept.fs" ComponentId="{8247E08F-01C9-43CB-9AD8-756C4D693152}" Directory_="kernel_Dir" Attributes="0" KeyPath="accept.fs" Type="0"/>
+    <ROW Component="aclocal.m4" ComponentId="{EB4466B3-5E15-42D0-9083-2F4DFCC05C86}" Directory_="APPDIR" Attributes="0" KeyPath="aclocal.m4" Type="0"/>
+    <ROW Component="anslocal.fs" ComponentId="{661F96EF-C5F4-41AD-A88B-225F42493739}" Directory_="compat_Dir" Attributes="0" KeyPath="anslocal.fs" Type="0"/>
+    <ROW Component="asm.fs" ComponentId="{467B336A-37F8-44D2-A6E2-2D81FC6FBC3A}" Directory_="__Dir" Attributes="0" KeyPath="asm.fs" Type="0"/>
+    <ROW Component="asm.fs_1" ComponentId="{A6F9066C-9686-4CDB-AFB3-44AFC000F83B}" Directory_="stack_Dir" Attributes="0" KeyPath="asm.fs_1" Type="0"/>
+    <ROW Component="asm.fs_2" ComponentId="{4FCD95B7-4081-4B55-9201-8E4EE336A92D}" Directory_="alpha_Dir" Attributes="0" KeyPath="asm.fs_2" Type="0"/>
+    <ROW Component="asm.fs_3" ComponentId="{6BF5D4AB-1506-45D3-A00C-D8DAB8D1FFA0}" Directory_="amd64_Dir" Attributes="0" KeyPath="asm.fs_3" Type="0"/>
+    <ROW Component="asm.fs_4" ComponentId="{29A4358F-43B5-4DD1-9535-B4ABC8F3078C}" Directory_="mips_Dir" Attributes="0" KeyPath="asm.fs_4" Type="0"/>
+    <ROW Component="asm.fs_5" ComponentId="{64C4DB41-9D53-4F68-9298-737BE73B4577}" Directory_="misc_Dir" Attributes="0" KeyPath="asm.fs_5" Type="0"/>
+    <ROW Component="asm.fs_6" ComponentId="{EF8D55C4-629F-48A7-A1CB-88707AADF971}" Directory_="power_Dir" Attributes="0" KeyPath="asm.fs_6" Type="0"/>
+    <ROW Component="asm.fs_7" ComponentId="{46BEDA67-F97B-42E8-A303-1F6A5908FBD5}" Directory_="r8c_Dir" Attributes="0" KeyPath="asm.fs_7" Type="0"/>
+    <ROW Component="asm.fs_8" ComponentId="{59B3C269-C372-4EB2-98BD-26286C6B4E0E}" Directory_="shboom_Dir" Attributes="0" KeyPath="asm.fs_8" Type="0"/>
+    <ROW Component="basic.fs" ComponentId="{794B1B3C-5BB8-43AC-A809-C3C3809D4438}" Directory_="asm_Dir" Attributes="0" KeyPath="basic.fs" Type="0"/>
+    <ROW Component="bit.h" ComponentId="{9924E544-2625-4F71-947F-BFDD35A1C5C0}" Directory_="engine_Dir" Attributes="0" KeyPath="bit.h" Type="0"/>
+    <ROW Component="builttag.fs" ComponentId="{48719D07-57CE-45DF-AA84-B2D39BD924CA}" Directory_="ec_Dir" Attributes="0" KeyPath="builttag.fs" Type="0"/>
+    <ROW Component="cache.c" ComponentId="{D76182C7-689B-492F-A025-2B45171A47B4}" Directory_="hppa_Dir" Attributes="0" KeyPath="cache.c" Type="0"/>
+    <ROW Component="cacheflushlinux.c" ComponentId="{33CF9464-268D-4658-85CD-DC582DD4BB81}" Directory_="arm_Dir" Attributes="0" KeyPath="cacheflushlinux.c" Type="0"/>
+    <ROW Component="checkans.fs" ComponentId="{7CFD6839-F974-4F1A-A8E5-C5B48E2A5FC6}" Directory_="test_Dir" Attributes="0" KeyPath="checkans.fs" Type="0"/>
+    <ROW Component="compile.sharc" ComponentId="{3FCF7669-BDCA-4FBB-8F96-7E241411E911}" Directory_="sharc_Dir" Attributes="0" KeyPath="compile.sharc" Type="0"/>
+    <ROW Component="cstr.c" ComponentId="{21B034A1-154D-4F11-9DA1-746C779B3B8F}" Directory_="libccnamed_Dir" Attributes="0" KeyPath="cstr.c" Type="0"/>
+    <ROW Component="cygffi200beta.dll" ComponentId="{E46348EA-A5BE-41E8-8139-B7AD4BBBF79C}" Directory_="APPDIR" Attributes="0" KeyPath="cygffi200beta.dll"/>
+    <ROW Component="cygiconv2.dll" ComponentId="{93234001-1701-4916-995A-4E653F6E3133}" Directory_="APPDIR" Attributes="0" KeyPath="cygiconv2.dll"/>
+    <ROW Component="cygintl8.dll" ComponentId="{EC8BA08E-AB47-4F94-A38F-9734A27882A6}" Directory_="APPDIR" Attributes="0" KeyPath="cygintl8.dll"/>
+    <ROW Component="cygltdl3.dll" ComponentId="{36996BF6-ED37-412E-93B3-064D2ED46938}" Directory_="APPDIR" Attributes="0" KeyPath="cygltdl3.dll"/>
+    <ROW Component="cygncurses8.dll" ComponentId="{A91AA440-22C5-4701-86DB-4ABB265A799F}" Directory_="APPDIR" Attributes="0" KeyPath="cygncurses8.dll"/>
+    <ROW Component="cygreadline6.dll" ComponentId="{09A5D641-ED6F-4B78-950F-4E55FF2D5D9B}" Directory_="APPDIR" Attributes="0" KeyPath="cygreadline6.dll"/>
+    <ROW Component="cygwin1.dll" ComponentId="{2D73D446-2DA8-43D4-AC3D-70A454AF9144}" Directory_="APPDIR" Attributes="0" KeyPath="cygwin1.dll"/>
+    <ROW Component="disasm.c" ComponentId="{24033E5C-A59C-4864-B8F4-DC4CBFD2C17A}" Directory_="vmgenex_Dir" Attributes="0" KeyPath="disasm.c" Type="0"/>
+    <ROW Component="disasm.c_1" ComponentId="{6650C5FD-7BA7-48CF-85EC-4F22FAF863C9}" Directory_="vmgenex2_Dir" Attributes="0" KeyPath="disasm.c_1" Type="0"/>
+    <ROW Component="fdl.texi" ComponentId="{0C270CD3-CBC2-415E-80C5-822BD1733928}" Directory_="doc_Dir" Attributes="0" KeyPath="fdl.texi" Type="0"/>
+    <ROW Component="flush_icache_block.c" ComponentId="{057E9F7D-F7A8-4CE8-98D1-6B5925F356D7}" Directory_="ia64_Dir" Attributes="0" KeyPath="flush_icache_block.c" Type="0"/>
+    <ROW Component="gforth.exe" ComponentId="{0F8D588E-766E-4B31-A70B-DDED7BE0725D}" Directory_="APPDIR" Attributes="0" KeyPath="gforth.exe"/>
+    <ROW Component="gforthditc.exe" ComponentId="{2E6F19A4-087F-47C6-B79F-D91E64E58091}" Directory_="APPDIR" Attributes="0" KeyPath="gforthditc.exe"/>
+    <ROW Component="gforthfast.exe" ComponentId="{E8EE4602-D725-4221-AB10-E03C9D5B6006}" Directory_="APPDIR" Attributes="0" KeyPath="gforthfast.exe"/>
+    <ROW Component="gforthitc.exe" ComponentId="{3CA6B533-51DF-4F15-878E-403FD08F5F52}" Directory_="APPDIR" Attributes="0" KeyPath="gforthitc.exe"/>
+    <ROW Component="mach.fs" ComponentId="{1F39907D-FC72-4D2D-8989-C23E087697C0}" Directory_="__1_Dir" Attributes="0" KeyPath="mach.fs_1" Type="0"/>
+    <ROW Component="machine.h" ComponentId="{C3685ACD-7565-4EDD-B4D3-6D6666BFD388}" Directory_="generic_Dir" Attributes="0" KeyPath="machine.h_4" Type="0"/>
+    <ROW Component="machine.h_1" ComponentId="{DECD00BC-6542-4E78-A0FF-06A008673FBC}" Directory_="m68k_Dir" Attributes="0" KeyPath="machine.h_7" Type="0"/>
+    <ROW Component="machine.h_2" ComponentId="{F56FCEC5-9725-41F4-A19D-0507F2F7EB5D}" Directory_="sparc_Dir" Attributes="0" KeyPath="machine.h_11" Type="0"/>
+    <ROW Component="sh.exe" ComponentId="{764B8065-A7C8-43BF-A901-9E9D5966A4E0}" Directory_="APPDIR" Attributes="0" KeyPath="sh.exe"/>
+    <ROW Component="socket.fs" ComponentId="{2771AC0B-3BB4-43FE-96EC-A9C7D83181A3}" Directory_="unix_Dir" Attributes="0" KeyPath="socket.fs" Type="0"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
+    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0" Components="Assembler.html CCodeMacros.html ProductInformation accept.fs aclocal.m4 anslocal.fs asm.fs asm.fs_1 asm.fs_2 asm.fs_3 asm.fs_4 asm.fs_5 asm.fs_6 asm.fs_7 asm.fs_8 basic.fs bit.h builttag.fs cache.c cacheflushlinux.c checkans.fs compile.sharc cstr.c cygffi200beta.dll cygiconv2.dll cygintl8.dll cygltdl3.dll cygncurses8.dll cygreadline6.dll cygwin1.dll disasm.c disasm.c_1 fdl.texi flush_icache_block.c gforth.exe gforthditc.exe gforthfast.exe gforthitc.exe mach.fs machine.h machine.h_1 machine.h_2 sh.exe socket.fs"/>
+    <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
+    <ROW File="ANSForthlocals.html" Component_="Assembler.html" FileName="ANS-Fo~1.htm|ANS-Forth-locals.html" Attributes="0" SourcePath="dist\doc\gforth\ANS-Forth-locals.html" SelfReg="false" NextFile="ANSReport.html"/>
+    <ROW File="ANSReport.html" Component_="Assembler.html" FileName="ANS-Re~1.htm|ANS-Report.html" Attributes="0" SourcePath="dist\doc\gforth\ANS-Report.html" SelfReg="false" NextFile="Arbitrarycontrolstructures.html"/>
+    <ROW File="ANSconformance.html" Component_="Assembler.html" FileName="ANS-co~1.htm|ANS-conformance.html" Attributes="0" SourcePath="dist\doc\gforth\ANS-conformance.html" SelfReg="false" NextFile="ANSForthlocals.html"/>
+    <ROW File="ARMAssembler.html" Component_="Assembler.html" FileName="ARM-As~1.htm|ARM-Assembler.html" Attributes="0" SourcePath="dist\doc\gforth\ARM-Assembler.html" SelfReg="false" NextFile="ArraysandRecordsTutorial.html"/>
+    <ROW File="AUTHORS" Component_="aclocal.m4" FileName="AUTHORS" Attributes="0" SourcePath="dist\AUTHORS" SelfReg="false" NextFile="autogen.sh"/>
+    <ROW File="Addressarithmetic.html" Component_="Assembler.html" FileName="Addres~1.htm|Address-arithmetic.html" Attributes="0" SourcePath="dist\doc\gforth\Address-arithmetic.html" SelfReg="false" NextFile="Advanceddoes_003eusageexample.html"/>
+    <ROW File="Advanceddoes_003eusageexample.html" Component_="Assembler.html" FileName="Advanc~1.htm|Advanced-does_003e-usage-example.html" Attributes="0" SourcePath="dist\doc\gforth\Advanced-does_003e-usage-example.html" SelfReg="false" NextFile="AdvancedmacrosTutorial.html"/>
+    <ROW File="AdvancedmacrosTutorial.html" Component_="Assembler.html" FileName="Advanc~2.htm|Advanced-macros-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Advanced-macros-Tutorial.html" SelfReg="false" NextFile="Aliases.html"/>
+    <ROW File="Aliases.html" Component_="Assembler.html" FileName="Aliase~1.htm|Aliases.html" Attributes="0" SourcePath="dist\doc\gforth\Aliases.html" SelfReg="false" NextFile="AlignmentTutorial.html"/>
+    <ROW File="AlignmentTutorial.html" Component_="Assembler.html" FileName="Alignm~1.htm|Alignment-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Alignment-Tutorial.html" SelfReg="false" NextFile="AlphaAssembler.html"/>
+    <ROW File="AlphaAssembler.html" Component_="Assembler.html" FileName="Alpha-~1.htm|Alpha-Assembler.html" Attributes="0" SourcePath="dist\doc\gforth\Alpha-Assembler.html" SelfReg="false" NextFile="AnonymousDefinitions.html"/>
+    <ROW File="AnonymousDefinitions.html" Component_="Assembler.html" FileName="Anonym~1.htm|Anonymous-Definitions.html" Attributes="0" SourcePath="dist\doc\gforth\Anonymous-Definitions.html" SelfReg="false" NextFile="ANSconformance.html"/>
+    <ROW File="Arbitrarycontrolstructures.html" Component_="Assembler.html" FileName="Arbitr~1.htm|Arbitrary-control-structures.html" Attributes="0" SourcePath="dist\doc\gforth\Arbitrary-control-structures.html" SelfReg="false" NextFile="Arithmetic.html"/>
+    <ROW File="Arithmetic.html" Component_="Assembler.html" FileName="Arithm~1.htm|Arithmetic.html" Attributes="0" SourcePath="dist\doc\gforth\Arithmetic.html" SelfReg="false" NextFile="ArithmeticsTutorial.html"/>
+    <ROW File="ArithmeticsTutorial.html" Component_="Assembler.html" FileName="Arithm~2.htm|Arithmetics-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Arithmetics-Tutorial.html" SelfReg="false" NextFile="ARMAssembler.html"/>
+    <ROW File="ArraysandRecordsTutorial.html" Component_="Assembler.html" FileName="Arrays~1.htm|Arrays-and-Records-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Arrays-and-Records-Tutorial.html" SelfReg="false" NextFile="AssemblerandCodeWords.html"/>
+    <ROW File="Assembler.html" Component_="Assembler.html" FileName="386-As~1.htm|386-Assembler.html" Attributes="0" SourcePath="dist\doc\gforth\386-Assembler.html" SelfReg="false" NextFile="Addressarithmetic.html"/>
+    <ROW File="AssemblerandCodeWords.html" Component_="Assembler.html" FileName="Assemb~1.htm|Assembler-and-Code-Words.html" Attributes="0" SourcePath="dist\doc\gforth\Assembler-and-Code-Words.html" SelfReg="false" NextFile="Assertions.html"/>
+    <ROW File="Assertions.html" Component_="Assembler.html" FileName="Assert~1.htm|Assertions.html" Attributes="0" SourcePath="dist\doc\gforth\Assertions.html" SelfReg="false" NextFile="AutomaticGeneration.html"/>
+    <ROW File="Auto_002dIndentation.html" Component_="Assembler.html" FileName="Auto_0~1.htm|Auto_002dIndentation.html" Attributes="0" SourcePath="dist\doc\gforth\Auto_002dIndentation.html" SelfReg="false" NextFile="BasicMini_002dOOFUsage.html"/>
+    <ROW File="AutomaticGeneration.html" Component_="Assembler.html" FileName="Automa~1.htm|Automatic-Generation.html" Attributes="0" SourcePath="dist\doc\gforth\Automatic-Generation.html" SelfReg="false" NextFile="Auto_002dIndentation.html"/>
+    <ROW File="BUGS" Component_="aclocal.m4" FileName="BUGS" Attributes="0" SourcePath="dist\BUGS" SelfReg="false" NextFile="buildec"/>
+    <ROW File="BUILDFROMSCRATCH" Component_="aclocal.m4" FileName="BUILD-~1|BUILD-FROM-SCRATCH" Attributes="0" SourcePath="dist\BUILD-FROM-SCRATCH" SelfReg="false" NextFile="cachefast0.vmg"/>
+    <ROW File="BasicMini_002dOOFUsage.html" Component_="Assembler.html" FileName="Basic-~1.htm|Basic-Mini_002dOOF-Usage.html" Attributes="0" SourcePath="dist\doc\gforth\Basic-Mini_002dOOF-Usage.html" SelfReg="false" NextFile="BasicObjectsUsage.html"/>
+    <ROW File="BasicOOFUsage.html" Component_="Assembler.html" FileName="Basic-~3.htm|Basic-OOF-Usage.html" Attributes="0" SourcePath="dist\doc\gforth\Basic-OOF-Usage.html" SelfReg="false" NextFile="Bitwiseoperations.html"/>
+    <ROW File="BasicObjectsUsage.html" Component_="Assembler.html" FileName="Basic-~2.htm|Basic-Objects-Usage.html" Attributes="0" SourcePath="dist\doc\gforth\Basic-Objects-Usage.html" SelfReg="false" NextFile="BasicOOFUsage.html"/>
+    <ROW File="Benchres" Component_="aclocal.m4" FileName="Benchres" Attributes="0" SourcePath="dist\Benchres" SelfReg="false" NextFile="blocked.fb"/>
+    <ROW File="Bitwiseoperations.html" Component_="Assembler.html" FileName="Bitwis~1.htm|Bitwise-operations.html" Attributes="0" SourcePath="dist\doc\gforth\Bitwise-operations.html" SelfReg="false" NextFile="BlocksFiles.html"/>
+    <ROW File="Blocks.html" Component_="Assembler.html" FileName="Blocks~2.htm|Blocks.html" Attributes="0" SourcePath="dist\doc\gforth\Blocks.html" SelfReg="false" NextFile="block_002dambcond.html"/>
+    <ROW File="BlocksFiles.html" Component_="Assembler.html" FileName="Blocks~1.htm|Blocks-Files.html" Attributes="0" SourcePath="dist\doc\gforth\Blocks-Files.html" SelfReg="false" NextFile="Blocks.html"/>
+    <ROW File="BooleanFlags.html" Component_="Assembler.html" FileName="Boolea~1.htm|Boolean-Flags.html" Attributes="0" SourcePath="dist\doc\gforth\Boolean-Flags.html" SelfReg="false" NextFile="Bugs.html"/>
+    <ROW File="Bugs.html" Component_="Assembler.html" FileName="Bugs~1.htm|Bugs.html" Attributes="0" SourcePath="dist\doc\gforth\Bugs.html" SelfReg="false" NextFile="Cinterfaceinternals.html"/>
+    <ROW File="CCodeMacros.html" Component_="CCodeMacros.html" FileName="C-Code~1.htm|C-Code-Macros.html" Attributes="0" SourcePath="dist\doc\vmgen\C-Code-Macros.html" SelfReg="false" NextFile="CCoderestrictions.html"/>
+    <ROW File="CCoderestrictions.html" Component_="CCodeMacros.html" FileName="C-Code~2.htm|C-Code-restrictions.html" Attributes="0" SourcePath="dist\doc\vmgen\C-Code-restrictions.html" SelfReg="false" NextFile="Changes.html"/>
+    <ROW File="CInterface.html" Component_="Assembler.html" FileName="C-Inte~2.htm|C-Interface.html" Attributes="0" SourcePath="dist\doc\gforth\C-Interface.html" SelfReg="false" NextFile="Callbacks.html"/>
+    <ROW File="COPYING" Component_="aclocal.m4" FileName="COPYING" Attributes="0" SourcePath="dist\COPYING" SelfReg="false" NextFile="COPYING.DOC"/>
+    <ROW File="COPYING.DOC" Component_="aclocal.m4" FileName="COPYING.DOC" Attributes="0" SourcePath="dist\COPYING.DOC" SelfReg="false" NextFile="COPYING.LIB"/>
+    <ROW File="COPYING.LIB" Component_="aclocal.m4" FileName="COPYING.LIB" Attributes="0" SourcePath="dist\COPYING.LIB" SelfReg="false" NextFile="cross.fs"/>
+    <ROW File="CREATE.html" Component_="Assembler.html" FileName="CREATE~1.htm|CREATE.html" Attributes="0" SourcePath="dist\doc\gforth\CREATE.html" SelfReg="false" NextFile="CREATE_002e_002eDOES_003eapplications.html"/>
+    <ROW File="CREATE_002e_002eDOES_003eapplications.html" Component_="Assembler.html" FileName="CREATE~2.htm|CREATE_002e_002eDOES_003e-applications.html" Attributes="0" SourcePath="dist\doc\gforth\CREATE_002e_002eDOES_003e-applications.html" SelfReg="false" NextFile="CREATE_002e_002eDOES_003edetails.html"/>
+    <ROW File="CREATE_002e_002eDOES_003edetails.html" Component_="Assembler.html" FileName="CREATE~3.htm|CREATE_002e_002eDOES_003e-details.html" Attributes="0" SourcePath="dist\doc\gforth\CREATE_002e_002eDOES_003e-details.html" SelfReg="false" NextFile="Creatingobjects.html"/>
+    <ROW File="Callbacks.html" Component_="Assembler.html" FileName="Callba~1.htm|Callbacks.html" Attributes="0" SourcePath="dist\doc\gforth\Callbacks.html" SelfReg="false" NextFile="CallingCfunctionpointers.html"/>
+    <ROW File="CallingCFunctions.html" Component_="Assembler.html" FileName="Callin~2.htm|Calling-C-Functions.html" Attributes="0" SourcePath="dist\doc\gforth\Calling-C-Functions.html" SelfReg="false" NextFile="Callsandreturns.html"/>
+    <ROW File="CallingCfunctionpointers.html" Component_="Assembler.html" FileName="Callin~1.htm|Calling-C-function-pointers.html" Attributes="0" SourcePath="dist\doc\gforth\Calling-C-function-pointers.html" SelfReg="false" NextFile="CallingCFunctions.html"/>
+    <ROW File="Callsandreturns.html" Component_="Assembler.html" FileName="Calls-~1.htm|Calls-and-returns.html" Attributes="0" SourcePath="dist\doc\gforth\Calls-and-returns.html" SelfReg="false" NextFile="Caseinsensitivity.html"/>
+    <ROW File="Caseinsensitivity.html" Component_="Assembler.html" FileName="Case-i~1.htm|Case-insensitivity.html" Attributes="0" SourcePath="dist\doc\gforth\Case-insensitivity.html" SelfReg="false" NextFile="CharactersandStringsTutorial.html"/>
+    <ROW File="ChangeLog" Component_="aclocal.m4" FileName="Change~1|ChangeLog" Attributes="0" SourcePath="dist\ChangeLog" SelfReg="false" NextFile="code.fs"/>
+    <ROW File="Changes.html" Component_="CCodeMacros.html" FileName="Change~1.htm|Changes.html" Attributes="0" SourcePath="dist\doc\vmgen\Changes.html" SelfReg="false" NextFile="Concepts.html"/>
+    <ROW File="CharactersandStringsTutorial.html" Component_="Assembler.html" FileName="Charac~1.htm|Characters-and-Strings-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Characters-and-Strings-Tutorial.html" SelfReg="false" NextFile="ClassBinding.html"/>
+    <ROW File="Cinterfaceinternals.html" Component_="Assembler.html" FileName="C-inte~1.htm|C-interface-internals.html" Attributes="0" SourcePath="dist\doc\gforth\C-interface-internals.html" SelfReg="false" NextFile="CInterface.html"/>
+    <ROW File="ClassBinding.html" Component_="Assembler.html" FileName="Class-~1.htm|Class-Binding.html" Attributes="0" SourcePath="dist\doc\gforth\Class-Binding.html" SelfReg="false" NextFile="ClassDeclaration.html"/>
+    <ROW File="ClassDeclaration.html" Component_="Assembler.html" FileName="Class-~2.htm|Class-Declaration.html" Attributes="0" SourcePath="dist\doc\gforth\Class-Declaration.html" SelfReg="false" NextFile="ClassImplementation.html"/>
+    <ROW File="ClassImplementation.html" Component_="Assembler.html" FileName="Class-~3.htm|Class-Implementation.html" Attributes="0" SourcePath="dist\doc\gforth\Class-Implementation.html" SelfReg="false" NextFile="ClassesandScoping.html"/>
+    <ROW File="ClassesandScoping.html" Component_="Assembler.html" FileName="Classe~1.htm|Classes-and-Scoping.html" Attributes="0" SourcePath="dist\doc\gforth\Classes-and-Scoping.html" SelfReg="false" NextFile="Codeand_003bcode.html"/>
+    <ROW File="Codeand_003bcode.html" Component_="Assembler.html" FileName="Code-a~1.htm|Code-and-_003bcode.html" Attributes="0" SourcePath="dist\doc\gforth\Code-and-_003bcode.html" SelfReg="false" NextFile="ColonDefinitionsTutorial.html"/>
+    <ROW File="ColonDefinitions.html" Component_="Assembler.html" FileName="Colon-~2.htm|Colon-Definitions.html" Attributes="0" SourcePath="dist\doc\gforth\Colon-Definitions.html" SelfReg="false" NextFile="Combinedwords.html"/>
+    <ROW File="ColonDefinitionsTutorial.html" Component_="Assembler.html" FileName="Colon-~1.htm|Colon-Definitions-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Colon-Definitions-Tutorial.html" SelfReg="false" NextFile="ColonDefinitions.html"/>
+    <ROW File="Combinedwords.html" Component_="Assembler.html" FileName="Combin~1.htm|Combined-words.html" Attributes="0" SourcePath="dist\doc\gforth\Combined-words.html" SelfReg="false" NextFile="Command_002dlineediting.html"/>
+    <ROW File="Command_002dlineediting.html" Component_="Assembler.html" FileName="Comman~1.htm|Command_002dline-editing.html" Attributes="0" SourcePath="dist\doc\gforth\Command_002dline-editing.html" SelfReg="false" NextFile="CommentsTutorial.html"/>
+    <ROW File="Comments.html" Component_="Assembler.html" FileName="Commen~2.htm|Comments.html" Attributes="0" SourcePath="dist\doc\gforth\Comments.html" SelfReg="false" NextFile="CommonAssembler.html"/>
+    <ROW File="CommentsTutorial.html" Component_="Assembler.html" FileName="Commen~1.htm|Comments-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Comments-Tutorial.html" SelfReg="false" NextFile="Comments.html"/>
+    <ROW File="CommonAssembler.html" Component_="Assembler.html" FileName="Common~1.htm|Common-Assembler.html" Attributes="0" SourcePath="dist\doc\gforth\Common-Assembler.html" SelfReg="false" NextFile="CommonDisassembler.html"/>
+    <ROW File="CommonDisassembler.html" Component_="Assembler.html" FileName="Common~2.htm|Common-Disassembler.html" Attributes="0" SourcePath="dist\doc\gforth\Common-Disassembler.html" SelfReg="false" NextFile="Comparisonwithotherobjectmodels.html"/>
+    <ROW File="Comparisonwithotherobjectmodels.html" Component_="Assembler.html" FileName="Compar~1.htm|Comparison-with-other-object-models.html" Attributes="0" SourcePath="dist\doc\gforth\Comparison-with-other-object-models.html" SelfReg="false" NextFile="Compilationtoken.html"/>
+    <ROW File="CompilationTokensTutorial.html" Component_="Assembler.html" FileName="Compil~2.htm|Compilation-Tokens-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Compilation-Tokens-Tutorial.html" SelfReg="false" NextFile="Compilingwords.html"/>
+    <ROW File="Compilationtoken.html" Component_="Assembler.html" FileName="Compil~1.htm|Compilation-token.html" Attributes="0" SourcePath="dist\doc\gforth\Compilation-token.html" SelfReg="false" NextFile="CompilationTokensTutorial.html"/>
+    <ROW File="Compilingwords.html" Component_="Assembler.html" FileName="Compil~3.htm|Compiling-words.html" Attributes="0" SourcePath="dist\doc\gforth\Compiling-words.html" SelfReg="false" NextFile="ConceptIndex.html"/>
+    <ROW File="ConceptIndex.html" Component_="Assembler.html" FileName="Concep~1.htm|Concept-Index.html" Attributes="0" SourcePath="dist\doc\gforth\Concept-Index.html" SelfReg="false" NextFile="ConditionalexecutionTutorial.html"/>
+    <ROW File="Concepts.html" Component_="CCodeMacros.html" FileName="Concep~1.htm|Concepts.html" Attributes="0" SourcePath="dist\doc\vmgen\Concepts.html" SelfReg="false" NextFile="Contact.html"/>
+    <ROW File="ConditionalexecutionTutorial.html" Component_="Assembler.html" FileName="Condit~1.htm|Conditional-execution-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Conditional-execution-Tutorial.html" SelfReg="false" NextFile="Constants.html"/>
+    <ROW File="Const_002ddoes_003e.html" Component_="Assembler.html" FileName="Const_~1.htm|Const_002ddoes_003e.html" Attributes="0" SourcePath="dist\doc\gforth\Const_002ddoes_003e.html" SelfReg="false" NextFile="ControlStructures.html"/>
+    <ROW File="Constants.html" Component_="Assembler.html" FileName="Consta~1.htm|Constants.html" Attributes="0" SourcePath="dist\doc\gforth\Constants.html" SelfReg="false" NextFile="Const_002ddoes_003e.html"/>
+    <ROW File="Contact.html" Component_="CCodeMacros.html" FileName="Contac~1.htm|Contact.html" Attributes="0" SourcePath="dist\doc\vmgen\Contact.html" SelfReg="false" NextFile="CopyingThisManual.html"/>
+    <ROW File="ControlStructures.html" Component_="Assembler.html" FileName="Contro~1.htm|Control-Structures.html" Attributes="0" SourcePath="dist\doc\gforth\Control-Structures.html" SelfReg="false" NextFile="Copying.html"/>
+    <ROW File="Copying.html" Component_="Assembler.html" FileName="Copyin~1.htm|Copying.html" Attributes="0" SourcePath="dist\doc\gforth\Copying.html" SelfReg="false" NextFile="core_002dambcond.html"/>
+    <ROW File="CopyingThisManual.html" Component_="CCodeMacros.html" FileName="Copyin~1.htm|Copying-This-Manual.html" Attributes="0" SourcePath="dist\doc\vmgen\Copying-This-Manual.html" SelfReg="false" NextFile="Datahandling.html"/>
+    <ROW File="CountedLoops.html" Component_="Assembler.html" FileName="Counte~2.htm|Counted-Loops.html" Attributes="0" SourcePath="dist\doc\gforth\Counted-Loops.html" SelfReg="false" NextFile="CrashCourseTutorial.html"/>
+    <ROW File="CountedloopsTutorial.html" Component_="Assembler.html" FileName="Counte~1.htm|Counted-loops-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Counted-loops-Tutorial.html" SelfReg="false" NextFile="CountedLoops.html"/>
+    <ROW File="CrashCourseTutorial.html" Component_="Assembler.html" FileName="Crash-~1.htm|Crash-Course-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Crash-Course-Tutorial.html" SelfReg="false" NextFile="CREATE.html"/>
+    <ROW File="Creatingobjects.html" Component_="Assembler.html" FileName="Creati~1.htm|Creating-objects.html" Attributes="0" SourcePath="dist\doc\gforth\Creating-objects.html" SelfReg="false" NextFile="CrossCompiler.html"/>
+    <ROW File="CrossCompiler.html" Component_="Assembler.html" FileName="Cross-~1.htm|Cross-Compiler.html" Attributes="0" SourcePath="dist\doc\gforth\Cross-Compiler.html" SelfReg="false" NextFile="cross_002efs.html"/>
+    <ROW File="DOES_003e.html" Component_="Assembler.html" FileName="DOES_0~1.htm|DOES_003e.html" Attributes="0" SourcePath="dist\doc\gforth\DOES_003e.html" SelfReg="false" NextFile="Doubleprecision.html"/>
+    <ROW File="Data_002dRelocatableImageFiles.html" Component_="Assembler.html" FileName="Data_0~1.htm|Data_002dRelocatable-Image-Files.html" Attributes="0" SourcePath="dist\doc\gforth\Data_002dRelocatable-Image-Files.html" SelfReg="false" NextFile="Debugging.html"/>
+    <ROW File="Datahandling.html" Component_="CCodeMacros.html" FileName="Data-h~1.htm|Data-handling.html" Attributes="0" SourcePath="dist\doc\vmgen\Data-handling.html" SelfReg="false" NextFile="Dispatch.html"/>
+    <ROW File="Datastack.html" Component_="Assembler.html" FileName="Data-s~1.htm|Data-stack.html" Attributes="0" SourcePath="dist\doc\gforth\Data-stack.html" SelfReg="false" NextFile="Data_002dRelocatableImageFiles.html"/>
+    <ROW File="Debugging.html" Component_="Assembler.html" FileName="Debugg~1.htm|Debugging.html" Attributes="0" SourcePath="dist\doc\gforth\Debugging.html" SelfReg="false" NextFile="DeclaringCFunctions.html"/>
+    <ROW File="DeclaringCFunctions.html" Component_="Assembler.html" FileName="Declar~1.htm|Declaring-C-Functions.html" Attributes="0" SourcePath="dist\doc\gforth\Declaring-C-Functions.html" SelfReg="false" NextFile="DeclaringOS_002dlevellibraries.html"/>
+    <ROW File="DeclaringOS_002dlevellibraries.html" Component_="Assembler.html" FileName="Declar~2.htm|Declaring-OS_002dlevel-libraries.html" Attributes="0" SourcePath="dist\doc\gforth\Declaring-OS_002dlevel-libraries.html" SelfReg="false" NextFile="DecompilationTutorial.html"/>
+    <ROW File="DecompilationTutorial.html" Component_="Assembler.html" FileName="Decomp~1.htm|Decompilation-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Decompilation-Tutorial.html" SelfReg="false" NextFile="DeferredWords.html"/>
+    <ROW File="DeferredWords.html" Component_="Assembler.html" FileName="Deferr~1.htm|Deferred-Words.html" Attributes="0" SourcePath="dist\doc\gforth\Deferred-Words.html" SelfReg="false" NextFile="Defininglibraryinterfaces.html"/>
+    <ROW File="DefiningWords.html" Component_="Assembler.html" FileName="Defini~3.htm|Defining-Words.html" Attributes="0" SourcePath="dist\doc\gforth\Defining-Words.html" SelfReg="false" NextFile="DesigningthestackeffectTutorial.html"/>
+    <ROW File="DefiningWordsTutorial.html" Component_="Assembler.html" FileName="Defini~2.htm|Defining-Words-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Defining-Words-Tutorial.html" SelfReg="false" NextFile="DefiningWords.html"/>
+    <ROW File="Defininglibraryinterfaces.html" Component_="Assembler.html" FileName="Defini~1.htm|Defining-library-interfaces.html" Attributes="0" SourcePath="dist\doc\gforth\Defining-library-interfaces.html" SelfReg="false" NextFile="DefiningWordsTutorial.html"/>
+    <ROW File="DesigningthestackeffectTutorial.html" Component_="Assembler.html" FileName="Design~1.htm|Designing-the-stack-effect-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Designing-the-stack-effect-Tutorial.html" SelfReg="false" NextFile="Dictionaryallocation.html"/>
+    <ROW File="Dictionaryallocation.html" Component_="Assembler.html" FileName="Dictio~1.htm|Dictionary-allocation.html" Attributes="0" SourcePath="dist\doc\gforth\Dictionary-allocation.html" SelfReg="false" NextFile="DirectorIndirectThreaded_003f.html"/>
+    <ROW File="DirectorIndirectThreaded_003f.html" Component_="Assembler.html" FileName="Direct~1.htm|Direct-or-Indirect-Threaded_003f.html" Attributes="0" SourcePath="dist\doc\gforth\Direct-or-Indirect-Threaded_003f.html" SelfReg="false" NextFile="Displayingcharactersandstrings.html"/>
+    <ROW File="Dispatch.html" Component_="CCodeMacros.html" FileName="Dispat~1.htm|Dispatch.html" Attributes="0" SourcePath="dist\doc\vmgen\Dispatch.html" SelfReg="false" NextFile="Errormessages.html_1"/>
+    <ROW File="Displayingcharactersandstrings.html" Component_="Assembler.html" FileName="Displa~1.htm|Displaying-characters-and-strings.html" Attributes="0" SourcePath="dist\doc\gforth\Displaying-characters-and-strings.html" SelfReg="false" NextFile="Dividingclasses.html"/>
+    <ROW File="Dividingclasses.html" Component_="Assembler.html" FileName="Dividi~1.htm|Dividing-classes.html" Attributes="0" SourcePath="dist\doc\gforth\Dividing-classes.html" SelfReg="false" NextFile="DOES_003e.html"/>
+    <ROW File="Doubleprecision.html" Component_="Assembler.html" FileName="Double~1.htm|Double-precision.html" Attributes="0" SourcePath="dist\doc\gforth\Double-precision.html" SelfReg="false" NextFile="double_002dambcond.html"/>
+    <ROW File="DynamicSuperinstructions.html" Component_="Assembler.html" FileName="Dynami~1.htm|Dynamic-Superinstructions.html" Attributes="0" SourcePath="dist\doc\gforth\Dynamic-Superinstructions.html" SelfReg="false" NextFile="EmacsandGforth.html"/>
+    <ROW File="EmacsTags.html" Component_="Assembler.html" FileName="Emacs-~2.htm|Emacs-Tags.html" Attributes="0" SourcePath="dist\doc\gforth\Emacs-Tags.html" SelfReg="false" NextFile="Engine.html"/>
+    <ROW File="EmacsandGforth.html" Component_="Assembler.html" FileName="Emacs-~1.htm|Emacs-and-Gforth.html" Attributes="0" SourcePath="dist\doc\gforth\Emacs-and-Gforth.html" SelfReg="false" NextFile="EmacsTags.html"/>
+    <ROW File="Engine.html" Component_="Assembler.html" FileName="Engine~1.htm|Engine.html" Attributes="0" SourcePath="dist\doc\gforth\Engine.html" SelfReg="false" NextFile="Environmentvariables.html"/>
+    <ROW File="EnvironmentalQueries.html" Component_="Assembler.html" FileName="Enviro~2.htm|Environmental-Queries.html" Attributes="0" SourcePath="dist\doc\gforth\Environmental-Queries.html" SelfReg="false" NextFile="Errormessages.html"/>
+    <ROW File="Environmentvariables.html" Component_="Assembler.html" FileName="Enviro~1.htm|Environment-variables.html" Attributes="0" SourcePath="dist\doc\gforth\Environment-variables.html" SelfReg="false" NextFile="EnvironmentalQueries.html"/>
+    <ROW File="Errormessages.html" Component_="Assembler.html" FileName="Error-~1.htm|Error-messages.html" Attributes="0" SourcePath="dist\doc\gforth\Error-messages.html" SelfReg="false" NextFile="Examining.html"/>
+    <ROW File="Errormessages.html_1" Component_="CCodeMacros.html" FileName="Error-~1.htm|Error-messages.html" Attributes="0" SourcePath="dist\doc\vmgen\Error-messages.html" SelfReg="false" NextFile="Evalescapes.html"/>
+    <ROW File="Evalescapes.html" Component_="CCodeMacros.html" FileName="Eval-e~1.htm|Eval-escapes.html" Attributes="0" SourcePath="dist\doc\vmgen\Eval-escapes.html" SelfReg="false" NextFile="Exampleoverview.html"/>
+    <ROW File="Examining.html" Component_="Assembler.html" FileName="Examin~1.htm|Examining.html" Attributes="0" SourcePath="dist\doc\gforth\Examining.html" SelfReg="false" NextFile="ExceptionHandling.html"/>
+    <ROW File="Example.html" Component_="CCodeMacros.html" FileName="Exampl~2.htm|Example.html" Attributes="0" SourcePath="dist\doc\vmgen\Example.html" SelfReg="false" NextFile="Explicitstackaccess.html"/>
+    <ROW File="Exampleoverview.html" Component_="CCodeMacros.html" FileName="Exampl~1.htm|Example-overview.html" Attributes="0" SourcePath="dist\doc\vmgen\Example-overview.html" SelfReg="false" NextFile="Example.html"/>
+    <ROW File="ExceptionHandling.html" Component_="Assembler.html" FileName="Except~1.htm|Exception-Handling.html" Attributes="0" SourcePath="dist\doc\gforth\Exception-Handling.html" SelfReg="false" NextFile="ExceptionsTutorial.html"/>
+    <ROW File="ExceptionsTutorial.html" Component_="Assembler.html" FileName="Except~2.htm|Exceptions-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Exceptions-Tutorial.html" SelfReg="false" NextFile="exception_002didef.html"/>
+    <ROW File="ExecutionTokensTutorial.html" Component_="Assembler.html" FileName="Execut~2.htm|Execution-Tokens-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Execution-Tokens-Tutorial.html" SelfReg="false" NextFile="Exercises.html"/>
+    <ROW File="Executiontoken.html" Component_="Assembler.html" FileName="Execut~1.htm|Execution-token.html" Attributes="0" SourcePath="dist\doc\gforth\Execution-token.html" SelfReg="false" NextFile="ExecutionTokensTutorial.html"/>
+    <ROW File="Exercises.html" Component_="Assembler.html" FileName="Exerci~1.htm|Exercises.html" Attributes="0" SourcePath="dist\doc\gforth\Exercises.html" SelfReg="false" NextFile="facility_002dambcond.html"/>
+    <ROW File="Explicitstackaccess.html" Component_="CCodeMacros.html" FileName="Explic~1.htm|Explicit-stack-access.html" Attributes="0" SourcePath="dist\doc\vmgen\Explicit-stack-access.html" SelfReg="false" NextFile="Floatingpoint.html_1"/>
+    <ROW File="FactoringTutorial.html" Component_="Assembler.html" FileName="Factor~1.htm|Factoring-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Factoring-Tutorial.html" SelfReg="false" NextFile="FilesTutorial.html"/>
+    <ROW File="Files.html" Component_="Assembler.html" FileName="Files~1.htm|Files.html" Attributes="0" SourcePath="dist\doc\gforth\Files.html" SelfReg="false" NextFile="file_002dambcond.html"/>
+    <ROW File="FilesTutorial.html" Component_="Assembler.html" FileName="Files-~1.htm|Files-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Files-Tutorial.html" SelfReg="false" NextFile="Files.html"/>
+    <ROW File="FlagsandComparisonsTutorial.html" Component_="Assembler.html" FileName="Flags-~1.htm|Flags-and-Comparisons-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Flags-and-Comparisons-Tutorial.html" SelfReg="false" NextFile="Floatingpointstack.html"/>
+    <ROW File="FloatingPoint.html" Component_="Assembler.html" FileName="Floati~3.htm|Floating-Point.html" Attributes="0" SourcePath="dist\doc\gforth\Floating-Point.html" SelfReg="false" NextFile="floating_002dambcond.html"/>
+    <ROW File="FloatingPointTutorial.html" Component_="Assembler.html" FileName="Floati~2.htm|Floating-Point-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Floating-Point-Tutorial.html" SelfReg="false" NextFile="FloatingPoint.html"/>
+    <ROW File="Floatingpoint.html_1" Component_="CCodeMacros.html" FileName="Floati~1.htm|Floating-point.html" Attributes="0" SourcePath="dist\doc\vmgen\Floating-point.html" SelfReg="false" NextFile="FrontendandVMinterpreter.html"/>
+    <ROW File="Floatingpointstack.html" Component_="Assembler.html" FileName="Floati~1.htm|Floating-point-stack.html" Attributes="0" SourcePath="dist\doc\gforth\Floating-point-stack.html" SelfReg="false" NextFile="FloatingPointTutorial.html"/>
+    <ROW File="Forgettingwords.html" Component_="Assembler.html" FileName="Forget~1.htm|Forgetting-words.html" Attributes="0" SourcePath="dist\doc\gforth\Forgetting-words.html" SelfReg="false" NextFile="Formattednumericoutput.html"/>
+    <ROW File="Formattednumericoutput.html" Component_="Assembler.html" FileName="Format~1.htm|Formatted-numeric-output.html" Attributes="0" SourcePath="dist\doc\gforth\Formatted-numeric-output.html" SelfReg="false" NextFile="ForthiswritteninForth.html"/>
+    <ROW File="Forth200xStructures.html" Component_="Assembler.html" FileName="Forth2~1.htm|Forth200x-Structures.html" Attributes="0" SourcePath="dist\doc\gforth\Forth200x-Structures.html" SelfReg="false" NextFile="Forth_002drelatedinformation.html"/>
+    <ROW File="Forth_002drelatedinformation.html" Component_="Assembler.html" FileName="Forth_~1.htm|Forth_002drelated-information.html" Attributes="0" SourcePath="dist\doc\gforth\Forth_002drelated-information.html" SelfReg="false" NextFile="FullyRelocatableImageFiles.html"/>
+    <ROW File="ForthiswritteninForth.html" Component_="Assembler.html" FileName="Forth-~1.htm|Forth-is-written-in-Forth.html" Attributes="0" SourcePath="dist\doc\gforth\Forth-is-written-in-Forth.html" SelfReg="false" NextFile="Forthsourcefiles.html"/>
+    <ROW File="Forthsourcefiles.html" Component_="Assembler.html" FileName="Forth-~2.htm|Forth-source-files.html" Attributes="0" SourcePath="dist\doc\gforth\Forth-source-files.html" SelfReg="false" NextFile="Forth200xStructures.html"/>
+    <ROW File="FrontendandVMinterpreter.html" Component_="CCodeMacros.html" FileName="Front-~1.htm|Front-end-and-VM-interpreter.html" Attributes="0" SourcePath="dist\doc\vmgen\Front-end-and-VM-interpreter.html" SelfReg="false" NextFile="GNUFreeDocumentationLicense.html_1"/>
+    <ROW File="FullyRelocatableImageFiles.html" Component_="Assembler.html" FileName="Fully-~1.htm|Fully-Relocatable-Image-Files.html" Attributes="0" SourcePath="dist\doc\gforth\Fully-Relocatable-Image-Files.html" SelfReg="false" NextFile="Generalfiles.html"/>
+    <ROW File="GNUFreeDocumentationLicense.html" Component_="Assembler.html" FileName="GNU-Fr~1.htm|GNU-Free-Documentation-License.html" Attributes="0" SourcePath="dist\doc\gforth\GNU-Free-Documentation-License.html" SelfReg="false" NextFile="Goals.html"/>
+    <ROW File="GNUFreeDocumentationLicense.html_1" Component_="CCodeMacros.html" FileName="GNU-Fr~1.htm|GNU-Free-Documentation-License.html" Attributes="0" SourcePath="dist\doc\vmgen\GNU-Free-Documentation-License.html" SelfReg="false" NextFile="Hints.html"/>
+    <ROW File="GeneralLoopsTutorial.html" Component_="Assembler.html" FileName="Genera~2.htm|General-Loops-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\General-Loops-Tutorial.html" SelfReg="false" NextFile="GeneralSearchPaths.html"/>
+    <ROW File="GeneralSearchPaths.html" Component_="Assembler.html" FileName="Genera~3.htm|General-Search-Paths.html" Attributes="0" SourcePath="dist\doc\gforth\General-Search-Paths.html" SelfReg="false" NextFile="GforthEnvironment.html"/>
+    <ROW File="Generalfiles.html" Component_="Assembler.html" FileName="Genera~1.htm|General-files.html" Attributes="0" SourcePath="dist\doc\gforth\General-files.html" SelfReg="false" NextFile="GeneralLoopsTutorial.html"/>
+    <ROW File="GforthEnvironment.html" Component_="Assembler.html" FileName="Gforth~1.htm|Gforth-Environment.html" Attributes="0" SourcePath="dist\doc\gforth\Gforth-Environment.html" SelfReg="false" NextFile="GforthFiles.html"/>
+    <ROW File="GforthFiles.html" Component_="Assembler.html" FileName="Gforth~2.htm|Gforth-Files.html" Attributes="0" SourcePath="dist\doc\gforth\Gforth-Files.html" SelfReg="false" NextFile="Gforthinpipes.html"/>
+    <ROW File="Gforthinpipes.html" Component_="Assembler.html" FileName="Gforth~3.htm|Gforth-in-pipes.html" Attributes="0" SourcePath="dist\doc\gforth\Gforth-in-pipes.html" SelfReg="false" NextFile="Gforthlocals.html"/>
+    <ROW File="Gforthlocals.html" Component_="Assembler.html" FileName="Gforth~4.htm|Gforth-locals.html" Attributes="0" SourcePath="dist\doc\gforth\Gforth-locals.html" SelfReg="false" NextFile="gforthmi.html"/>
+    <ROW File="Goals.html" Component_="Assembler.html" FileName="Goals~1.htm|Goals.html" Attributes="0" SourcePath="dist\doc\gforth\Goals.html" SelfReg="false" NextFile="HeapAllocation.html"/>
+    <ROW File="HeapAllocation.html" Component_="Assembler.html" FileName="Heap-A~1.htm|Heap-Allocation.html" Attributes="0" SourcePath="dist\doc\gforth\Heap-Allocation.html" SelfReg="false" NextFile="Hilighting.html"/>
+    <ROW File="Hilighting.html" Component_="Assembler.html" FileName="Hiligh~1.htm|Hilighting.html" Attributes="0" SourcePath="dist\doc\gforth\Hilighting.html" SelfReg="false" NextFile="Howdoesthatwork_003f.html"/>
+    <ROW File="Hints.html" Component_="CCodeMacros.html" FileName="Hints~1.htm|Hints.html" Attributes="0" SourcePath="dist\doc\vmgen\Hints.html" SelfReg="false" NextFile="index.html_1"/>
+    <ROW File="Howdoesthatwork_003f.html" Component_="Assembler.html" FileName="How-do~1.htm|How-does-that-work_003f.html" Attributes="0" SourcePath="dist\doc\gforth\How-does-that-work_003f.html" SelfReg="false" NextFile="Howlongdolocalslive_003f.html"/>
+    <ROW File="Howlongdolocalslive_003f.html" Component_="Assembler.html" FileName="How-lo~1.htm|How-long-do-locals-live_003f.html" Attributes="0" SourcePath="dist\doc\gforth\How-long-do-locals-live_003f.html" SelfReg="false" NextFile="HowtheCrossCompilerWorks.html"/>
+    <ROW File="HowtheCrossCompilerWorks.html" Component_="Assembler.html" FileName="How-th~1.htm|How-the-Cross-Compiler-Works.html" Attributes="0" SourcePath="dist\doc\gforth\How-the-Cross-Compiler-Works.html" SelfReg="false" NextFile="ImageFileBackground.html"/>
+    <ROW File="INSTALL" Component_="aclocal.m4" FileName="INSTALL" Attributes="0" SourcePath="dist\INSTALL" SelfReg="false" NextFile="installsh"/>
+    <ROW File="INSTALL.BINDIST" Component_="aclocal.m4" FileName="INSTAL~1.BIN|INSTALL.BINDIST" Attributes="0" SourcePath="dist\INSTALL.BINDIST" SelfReg="false" NextFile="INSTALL.DOS"/>
+    <ROW File="INSTALL.DOS" Component_="aclocal.m4" FileName="INSTALL.DOS" Attributes="0" SourcePath="dist\INSTALL.DOS" SelfReg="false" NextFile="intcomp.fs"/>
+    <ROW File="ImageFileBackground.html" Component_="Assembler.html" FileName="Image-~1.htm|Image-File-Background.html" Attributes="0" SourcePath="dist\doc\gforth\Image-File-Background.html" SelfReg="false" NextFile="ImageFiles.html"/>
+    <ROW File="ImageFiles.html" Component_="Assembler.html" FileName="Image-~2.htm|Image-Files.html" Attributes="0" SourcePath="dist\doc\gforth\Image-Files.html" SelfReg="false" NextFile="ImageLicensingIssues.html"/>
+    <ROW File="ImageLicensingIssues.html" Component_="Assembler.html" FileName="Image-~3.htm|Image-Licensing-Issues.html" Attributes="0" SourcePath="dist\doc\gforth\Image-Licensing-Issues.html" SelfReg="false" NextFile="index.html"/>
+    <ROW File="InputFileFormat.html" Component_="CCodeMacros.html" FileName="Input-~1.htm|Input-File-Format.html" Attributes="0" SourcePath="dist\doc\vmgen\Input-File-Format.html" SelfReg="false" NextFile="InputFileGrammar.html"/>
+    <ROW File="InputFileGrammar.html" Component_="CCodeMacros.html" FileName="Input-~2.htm|Input-File-Grammar.html" Attributes="0" SourcePath="dist\doc\vmgen\Input-File-Grammar.html" SelfReg="false" NextFile="Introduction.html_1"/>
+    <ROW File="InputSources.html" Component_="Assembler.html" FileName="Input-~1.htm|Input-Sources.html" Attributes="0" SourcePath="dist\doc\gforth\Input-Sources.html" SelfReg="false" NextFile="Installinggforth_002eel.html"/>
+    <ROW File="Installinggforth_002eel.html" Component_="Assembler.html" FileName="Instal~1.htm|Installing-gforth_002eel.html" Attributes="0" SourcePath="dist\doc\gforth\Installing-gforth_002eel.html" SelfReg="false" NextFile="IntegratingGforth.html"/>
+    <ROW File="IntegratingGforth.html" Component_="Assembler.html" FileName="Integr~1.htm|Integrating-Gforth.html" Attributes="0" SourcePath="dist\doc\gforth\Integrating-Gforth.html" SelfReg="false" NextFile="InterpretationandCompilationSemanticsandImmediacyTutorial.html"/>
+    <ROW File="Interpret_002fCompilestates.html" Component_="Assembler.html" FileName="Interp~4.htm|Interpret_002fCompile-states.html" Attributes="0" SourcePath="dist\doc\gforth\Interpret_002fCompile-states.html" SelfReg="false" NextFile="IntroducingtheTextInterpreter.html"/>
+    <ROW File="InterpretationandCompilationSemantics.html" Component_="Assembler.html" FileName="Interp~2.htm|Interpretation-and-Compilation-Semantics.html" Attributes="0" SourcePath="dist\doc\gforth\Interpretation-and-Compilation-Semantics.html" SelfReg="false" NextFile="InterpreterDirectives.html"/>
+    <ROW File="InterpretationandCompilationSemanticsandImmediacyTutorial.html" Component_="Assembler.html" FileName="Interp~1.htm|Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial.html" SelfReg="false" NextFile="InterpretationandCompilationSemantics.html"/>
+    <ROW File="InterpreterDirectives.html" Component_="Assembler.html" FileName="Interp~3.htm|Interpreter-Directives.html" Attributes="0" SourcePath="dist\doc\gforth\Interpreter-Directives.html" SelfReg="false" NextFile="Interpret_002fCompilestates.html"/>
+    <ROW File="IntroducingtheTextInterpreter.html" Component_="Assembler.html" FileName="Introd~1.htm|Introducing-the-Text-Interpreter.html" Attributes="0" SourcePath="dist\doc\gforth\Introducing-the-Text-Interpreter.html" SelfReg="false" NextFile="Introduction.html"/>
+    <ROW File="Introduction.html" Component_="Assembler.html" FileName="Introd~2.htm|Introduction.html" Attributes="0" SourcePath="dist\doc\gforth\Introduction.html" SelfReg="false" NextFile="InvokingGforth.html"/>
+    <ROW File="Introduction.html_1" Component_="CCodeMacros.html" FileName="Introd~1.htm|Introduction.html" Attributes="0" SourcePath="dist\doc\vmgen\Introduction.html" SelfReg="false" NextFile="InvokingVmgen.html"/>
+    <ROW File="InvokingGforth.html" Component_="Assembler.html" FileName="Invoki~1.htm|Invoking-Gforth.html" Attributes="0" SourcePath="dist\doc\gforth\Invoking-Gforth.html" SelfReg="false" NextFile="KeepingtrackofTime.html"/>
+    <ROW File="InvokingVmgen.html" Component_="CCodeMacros.html" FileName="Invoki~1.htm|Invoking-Vmgen.html" Attributes="0" SourcePath="dist\doc\vmgen\Invoking-Vmgen.html" SelfReg="false" NextFile="Peepholeoptimization.html"/>
+    <ROW File="KeepingtrackofTime.html" Component_="Assembler.html" FileName="Keepin~1.htm|Keeping-track-of-Time.html" Attributes="0" SourcePath="dist\doc\gforth\Keeping-track-of-Time.html" SelfReg="false" NextFile="LeavingdefinitionsorloopsTutorial.html"/>
+    <ROW File="LeavingGforth.html" Component_="Assembler.html" FileName="Leavin~2.htm|Leaving-Gforth.html" Attributes="0" SourcePath="dist\doc\gforth\Leaving-Gforth.html" SelfReg="false" NextFile="Licenses.html"/>
+    <ROW File="LeavingdefinitionsorloopsTutorial.html" Component_="Assembler.html" FileName="Leavin~1.htm|Leaving-definitions-or-loops-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Leaving-definitions-or-loops-Tutorial.html" SelfReg="false" NextFile="LeavingGforth.html"/>
+    <ROW File="Licenses.html" Component_="Assembler.html" FileName="Licens~1.htm|Licenses.html" Attributes="0" SourcePath="dist\doc\gforth\Licenses.html" SelfReg="false" NextFile="Lineinputandconversion.html"/>
+    <ROW File="Lineinputandconversion.html" Component_="Assembler.html" FileName="Line-i~1.htm|Line-input-and-conversion.html" Attributes="0" SourcePath="dist\doc\gforth\Line-input-and-conversion.html" SelfReg="false" NextFile="LiteralTutorial.html"/>
+    <ROW File="LiteralTutorial.html" Component_="Assembler.html" FileName="Litera~1.htm|Literal-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Literal-Tutorial.html" SelfReg="false" NextFile="Literals.html"/>
+    <ROW File="Literals.html" Component_="Assembler.html" FileName="Litera~2.htm|Literals.html" Attributes="0" SourcePath="dist\doc\gforth\Literals.html" SelfReg="false" NextFile="LocalVariablesTutorial.html"/>
+    <ROW File="LocalVariablesTutorial.html" Component_="Assembler.html" FileName="Local-~1.htm|Local-Variables-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Local-Variables-Tutorial.html" SelfReg="false" NextFile="Localsimplementation.html"/>
+    <ROW File="Locals.html" Component_="Assembler.html" FileName="Locals~4.htm|Locals.html" Attributes="0" SourcePath="dist\doc\gforth\Locals.html" SelfReg="false" NextFile="locals_002dambcond.html"/>
+    <ROW File="Localsimplementation.html" Component_="Assembler.html" FileName="Locals~1.htm|Locals-implementation.html" Attributes="0" SourcePath="dist\doc\gforth\Locals-implementation.html" SelfReg="false" NextFile="Localsprogrammingstyle.html"/>
+    <ROW File="Localsprogrammingstyle.html" Component_="Assembler.html" FileName="Locals~2.htm|Locals-programming-style.html" Attributes="0" SourcePath="dist\doc\gforth\Locals-programming-style.html" SelfReg="false" NextFile="Localsstack.html"/>
+    <ROW File="Localsstack.html" Component_="Assembler.html" FileName="Locals~3.htm|Locals-stack.html" Attributes="0" SourcePath="dist\doc\gforth\Locals-stack.html" SelfReg="false" NextFile="Locals.html"/>
+    <ROW File="Low_002dLevelCInterfaceWords.html" Component_="Assembler.html" FileName="Low_00~1.htm|Low_002dLevel-C-Interface-Words.html" Attributes="0" SourcePath="dist\doc\gforth\Low_002dLevel-C-Interface-Words.html" SelfReg="false" NextFile="Macros.html"/>
+    <ROW File="MIPSassembler.html" Component_="Assembler.html" FileName="MIPS-a~1.htm|MIPS-assembler.html" Attributes="0" SourcePath="dist\doc\gforth\MIPS-assembler.html" SelfReg="false" NextFile="MiscellaneousWords.html"/>
+    <ROW File="Macros.html" Component_="Assembler.html" FileName="Macros~1.htm|Macros.html" Attributes="0" SourcePath="dist\doc\gforth\Macros.html" SelfReg="false" NextFile="MemoryAccess.html"/>
+    <ROW File="Makedist" Component_="aclocal.m4" FileName="Makedist" Attributes="0" SourcePath="dist\Makedist" SelfReg="false" NextFile="Makedist.in"/>
+    <ROW File="Makedist.in" Component_="aclocal.m4" FileName="Makedist.in" Attributes="0" SourcePath="dist\Makedist.in" SelfReg="false" NextFile="Makefile_1"/>
+    <ROW File="Makefile" Component_="bit.h" FileName="Makefile" Attributes="0" SourcePath="dist\engine\Makefile" SelfReg="false" NextFile="makefile.dos"/>
+    <ROW File="Makefile.in" Component_="bit.h" FileName="Makefile.in" Attributes="0" SourcePath="dist\engine\Makefile.in" SelfReg="false" NextFile="makefile.os2"/>
+    <ROW File="Makefile.in_1" Component_="aclocal.m4" FileName="Makefile.in" Attributes="0" SourcePath="dist\Makefile.in" SelfReg="false" NextFile="makefile.os2_1"/>
+    <ROW File="Makefile_1" Component_="aclocal.m4" FileName="Makefile" Attributes="0" SourcePath="dist\Makefile" SelfReg="false" NextFile="makefile.dos_1"/>
+    <ROW File="Makefile_2" Component_="disasm.c" FileName="Makefile" Attributes="0" SourcePath="dist\vmgen-ex\Makefile" SelfReg="false" NextFile="miniinst.vmg"/>
+    <ROW File="Makefile_3" Component_="disasm.c_1" FileName="Makefile" Attributes="0" SourcePath="dist\vmgen-ex2\Makefile" SelfReg="false" NextFile="miniinst.vmg_1"/>
+    <ROW File="Memory.html" Component_="Assembler.html" FileName="Memory~5.htm|Memory.html" Attributes="0" SourcePath="dist\doc\gforth\Memory.html" SelfReg="false" NextFile="memory_002didef.html"/>
+    <ROW File="MemoryAccess.html" Component_="Assembler.html" FileName="Memory~1.htm|Memory-Access.html" Attributes="0" SourcePath="dist\doc\gforth\Memory-Access.html" SelfReg="false" NextFile="MemoryBlocks.html"/>
+    <ROW File="MemoryBlocks.html" Component_="Assembler.html" FileName="Memory~2.htm|Memory-Blocks.html" Attributes="0" SourcePath="dist\doc\gforth\Memory-Blocks.html" SelfReg="false" NextFile="Memorymodel.html"/>
+    <ROW File="MemoryTutorial.html" Component_="Assembler.html" FileName="Memory~4.htm|Memory-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Memory-Tutorial.html" SelfReg="false" NextFile="Memory.html"/>
+    <ROW File="Memorymodel.html" Component_="Assembler.html" FileName="Memory~3.htm|Memory-model.html" Attributes="0" SourcePath="dist\doc\gforth\Memory-model.html" SelfReg="false" NextFile="MemoryTutorial.html"/>
+    <ROW File="Methodconveniences.html" Component_="Assembler.html" FileName="Method~1.htm|Method-conveniences.html" Attributes="0" SourcePath="dist\doc\gforth\Method-conveniences.html" SelfReg="false" NextFile="Mini_002dOOFExample.html"/>
+    <ROW File="Mini_002dOOF.html" Component_="Assembler.html" FileName="Mini_0~3.htm|Mini_002dOOF.html" Attributes="0" SourcePath="dist\doc\gforth\Mini_002dOOF.html" SelfReg="false" NextFile="MIPSassembler.html"/>
+    <ROW File="Mini_002dOOFExample.html" Component_="Assembler.html" FileName="Mini_0~1.htm|Mini_002dOOF-Example.html" Attributes="0" SourcePath="dist\doc\gforth\Mini_002dOOF-Example.html" SelfReg="false" NextFile="Mini_002dOOFImplementation.html"/>
+    <ROW File="Mini_002dOOFImplementation.html" Component_="Assembler.html" FileName="Mini_0~2.htm|Mini_002dOOF-Implementation.html" Attributes="0" SourcePath="dist\doc\gforth\Mini_002dOOF-Implementation.html" SelfReg="false" NextFile="Mini_002dOOF.html"/>
+    <ROW File="MiscellaneousWords.html" Component_="Assembler.html" FileName="Miscel~1.htm|Miscellaneous-Words.html" Attributes="0" SourcePath="dist\doc\gforth\Miscellaneous-Words.html" SelfReg="false" NextFile="Mixedprecision.html"/>
+    <ROW File="Mixedprecision.html" Component_="Assembler.html" FileName="Mixed-~1.htm|Mixed-precision.html" Attributes="0" SourcePath="dist\doc\gforth\Mixed-precision.html" SelfReg="false" NextFile="Model.html"/>
+    <ROW File="Model.html" Component_="Assembler.html" FileName="Model~1.htm|Model.html" Attributes="0" SourcePath="dist\doc\gforth\Model.html" SelfReg="false" NextFile="ModifyingtheStartupSequence.html"/>
+    <ROW File="ModifyingtheStartupSequence.html" Component_="Assembler.html" FileName="Modify~1.htm|Modifying-the-Startup-Sequence.html" Attributes="0" SourcePath="dist\doc\gforth\Modifying-the-Startup-Sequence.html" SelfReg="false" NextFile="Nametoken.html"/>
+    <ROW File="NEWS" Component_="aclocal.m4" FileName="NEWS" Attributes="0" SourcePath="dist\NEWS" SelfReg="false" NextFile="NEWS.vmgen"/>
+    <ROW File="NEWS.vmgen" Component_="aclocal.m4" FileName="NEWS~1.vmg|NEWS.vmgen" Attributes="0" SourcePath="dist\NEWS.vmgen" SelfReg="false" NextFile="objects.fs"/>
+    <ROW File="Nametoken.html" Component_="Assembler.html" FileName="Name-t~1.htm|Name-token.html" Attributes="0" SourcePath="dist\doc\gforth\Name-token.html" SelfReg="false" NextFile="Non_002dRelocatableImageFiles.html"/>
+    <ROW File="Non_002dRelocatableImageFiles.html" Component_="Assembler.html" FileName="Non_00~1.htm|Non_002dRelocatable-Image-Files.html" Attributes="0" SourcePath="dist\doc\gforth\Non_002dRelocatable-Image-Files.html" SelfReg="false" NextFile="Notation.html"/>
+    <ROW File="Notation.html" Component_="Assembler.html" FileName="Notati~1.htm|Notation.html" Attributes="0" SourcePath="dist\doc\gforth\Notation.html" SelfReg="false" NextFile="NumberConversion.html"/>
+    <ROW File="NumberConversion.html" Component_="Assembler.html" FileName="Number~1.htm|Number-Conversion.html" Attributes="0" SourcePath="dist\doc\gforth\Number-Conversion.html" SelfReg="false" NextFile="Numericcomparison.html"/>
+    <ROW File="Numericcomparison.html" Component_="Assembler.html" FileName="Numeri~1.htm|Numeric-comparison.html" Attributes="0" SourcePath="dist\doc\gforth\Numeric-comparison.html" SelfReg="false" NextFile="ObjectInterfaces.html"/>
+    <ROW File="OOF.html" Component_="Assembler.html" FileName="OOF~1.htm|OOF.html" Attributes="0" SourcePath="dist\doc\gforth\OOF.html" SelfReg="false" NextFile="Origin.html"/>
+    <ROW File="OScommandlinearguments.html" Component_="Assembler.html" FileName="OS-com~1.htm|OS-command-line-arguments.html" Attributes="0" SourcePath="dist\doc\gforth\OS-command-line-arguments.html" SelfReg="false" NextFile="Otherassemblers.html"/>
+    <ROW File="ObjectInterfaces.html" Component_="Assembler.html" FileName="Object~1.htm|Object-Interfaces.html" Attributes="0" SourcePath="dist\doc\gforth\Object-Interfaces.html" SelfReg="false" NextFile="ObjectsGlossary.html"/>
+    <ROW File="Object_002dOrientedProgrammingStyle.html" Component_="Assembler.html" FileName="Object~6.htm|Object_002dOriented-Programming-Style.html" Attributes="0" SourcePath="dist\doc\gforth\Object_002dOriented-Programming-Style.html" SelfReg="false" NextFile="Object_002dOrientedTerminology.html"/>
+    <ROW File="Object_002dOrientedTerminology.html" Component_="Assembler.html" FileName="Object~7.htm|Object_002dOriented-Terminology.html" Attributes="0" SourcePath="dist\doc\gforth\Object_002dOriented-Terminology.html" SelfReg="false" NextFile="OOF.html"/>
+    <ROW File="Object_002dorientedForth.html" Component_="Assembler.html" FileName="Object~5.htm|Object_002doriented-Forth.html" Attributes="0" SourcePath="dist\doc\gforth\Object_002doriented-Forth.html" SelfReg="false" NextFile="Object_002dOrientedProgrammingStyle.html"/>
+    <ROW File="Objects.html" Component_="Assembler.html" FileName="Object~4.htm|Objects.html" Attributes="0" SourcePath="dist\doc\gforth\Objects.html" SelfReg="false" NextFile="Object_002dorientedForth.html"/>
+    <ROW File="ObjectsGlossary.html" Component_="Assembler.html" FileName="Object~2.htm|Objects-Glossary.html" Attributes="0" SourcePath="dist\doc\gforth\Objects-Glossary.html" SelfReg="false" NextFile="ObjectsImplementation.html"/>
+    <ROW File="ObjectsImplementation.html" Component_="Assembler.html" FileName="Object~3.htm|Objects-Implementation.html" Attributes="0" SourcePath="dist\doc\gforth\Objects-Implementation.html" SelfReg="false" NextFile="Objects.html"/>
+    <ROW File="Origin.html" Component_="Assembler.html" FileName="Origin~1.htm|Origin.html" Attributes="0" SourcePath="dist\doc\gforth\Origin.html" SelfReg="false" NextFile="OScommandlinearguments.html"/>
+    <ROW File="OtherI_002fO.html" Component_="Assembler.html" FileName="Other-~2.htm|Other-I_002fO.html" Attributes="0" SourcePath="dist\doc\gforth\Other-I_002fO.html" SelfReg="false" NextFile="PassingCommandstotheOS.html"/>
+    <ROW File="Otherassemblers.html" Component_="Assembler.html" FileName="Other-~1.htm|Other-assemblers.html" Attributes="0" SourcePath="dist\doc\gforth\Other-assemblers.html" SelfReg="false" NextFile="OtherI_002fO.html"/>
+    <ROW File="POSTPONETutorial.html" Component_="Assembler.html" FileName="POSTPO~1.htm|POSTPONE-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\POSTPONE-Tutorial.html" SelfReg="false" NextFile="PowerPCassembler.html"/>
+    <ROW File="PassingCommandstotheOS.html" Component_="Assembler.html" FileName="Passin~1.htm|Passing-Commands-to-the-OS.html" Attributes="0" SourcePath="dist\doc\gforth\Passing-Commands-to-the-OS.html" SelfReg="false" NextFile="Performance.html"/>
+    <ROW File="Peepholeoptimization.html" Component_="CCodeMacros.html" FileName="Peepho~1.htm|Peephole-optimization.html" Attributes="0" SourcePath="dist\doc\vmgen\Peephole-optimization.html" SelfReg="false" NextFile="RegisterMachines.html"/>
+    <ROW File="Performance.html" Component_="Assembler.html" FileName="Perfor~1.htm|Performance.html" Attributes="0" SourcePath="dist\doc\gforth\Performance.html" SelfReg="false" NextFile="Pipes.html"/>
+    <ROW File="Pipes.html" Component_="Assembler.html" FileName="Pipes~1.htm|Pipes.html" Attributes="0" SourcePath="dist\doc\gforth\Pipes.html" SelfReg="false" NextFile="Portability.html"/>
+    <ROW File="Portability.html" Component_="Assembler.html" FileName="Portab~1.htm|Portability.html" Attributes="0" SourcePath="dist\doc\gforth\Portability.html" SelfReg="false" NextFile="POSTPONETutorial.html"/>
+    <ROW File="PowerPCassembler.html" Component_="Assembler.html" FileName="PowerP~1.htm|PowerPC-assembler.html" Attributes="0" SourcePath="dist\doc\gforth\PowerPC-assembler.html" SelfReg="false" NextFile="Primitives.html"/>
+    <ROW File="Primitives.html" Component_="Assembler.html" FileName="Primit~1.htm|Primitives.html" Attributes="0" SourcePath="dist\doc\gforth\Primitives.html" SelfReg="false" NextFile="Producedcode.html"/>
+    <ROW File="Producedcode.html" Component_="Assembler.html" FileName="Produc~1.htm|Produced-code.html" Attributes="0" SourcePath="dist\doc\gforth\Produced-code.html" SelfReg="false" NextFile="ProgrammingTools.html"/>
+    <ROW File="ProgrammingTools.html" Component_="Assembler.html" FileName="Progra~1.htm|Programming-Tools.html" Attributes="0" SourcePath="dist\doc\gforth\Programming-Tools.html" SelfReg="false" NextFile="programming_002dambcond.html"/>
+    <ROW File="PropertiesoftheOOFmodel.html" Component_="Assembler.html" FileName="Proper~2.htm|Properties-of-the-OOF-model.html" Attributes="0" SourcePath="dist\doc\gforth\Properties-of-the-OOF-model.html" SelfReg="false" NextFile="RecursionTutorial.html"/>
+    <ROW File="PropertiesoftheObjectsmodel.html" Component_="Assembler.html" FileName="Proper~1.htm|Properties-of-the-Objects-model.html" Attributes="0" SourcePath="dist\doc\gforth\Properties-of-the-Objects-model.html" SelfReg="false" NextFile="PropertiesoftheOOFmodel.html"/>
+    <ROW File="README" Component_="asm.fs_1" FileName="README" Attributes="0" SourcePath="dist\arch\4stack\README" SelfReg="false" NextFile="relocate.fs"/>
+    <ROW File="README.txt" Component_="aclocal.m4" FileName="README.txt" Attributes="0" SourcePath="dist\README.txt" SelfReg="false" NextFile="README.vmgen"/>
+    <ROW File="README.vmgen" Component_="aclocal.m4" FileName="README~1.vmg|README.vmgen" Attributes="0" SourcePath="dist\README.vmgen" SelfReg="false" NextFile="recoverendtry.fs"/>
+    <ROW File="README_1" Component_="asm.fs_5" FileName="README" Attributes="0" SourcePath="dist\arch\misc\README" SelfReg="false" NextFile="sim.fs"/>
+    <ROW File="README_2" Component_="basic.fs" FileName="README" Attributes="0" SourcePath="dist\asm\README" SelfReg="false" NextFile="target.fs"/>
+    <ROW File="README_3" Component_="anslocal.fs" FileName="README" Attributes="0" SourcePath="dist\compat\README" SelfReg="false" NextFile="required.fs"/>
+    <ROW File="README_4" Component_="builttag.fs" FileName="README" Attributes="0" SourcePath="dist\ec\README" SelfReg="false" NextFile="shex.fs"/>
+    <ROW File="README_5" Component_="aclocal.m4" FileName="README" Attributes="0" SourcePath="dist\README" SelfReg="false" NextFile="README.txt"/>
+    <ROW File="README_6" Component_="disasm.c" FileName="README" Attributes="0" SourcePath="dist\vmgen-ex\README" SelfReg="false" NextFile="seq2rule.awk"/>
+    <ROW File="README_7" Component_="disasm.c_1" FileName="README" Attributes="0" SourcePath="dist\vmgen-ex2\README" SelfReg="false" NextFile="seq2rule.awk_1"/>
+    <ROW File="RecursionTutorial.html" Component_="Assembler.html" FileName="Recurs~1.htm|Recursion-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Recursion-Tutorial.html" SelfReg="false" NextFile="Redirection.html"/>
+    <ROW File="Redirection.html" Component_="Assembler.html" FileName="Redire~1.htm|Redirection.html" Attributes="0" SourcePath="dist\doc\gforth\Redirection.html" SelfReg="false" NextFile="ReturnStackTutorial.html"/>
+    <ROW File="RegisterMachines.html" Component_="CCodeMacros.html" FileName="Regist~1.htm|Register-Machines.html" Attributes="0" SourcePath="dist\doc\vmgen\Register-Machines.html" SelfReg="false" NextFile="Simpleinstructions.html"/>
+    <ROW File="ReturnStackTutorial.html" Component_="Assembler.html" FileName="Return~1.htm|Return-Stack-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Return-Stack-Tutorial.html" SelfReg="false" NextFile="Returnstack.html"/>
+    <ROW File="Returnstack.html" Component_="Assembler.html" FileName="Return~2.htm|Return-stack.html" Attributes="0" SourcePath="dist\doc\gforth\Return-stack.html" SelfReg="false" NextFile="Review_002delementsofaForthsystem.html"/>
+    <ROW File="Review_002delementsofaForthsystem.html" Component_="Assembler.html" FileName="Review~1.htm|Review-_002d-elements-of-a-Forth-system.html" Attributes="0" SourcePath="dist\doc\gforth\Review-_002d-elements-of-a-Forth-system.html" SelfReg="false" NextFile="RunningImageFiles.html"/>
+    <ROW File="RunningImageFiles.html" Component_="Assembler.html" FileName="Runnin~1.htm|Running-Image-Files.html" Attributes="0" SourcePath="dist\doc\gforth\Running-Image-Files.html" SelfReg="false" NextFile="Scheduling.html"/>
+    <ROW File="Scheduling.html" Component_="Assembler.html" FileName="Schedu~1.htm|Scheduling.html" Attributes="0" SourcePath="dist\doc\gforth\Scheduling.html" SelfReg="false" NextFile="SearchPaths.html"/>
+    <ROW File="SearchPaths.html" Component_="Assembler.html" FileName="Search~1.htm|Search-Paths.html" Attributes="0" SourcePath="dist\doc\gforth\Search-Paths.html" SelfReg="false" NextFile="search_002dambcond.html"/>
+    <ROW File="Selection.html" Component_="Assembler.html" FileName="Select~1.htm|Selection.html" Attributes="0" SourcePath="dist\doc\gforth\Selection.html" SelfReg="false" NextFile="SimpleLoops.html"/>
+    <ROW File="SimpleLoops.html" Component_="Assembler.html" FileName="Simple~1.htm|Simple-Loops.html" Attributes="0" SourcePath="dist\doc\gforth\Simple-Loops.html" SelfReg="false" NextFile="Simplenumericoutput.html"/>
+    <ROW File="Simpleinstructions.html" Component_="CCodeMacros.html" FileName="Simple~1.htm|Simple-instructions.html" Attributes="0" SourcePath="dist\doc\vmgen\Simple-instructions.html" SelfReg="false" NextFile="Stackgrowthdirection.html"/>
+    <ROW File="Simplenumericoutput.html" Component_="Assembler.html" FileName="Simple~2.htm|Simple-numeric-output.html" Attributes="0" SourcePath="dist\doc\gforth\Simple-numeric-output.html" SelfReg="false" NextFile="Singleprecision.html"/>
+    <ROW File="Single_002dkeyinput.html" Component_="Assembler.html" FileName="Single~3.htm|Single_002dkey-input.html" Attributes="0" SourcePath="dist\doc\gforth\Single_002dkey-input.html" SelfReg="false" NextFile="SourceSearchPaths.html"/>
+    <ROW File="Singleprecision.html" Component_="Assembler.html" FileName="Single~1.htm|Single-precision.html" Attributes="0" SourcePath="dist\doc\gforth\Single-precision.html" SelfReg="false" NextFile="SinglestepDebugger.html"/>
+    <ROW File="SinglestepDebugger.html" Component_="Assembler.html" FileName="Single~2.htm|Singlestep-Debugger.html" Attributes="0" SourcePath="dist\doc\gforth\Singlestep-Debugger.html" SelfReg="false" NextFile="Single_002dkeyinput.html"/>
+    <ROW File="SourceSearchPaths.html" Component_="Assembler.html" FileName="Source~1.htm|Source-Search-Paths.html" Attributes="0" SourcePath="dist\doc\gforth\Source-Search-Paths.html" SelfReg="false" NextFile="StackandDictionarySizes.html"/>
+    <ROW File="StackManipulation.html" Component_="Assembler.html" FileName="Stack-~4.htm|Stack-Manipulation.html" Attributes="0" SourcePath="dist\doc\gforth\Stack-Manipulation.html" SelfReg="false" NextFile="Stackpointermanipulation.html"/>
+    <ROW File="StackManipulationTutorial.html" Component_="Assembler.html" FileName="Stack-~3.htm|Stack-Manipulation-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Stack-Manipulation-Tutorial.html" SelfReg="false" NextFile="StackManipulation.html"/>
+    <ROW File="StackTutorial.html" Component_="Assembler.html" FileName="Stack-~6.htm|Stack-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Stack-Tutorial.html" SelfReg="false" NextFile="StacksandPostfixnotation.html"/>
+    <ROW File="Stack_002dEffectCommentsTutorial.html" Component_="Assembler.html" FileName="Stack_~1.htm|Stack_002dEffect-Comments-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Stack_002dEffect-Comments-Tutorial.html" SelfReg="false" NextFile="StandardvsExtensions.html"/>
+    <ROW File="StackandDictionarySizes.html" Component_="Assembler.html" FileName="Stack-~1.htm|Stack-and-Dictionary-Sizes.html" Attributes="0" SourcePath="dist\doc\gforth\Stack-and-Dictionary-Sizes.html" SelfReg="false" NextFile="Stackdepthchanges.html"/>
+    <ROW File="Stackdepthchanges.html" Component_="Assembler.html" FileName="Stack-~2.htm|Stack-depth-changes.html" Attributes="0" SourcePath="dist\doc\gforth\Stack-depth-changes.html" SelfReg="false" NextFile="StackManipulationTutorial.html"/>
+    <ROW File="Stackgrowthdirection.html" Component_="CCodeMacros.html" FileName="Stack-~1.htm|Stack-growth-direction.html" Attributes="0" SourcePath="dist\doc\vmgen\Stack-growth-direction.html" SelfReg="false" NextFile="StoreOptimization.html"/>
+    <ROW File="Stackpointermanipulation.html" Component_="Assembler.html" FileName="Stack-~5.htm|Stack-pointer-manipulation.html" Attributes="0" SourcePath="dist\doc\gforth\Stack-pointer-manipulation.html" SelfReg="false" NextFile="StackTutorial.html"/>
+    <ROW File="StacksandPostfixnotation.html" Component_="Assembler.html" FileName="Stacks~1.htm|Stacks-and-Postfix-notation.html" Attributes="0" SourcePath="dist\doc\gforth\Stacks-and-Postfix-notation.html" SelfReg="false" NextFile="Stack_002dEffectCommentsTutorial.html"/>
+    <ROW File="StandardvsExtensions.html" Component_="Assembler.html" FileName="Standa~1.htm|Standard-vs-Extensions.html" Attributes="0" SourcePath="dist\doc\gforth\Standard-vs-Extensions.html" SelfReg="false" NextFile="StartingGforthTutorial.html"/>
+    <ROW File="StartingGforthTutorial.html" Component_="Assembler.html" FileName="Starti~1.htm|Starting-Gforth-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Starting-Gforth-Tutorial.html" SelfReg="false" NextFile="Startupspeed.html"/>
+    <ROW File="Startupspeed.html" Component_="Assembler.html" FileName="Startu~1.htm|Startup-speed.html" Attributes="0" SourcePath="dist\doc\gforth\Startup-speed.html" SelfReg="false" NextFile="state_002dsmartness.html"/>
+    <ROW File="StoreOptimization.html" Component_="CCodeMacros.html" FileName="Store-~1.htm|Store-Optimization.html" Attributes="0" SourcePath="dist\doc\vmgen\Store-Optimization.html" SelfReg="false" NextFile="Superinstructions.html"/>
+    <ROW File="StringFormats.html" Component_="Assembler.html" FileName="String~1.htm|String-Formats.html" Attributes="0" SourcePath="dist\doc\gforth\String-Formats.html" SelfReg="false" NextFile="StructureGlossary.html"/>
+    <ROW File="StructureGlossary.html" Component_="Assembler.html" FileName="Struct~1.htm|Structure-Glossary.html" Attributes="0" SourcePath="dist\doc\gforth\Structure-Glossary.html" SelfReg="false" NextFile="StructureImplementation.html"/>
+    <ROW File="StructureImplementation.html" Component_="Assembler.html" FileName="Struct~2.htm|Structure-Implementation.html" Attributes="0" SourcePath="dist\doc\gforth\Structure-Implementation.html" SelfReg="false" NextFile="StructureNamingConvention.html"/>
+    <ROW File="StructureNamingConvention.html" Component_="Assembler.html" FileName="Struct~3.htm|Structure-Naming-Convention.html" Attributes="0" SourcePath="dist\doc\gforth\Structure-Naming-Convention.html" SelfReg="false" NextFile="StructureUsage.html"/>
+    <ROW File="StructureUsage.html" Component_="Assembler.html" FileName="Struct~4.htm|Structure-Usage.html" Attributes="0" SourcePath="dist\doc\gforth\Structure-Usage.html" SelfReg="false" NextFile="Structures.html"/>
+    <ROW File="Structures.html" Component_="Assembler.html" FileName="Struct~5.htm|Structures.html" Attributes="0" SourcePath="dist\doc\gforth\Structures.html" SelfReg="false" NextFile="Supplyingnames.html"/>
+    <ROW File="Superinstructions.html" Component_="CCodeMacros.html" FileName="Superi~1.htm|Superinstructions.html" Attributes="0" SourcePath="dist\doc\vmgen\Superinstructions.html" SelfReg="false" NextFile="Thefuture.html"/>
+    <ROW File="Supplyingnames.html" Component_="Assembler.html" FileName="Supply~1.htm|Supplying-names.html" Attributes="0" SourcePath="dist\doc\gforth\Supplying-names.html" SelfReg="false" NextFile="SyntaxTutorial.html"/>
+    <ROW File="SyntaxTutorial.html" Component_="Assembler.html" FileName="Syntax~1.htm|Syntax-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Syntax-Tutorial.html" SelfReg="false" NextFile="Terminaloutput.html"/>
+    <ROW File="TOSOptimization.html" Component_="Assembler.html" FileName="TOS-Op~1.htm|TOS-Optimization.html" Attributes="0" SourcePath="dist\doc\gforth\TOS-Optimization.html" SelfReg="false" NextFile="Tutorial.html"/>
+    <ROW File="Terminaloutput.html" Component_="Assembler.html" FileName="Termin~1.htm|Terminal-output.html" Attributes="0" SourcePath="dist\doc\gforth\Terminal-output.html" SelfReg="false" NextFile="TheCoreWords.html"/>
+    <ROW File="TheCoreWords.html" Component_="Assembler.html" FileName="The-Co~1.htm|The-Core-Words.html" Attributes="0" SourcePath="dist\doc\gforth\The-Core-Words.html" SelfReg="false" NextFile="TheInputStream.html"/>
+    <ROW File="TheInputStream.html" Component_="Assembler.html" FileName="The-In~1.htm|The-Input-Stream.html" Attributes="0" SourcePath="dist\doc\gforth\The-Input-Stream.html" SelfReg="false" NextFile="TheObjectsbaseclass.html"/>
+    <ROW File="TheOOFbaseclass.html" Component_="Assembler.html" FileName="The-OO~1.htm|The-OOF-base-class.html" Attributes="0" SourcePath="dist\doc\gforth\The-OOF-base-class.html" SelfReg="false" NextFile="TheoptionalBlockwordset.html"/>
+    <ROW File="TheObjectsbaseclass.html" Component_="Assembler.html" FileName="The-Ob~1.htm|The-Objects-base-class.html" Attributes="0" SourcePath="dist\doc\gforth\The-Objects-base-class.html" SelfReg="false" NextFile="TheOOFbaseclass.html"/>
+    <ROW File="TheTextInterpreter.html" Component_="Assembler.html" FileName="The-Te~1.htm|The-Text-Interpreter.html" Attributes="0" SourcePath="dist\doc\gforth\The-Text-Interpreter.html" SelfReg="false" NextFile="ThreadingWords.html"/>
+    <ROW File="Thefuture.html" Component_="CCodeMacros.html" FileName="The-fu~1.htm|The-future.html" Attributes="0" SourcePath="dist\doc\vmgen\The-future.html" SelfReg="false" NextFile="Usingprofilingtocreatesuperinstructions.html"/>
+    <ROW File="TheoptionalBlockwordset.html" Component_="Assembler.html" FileName="The-op~1.htm|The-optional-Block-word-set.html" Attributes="0" SourcePath="dist\doc\gforth\The-optional-Block-word-set.html" SelfReg="false" NextFile="TheoptionalDoubleNumberwordset.html"/>
+    <ROW File="TheoptionalDoubleNumberwordset.html" Component_="Assembler.html" FileName="The-op~2.htm|The-optional-Double-Number-word-set.html" Attributes="0" SourcePath="dist\doc\gforth\The-optional-Double-Number-word-set.html" SelfReg="false" NextFile="TheoptionalExceptionwordset.html"/>
+    <ROW File="TheoptionalExceptionwordset.html" Component_="Assembler.html" FileName="The-op~3.htm|The-optional-Exception-word-set.html" Attributes="0" SourcePath="dist\doc\gforth\The-optional-Exception-word-set.html" SelfReg="false" NextFile="TheoptionalFacilitywordset.html"/>
+    <ROW File="TheoptionalFacilitywordset.html" Component_="Assembler.html" FileName="The-op~4.htm|The-optional-Facility-word-set.html" Attributes="0" SourcePath="dist\doc\gforth\The-optional-Facility-word-set.html" SelfReg="false" NextFile="TheoptionalFile_002dAccesswordset.html"/>
+    <ROW File="TheoptionalFile_002dAccesswordset.html" Component_="Assembler.html" FileName="The-op~5.htm|The-optional-File_002dAccess-word-set.html" Attributes="0" SourcePath="dist\doc\gforth\The-optional-File_002dAccess-word-set.html" SelfReg="false" NextFile="TheoptionalFloating_002dPointwordset.html"/>
+    <ROW File="TheoptionalFloating_002dPointwordset.html" Component_="Assembler.html" FileName="The-op~6.htm|The-optional-Floating_002dPoint-word-set.html" Attributes="0" SourcePath="dist\doc\gforth\The-optional-Floating_002dPoint-word-set.html" SelfReg="false" NextFile="TheoptionalLocalswordset.html"/>
+    <ROW File="TheoptionalLocalswordset.html" Component_="Assembler.html" FileName="The-op~7.htm|The-optional-Locals-word-set.html" Attributes="0" SourcePath="dist\doc\gforth\The-optional-Locals-word-set.html" SelfReg="false" NextFile="TheoptionalMemory_002dAllocationwordset.html"/>
+    <ROW File="TheoptionalMemory_002dAllocationwordset.html" Component_="Assembler.html" FileName="The-op~8.htm|The-optional-Memory_002dAllocation-word-set.html" Attributes="0" SourcePath="dist\doc\gforth\The-optional-Memory_002dAllocation-word-set.html" SelfReg="false" NextFile="TheoptionalProgramming_002dToolswordset.html"/>
+    <ROW File="TheoptionalProgramming_002dToolswordset.html" Component_="Assembler.html" FileName="The-op~9.htm|The-optional-Programming_002dTools-word-set.html" Attributes="0" SourcePath="dist\doc\gforth\The-optional-Programming_002dTools-word-set.html" SelfReg="false" NextFile="TheoptionalSearch_002dOrderwordset.html"/>
+    <ROW File="TheoptionalSearch_002dOrderwordset.html" Component_="Assembler.html" FileName="The-o~10.htm|The-optional-Search_002dOrder-word-set.html" Attributes="0" SourcePath="dist\doc\gforth\The-optional-Search_002dOrder-word-set.html" SelfReg="false" NextFile="TheTextInterpreter.html"/>
+    <ROW File="Threading.html" Component_="Assembler.html" FileName="Thread~2.htm|Threading.html" Attributes="0" SourcePath="dist\doc\gforth\Threading.html" SelfReg="false" NextFile="TokensforWords.html"/>
+    <ROW File="ThreadingWords.html" Component_="Assembler.html" FileName="Thread~1.htm|Threading-Words.html" Attributes="0" SourcePath="dist\doc\gforth\Threading-Words.html" SelfReg="false" NextFile="Threading.html"/>
+    <ROW File="ToDo" Component_="aclocal.m4" FileName="ToDo" Attributes="0" SourcePath="dist\ToDo" SelfReg="false" NextFile="tt.fs_1"/>
+    <ROW File="TokensforWords.html" Component_="Assembler.html" FileName="Tokens~1.htm|Tokens-for-Words.html" Attributes="0" SourcePath="dist\doc\gforth\Tokens-for-Words.html" SelfReg="false" NextFile="Tools.html"/>
+    <ROW File="Tools.html" Component_="Assembler.html" FileName="Tools~1.htm|Tools.html" Attributes="0" SourcePath="dist\doc\gforth\Tools.html" SelfReg="false" NextFile="TOSOptimization.html"/>
+    <ROW File="Tutorial.html" Component_="Assembler.html" FileName="Tutori~1.htm|Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Tutorial.html" SelfReg="false" NextFile="TypesTutorial.html"/>
+    <ROW File="TypesTutorial.html" Component_="Assembler.html" FileName="Types-~1.htm|Types-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Types-Tutorial.html" SelfReg="false" NextFile="User_002ddefinedDefiningWords.html"/>
+    <ROW File="User_002ddefinedDefiningWords.html" Component_="Assembler.html" FileName="User_0~1.htm|User_002ddefined-Defining-Words.html" Attributes="0" SourcePath="dist\doc\gforth\User_002ddefined-Defining-Words.html" SelfReg="false" NextFile="UsingfilesforForthcodeTutorial.html"/>
+    <ROW File="UsingfilesforForthcodeTutorial.html" Component_="Assembler.html" FileName="Using-~1.htm|Using-files-for-Forth-code-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Using-files-for-Forth-code-Tutorial.html" SelfReg="false" NextFile="UsingtheCrossCompiler.html"/>
+    <ROW File="Usingprofilingtocreatesuperinstructions.html" Component_="CCodeMacros.html" FileName="Using-~1.htm|Using-profiling-to-create-superinstructions.html" Attributes="0" SourcePath="dist\doc\vmgen\Using-profiling-to-create-superinstructions.html" SelfReg="false" NextFile="Usingthegeneratedcode.html"/>
+    <ROW File="UsingtheCrossCompiler.html" Component_="Assembler.html" FileName="Using-~2.htm|Using-the-Cross-Compiler.html" Attributes="0" SourcePath="dist\doc\gforth\Using-the-Cross-Compiler.html" SelfReg="false" NextFile="Values.html"/>
+    <ROW File="Usingthegeneratedcode.html" Component_="CCodeMacros.html" FileName="Using-~2.htm|Using-the-generated-code.html" Attributes="0" SourcePath="dist\doc\vmgen\Using-the-generated-code.html" SelfReg="false" NextFile="VMcodegeneration.html"/>
+    <ROW File="VMcodegeneration.html" Component_="CCodeMacros.html" FileName="VM-cod~1.htm|VM-code-generation.html" Attributes="0" SourcePath="dist\doc\vmgen\VM-code-generation.html" SelfReg="false" NextFile="VMdisassembler.html"/>
+    <ROW File="VMdisassembler.html" Component_="CCodeMacros.html" FileName="VM-dis~1.htm|VM-disassembler.html" Attributes="0" SourcePath="dist\doc\vmgen\VM-disassembler.html" SelfReg="false" NextFile="VMengine.html"/>
+    <ROW File="VMengine.html" Component_="CCodeMacros.html" FileName="VM-eng~1.htm|VM-engine.html" Attributes="0" SourcePath="dist\doc\vmgen\VM-engine.html" SelfReg="false" NextFile="VMinstructiontable.html"/>
+    <ROW File="VMinstructiontable.html" Component_="CCodeMacros.html" FileName="VM-ins~1.htm|VM-instruction-table.html" Attributes="0" SourcePath="dist\doc\vmgen\VM-instruction-table.html" SelfReg="false" NextFile="VMprofiler.html"/>
+    <ROW File="VMprofiler.html" Component_="CCodeMacros.html" FileName="VM-pro~1.htm|VM-profiler.html" Attributes="0" SourcePath="dist\doc\vmgen\VM-profiler.html" SelfReg="false" NextFile="Whyinterpreters_003f.html"/>
+    <ROW File="Values.html" Component_="Assembler.html" FileName="Values~1.htm|Values.html" Attributes="0" SourcePath="dist\doc\gforth\Values.html" SelfReg="false" NextFile="Variables.html"/>
+    <ROW File="Variables.html" Component_="Assembler.html" FileName="Variab~1.htm|Variables.html" Attributes="0" SourcePath="dist\doc\gforth\Variables.html" SelfReg="false" NextFile="Vocabularies.html"/>
+    <ROW File="Vocabularies.html" Component_="Assembler.html" FileName="Vocabu~1.htm|Vocabularies.html" Attributes="0" SourcePath="dist\doc\gforth\Vocabularies.html" SelfReg="false" NextFile="Wherearelocalsvisiblebyname_003f.html"/>
+    <ROW File="Wherearelocalsvisiblebyname_003f.html" Component_="Assembler.html" FileName="Where-~1.htm|Where-are-locals-visible-by-name_003f.html" Attributes="0" SourcePath="dist\doc\gforth\Where-are-locals-visible-by-name_003f.html" SelfReg="false" NextFile="Wheretogonext.html"/>
+    <ROW File="Wheretogonext.html" Component_="Assembler.html" FileName="Where-~2.htm|Where-to-go-next.html" Attributes="0" SourcePath="dist\doc\gforth\Where-to-go-next.html" SelfReg="false" NextFile="Whyexplicitstructuresupport_003f.html"/>
+    <ROW File="Whyexplicitstructuresupport_003f.html" Component_="Assembler.html" FileName="Why-ex~1.htm|Why-explicit-structure-support_003f.html" Attributes="0" SourcePath="dist\doc\gforth\Why-explicit-structure-support_003f.html" SelfReg="false" NextFile="Whyobject_002dorientedprogramming_003f.html"/>
+    <ROW File="Whyinterpreters_003f.html" Component_="CCodeMacros.html" FileName="Why-in~1.htm|Why-interpreters_003f.html" Attributes="0" SourcePath="dist\doc\vmgen\Why-interpreters_003f.html" SelfReg="false" NextFile="vmgen.info"/>
+    <ROW File="Whyobject_002dorientedprogramming_003f.html" Component_="Assembler.html" FileName="Why-ob~1.htm|Why-object_002doriented-programming_003f.html" Attributes="0" SourcePath="dist\doc\gforth\Why-object_002doriented-programming_003f.html" SelfReg="false" NextFile="Whyusewordlists_003f.html"/>
+    <ROW File="Whyusewordlists_003f.html" Component_="Assembler.html" FileName="Why-us~1.htm|Why-use-word-lists_003f.html" Attributes="0" SourcePath="dist\doc\gforth\Why-use-word-lists_003f.html" SelfReg="false" NextFile="WordIndex.html"/>
+    <ROW File="WordIndex.html" Component_="Assembler.html" FileName="Word-I~1.htm|Word-Index.html" Attributes="0" SourcePath="dist\doc\gforth\Word-Index.html" SelfReg="false" NextFile="Wordlistexample.html"/>
+    <ROW File="WordLists.html" Component_="Assembler.html" FileName="Word-L~2.htm|Word-Lists.html" Attributes="0" SourcePath="dist\doc\gforth\Word-Lists.html" SelfReg="false" NextFile="WordlistsandSearchOrderTutorial.html"/>
+    <ROW File="Wordlistexample.html" Component_="Assembler.html" FileName="Word-l~1.htm|Word-list-example.html" Attributes="0" SourcePath="dist\doc\gforth\Word-list-example.html" SelfReg="false" NextFile="WordLists.html"/>
+    <ROW File="WordlistsandSearchOrderTutorial.html" Component_="Assembler.html" FileName="Wordli~1.htm|Wordlists-and-Search-Order-Tutorial.html" Attributes="0" SourcePath="dist\doc\gforth\Wordlists-and-Search-Order-Tutorial.html" SelfReg="false" NextFile="Words.html"/>
+    <ROW File="Words.html" Component_="Assembler.html" FileName="Words~1.htm|Words.html" Attributes="0" SourcePath="dist\doc\gforth\Words.html" SelfReg="false" NextFile="XcharsandUnicode.html"/>
+    <ROW File="XcharsandUnicode.html" Component_="Assembler.html" FileName="Xchars~1.htm|Xchars-and-Unicode.html" Attributes="0" SourcePath="dist\doc\gforth\Xchars-and-Unicode.html" SelfReg="false" NextFile="Yourfirstdefinition.html"/>
+    <ROW File="Yourfirstdefinition.html" Component_="Assembler.html" FileName="Your-f~1.htm|Your-first-definition.html" Attributes="0" SourcePath="dist\doc\gforth\Your-first-definition.html" SelfReg="false" NextFile="gforth.1"/>
+    <ROW File="_sync_cache_range.c" Component_="asm.fs_6" FileName="_sync_~1.c|_sync_cache_range.c" Attributes="0" SourcePath="dist\arch\power\_sync_cache_range.c" SelfReg="false" NextFile="asm.fs_7"/>
+    <ROW File="accept.fs" Component_="accept.fs" FileName="accept.fs" Attributes="0" SourcePath="dist\kernel\accept.fs" SelfReg="false" NextFile="aliases.fs"/>
+    <ROW File="aclocal.m4" Component_="aclocal.m4" FileName="aclocal.m4" Attributes="0" SourcePath="dist\aclocal.m4" SelfReg="false" NextFile="add.fs"/>
+    <ROW File="add.fs" Component_="aclocal.m4" FileName="add.fs" Attributes="0" SourcePath="dist\add.fs" SelfReg="false" NextFile="ansreport.fs"/>
+    <ROW File="aliases.fs" Component_="accept.fs" FileName="aliases.fs" Attributes="0" SourcePath="dist\kernel\aliases.fs" SelfReg="false" NextFile="aliases0.fs"/>
+    <ROW File="aliases0.fs" Component_="accept.fs" FileName="aliases0.fs" Attributes="0" SourcePath="dist\kernel\aliases0.fs" SelfReg="false" NextFile="args.fs"/>
+    <ROW File="ansi.fs" Component_="aclocal.m4" FileName="ansi.fs" Attributes="0" SourcePath="dist\ansi.fs" SelfReg="false" NextFile="answords.fs"/>
+    <ROW File="ansidecl.h" Component_="bit.h" FileName="ansidecl.h" Attributes="0" SourcePath="dist\engine\ansidecl.h" SelfReg="false" NextFile="atanh.c"/>
+    <ROW File="anslocal.fs" Component_="anslocal.fs" FileName="anslocal.fs" Attributes="0" SourcePath="dist\compat\anslocal.fs" SelfReg="false" NextFile="assert.fs_1"/>
+    <ROW File="ansreport.fs" Component_="aclocal.m4" FileName="ans-re~1.fs|ans-report.fs" Attributes="0" SourcePath="dist\ans-report.fs" SelfReg="false" NextFile="ansi.fs"/>
+    <ROW File="answords.fs" Component_="aclocal.m4" FileName="answords.fs" Attributes="0" SourcePath="dist\answords.fs" SelfReg="false" NextFile="asm.fs"/>
+    <ROW File="args.fs" Component_="accept.fs" FileName="args.fs" Attributes="0" SourcePath="dist\kernel\args.fs" SelfReg="false" NextFile="basics.fs"/>
+    <ROW File="asm.fs" Component_="asm.fs" FileName="asm.fs" Attributes="0" SourcePath="dist\arch\386\asm.fs" SelfReg="false" NextFile="disasm.fs"/>
+    <ROW File="asm.fs_1" Component_="asm.fs_1" FileName="asm.fs" Attributes="0" SourcePath="dist\arch\4stack\asm.fs" SelfReg="false" NextFile="mach.fs"/>
+    <ROW File="asm.fs_2" Component_="asm.fs_2" FileName="asm.fs" Attributes="0" SourcePath="dist\arch\alpha\asm.fs" SelfReg="false" NextFile="disasm.fs_1"/>
+    <ROW File="asm.fs_3" Component_="asm.fs_3" FileName="asm.fs" Attributes="0" SourcePath="dist\arch\amd64\asm.fs" SelfReg="false" NextFile="disasm.fs_2"/>
+    <ROW File="asm.fs_4" Component_="asm.fs_4" FileName="asm.fs" Attributes="0" SourcePath="dist\arch\mips\asm.fs" SelfReg="false" NextFile="disasm.fs_3"/>
+    <ROW File="asm.fs_5" Component_="asm.fs_5" FileName="asm.fs" Attributes="0" SourcePath="dist\arch\misc\asm.fs" SelfReg="false" NextFile="mach.fs_2"/>
+    <ROW File="asm.fs_6" Component_="asm.fs_6" FileName="asm.fs" Attributes="0" SourcePath="dist\arch\power\asm.fs" SelfReg="false" NextFile="disasm.fs_4"/>
+    <ROW File="asm.fs_7" Component_="asm.fs_7" FileName="asm.fs" Attributes="0" SourcePath="dist\arch\r8c\asm.fs" SelfReg="false" NextFile="mach.fs_3"/>
+    <ROW File="asm.fs_8" Component_="asm.fs_8" FileName="asm.fs" Attributes="0" SourcePath="dist\arch\shboom\asm.fs" SelfReg="false" NextFile="compiler.fs"/>
+    <ROW File="assert.fs" Component_="aclocal.m4" FileName="assert.fs" Attributes="0" SourcePath="dist\assert.fs" SelfReg="false" NextFile="AUTHORS"/>
+    <ROW File="assert.fs_1" Component_="anslocal.fs" FileName="assert.fs" Attributes="0" SourcePath="dist\compat\assert.fs" SelfReg="false" NextFile="control.fs"/>
+    <ROW File="atanh.c" Component_="bit.h" FileName="atanh.c" Attributes="0" SourcePath="dist\engine\atanh.c" SelfReg="false" NextFile="cleanalign.c"/>
+    <ROW File="autogen.sh" Component_="aclocal.m4" FileName="autogen.sh" Attributes="0" SourcePath="dist\autogen.sh" SelfReg="false" NextFile="backtrac.fs"/>
+    <ROW File="backtrac.fs" Component_="aclocal.m4" FileName="backtrac.fs" Attributes="0" SourcePath="dist\backtrac.fs" SelfReg="false" NextFile="Benchres"/>
+    <ROW File="basic.fs" Component_="basic.fs" FileName="basic.fs" Attributes="0" SourcePath="dist\asm\basic.fs" SelfReg="false" NextFile="bitmask.fs"/>
+    <ROW File="basics.fs" Component_="accept.fs" FileName="basics.fs" Attributes="0" SourcePath="dist\kernel\basics.fs" SelfReg="false" NextFile="cbr.fs"/>
+    <ROW File="bit.h" Component_="bit.h" FileName="128bit.h" Attributes="0" SourcePath="dist\engine\128bit.h" SelfReg="false" NextFile="ansidecl.h"/>
+    <ROW File="bitmask.fs" Component_="basic.fs" FileName="bitmask.fs" Attributes="0" SourcePath="dist\asm\bitmask.fs" SelfReg="false" NextFile="generic.fs"/>
+    <ROW File="block_002dambcond.html" Component_="Assembler.html" FileName="block_~1.htm|block_002dambcond.html" Attributes="0" SourcePath="dist\doc\gforth\block_002dambcond.html" SelfReg="false" NextFile="block_002didef.html"/>
+    <ROW File="block_002didef.html" Component_="Assembler.html" FileName="block_~2.htm|block_002didef.html" Attributes="0" SourcePath="dist\doc\gforth\block_002didef.html" SelfReg="false" NextFile="block_002dother.html"/>
+    <ROW File="block_002dother.html" Component_="Assembler.html" FileName="block_~3.htm|block_002dother.html" Attributes="0" SourcePath="dist\doc\gforth\block_002dother.html" SelfReg="false" NextFile="BooleanFlags.html"/>
+    <ROW File="blocked.fb" Component_="aclocal.m4" FileName="blocked.fb" Attributes="0" SourcePath="dist\blocked.fb" SelfReg="false" NextFile="blocks.fs"/>
+    <ROW File="blocks.fs" Component_="aclocal.m4" FileName="blocks.fs" Attributes="0" SourcePath="dist\blocks.fs" SelfReg="false" NextFile="bubble.fs"/>
+    <ROW File="bubble.fs" Component_="aclocal.m4" FileName="bubble.fs" Attributes="0" SourcePath="dist\bubble.fs" SelfReg="false" NextFile="bufio.fs"/>
+    <ROW File="bufio.fs" Component_="aclocal.m4" FileName="bufio.fs" Attributes="0" SourcePath="dist\bufio.fs" SelfReg="false" NextFile="BUGS"/>
+    <ROW File="buildec" Component_="aclocal.m4" FileName="build-ec" Attributes="0" SourcePath="dist\build-ec" SelfReg="false" NextFile="buildec.in"/>
+    <ROW File="buildec.in" Component_="aclocal.m4" FileName="build-ec.in" Attributes="0" SourcePath="dist\build-ec.in" SelfReg="false" NextFile="BUILDFROMSCRATCH"/>
+    <ROW File="builttag.fs" Component_="builttag.fs" FileName="builttag.fs" Attributes="0" SourcePath="dist\ec\builttag.fs" SelfReg="false" NextFile="dotx.fs"/>
+    <ROW File="cache.c" Component_="cache.c" FileName="cache.c" Attributes="0" SourcePath="dist\arch\hppa\cache.c" SelfReg="false" NextFile="machine.h_5"/>
+    <ROW File="cache0.vmg" Component_="aclocal.m4" FileName="cache0.vmg" Attributes="0" SourcePath="dist\cache0.vmg" SelfReg="false" NextFile="cache1.vmg"/>
+    <ROW File="cache1.vmg" Component_="aclocal.m4" FileName="cache1.vmg" Attributes="0" SourcePath="dist\cache1.vmg" SelfReg="false" NextFile="chains.fs"/>
+    <ROW File="cachefast0.vmg" Component_="aclocal.m4" FileName="cache-~1.vmg|cache-fast0.vmg" Attributes="0" SourcePath="dist\cache-fast0.vmg" SelfReg="false" NextFile="cachefast1.vmg"/>
+    <ROW File="cachefast1.vmg" Component_="aclocal.m4" FileName="cache-~2.vmg|cache-fast1.vmg" Attributes="0" SourcePath="dist\cache-fast1.vmg" SelfReg="false" NextFile="cachefast2.vmg"/>
+    <ROW File="cachefast2.vmg" Component_="aclocal.m4" FileName="cache-~3.vmg|cache-fast2.vmg" Attributes="0" SourcePath="dist\cache-fast2.vmg" SelfReg="false" NextFile="cachefast3.vmg"/>
+    <ROW File="cachefast3.vmg" Component_="aclocal.m4" FileName="cache-~4.vmg|cache-fast3.vmg" Attributes="0" SourcePath="dist\cache-fast3.vmg" SelfReg="false" NextFile="cachefast4.vmg"/>
+    <ROW File="cachefast4.vmg" Component_="aclocal.m4" FileName="cache-~5.vmg|cache-fast4.vmg" Attributes="0" SourcePath="dist\cache-fast4.vmg" SelfReg="false" NextFile="cachefast5.vmg"/>
+    <ROW File="cachefast5.vmg" Component_="aclocal.m4" FileName="cache-~6.vmg|cache-fast5.vmg" Attributes="0" SourcePath="dist\cache-fast5.vmg" SelfReg="false" NextFile="cachefast6.vmg"/>
+    <ROW File="cachefast6.vmg" Component_="aclocal.m4" FileName="cache-~7.vmg|cache-fast6.vmg" Attributes="0" SourcePath="dist\cache-fast6.vmg" SelfReg="false" NextFile="cachefast7.vmg"/>
+    <ROW File="cachefast7.vmg" Component_="aclocal.m4" FileName="cache-~8.vmg|cache-fast7.vmg" Attributes="0" SourcePath="dist\cache-fast7.vmg" SelfReg="false" NextFile="cachefast8.vmg"/>
+    <ROW File="cachefast8.vmg" Component_="aclocal.m4" FileName="cache-~9.vmg|cache-fast8.vmg" Attributes="0" SourcePath="dist\cache-fast8.vmg" SelfReg="false" NextFile="cacheregs1.vmg"/>
+    <ROW File="cacheflush0.c" Component_="cacheflushlinux.c" FileName="cachef~2.c|cacheflush0.c" Attributes="0" SourcePath="dist\arch\arm\cacheflush0.c" SelfReg="false" NextFile="machine.h_3"/>
+    <ROW File="cacheflushlinux.c" Component_="cacheflushlinux.c" FileName="cachef~1.c|cacheflush-linux.c" Attributes="0" SourcePath="dist\arch\arm\cacheflush-linux.c" SelfReg="false" NextFile="cacheflush0.c"/>
+    <ROW File="cacheregs1.vmg" Component_="aclocal.m4" FileName="cache~10.vmg|cache-regs1.vmg" Attributes="0" SourcePath="dist\cache-regs1.vmg" SelfReg="false" NextFile="cacheregs2.vmg"/>
+    <ROW File="cacheregs2.vmg" Component_="aclocal.m4" FileName="cache~11.vmg|cache-regs2.vmg" Attributes="0" SourcePath="dist\cache-regs2.vmg" SelfReg="false" NextFile="cacheregs3.vmg"/>
+    <ROW File="cacheregs3.vmg" Component_="aclocal.m4" FileName="cache~12.vmg|cache-regs3.vmg" Attributes="0" SourcePath="dist\cache-regs3.vmg" SelfReg="false" NextFile="cacheregs4.vmg"/>
+    <ROW File="cacheregs4.vmg" Component_="aclocal.m4" FileName="cache~13.vmg|cache-regs4.vmg" Attributes="0" SourcePath="dist\cache-regs4.vmg" SelfReg="false" NextFile="cache0.vmg"/>
+    <ROW File="cbr.fs" Component_="accept.fs" FileName="cbr.fs" Attributes="0" SourcePath="dist\kernel\cbr.fs" SelfReg="false" NextFile="cloop.fs"/>
+    <ROW File="chains.fs" Component_="aclocal.m4" FileName="chains.fs" Attributes="0" SourcePath="dist\chains.fs" SelfReg="false" NextFile="ChangeLog"/>
+    <ROW File="checkans.fs" Component_="checkans.fs" FileName="checkans.fs" Attributes="0" SourcePath="dist\test\checkans.fs" SelfReg="false" NextFile="checkans.out"/>
+    <ROW File="checkans.out" Component_="checkans.fs" FileName="checkans.out" Attributes="0" SourcePath="dist\test\checkans.out" SelfReg="false" NextFile="coreext.fs"/>
+    <ROW File="cleanalign.c" Component_="bit.h" FileName="cleana~1.c|cleanalign.c" Attributes="0" SourcePath="dist\engine\cleanalign.c" SelfReg="false" NextFile="config.h"/>
+    <ROW File="cloop.fs" Component_="accept.fs" FileName="cloop.fs" Attributes="0" SourcePath="dist\kernel\cloop.fs" SelfReg="false" NextFile="comp.fs"/>
+    <ROW File="code.fs" Component_="aclocal.m4" FileName="code.fs" Attributes="0" SourcePath="dist\code.fs" SelfReg="false" NextFile="colorize.fs"/>
+    <ROW File="colorize.fs" Component_="aclocal.m4" FileName="colorize.fs" Attributes="0" SourcePath="dist\colorize.fs" SelfReg="false" NextFile="compi.fs"/>
+    <ROW File="comp.fs" Component_="accept.fs" FileName="comp.fs" Attributes="0" SourcePath="dist\kernel\comp.fs" SelfReg="false" NextFile="condold.fs"/>
+    <ROW File="compi.fs" Component_="aclocal.m4" FileName="comp-i.fs" Attributes="0" SourcePath="dist\comp-i.fs" SelfReg="false" NextFile="anslocal.fs"/>
+    <ROW File="compile.sharc" Component_="compile.sharc" FileName="compil~1.sha|compile.sharc" Attributes="0" SourcePath="dist\arch\sharc\compile.sharc" SelfReg="false" NextFile="g21k3.3.4bp1.diff"/>
+    <ROW File="compiler.fs" Component_="asm.fs_8" FileName="compiler.fs" Attributes="0" SourcePath="dist\arch\shboom\compiler.fs" SelfReg="false" NextFile="dis.fs"/>
+    <ROW File="complex.fs" Component_="aclocal.m4" FileName="complex.fs" Attributes="0" SourcePath="dist\complex.fs" SelfReg="false" NextFile="config.bat"/>
+    <ROW File="cond.fs" Component_="accept.fs" FileName="cond.fs" Attributes="0" SourcePath="dist\kernel\cond.fs" SelfReg="false" NextFile="doers.fs_1"/>
+    <ROW File="condold.fs" Component_="accept.fs" FileName="cond-old.fs" Attributes="0" SourcePath="dist\kernel\cond-old.fs" SelfReg="false" NextFile="cond.fs"/>
+    <ROW File="config.bat" Component_="aclocal.m4" FileName="config.bat" Attributes="0" SourcePath="dist\config.bat" SelfReg="false" NextFile="config.guess"/>
+    <ROW File="config.guess" Component_="aclocal.m4" FileName="config~1.gue|config.guess" Attributes="0" SourcePath="dist\config.guess" SelfReg="false" NextFile="config.status"/>
+    <ROW File="config.h" Component_="bit.h" FileName="config.h" Attributes="0" SourcePath="dist\engine\config.h" SelfReg="false" NextFile="config.h.in"/>
+    <ROW File="config.h.in" Component_="bit.h" FileName="config~1.in|config.h.in" Attributes="0" SourcePath="dist\engine\config.h.in" SelfReg="false" NextFile="costs.i"/>
+    <ROW File="config.status" Component_="aclocal.m4" FileName="config~1.sta|config.status" Attributes="0" SourcePath="dist\config.status" SelfReg="false" NextFile="config.sub"/>
+    <ROW File="config.sub" Component_="aclocal.m4" FileName="config.sub" Attributes="0" SourcePath="dist\config.sub" SelfReg="false" NextFile="configure"/>
+    <ROW File="configure" Component_="aclocal.m4" FileName="config~1|configure" Attributes="0" SourcePath="dist\configure" SelfReg="false" NextFile="configure.cmd"/>
+    <ROW File="configure.cmd" Component_="aclocal.m4" FileName="config~1.cmd|configure.cmd" Attributes="0" SourcePath="dist\configure.cmd" SelfReg="false" NextFile="configure.in"/>
+    <ROW File="configure.in" Component_="aclocal.m4" FileName="config~1.in|configure.in" Attributes="0" SourcePath="dist\configure.in" SelfReg="false" NextFile="COPYING"/>
+    <ROW File="control.fs" Component_="anslocal.fs" FileName="control.fs" Attributes="0" SourcePath="dist\compat\control.fs" SelfReg="false" NextFile="defer.fs"/>
+    <ROW File="core_002dambcond.html" Component_="Assembler.html" FileName="core_0~1.htm|core_002dambcond.html" Attributes="0" SourcePath="dist\doc\gforth\core_002dambcond.html" SelfReg="false" NextFile="core_002didef.html"/>
+    <ROW File="core_002didef.html" Component_="Assembler.html" FileName="core_0~2.htm|core_002didef.html" Attributes="0" SourcePath="dist\doc\gforth\core_002didef.html" SelfReg="false" NextFile="core_002dother.html"/>
+    <ROW File="core_002dother.html" Component_="Assembler.html" FileName="core_0~3.htm|core_002dother.html" Attributes="0" SourcePath="dist\doc\gforth\core_002dother.html" SelfReg="false" NextFile="CountedloopsTutorial.html"/>
+    <ROW File="coreext.fs" Component_="checkans.fs" FileName="coreext.fs" Attributes="0" SourcePath="dist\test\coreext.fs" SelfReg="false" NextFile="coremore.fs"/>
+    <ROW File="coremore.fs" Component_="checkans.fs" FileName="coremore.fs" Attributes="0" SourcePath="dist\test\coremore.fs" SelfReg="false" NextFile="coretest.fs"/>
+    <ROW File="coretest.fs" Component_="checkans.fs" FileName="coretest.fs" Attributes="0" SourcePath="dist\test\coretest.fs" SelfReg="false" NextFile="coretest.out"/>
+    <ROW File="coretest.out" Component_="checkans.fs" FileName="coretest.out" Attributes="0" SourcePath="dist\test\coretest.out" SelfReg="false" NextFile="dbltest.fs"/>
+    <ROW File="costs.i" Component_="bit.h" FileName="costs.i" Attributes="0" SourcePath="dist\engine\costs.i" SelfReg="false" NextFile="dblsub.c"/>
+    <ROW File="cross.fs" Component_="aclocal.m4" FileName="cross.fs" Attributes="0" SourcePath="dist\cross.fs" SelfReg="false" NextFile="cstr.fs"/>
+    <ROW File="cross_002efs.html" Component_="Assembler.html" FileName="cross_~1.htm|cross_002efs.html" Attributes="0" SourcePath="dist\doc\gforth\cross_002efs.html" SelfReg="false" NextFile="Datastack.html"/>
+    <ROW File="cstr.c" Component_="cstr.c" FileName="cstr.c" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\cstr.c" SelfReg="false" NextFile="cstr.la"/>
+    <ROW File="cstr.fs" Component_="aclocal.m4" FileName="cstr.fs" Attributes="0" SourcePath="dist\cstr.fs" SelfReg="false" NextFile="cygffi200beta.dll"/>
+    <ROW File="cstr.la" Component_="cstr.c" FileName="cstr.la" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\cstr.la" SelfReg="false" NextFile="cstr.lo"/>
+    <ROW File="cstr.lo" Component_="cstr.c" FileName="cstr.lo" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\cstr.lo" SelfReg="false" NextFile="cstr.o"/>
+    <ROW File="cstr.o" Component_="cstr.c" FileName="cstr.o" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\cstr.o" SelfReg="false" NextFile="fflib.c"/>
+    <ROW File="cygffi200beta.dll" Component_="cygffi200beta.dll" FileName="cygffi~1.dll|cygffi-2-00-beta.dll" Attributes="0" SourcePath="dist\cygffi-2-00-beta.dll" SelfReg="false" NextFile="cygiconv2.dll"/>
+    <ROW File="cygiconv2.dll" Component_="cygiconv2.dll" FileName="cygico~1.dll|cygiconv-2.dll" Attributes="0" SourcePath="dist\cygiconv-2.dll" SelfReg="false" NextFile="cygintl8.dll"/>
+    <ROW File="cygintl8.dll" Component_="cygintl8.dll" FileName="cygint~1.dll|cygintl-8.dll" Attributes="0" SourcePath="dist\cygintl-8.dll" SelfReg="false" NextFile="cygltdl3.dll"/>
+    <ROW File="cygltdl3.dll" Component_="cygltdl3.dll" FileName="cygltd~1.dll|cygltdl-3.dll" Attributes="0" SourcePath="dist\cygltdl-3.dll" SelfReg="false" NextFile="cygncurses8.dll"/>
+    <ROW File="cygncurses8.dll" Component_="cygncurses8.dll" FileName="cygncu~1.dll|cygncurses-8.dll" Attributes="0" SourcePath="dist\cygncurses-8.dll" SelfReg="false" NextFile="cygreadline6.dll"/>
+    <ROW File="cygreadline6.dll" Component_="cygreadline6.dll" FileName="cygrea~1.dll|cygreadline6.dll" Attributes="0" SourcePath="dist\cygreadline6.dll" SelfReg="false" NextFile="cygwin1.dll"/>
+    <ROW File="cygwin1.dll" Component_="cygwin1.dll" FileName="cygwin1.dll" Attributes="0" SourcePath="dist\cygwin1.dll" SelfReg="false" NextFile="debug.fs"/>
+    <ROW File="dblsub.c" Component_="bit.h" FileName="dblsub.c" Attributes="0" SourcePath="dist\engine\dblsub.c" SelfReg="false" NextFile="dblsub.o"/>
+    <ROW File="dblsub.o" Component_="bit.h" FileName="dblsub.o" Attributes="0" SourcePath="dist\engine\dblsub.o" SelfReg="false" NextFile="ecvt.c"/>
+    <ROW File="dbltest.fs" Component_="checkans.fs" FileName="dbltest.fs" Attributes="0" SourcePath="dist\test\dbltest.fs" SelfReg="false" NextFile="deferred.fs"/>
+    <ROW File="debug.fs" Component_="aclocal.m4" FileName="debug.fs" Attributes="0" SourcePath="dist\debug.fs" SelfReg="false" NextFile="debugs.fs"/>
+    <ROW File="debugs.fs" Component_="aclocal.m4" FileName="debugs.fs" Attributes="0" SourcePath="dist\debugs.fs" SelfReg="false" NextFile="depthchanges.fs"/>
+    <ROW File="defer.fs" Component_="anslocal.fs" FileName="defer.fs" Attributes="0" SourcePath="dist\compat\defer.fs" SelfReg="false" NextFile="exception.fs"/>
+    <ROW File="deferred.fs" Component_="checkans.fs" FileName="deferred.fs" Attributes="0" SourcePath="dist\test\deferred.fs" SelfReg="false" NextFile="float.fs_1"/>
+    <ROW File="depthchanges.fs" Component_="aclocal.m4" FileName="depth-~1.fs|depth-changes.fs" Attributes="0" SourcePath="dist\depth-changes.fs" SelfReg="false" NextFile="disgdb.fs"/>
+    <ROW File="dis.fs" Component_="asm.fs_8" FileName="dis.fs" Attributes="0" SourcePath="dist\arch\shboom\dis.fs" SelfReg="false" NextFile="dis2.fs"/>
+    <ROW File="dis2.fs" Component_="asm.fs_8" FileName="dis2.fs" Attributes="0" SourcePath="dist\arch\shboom\dis2.fs" SelfReg="false" NextFile="doers.fs"/>
+    <ROW File="disasm.c" Component_="disasm.c" FileName="disasm.c" Attributes="0" SourcePath="dist\vmgen-ex\disasm.c" SelfReg="false" NextFile="engine.c_1"/>
+    <ROW File="disasm.c_1" Component_="disasm.c_1" FileName="disasm.c" Attributes="0" SourcePath="dist\vmgen-ex2\disasm.c" SelfReg="false" NextFile="engine.c_2"/>
+    <ROW File="disasm.fs" Component_="asm.fs" FileName="disasm.fs" Attributes="0" SourcePath="dist\arch\386\disasm.fs" SelfReg="false" NextFile="machine.h"/>
+    <ROW File="disasm.fs_1" Component_="asm.fs_2" FileName="disasm.fs" Attributes="0" SourcePath="dist\arch\alpha\disasm.fs" SelfReg="false" NextFile="machine.h_1"/>
+    <ROW File="disasm.fs_2" Component_="asm.fs_3" FileName="disasm.fs" Attributes="0" SourcePath="dist\arch\amd64\disasm.fs" SelfReg="false" NextFile="machine.h_2"/>
+    <ROW File="disasm.fs_3" Component_="asm.fs_4" FileName="disasm.fs" Attributes="0" SourcePath="dist\arch\mips\disasm.fs" SelfReg="false" NextFile="insts.fs"/>
+    <ROW File="disasm.fs_4" Component_="asm.fs_6" FileName="disasm.fs" Attributes="0" SourcePath="dist\arch\power\disasm.fs" SelfReg="false" NextFile="inst.fs"/>
+    <ROW File="disgdb.fs" Component_="aclocal.m4" FileName="dis-gdb.fs" Attributes="0" SourcePath="dist\dis-gdb.fs" SelfReg="false" NextFile="fdl.texi"/>
+    <ROW File="doers.fs" Component_="asm.fs_8" FileName="doers.fs" Attributes="0" SourcePath="dist\arch\shboom\doers.fs" SelfReg="false" NextFile="mach.fs_5"/>
+    <ROW File="doers.fs_1" Component_="accept.fs" FileName="doers.fs" Attributes="0" SourcePath="dist\kernel\doers.fs" SelfReg="false" NextFile="errore.fs"/>
+    <ROW File="dosconf.h" Component_="aclocal.m4" FileName="dosconf.h" Attributes="0" SourcePath="dist\dosconf.h" SelfReg="false" NextFile="dosekey.fs"/>
+    <ROW File="dosekey.fs" Component_="aclocal.m4" FileName="dosekey.fs" Attributes="0" SourcePath="dist\dosekey.fs" SelfReg="false" NextFile="doskey.fs"/>
+    <ROW File="doskey.fs" Component_="aclocal.m4" FileName="doskey.fs" Attributes="0" SourcePath="dist\doskey.fs" SelfReg="false" NextFile="ds2texi.fs"/>
+    <ROW File="dotx.fs" Component_="builttag.fs" FileName="dotx.fs" Attributes="0" SourcePath="dist\ec\dotx.fs" SelfReg="false" NextFile="mirror.fs"/>
+    <ROW File="double_002dambcond.html" Component_="Assembler.html" FileName="double~2.htm|double_002dambcond.html" Attributes="0" SourcePath="dist\doc\gforth\double_002dambcond.html" SelfReg="false" NextFile="DynamicSuperinstructions.html"/>
+    <ROW File="ds2texi.fs" Component_="aclocal.m4" FileName="ds2texi.fs" Attributes="0" SourcePath="dist\ds2texi.fs" SelfReg="false" NextFile="builttag.fs"/>
+    <ROW File="ecvt.c" Component_="bit.h" FileName="ecvt.c" Attributes="0" SourcePath="dist\engine\ecvt.c" SelfReg="false" NextFile="engineditcnoll.o"/>
+    <ROW File="ekey.fs" Component_="aclocal.m4" FileName="ekey.fs" Attributes="0" SourcePath="dist\ekey.fs" SelfReg="false" NextFile="elispcomp"/>
+    <ROW File="elispcomp" Component_="aclocal.m4" FileName="elisp-~1|elisp-comp" Attributes="0" SourcePath="dist\elisp-comp" SelfReg="false" NextFile="endtryiferror.fs"/>
+    <ROW File="endtryiferror.fs" Component_="aclocal.m4" FileName="endtry~1.fs|endtry-iferror.fs" Attributes="0" SourcePath="dist\endtry-iferror.fs" SelfReg="false" NextFile="bit.h"/>
+    <ROW File="engine.c" Component_="bit.h" FileName="engine.c" Attributes="0" SourcePath="dist\engine\engine.c" SelfReg="false" NextFile="engine2llreg.o"/>
+    <ROW File="engine.c_1" Component_="disasm.c" FileName="engine.c" Attributes="0" SourcePath="dist\vmgen-ex\engine.c" SelfReg="false" NextFile="fib.mini"/>
+    <ROW File="engine.c_2" Component_="disasm.c_1" FileName="engine.c" Attributes="0" SourcePath="dist\vmgen-ex2\engine.c" SelfReg="false" NextFile="fib.mini_1"/>
+    <ROW File="engine2llreg.o" Component_="bit.h" FileName="engine~6.o|engine2-ll-reg.o" Attributes="0" SourcePath="dist\engine\engine2-ll-reg.o" SelfReg="false" NextFile="fnmatch.c"/>
+    <ROW File="engineditcnoll.o" Component_="bit.h" FileName="engine~1.o|engine-ditc-noll.o" Attributes="0" SourcePath="dist\engine\engine-ditc-noll.o" SelfReg="false" NextFile="enginefastllreg.o"/>
+    <ROW File="enginefast2llreg.o" Component_="bit.h" FileName="engine~3.o|engine-fast2-ll-reg.o" Attributes="0" SourcePath="dist\engine\engine-fast2-ll-reg.o" SelfReg="false" NextFile="engineitcnoll.o"/>
+    <ROW File="enginefastllreg.o" Component_="bit.h" FileName="engine~2.o|engine-fast-ll-reg.o" Attributes="0" SourcePath="dist\engine\engine-fast-ll-reg.o" SelfReg="false" NextFile="enginefast2llreg.o"/>
+    <ROW File="engineitcnoll.o" Component_="bit.h" FileName="engine~4.o|engine-itc-noll.o" Attributes="0" SourcePath="dist\engine\engine-itc-noll.o" SelfReg="false" NextFile="enginellreg.o"/>
+    <ROW File="enginellreg.o" Component_="bit.h" FileName="engine~5.o|engine-ll-reg.o" Attributes="0" SourcePath="dist\engine\engine-ll-reg.o" SelfReg="false" NextFile="engine.c"/>
+    <ROW File="environ.fs" Component_="aclocal.m4" FileName="environ.fs" Attributes="0" SourcePath="dist\environ.fs" SelfReg="false" NextFile="envos.dos"/>
+    <ROW File="envos.dos" Component_="aclocal.m4" FileName="envos.dos" Attributes="0" SourcePath="dist\envos.dos" SelfReg="false" NextFile="envos.fs"/>
+    <ROW File="envos.fs" Component_="aclocal.m4" FileName="envos.fs" Attributes="0" SourcePath="dist\envos.fs" SelfReg="false" NextFile="envos.fs.in"/>
+    <ROW File="envos.fs.in" Component_="aclocal.m4" FileName="envosf~1.in|envos.fs.in" Attributes="0" SourcePath="dist\envos.fs.in" SelfReg="false" NextFile="envos.os2"/>
+    <ROW File="envos.os2" Component_="aclocal.m4" FileName="envos.os2" Attributes="0" SourcePath="dist\envos.os2" SelfReg="false" NextFile="errors.fs"/>
+    <ROW File="errore.fs" Component_="accept.fs" FileName="errore.fs" Attributes="0" SourcePath="dist\kernel\errore.fs" SelfReg="false" NextFile="files.fs"/>
+    <ROW File="errors.fs" Component_="aclocal.m4" FileName="errors.fs" Attributes="0" SourcePath="dist\errors.fs" SelfReg="false" NextFile="etags.fs"/>
+    <ROW File="etags.fs" Component_="aclocal.m4" FileName="etags.fs" Attributes="0" SourcePath="dist\etags.fs" SelfReg="false" NextFile="exboot.fs"/>
+    <ROW File="exboot.fs" Component_="aclocal.m4" FileName="exboot.fs" Attributes="0" SourcePath="dist\exboot.fs" SelfReg="false" NextFile="except.fs"/>
+    <ROW File="except.fs" Component_="aclocal.m4" FileName="except.fs" Attributes="0" SourcePath="dist\except.fs" SelfReg="false" NextFile="extend.fs"/>
+    <ROW File="exception.fs" Component_="anslocal.fs" FileName="except~1.fs|exception.fs" Attributes="0" SourcePath="dist\compat\exception.fs" SelfReg="false" NextFile="executeparsing.fs"/>
+    <ROW File="exception_002didef.html" Component_="Assembler.html" FileName="except~3.htm|exception_002didef.html" Attributes="0" SourcePath="dist\doc\gforth\exception_002didef.html" SelfReg="false" NextFile="Executiontoken.html"/>
+    <ROW File="executeparsing.fs" Component_="anslocal.fs" FileName="execut~1.fs|execute-parsing.fs" Attributes="0" SourcePath="dist\compat\execute-parsing.fs" SelfReg="false" NextFile="loops.fs"/>
+    <ROW File="extend.fs" Component_="aclocal.m4" FileName="extend.fs" Attributes="0" SourcePath="dist\extend.fs" SelfReg="false" NextFile="fflib.fs"/>
+    <ROW File="facility_002dambcond.html" Component_="Assembler.html" FileName="facili~1.htm|facility_002dambcond.html" Attributes="0" SourcePath="dist\doc\gforth\facility_002dambcond.html" SelfReg="false" NextFile="facility_002didef.html"/>
+    <ROW File="facility_002didef.html" Component_="Assembler.html" FileName="facili~2.htm|facility_002didef.html" Attributes="0" SourcePath="dist\doc\gforth\facility_002didef.html" SelfReg="false" NextFile="FactoringTutorial.html"/>
+    <ROW File="fdl.texi" Component_="fdl.texi" FileName="fdl~1.tex|fdl.texi" Attributes="0" SourcePath="dist\doc\fdl.texi" SelfReg="false" NextFile="Assembler.html"/>
+    <ROW File="fflib.c" Component_="cstr.c" FileName="fflib.c" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\fflib.c" SelfReg="false" NextFile="fflib.la"/>
+    <ROW File="fflib.fs" Component_="aclocal.m4" FileName="fflib.fs" Attributes="0" SourcePath="dist\fflib.fs" SelfReg="false" NextFile="fft.fs"/>
+    <ROW File="fflib.la" Component_="cstr.c" FileName="fflib.la" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\fflib.la" SelfReg="false" NextFile="fflib.lo"/>
+    <ROW File="fflib.lo" Component_="cstr.c" FileName="fflib.lo" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\fflib.lo" SelfReg="false" NextFile="fflib.o"/>
+    <ROW File="fflib.o" Component_="cstr.c" FileName="fflib.o" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\fflib.o" SelfReg="false" NextFile="libffi.c"/>
+    <ROW File="fft.fs" Component_="aclocal.m4" FileName="fft.fs" Attributes="0" SourcePath="dist\fft.fs" SelfReg="false" NextFile="fi2c.fs"/>
+    <ROW File="fi2c.fs" Component_="aclocal.m4" FileName="fi2c.fs" Attributes="0" SourcePath="dist\fi2c.fs" SelfReg="false" NextFile="fib.fs"/>
+    <ROW File="fib.fs" Component_="aclocal.m4" FileName="fib.fs" Attributes="0" SourcePath="dist\fib.fs" SelfReg="false" NextFile="filedump.fs"/>
+    <ROW File="fib.mini" Component_="disasm.c" FileName="fib~1.min|fib.mini" Attributes="0" SourcePath="dist\vmgen-ex\fib.mini" SelfReg="false" NextFile="Makefile_2"/>
+    <ROW File="fib.mini_1" Component_="disasm.c_1" FileName="fib~1.min|fib.mini" Attributes="0" SourcePath="dist\vmgen-ex2\fib.mini" SelfReg="false" NextFile="Makefile_3"/>
+    <ROW File="file_002dambcond.html" Component_="Assembler.html" FileName="file_0~1.htm|file_002dambcond.html" Attributes="0" SourcePath="dist\doc\gforth\file_002dambcond.html" SelfReg="false" NextFile="file_002didef.html"/>
+    <ROW File="file_002didef.html" Component_="Assembler.html" FileName="file_0~2.htm|file_002didef.html" Attributes="0" SourcePath="dist\doc\gforth\file_002didef.html" SelfReg="false" NextFile="FlagsandComparisonsTutorial.html"/>
+    <ROW File="filedump.fs" Component_="aclocal.m4" FileName="filedump.fs" Attributes="0" SourcePath="dist\filedump.fs" SelfReg="false" NextFile="fixpath.fs"/>
+    <ROW File="files.fs" Component_="accept.fs" FileName="files.fs" Attributes="0" SourcePath="dist\kernel\files.fs" SelfReg="false" NextFile="getdoers.fs"/>
+    <ROW File="fixpath.fs" Component_="aclocal.m4" FileName="fixpath.fs" Attributes="0" SourcePath="dist\fixpath.fs" SelfReg="false" NextFile="float.fs"/>
+    <ROW File="float.fs" Component_="aclocal.m4" FileName="float.fs" Attributes="0" SourcePath="dist\float.fs" SelfReg="false" NextFile="fslutil.4th"/>
+    <ROW File="float.fs_1" Component_="checkans.fs" FileName="float.fs" Attributes="0" SourcePath="dist\test\float.fs" SelfReg="false" NextFile="gforthnofast.fs"/>
+    <ROW File="floating_002dambcond.html" Component_="Assembler.html" FileName="floati~4.htm|floating_002dambcond.html" Attributes="0" SourcePath="dist\doc\gforth\floating_002dambcond.html" SelfReg="false" NextFile="floating_002didef.html"/>
+    <ROW File="floating_002didef.html" Component_="Assembler.html" FileName="floati~5.htm|floating_002didef.html" Attributes="0" SourcePath="dist\doc\gforth\floating_002didef.html" SelfReg="false" NextFile="Forgettingwords.html"/>
+    <ROW File="flush_icache_block.c" Component_="flush_icache_block.c" FileName="flush_~1.c|flush_icache_block.c" Attributes="0" SourcePath="dist\arch\ia64\flush_icache_block.c" SelfReg="false" NextFile="machine.h_6"/>
+    <ROW File="fnmatch.c" Component_="bit.h" FileName="fnmatch.c" Attributes="0" SourcePath="dist\engine\fnmatch.c" SelfReg="false" NextFile="fnmatch.h"/>
+    <ROW File="fnmatch.h" Component_="bit.h" FileName="fnmatch.h" Attributes="0" SourcePath="dist\engine\fnmatch.h" SelfReg="false" NextFile="forth.h"/>
+    <ROW File="forth.h" Component_="bit.h" FileName="forth.h" Attributes="0" SourcePath="dist\engine\forth.h" SelfReg="false" NextFile="getopt.c"/>
+    <ROW File="fslutil.4th" Component_="aclocal.m4" FileName="fsl-util.4th" Attributes="0" SourcePath="dist\fsl-util.4th" SelfReg="false" NextFile="gfgen"/>
+    <ROW File="g21k3.3.4bp1.diff" Component_="compile.sharc" FileName="g21k-3~1.dif|g21k-3.3.4-bp1.diff" Attributes="0" SourcePath="dist\arch\sharc\g21k-3.3.4-bp1.diff" SelfReg="false" NextFile="mach.fs_4"/>
+    <ROW File="generic.fs" Component_="basic.fs" FileName="generic.fs" Attributes="0" SourcePath="dist\asm\generic.fs" SelfReg="false" NextFile="numref.fs"/>
+    <ROW File="getdoers.fs" Component_="accept.fs" FileName="getdoers.fs" Attributes="0" SourcePath="dist\kernel\getdoers.fs" SelfReg="false" NextFile="input.fs"/>
+    <ROW File="getopt.c" Component_="bit.h" FileName="getopt.c" Attributes="0" SourcePath="dist\engine\getopt.c" SelfReg="false" NextFile="getopt.h"/>
+    <ROW File="getopt.h" Component_="bit.h" FileName="getopt.h" Attributes="0" SourcePath="dist\engine\getopt.h" SelfReg="false" NextFile="getopt1.c"/>
+    <ROW File="getopt1.c" Component_="bit.h" FileName="getopt1.c" Attributes="0" SourcePath="dist\engine\getopt1.c" SelfReg="false" NextFile="io.c"/>
+    <ROW File="gfgen" Component_="aclocal.m4" FileName="gfgen" Attributes="0" SourcePath="dist\gfgen" SelfReg="false" NextFile="gforthditc.exe"/>
+    <ROW File="gforth.1" Component_="fdl.texi" FileName="gforth.1" Attributes="0" SourcePath="dist\doc\gforth.1" SelfReg="false" NextFile="gforth.ds"/>
+    <ROW File="gforth.ds" Component_="fdl.texi" FileName="gforth.ds" Attributes="0" SourcePath="dist\doc\gforth.ds" SelfReg="false" NextFile="gforth.info"/>
+    <ROW File="gforth.el" Component_="aclocal.m4" FileName="gforth.el" Attributes="0" SourcePath="dist\gforth.el" SelfReg="false" NextFile="gforth.exe"/>
+    <ROW File="gforth.exe" Component_="gforth.exe" FileName="gforth.exe" Attributes="0" SourcePath="dist\gforth.exe" SelfReg="false" NextFile="gforth.fi"/>
+    <ROW File="gforth.fi" Component_="aclocal.m4" FileName="gforth.fi" Attributes="0" SourcePath="dist\gforth.fi" SelfReg="false" NextFile="gforthmi"/>
+    <ROW File="gforth.fs" Component_="checkans.fs" FileName="gforth.fs" Attributes="0" SourcePath="dist\test\gforth.fs" SelfReg="false" NextFile="gforth.out"/>
+    <ROW File="gforth.info" Component_="fdl.texi" FileName="gforth~1.inf|gforth.info" Attributes="0" SourcePath="dist\doc\gforth.info" SelfReg="false" NextFile="gforth.info1"/>
+    <ROW File="gforth.info1" Component_="fdl.texi" FileName="gforth~2.inf|gforth.info-1" Attributes="0" SourcePath="dist\doc\gforth.info-1" SelfReg="false" NextFile="gforth.info2"/>
+    <ROW File="gforth.info2" Component_="fdl.texi" FileName="gforth~3.inf|gforth.info-2" Attributes="0" SourcePath="dist\doc\gforth.info-2" SelfReg="false" NextFile="gforth.info3"/>
+    <ROW File="gforth.info3" Component_="fdl.texi" FileName="gforth~4.inf|gforth.info-3" Attributes="0" SourcePath="dist\doc\gforth.info-3" SelfReg="false" NextFile="gforth.info4"/>
+    <ROW File="gforth.info4" Component_="fdl.texi" FileName="gforth~5.inf|gforth.info-4" Attributes="0" SourcePath="dist\doc\gforth.info-4" SelfReg="false" NextFile="gforth.pdf"/>
+    <ROW File="gforth.out" Component_="checkans.fs" FileName="gforth.out" Attributes="0" SourcePath="dist\test\gforth.out" SelfReg="false" NextFile="libcc.fs_1"/>
+    <ROW File="gforth.pdf" Component_="fdl.texi" FileName="gforth.pdf" Attributes="0" SourcePath="dist\doc\gforth.pdf" SelfReg="false" NextFile="glossaries.doc"/>
+    <ROW File="gforthditc.exe" Component_="gforthditc.exe" FileName="gforth~1.exe|gforth-ditc.exe" Attributes="0" SourcePath="dist\gforth-ditc.exe" SelfReg="false" NextFile="gforthfast.exe"/>
+    <ROW File="gforthfast.exe" Component_="gforthfast.exe" FileName="gforth~2.exe|gforth-fast.exe" Attributes="0" SourcePath="dist\gforth-fast.exe" SelfReg="false" NextFile="gforthitc.exe"/>
+    <ROW File="gforthitc.exe" Component_="gforthitc.exe" FileName="gforth~3.exe|gforth-itc.exe" Attributes="0" SourcePath="dist\gforth-itc.exe" SelfReg="false" NextFile="gforth.el"/>
+    <ROW File="gforthmi" Component_="aclocal.m4" FileName="gforthmi" Attributes="0" SourcePath="dist\gforthmi" SelfReg="false" NextFile="gforthmi.bat"/>
+    <ROW File="gforthmi.bat" Component_="aclocal.m4" FileName="gforthmi.bat" Attributes="0" SourcePath="dist\gforthmi.bat" SelfReg="false" NextFile="gforthmi.cmd"/>
+    <ROW File="gforthmi.cmd" Component_="aclocal.m4" FileName="gforthmi.cmd" Attributes="0" SourcePath="dist\gforthmi.cmd" SelfReg="false" NextFile="gforthmi.in"/>
+    <ROW File="gforthmi.html" Component_="Assembler.html" FileName="gforth~5.htm|gforthmi.html" Attributes="0" SourcePath="dist\doc\gforth\gforthmi.html" SelfReg="false" NextFile="GNUFreeDocumentationLicense.html"/>
+    <ROW File="gforthmi.in" Component_="aclocal.m4" FileName="gforthmi.in" Attributes="0" SourcePath="dist\gforthmi.in" SelfReg="false" NextFile="glocals.fs"/>
+    <ROW File="gforthnofast.fs" Component_="checkans.fs" FileName="gforth~1.fs|gforth-nofast.fs" Attributes="0" SourcePath="dist\test\gforth-nofast.fs" SelfReg="false" NextFile="gforth.fs"/>
+    <ROW File="glocals.fs" Component_="aclocal.m4" FileName="glocals.fs" Attributes="0" SourcePath="dist\glocals.fs" SelfReg="false" NextFile="glosgen.fs"/>
+    <ROW File="glosgen.fs" Component_="aclocal.m4" FileName="glosgen.fs" Attributes="0" SourcePath="dist\glosgen.fs" SelfReg="false" NextFile="glosgen.glo"/>
+    <ROW File="glosgen.glo" Component_="aclocal.m4" FileName="glosgen.glo" Attributes="0" SourcePath="dist\glosgen.glo" SelfReg="false" NextFile="gray.fs"/>
+    <ROW File="glossaries.doc" Component_="fdl.texi" FileName="glossa~1.doc|glossaries.doc" Attributes="0" SourcePath="dist\doc\glossaries.doc" SelfReg="false" NextFile="gpl.texi"/>
+    <ROW File="gpl.texi" Component_="fdl.texi" FileName="gpl~1.tex|gpl.texi" Attributes="0" SourcePath="dist\doc\gpl.texi" SelfReg="false" NextFile="makedoc.fs"/>
+    <ROW File="gray.fs" Component_="aclocal.m4" FileName="gray.fs" Attributes="0" SourcePath="dist\gray.fs" SelfReg="false" NextFile="hash.fs"/>
+    <ROW File="hash.fs" Component_="aclocal.m4" FileName="hash.fs" Attributes="0" SourcePath="dist\hash.fs" SelfReg="false" NextFile="history.fs"/>
+    <ROW File="history.fs" Component_="aclocal.m4" FileName="history.fs" Attributes="0" SourcePath="dist\history.fs" SelfReg="false" NextFile="httpd.fs"/>
+    <ROW File="httpd.fs" Component_="aclocal.m4" FileName="httpd.fs" Attributes="0" SourcePath="dist\httpd.fs" SelfReg="false" NextFile="INSTALL"/>
+    <ROW File="index.html" Component_="Assembler.html" FileName="index~1.htm|index.html" Attributes="0" SourcePath="dist\doc\gforth\index.html" SelfReg="false" NextFile="InputSources.html"/>
+    <ROW File="index.html_1" Component_="CCodeMacros.html" FileName="index~1.htm|index.html" Attributes="0" SourcePath="dist\doc\vmgen\index.html" SelfReg="false" NextFile="InputFileFormat.html"/>
+    <ROW File="input.fs" Component_="accept.fs" FileName="input.fs" Attributes="0" SourcePath="dist\kernel\input.fs" SelfReg="false" NextFile="int.fs"/>
+    <ROW File="inst.fs" Component_="asm.fs_6" FileName="inst.fs" Attributes="0" SourcePath="dist\arch\power\inst.fs" SelfReg="false" NextFile="machine.h_9"/>
+    <ROW File="installsh" Component_="aclocal.m4" FileName="instal~1|install-sh" Attributes="0" SourcePath="dist\install-sh" SelfReg="false" NextFile="installtags.fs"/>
+    <ROW File="installtags.fs" Component_="aclocal.m4" FileName="instal~1.fs|install-tags.fs" Attributes="0" SourcePath="dist\install-tags.fs" SelfReg="false" NextFile="INSTALL.BINDIST"/>
+    <ROW File="insts.fs" Component_="asm.fs_4" FileName="insts.fs" Attributes="0" SourcePath="dist\arch\mips\insts.fs" SelfReg="false" NextFile="machine.h_8"/>
+    <ROW File="int.fs" Component_="accept.fs" FileName="int.fs" Attributes="0" SourcePath="dist\kernel\int.fs" SelfReg="false" NextFile="io.fs"/>
+    <ROW File="intcomp.fs" Component_="aclocal.m4" FileName="intcomp.fs" Attributes="0" SourcePath="dist\intcomp.fs" SelfReg="false" NextFile="iss.sh"/>
+    <ROW File="io.c" Component_="bit.h" FileName="io.c" Attributes="0" SourcePath="dist\engine\io.c" SelfReg="false" NextFile="io.h"/>
+    <ROW File="io.fs" Component_="accept.fs" FileName="io.fs" Attributes="0" SourcePath="dist\kernel\io.fs" SelfReg="false" NextFile="kernel.fs"/>
+    <ROW File="io.h" Component_="bit.h" FileName="io.h" Attributes="0" SourcePath="dist\engine\io.h" SelfReg="false" NextFile="io.o"/>
+    <ROW File="io.o" Component_="bit.h" FileName="io.o" Attributes="0" SourcePath="dist\engine\io.o" SelfReg="false" NextFile="libcc.h.in"/>
+    <ROW File="iss.sh" Component_="aclocal.m4" FileName="iss.sh" Attributes="0" SourcePath="dist\iss.sh" SelfReg="false" NextFile="accept.fs"/>
+    <ROW File="kernel.fs" Component_="accept.fs" FileName="kernel.fs" Attributes="0" SourcePath="dist\kernel\kernel.fs" SelfReg="false" NextFile="license.fs"/>
+    <ROW File="kernl16b.fi" Component_="aclocal.m4" FileName="kernl16b.fi" Attributes="0" SourcePath="dist\kernl16b.fi" SelfReg="false" NextFile="kernl16l.fi"/>
+    <ROW File="kernl16l.fi" Component_="aclocal.m4" FileName="kernl16l.fi" Attributes="0" SourcePath="dist\kernl16l.fi" SelfReg="false" NextFile="kernl32b.fi"/>
+    <ROW File="kernl32b.fi" Component_="aclocal.m4" FileName="kernl32b.fi" Attributes="0" SourcePath="dist\kernl32b.fi" SelfReg="false" NextFile="kernl32l.fi"/>
+    <ROW File="kernl32l.fi" Component_="aclocal.m4" FileName="kernl32l.fi" Attributes="0" SourcePath="dist\kernl32l.fi" SelfReg="false" NextFile="kernl64b.fi"/>
+    <ROW File="kernl64b.fi" Component_="aclocal.m4" FileName="kernl64b.fi" Attributes="0" SourcePath="dist\kernl64b.fi" SelfReg="false" NextFile="kernl64l.fi"/>
+    <ROW File="kernl64l.fi" Component_="aclocal.m4" FileName="kernl64l.fi" Attributes="0" SourcePath="dist\kernl64l.fi" SelfReg="false" NextFile="cstr.c"/>
+    <ROW File="lib.fs" Component_="aclocal.m4" FileName="lib.fs" Attributes="0" SourcePath="dist\lib.fs" SelfReg="false" NextFile="libcc.fs"/>
+    <ROW File="libcc.fs" Component_="aclocal.m4" FileName="libcc.fs" Attributes="0" SourcePath="dist\libcc.fs" SelfReg="false" NextFile="libffi.fs"/>
+    <ROW File="libcc.fs_1" Component_="checkans.fs" FileName="libcc.fs" Attributes="0" SourcePath="dist\test\libcc.fs" SelfReg="false" NextFile="other.fs_1"/>
+    <ROW File="libcc.h.in" Component_="bit.h" FileName="libcch~1.in|libcc.h.in" Attributes="0" SourcePath="dist\engine\libcc.h.in" SelfReg="false" NextFile="longlong.h"/>
+    <ROW File="libffi.c" Component_="cstr.c" FileName="libffi.c" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\libffi.c" SelfReg="false" NextFile="libffi.la"/>
+    <ROW File="libffi.fs" Component_="aclocal.m4" FileName="libffi.fs" Attributes="0" SourcePath="dist\libffi.fs" SelfReg="false" NextFile="locals.fs"/>
+    <ROW File="libffi.la" Component_="cstr.c" FileName="libffi.la" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\libffi.la" SelfReg="false" NextFile="libffi.lo"/>
+    <ROW File="libffi.lo" Component_="cstr.c" FileName="libffi.lo" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\libffi.lo" SelfReg="false" NextFile="libffi.o"/>
+    <ROW File="libffi.o" Component_="cstr.c" FileName="libffi.o" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\libffi.o" SelfReg="false" NextFile="socket.c"/>
+    <ROW File="license.fs" Component_="accept.fs" FileName="license.fs" Attributes="0" SourcePath="dist\kernel\license.fs" SelfReg="false" NextFile="main.fs"/>
+    <ROW File="locals.fs" Component_="aclocal.m4" FileName="locals.fs" Attributes="0" SourcePath="dist\locals.fs" SelfReg="false" NextFile="locate.fs"/>
+    <ROW File="locals_002dambcond.html" Component_="Assembler.html" FileName="locals~5.htm|locals_002dambcond.html" Attributes="0" SourcePath="dist\doc\gforth\locals_002dambcond.html" SelfReg="false" NextFile="locals_002didef.html"/>
+    <ROW File="locals_002didef.html" Component_="Assembler.html" FileName="locals~6.htm|locals_002didef.html" Attributes="0" SourcePath="dist\doc\gforth\locals_002didef.html" SelfReg="false" NextFile="Low_002dLevelCInterfaceWords.html"/>
+    <ROW File="locate.fs" Component_="aclocal.m4" FileName="locate.fs" Attributes="0" SourcePath="dist\locate.fs" SelfReg="false" NextFile="look.fs"/>
+    <ROW File="longlong.h" Component_="bit.h" FileName="longlong.h" Attributes="0" SourcePath="dist\engine\longlong.h" SelfReg="false" NextFile="mainditcnoll.o"/>
+    <ROW File="look.fs" Component_="aclocal.m4" FileName="look.fs" Attributes="0" SourcePath="dist\look.fs" SelfReg="false" NextFile="mach16b.fs"/>
+    <ROW File="loops.fs" Component_="anslocal.fs" FileName="loops.fs" Attributes="0" SourcePath="dist\compat\loops.fs" SelfReg="false" NextFile="README_3"/>
+    <ROW File="mach.fs" Component_="asm.fs_1" FileName="mach.fs" Attributes="0" SourcePath="dist\arch\4stack\mach.fs" SelfReg="false" NextFile="mach.sh"/>
+    <ROW File="mach.fs_1" Component_="mach.fs" FileName="mach.fs" Attributes="0" SourcePath="dist\arch\6502\mach.fs" SelfReg="false" NextFile="prim.fs_1"/>
+    <ROW File="mach.fs_2" Component_="asm.fs_5" FileName="mach.fs" Attributes="0" SourcePath="dist\arch\misc\mach.fs" SelfReg="false" NextFile="optcmove.fs"/>
+    <ROW File="mach.fs_3" Component_="asm.fs_7" FileName="mach.fs" Attributes="0" SourcePath="dist\arch\r8c\mach.fs" SelfReg="false" NextFile="prim.fs_3"/>
+    <ROW File="mach.fs_4" Component_="compile.sharc" FileName="mach.fs" Attributes="0" SourcePath="dist\arch\sharc\mach.fs" SelfReg="false" NextFile="machine.h_10"/>
+    <ROW File="mach.fs_5" Component_="asm.fs_8" FileName="mach.fs" Attributes="0" SourcePath="dist\arch\shboom\mach.fs" SelfReg="false" NextFile="prim.fs_4"/>
+    <ROW File="mach.sh" Component_="asm.fs_1" FileName="mach.sh" Attributes="0" SourcePath="dist\arch\4stack\mach.sh" SelfReg="false" NextFile="prim.fs"/>
+    <ROW File="mach16b.fs" Component_="aclocal.m4" FileName="mach16b.fs" Attributes="0" SourcePath="dist\mach16b.fs" SelfReg="false" NextFile="mach16l.fs"/>
+    <ROW File="mach16l.fs" Component_="aclocal.m4" FileName="mach16l.fs" Attributes="0" SourcePath="dist\mach16l.fs" SelfReg="false" NextFile="mach32b.fs"/>
+    <ROW File="mach32b.fs" Component_="aclocal.m4" FileName="mach32b.fs" Attributes="0" SourcePath="dist\mach32b.fs" SelfReg="false" NextFile="mach32l.fs"/>
+    <ROW File="mach32l.fs" Component_="aclocal.m4" FileName="mach32l.fs" Attributes="0" SourcePath="dist\mach32l.fs" SelfReg="false" NextFile="mach64b.fs"/>
+    <ROW File="mach64b.fs" Component_="aclocal.m4" FileName="mach64b.fs" Attributes="0" SourcePath="dist\mach64b.fs" SelfReg="false" NextFile="mach64l.fs"/>
+    <ROW File="mach64l.fs" Component_="aclocal.m4" FileName="mach64l.fs" Attributes="0" SourcePath="dist\mach64l.fs" SelfReg="false" NextFile="machpc.fs"/>
+    <ROW File="machine.h" Component_="asm.fs" FileName="machine.h" Attributes="0" SourcePath="dist\arch\386\machine.h" SelfReg="false" NextFile="asm.fs_1"/>
+    <ROW File="machine.h_1" Component_="asm.fs_2" FileName="machine.h" Attributes="0" SourcePath="dist\arch\alpha\machine.h" SelfReg="false" NextFile="testasm.fs"/>
+    <ROW File="machine.h_10" Component_="compile.sharc" FileName="machine.h" Attributes="0" SourcePath="dist\arch\sharc\machine.h" SelfReg="false" NextFile="systypes.h"/>
+    <ROW File="machine.h_11" Component_="machine.h_2" FileName="machine.h" Attributes="0" SourcePath="dist\arch\sparc\machine.h" SelfReg="false" NextFile="basic.fs"/>
+    <ROW File="machine.h_2" Component_="asm.fs_3" FileName="machine.h" Attributes="0" SourcePath="dist\arch\amd64\machine.h" SelfReg="false" NextFile="cacheflushlinux.c"/>
+    <ROW File="machine.h_3" Component_="cacheflushlinux.c" FileName="machine.h" Attributes="0" SourcePath="dist\arch\arm\machine.h" SelfReg="false" NextFile="machine.h_4"/>
+    <ROW File="machine.h_4" Component_="machine.h" FileName="machine.h" Attributes="0" SourcePath="dist\arch\generic\machine.h" SelfReg="false" NextFile="cache.c"/>
+    <ROW File="machine.h_5" Component_="cache.c" FileName="machine.h" Attributes="0" SourcePath="dist\arch\hppa\machine.h" SelfReg="false" NextFile="flush_icache_block.c"/>
+    <ROW File="machine.h_6" Component_="flush_icache_block.c" FileName="machine.h" Attributes="0" SourcePath="dist\arch\ia64\machine.h" SelfReg="false" NextFile="machine.h_7"/>
+    <ROW File="machine.h_7" Component_="machine.h_1" FileName="machine.h" Attributes="0" SourcePath="dist\arch\m68k\machine.h" SelfReg="false" NextFile="asm.fs_4"/>
+    <ROW File="machine.h_8" Component_="asm.fs_4" FileName="machine.h" Attributes="0" SourcePath="dist\arch\mips\machine.h" SelfReg="false" NextFile="testasm.fs_1"/>
+    <ROW File="machine.h_9" Component_="asm.fs_6" FileName="machine.h" Attributes="0" SourcePath="dist\arch\power\machine.h" SelfReg="false" NextFile="_sync_cache_range.c"/>
+    <ROW File="machpc.fs" Component_="aclocal.m4" FileName="machpc.fs" Attributes="0" SourcePath="dist\machpc.fs" SelfReg="false" NextFile="machpc.fs.in"/>
+    <ROW File="machpc.fs.in" Component_="aclocal.m4" FileName="machpc~1.in|machpc.fs.in" Attributes="0" SourcePath="dist\machpc.fs.in" SelfReg="false" NextFile="makeapp.fs"/>
+    <ROW File="main.c" Component_="bit.h" FileName="main.c" Attributes="0" SourcePath="dist\engine\main.c" SelfReg="false" NextFile="Makefile"/>
+    <ROW File="main.fs" Component_="accept.fs" FileName="main.fs" Attributes="0" SourcePath="dist\kernel\main.fs" SelfReg="false" NextFile="nio.fs"/>
+    <ROW File="mainditcnoll.o" Component_="bit.h" FileName="main-d~1.o|main-ditc-noll.o" Attributes="0" SourcePath="dist\engine\main-ditc-noll.o" SelfReg="false" NextFile="mainfastllreg.o"/>
+    <ROW File="mainfastllreg.o" Component_="bit.h" FileName="main-f~1.o|main-fast-ll-reg.o" Attributes="0" SourcePath="dist\engine\main-fast-ll-reg.o" SelfReg="false" NextFile="mainitcnoll.o"/>
+    <ROW File="mainitcnoll.o" Component_="bit.h" FileName="main-i~1.o|main-itc-noll.o" Attributes="0" SourcePath="dist\engine\main-itc-noll.o" SelfReg="false" NextFile="mainllreg.o"/>
+    <ROW File="mainllreg.o" Component_="bit.h" FileName="main-l~1.o|main-ll-reg.o" Attributes="0" SourcePath="dist\engine\main-ll-reg.o" SelfReg="false" NextFile="main.c"/>
+    <ROW File="makeapp.fs" Component_="aclocal.m4" FileName="make-app.fs" Attributes="0" SourcePath="dist\make-app.fs" SelfReg="false" NextFile="Makedist"/>
+    <ROW File="makedoc.fs" Component_="fdl.texi" FileName="makedoc.fs" Attributes="0" SourcePath="dist\doc\makedoc.fs" SelfReg="false" NextFile="version.texi.in"/>
+    <ROW File="makefile.dos" Component_="bit.h" FileName="makefile.dos" Attributes="0" SourcePath="dist\engine\makefile.dos" SelfReg="false" NextFile="Makefile.in"/>
+    <ROW File="makefile.dos_1" Component_="aclocal.m4" FileName="makefile.dos" Attributes="0" SourcePath="dist\makefile.dos" SelfReg="false" NextFile="Makefile.in_1"/>
+    <ROW File="makefile.os2" Component_="bit.h" FileName="makefile.os2" Attributes="0" SourcePath="dist\engine\makefile.os2" SelfReg="false" NextFile="memcmp.c"/>
+    <ROW File="makefile.os2_1" Component_="aclocal.m4" FileName="makefile.os2" Attributes="0" SourcePath="dist\makefile.os2" SelfReg="false" NextFile="matrix.fs"/>
+    <ROW File="matrix.fs" Component_="aclocal.m4" FileName="matrix.fs" Attributes="0" SourcePath="dist\matrix.fs" SelfReg="false" NextFile="minioof.fs"/>
+    <ROW File="memcmp.c" Component_="bit.h" FileName="memcmp.c" Attributes="0" SourcePath="dist\engine\memcmp.c" SelfReg="false" NextFile="memmove.c"/>
+    <ROW File="memmove.c" Component_="bit.h" FileName="memmove.c" Attributes="0" SourcePath="dist\engine\memmove.c" SelfReg="false" NextFile="pow10.c"/>
+    <ROW File="memory_002didef.html" Component_="Assembler.html" FileName="memory~6.htm|memory_002didef.html" Attributes="0" SourcePath="dist\doc\gforth\memory_002didef.html" SelfReg="false" NextFile="Methodconveniences.html"/>
+    <ROW File="mini.h" Component_="disasm.c" FileName="mini.h" Attributes="0" SourcePath="dist\vmgen-ex\mini.h" SelfReg="false" NextFile="mini.l"/>
+    <ROW File="mini.h_1" Component_="disasm.c_1" FileName="mini.h" Attributes="0" SourcePath="dist\vmgen-ex2\mini.h" SelfReg="false" NextFile="mini.l_1"/>
+    <ROW File="mini.l" Component_="disasm.c" FileName="mini.l" Attributes="0" SourcePath="dist\vmgen-ex\mini.l" SelfReg="false" NextFile="mini.y"/>
+    <ROW File="mini.l_1" Component_="disasm.c_1" FileName="mini.l" Attributes="0" SourcePath="dist\vmgen-ex2\mini.l" SelfReg="false" NextFile="mini.y_1"/>
+    <ROW File="mini.y" Component_="disasm.c" FileName="mini.y" Attributes="0" SourcePath="dist\vmgen-ex\mini.y" SelfReg="false" NextFile="peepholeblacklist"/>
+    <ROW File="mini.y_1" Component_="disasm.c_1" FileName="mini.y" Attributes="0" SourcePath="dist\vmgen-ex2\mini.y" SelfReg="false" NextFile="peepholeblacklist_1"/>
+    <ROW File="miniinst.vmg" Component_="disasm.c" FileName="mini-i~1.vmg|mini-inst.vmg" Attributes="0" SourcePath="dist\vmgen-ex\mini-inst.vmg" SelfReg="false" NextFile="minisuper.vmg"/>
+    <ROW File="miniinst.vmg_1" Component_="disasm.c_1" FileName="mini-i~1.vmg|mini-inst.vmg" Attributes="0" SourcePath="dist\vmgen-ex2\mini-inst.vmg" SelfReg="false" NextFile="minisuper.vmg_1"/>
+    <ROW File="minioof.fs" Component_="aclocal.m4" FileName="mini-oof.fs" Attributes="0" SourcePath="dist\mini-oof.fs" SelfReg="false" NextFile="missing"/>
+    <ROW File="minisuper.vmg" Component_="disasm.c" FileName="mini-s~1.vmg|mini-super.vmg" Attributes="0" SourcePath="dist\vmgen-ex\mini-super.vmg" SelfReg="false" NextFile="mini.h"/>
+    <ROW File="minisuper.vmg_1" Component_="disasm.c_1" FileName="mini-s~1.vmg|mini-super.vmg" Attributes="0" SourcePath="dist\vmgen-ex2\mini-super.vmg" SelfReg="false" NextFile="mini.h_1"/>
+    <ROW File="mirror.fs" Component_="builttag.fs" FileName="mirror.fs" Attributes="0" SourcePath="dist\ec\mirror.fs" SelfReg="false" NextFile="nesting.fs"/>
+    <ROW File="missing" Component_="aclocal.m4" FileName="missing" Attributes="0" SourcePath="dist\missing" SelfReg="false" NextFile="mkdir.fs"/>
+    <ROW File="mkdir.fs" Component_="aclocal.m4" FileName="mkdir.fs" Attributes="0" SourcePath="dist\mkdir.fs" SelfReg="false" NextFile="mkdosmf.sed"/>
+    <ROW File="mkdosmf.sed" Component_="aclocal.m4" FileName="mkdosmf.sed" Attributes="0" SourcePath="dist\mkdosmf.sed" SelfReg="false" NextFile="mkinstalldirs"/>
+    <ROW File="mkinstalldirs" Component_="aclocal.m4" FileName="mkinst~1|mkinstalldirs" Attributes="0" SourcePath="dist\mkinstalldirs" SelfReg="false" NextFile="mkos2mf.sed"/>
+    <ROW File="mkos2mf.sed" Component_="aclocal.m4" FileName="mkos2mf.sed" Attributes="0" SourcePath="dist\mkos2mf.sed" SelfReg="false" NextFile="model"/>
+    <ROW File="model" Component_="aclocal.m4" FileName="model" Attributes="0" SourcePath="dist\model" SelfReg="false" NextFile="moofexm.fs"/>
+    <ROW File="moofexm.fs" Component_="aclocal.m4" FileName="moof-exm.fs" Attributes="0" SourcePath="dist\moof-exm.fs" SelfReg="false" NextFile="moofglos.fs"/>
+    <ROW File="moofglos.fs" Component_="aclocal.m4" FileName="moofglos.fs" Attributes="0" SourcePath="dist\moofglos.fs" SelfReg="false" NextFile="more.fs"/>
+    <ROW File="more.fs" Component_="aclocal.m4" FileName="more.fs" Attributes="0" SourcePath="dist\more.fs" SelfReg="false" NextFile="NEWS"/>
+    <ROW File="nesting.fs" Component_="builttag.fs" FileName="nesting.fs" Attributes="0" SourcePath="dist\ec\nesting.fs" SelfReg="false" NextFile="README_4"/>
+    <ROW File="nio.fs" Component_="accept.fs" FileName="nio.fs" Attributes="0" SourcePath="dist\kernel\nio.fs" SelfReg="false" NextFile="pass.fs"/>
+    <ROW File="numref.fs" Component_="basic.fs" FileName="numref.fs" Attributes="0" SourcePath="dist\asm\numref.fs" SelfReg="false" NextFile="README_2"/>
+    <ROW File="objects.fs" Component_="aclocal.m4" FileName="objects.fs" Attributes="0" SourcePath="dist\objects.fs" SelfReg="false" NextFile="objexamp.fs"/>
+    <ROW File="objexamp.fs" Component_="aclocal.m4" FileName="objexamp.fs" Attributes="0" SourcePath="dist\objexamp.fs" SelfReg="false" NextFile="oldlib.fs"/>
+    <ROW File="oldlib.fs" Component_="aclocal.m4" FileName="oldlib.fs" Attributes="0" SourcePath="dist\oldlib.fs" SelfReg="false" NextFile="onebench.fs"/>
+    <ROW File="onebench.fs" Component_="aclocal.m4" FileName="onebench.fs" Attributes="0" SourcePath="dist\onebench.fs" SelfReg="false" NextFile="oof.fs"/>
+    <ROW File="oof.fs" Component_="aclocal.m4" FileName="oof.fs" Attributes="0" SourcePath="dist\oof.fs" SelfReg="false" NextFile="oofsampl.fs"/>
+    <ROW File="oofsampl.fs" Component_="aclocal.m4" FileName="oofsampl.fs" Attributes="0" SourcePath="dist\oofsampl.fs" SelfReg="false" NextFile="os2conf.h"/>
+    <ROW File="optcmove.fs" Component_="asm.fs_5" FileName="optcmove.fs" Attributes="0" SourcePath="dist\arch\misc\optcmove.fs" SelfReg="false" NextFile="prim.fs_2"/>
+    <ROW File="os2conf.h" Component_="aclocal.m4" FileName="os2conf.h" Attributes="0" SourcePath="dist\os2conf.h" SelfReg="false" NextFile="other.fs"/>
+    <ROW File="other.fs" Component_="aclocal.m4" FileName="other.fs" Attributes="0" SourcePath="dist\other.fs" SelfReg="false" NextFile="peeprules.vmg"/>
+    <ROW File="other.fs_1" Component_="checkans.fs" FileName="other.fs" Attributes="0" SourcePath="dist\test\other.fs" SelfReg="false" NextFile="postpone.fs"/>
+    <ROW File="pass.fs" Component_="accept.fs" FileName="pass.fs" Attributes="0" SourcePath="dist\kernel\pass.fs" SelfReg="false" NextFile="paths.fs"/>
+    <ROW File="paths.fs" Component_="accept.fs" FileName="paths.fs" Attributes="0" SourcePath="dist\kernel\paths.fs" SelfReg="false" NextFile="prim.fs_5"/>
+    <ROW File="peephole.c" Component_="disasm.c" FileName="peephole.c" Attributes="0" SourcePath="dist\vmgen-ex\peephole.c" SelfReg="false" NextFile="profile.c_1"/>
+    <ROW File="peephole.c_1" Component_="disasm.c_1" FileName="peephole.c" Attributes="0" SourcePath="dist\vmgen-ex2\peephole.c" SelfReg="false" NextFile="profile.c_2"/>
+    <ROW File="peepholeblacklist" Component_="disasm.c" FileName="peepho~1|peephole-blacklist" Attributes="0" SourcePath="dist\vmgen-ex\peephole-blacklist" SelfReg="false" NextFile="peephole.c"/>
+    <ROW File="peepholeblacklist_1" Component_="disasm.c_1" FileName="peepho~1|peephole-blacklist" Attributes="0" SourcePath="dist\vmgen-ex2\peephole-blacklist" SelfReg="false" NextFile="peephole.c_1"/>
+    <ROW File="peeprules.vmg" Component_="aclocal.m4" FileName="peepru~1.vmg|peeprules.vmg" Attributes="0" SourcePath="dist\peeprules.vmg" SelfReg="false" NextFile="preforth.in"/>
+    <ROW File="postpone.fs" Component_="checkans.fs" FileName="postpone.fs" Attributes="0" SourcePath="dist\test\postpone.fs" SelfReg="false" NextFile="primtest.fs"/>
+    <ROW File="pow10.c" Component_="bit.h" FileName="pow10.c" Attributes="0" SourcePath="dist\engine\pow10.c" SelfReg="false" NextFile="pow10.o"/>
+    <ROW File="pow10.o" Component_="bit.h" FileName="pow10.o" Attributes="0" SourcePath="dist\engine\pow10.o" SelfReg="false" NextFile="prim.i"/>
+    <ROW File="preforth.in" Component_="aclocal.m4" FileName="preforth.in" Attributes="0" SourcePath="dist\preforth.in" SelfReg="false" NextFile="prim"/>
+    <ROW File="prim" Component_="aclocal.m4" FileName="prim" Attributes="0" SourcePath="dist\prim" SelfReg="false" NextFile="prim.b"/>
+    <ROW File="prim.b" Component_="aclocal.m4" FileName="prim.b" Attributes="0" SourcePath="dist\prim.b" SelfReg="false" NextFile="prims2x.fs"/>
+    <ROW File="prim.fs" Component_="asm.fs_1" FileName="prim.fs" Attributes="0" SourcePath="dist\arch\4stack\prim.fs" SelfReg="false" NextFile="README"/>
+    <ROW File="prim.fs_1" Component_="mach.fs" FileName="prim.fs" Attributes="0" SourcePath="dist\arch\6502\prim.fs" SelfReg="false" NextFile="asm.fs_2"/>
+    <ROW File="prim.fs_2" Component_="asm.fs_5" FileName="prim.fs" Attributes="0" SourcePath="dist\arch\misc\prim.fs" SelfReg="false" NextFile="README_1"/>
+    <ROW File="prim.fs_3" Component_="asm.fs_7" FileName="prim.fs" Attributes="0" SourcePath="dist\arch\r8c\prim.fs" SelfReg="false" NextFile="compile.sharc"/>
+    <ROW File="prim.fs_4" Component_="asm.fs_8" FileName="prim.fs" Attributes="0" SourcePath="dist\arch\shboom\prim.fs" SelfReg="false" NextFile="sh.p"/>
+    <ROW File="prim.fs_5" Component_="accept.fs" FileName="prim.fs" Attributes="0" SourcePath="dist\kernel\prim.fs" SelfReg="false" NextFile="prim0.fs"/>
+    <ROW File="prim.i" Component_="bit.h" FileName="prim.i" Attributes="0" SourcePath="dist\engine\prim.i" SelfReg="false" NextFile="prim_grp.i"/>
+    <ROW File="prim0.fs" Component_="accept.fs" FileName="prim0.fs" Attributes="0" SourcePath="dist\kernel\prim0.fs" SelfReg="false" NextFile="quotes.fs"/>
+    <ROW File="prim_grp.i" Component_="bit.h" FileName="prim_grp.i" Attributes="0" SourcePath="dist\engine\prim_grp.i" SelfReg="false" NextFile="prim_lab.i"/>
+    <ROW File="prim_lab.i" Component_="bit.h" FileName="prim_lab.i" Attributes="0" SourcePath="dist\engine\prim_lab.i" SelfReg="false" NextFile="prim_names.i"/>
+    <ROW File="prim_names.i" Component_="bit.h" FileName="prim_n~1.i|prim_names.i" Attributes="0" SourcePath="dist\engine\prim_names.i" SelfReg="false" NextFile="prim_num.i"/>
+    <ROW File="prim_num.i" Component_="bit.h" FileName="prim_num.i" Attributes="0" SourcePath="dist\engine\prim_num.i" SelfReg="false" NextFile="prim_superend.i"/>
+    <ROW File="prim_superend.i" Component_="bit.h" FileName="prim_s~1.i|prim_superend.i" Attributes="0" SourcePath="dist\engine\prim_superend.i" SelfReg="false" NextFile="profile.c"/>
+    <ROW File="prims2x.fs" Component_="aclocal.m4" FileName="prims2x.fs" Attributes="0" SourcePath="dist\prims2x.fs" SelfReg="false" NextFile="prims2x0.6.2.fs"/>
+    <ROW File="prims2x0.6.2.fs" Component_="aclocal.m4" FileName="prims2~1.fs|prims2x0.6.2.fs" Attributes="0" SourcePath="dist\prims2x0.6.2.fs" SelfReg="false" NextFile="proxy.fs"/>
+    <ROW File="primtest.fs" Component_="checkans.fs" FileName="primtest.fs" Attributes="0" SourcePath="dist\test\primtest.fs" SelfReg="false" NextFile="search.fs_1"/>
+    <ROW File="profile.c" Component_="bit.h" FileName="profile.c" Attributes="0" SourcePath="dist\engine\profile.c" SelfReg="false" NextFile="profile.i"/>
+    <ROW File="profile.c_1" Component_="disasm.c" FileName="profile.c" Attributes="0" SourcePath="dist\vmgen-ex\profile.c" SelfReg="false" NextFile="README_6"/>
+    <ROW File="profile.c_2" Component_="disasm.c_1" FileName="profile.c" Attributes="0" SourcePath="dist\vmgen-ex2\profile.c" SelfReg="false" NextFile="README_7"/>
+    <ROW File="profile.i" Component_="bit.h" FileName="profile.i" Attributes="0" SourcePath="dist\engine\profile.i" SelfReg="false" NextFile="rint.c"/>
+    <ROW File="programming_002dambcond.html" Component_="Assembler.html" FileName="progra~2.htm|programming_002dambcond.html" Attributes="0" SourcePath="dist\doc\gforth\programming_002dambcond.html" SelfReg="false" NextFile="programming_002didef.html"/>
+    <ROW File="programming_002didef.html" Component_="Assembler.html" FileName="progra~3.htm|programming_002didef.html" Attributes="0" SourcePath="dist\doc\gforth\programming_002didef.html" SelfReg="false" NextFile="PropertiesoftheObjectsmodel.html"/>
+    <ROW File="proxy.fs" Component_="aclocal.m4" FileName="proxy.fs" Attributes="0" SourcePath="dist\proxy.fs" SelfReg="false" NextFile="quotes.fs_1"/>
+    <ROW File="quotes.fs" Component_="accept.fs" FileName="quotes.fs" Attributes="0" SourcePath="dist\kernel\quotes.fs" SelfReg="false" NextFile="require.fs"/>
+    <ROW File="quotes.fs_1" Component_="aclocal.m4" FileName="quotes.fs" Attributes="0" SourcePath="dist\quotes.fs" SelfReg="false" NextFile="random.fs"/>
+    <ROW File="random.fs" Component_="aclocal.m4" FileName="random.fs" Attributes="0" SourcePath="dist\random.fs" SelfReg="false" NextFile="README_5"/>
+    <ROW File="recoverendtry.fs" Component_="aclocal.m4" FileName="recove~1.fs|recover-endtry.fs" Attributes="0" SourcePath="dist\recover-endtry.fs" SelfReg="false" NextFile="regexp.fs"/>
+    <ROW File="regexp.fs" Component_="aclocal.m4" FileName="regexp.fs" Attributes="0" SourcePath="dist\regexp.fs" SelfReg="false" NextFile="savesys.fs"/>
+    <ROW File="relocate.fs" Component_="asm.fs_1" FileName="relocate.fs" Attributes="0" SourcePath="dist\arch\4stack\relocate.fs" SelfReg="false" NextFile="mach.fs_1"/>
+    <ROW File="require.fs" Component_="accept.fs" FileName="require.fs" Attributes="0" SourcePath="dist\kernel\require.fs" SelfReg="false" NextFile="saccept.fs"/>
+    <ROW File="required.fs" Component_="anslocal.fs" FileName="required.fs" Attributes="0" SourcePath="dist\compat\required.fs" SelfReg="false" NextFile="strcomp.fs"/>
+    <ROW File="rint.c" Component_="bit.h" FileName="rint.c" Attributes="0" SourcePath="dist\engine\rint.c" SelfReg="false" NextFile="select.c"/>
+    <ROW File="saccept.fs" Component_="accept.fs" FileName="saccept.fs" Attributes="0" SourcePath="dist\kernel\saccept.fs" SelfReg="false" NextFile="tools.fs"/>
+    <ROW File="savesys.fs" Component_="aclocal.m4" FileName="savesys.fs" Attributes="0" SourcePath="dist\savesys.fs" SelfReg="false" NextFile="search.fs"/>
+    <ROW File="search.fs" Component_="aclocal.m4" FileName="search.fs" Attributes="0" SourcePath="dist\search.fs" SelfReg="false" NextFile="seeext.fs"/>
+    <ROW File="search.fs_1" Component_="checkans.fs" FileName="search.fs" Attributes="0" SourcePath="dist\test\search.fs" SelfReg="false" NextFile="signals.fs"/>
+    <ROW File="search_002dambcond.html" Component_="Assembler.html" FileName="search~2.htm|search_002dambcond.html" Attributes="0" SourcePath="dist\doc\gforth\search_002dambcond.html" SelfReg="false" NextFile="search_002didef.html"/>
+    <ROW File="search_002didef.html" Component_="Assembler.html" FileName="search~3.htm|search_002didef.html" Attributes="0" SourcePath="dist\doc\gforth\search_002didef.html" SelfReg="false" NextFile="Selection.html"/>
+    <ROW File="see.fs" Component_="aclocal.m4" FileName="see.fs" Attributes="0" SourcePath="dist\see.fs" SelfReg="false" NextFile="sh.exe"/>
+    <ROW File="seeext.fs" Component_="aclocal.m4" FileName="see-ext.fs" Attributes="0" SourcePath="dist\see-ext.fs" SelfReg="false" NextFile="see.fs"/>
+    <ROW File="select.c" Component_="bit.h" FileName="select.c" Attributes="0" SourcePath="dist\engine\select.c" SelfReg="false" NextFile="signals.c"/>
+    <ROW File="seq2rule.awk" Component_="disasm.c" FileName="seq2rule.awk" Attributes="0" SourcePath="dist\vmgen-ex\seq2rule.awk" SelfReg="false" NextFile="simple.mini"/>
+    <ROW File="seq2rule.awk_1" Component_="disasm.c_1" FileName="seq2rule.awk" Attributes="0" SourcePath="dist\vmgen-ex2\seq2rule.awk" SelfReg="false" NextFile="simple.mini_1"/>
+    <ROW File="sh.exe" Component_="sh.exe" FileName="sh.exe" Attributes="0" SourcePath="dist\sh.exe" SelfReg="false" NextFile="siev.fs"/>
+    <ROW File="sh.p" Component_="asm.fs_8" FileName="sh.p" Attributes="0" SourcePath="dist\arch\shboom\sh.p" SelfReg="false" NextFile="machine.h_11"/>
+    <ROW File="shex.fs" Component_="builttag.fs" FileName="shex.fs" Attributes="0" SourcePath="dist\ec\shex.fs" SelfReg="false" NextFile="ekey.fs"/>
+    <ROW File="siev.fs" Component_="aclocal.m4" FileName="siev.fs" Attributes="0" SourcePath="dist\siev.fs" SelfReg="false" NextFile="sieve.fs"/>
+    <ROW File="sieve.fs" Component_="aclocal.m4" FileName="sieve.fs" Attributes="0" SourcePath="dist\sieve.fs" SelfReg="false" NextFile="simpsee.fs"/>
+    <ROW File="signals.c" Component_="bit.h" FileName="signals.c" Attributes="0" SourcePath="dist\engine\signals.c" SelfReg="false" NextFile="signals.o"/>
+    <ROW File="signals.fs" Component_="checkans.fs" FileName="signals.fs" Attributes="0" SourcePath="dist\test\signals.fs" SelfReg="false" NextFile="string.fs_1"/>
+    <ROW File="signals.o" Component_="bit.h" FileName="signals.o" Attributes="0" SourcePath="dist\engine\signals.o" SelfReg="false" NextFile="strerror.c"/>
+    <ROW File="sim.fs" Component_="asm.fs_5" FileName="sim.fs" Attributes="0" SourcePath="dist\arch\misc\sim.fs" SelfReg="false" NextFile="sokoban.fs"/>
+    <ROW File="simple.mini" Component_="disasm.c" FileName="simple~1.min|simple.mini" Attributes="0" SourcePath="dist\vmgen-ex\simple.mini" SelfReg="false" NextFile="stat.awk"/>
+    <ROW File="simple.mini_1" Component_="disasm.c_1" FileName="simple~1.min|simple.mini" Attributes="0" SourcePath="dist\vmgen-ex2\simple.mini" SelfReg="false" NextFile="stat.awk_1"/>
+    <ROW File="simpsee.fs" Component_="aclocal.m4" FileName="simp-see.fs" Attributes="0" SourcePath="dist\simp-see.fs" SelfReg="false" NextFile="siteinit.fs"/>
+    <ROW File="siteinit.fs" Component_="aclocal.m4" FileName="siteinit.fs" Attributes="0" SourcePath="dist\siteinit.fs" SelfReg="false" NextFile="sokoban.fs_1"/>
+    <ROW File="socket.c" Component_="cstr.c" FileName="socket.c" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\socket.c" SelfReg="false" NextFile="socket.la"/>
+    <ROW File="socket.fs" Component_="socket.fs" FileName="socket.fs" Attributes="0" SourcePath="dist\unix\socket.fs" SelfReg="false" NextFile="utf8.fs"/>
+    <ROW File="socket.la" Component_="cstr.c" FileName="socket.la" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\socket.la" SelfReg="false" NextFile="socket.lo"/>
+    <ROW File="socket.lo" Component_="cstr.c" FileName="socket.lo" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\socket.lo" SelfReg="false" NextFile="socket.o"/>
+    <ROW File="socket.o" Component_="cstr.c" FileName="socket.o" Attributes="0" SourcePath="dist\lib\gforth\0.7.0\libcc-named\socket.o" SelfReg="false" NextFile="lib.fs"/>
+    <ROW File="sokoban.fs" Component_="asm.fs_5" FileName="sokoban.fs" Attributes="0" SourcePath="dist\arch\misc\sokoban.fs" SelfReg="false" NextFile="tt.fs"/>
+    <ROW File="sokoban.fs_1" Component_="aclocal.m4" FileName="sokoban.fs" Attributes="0" SourcePath="dist\sokoban.fs" SelfReg="false" NextFile="source.fs"/>
+    <ROW File="source.fs" Component_="aclocal.m4" FileName="source.fs" Attributes="0" SourcePath="dist\source.fs" SelfReg="false" NextFile="stamph"/>
+    <ROW File="stamph" Component_="aclocal.m4" FileName="stamp-h" Attributes="0" SourcePath="dist\stamp-h" SelfReg="false" NextFile="stamph.in"/>
+    <ROW File="stamph.in" Component_="aclocal.m4" FileName="stamp-h.in" Attributes="0" SourcePath="dist\stamp-h.in" SelfReg="false" NextFile="startup.fs"/>
+    <ROW File="startup.fs" Component_="aclocal.m4" FileName="startup.fs" Attributes="0" SourcePath="dist\startup.fs" SelfReg="false" NextFile="string.fs"/>
+    <ROW File="stat.awk" Component_="disasm.c" FileName="stat.awk" Attributes="0" SourcePath="dist\vmgen-ex\stat.awk" SelfReg="false" NextFile="support.c_1"/>
+    <ROW File="stat.awk_1" Component_="disasm.c_1" FileName="stat.awk" Attributes="0" SourcePath="dist\vmgen-ex2\stat.awk" SelfReg="false" NextFile="support.c_2"/>
+    <ROW File="state_002dsmartness.html" Component_="Assembler.html" FileName="state_~1.htm|state_002dsmartness.html" Attributes="0" SourcePath="dist\doc\gforth\state_002dsmartness.html" SelfReg="false" NextFile="StringFormats.html"/>
+    <ROW File="strcomp.fs" Component_="anslocal.fs" FileName="strcomp.fs" Attributes="0" SourcePath="dist\compat\strcomp.fs" SelfReg="false" NextFile="struct.fs"/>
+    <ROW File="strerror.c" Component_="bit.h" FileName="strerror.c" Attributes="0" SourcePath="dist\engine\strerror.c" SelfReg="false" NextFile="strsignal.c"/>
+    <ROW File="string.fs" Component_="aclocal.m4" FileName="string.fs" Attributes="0" SourcePath="dist\string.fs" SelfReg="false" NextFile="struct.fs_1"/>
+    <ROW File="string.fs_1" Component_="checkans.fs" FileName="string.fs" Attributes="0" SourcePath="dist\test\string.fs" SelfReg="false" NextFile="tester.fs"/>
+    <ROW File="strsignal.c" Component_="bit.h" FileName="strsig~1.c|strsignal.c" Attributes="0" SourcePath="dist\engine\strsignal.c" SelfReg="false" NextFile="strtol.c"/>
+    <ROW File="strtol.c" Component_="bit.h" FileName="strtol.c" Attributes="0" SourcePath="dist\engine\strtol.c" SelfReg="false" NextFile="strtoul.c"/>
+    <ROW File="strtoul.c" Component_="bit.h" FileName="strtoul.c" Attributes="0" SourcePath="dist\engine\strtoul.c" SelfReg="false" NextFile="super2.i"/>
+    <ROW File="struct.fs" Component_="anslocal.fs" FileName="struct.fs" Attributes="0" SourcePath="dist\compat\struct.fs" SelfReg="false" NextFile="vocabulary.fs"/>
+    <ROW File="struct.fs_1" Component_="aclocal.m4" FileName="struct.fs" Attributes="0" SourcePath="dist\struct.fs" SelfReg="false" NextFile="struct0x.fs"/>
+    <ROW File="struct0x.fs" Component_="aclocal.m4" FileName="struct0x.fs" Attributes="0" SourcePath="dist\struct0x.fs" SelfReg="false" NextFile="stuff.fs"/>
+    <ROW File="stuff.fs" Component_="aclocal.m4" FileName="stuff.fs" Attributes="0" SourcePath="dist\stuff.fs" SelfReg="false" NextFile="table.fs"/>
+    <ROW File="super2.i" Component_="bit.h" FileName="super2.i" Attributes="0" SourcePath="dist\engine\super2.i" SelfReg="false" NextFile="supportllreg.o"/>
+    <ROW File="support.c" Component_="bit.h" FileName="support.c" Attributes="0" SourcePath="dist\engine\support.c" SelfReg="false" NextFile="threaded.h"/>
+    <ROW File="support.c_1" Component_="disasm.c" FileName="support.c" Attributes="0" SourcePath="dist\vmgen-ex\support.c" SelfReg="false" NextFile="test.mini"/>
+    <ROW File="support.c_2" Component_="disasm.c_1" FileName="support.c" Attributes="0" SourcePath="dist\vmgen-ex2\support.c" SelfReg="false" NextFile="test.mini_1"/>
+    <ROW File="supportllreg.o" Component_="bit.h" FileName="suppor~1.o|support-ll-reg.o" Attributes="0" SourcePath="dist\engine\support-ll-reg.o" SelfReg="false" NextFile="supportnoll.o"/>
+    <ROW File="supportnoll.o" Component_="bit.h" FileName="suppor~2.o|support-noll.o" Attributes="0" SourcePath="dist\engine\support-noll.o" SelfReg="false" NextFile="support.c"/>
+    <ROW File="systypes.h" Component_="compile.sharc" FileName="systypes.h" Attributes="0" SourcePath="dist\arch\sharc\systypes.h" SelfReg="false" NextFile="types.h"/>
+    <ROW File="table.fs" Component_="aclocal.m4" FileName="table.fs" Attributes="0" SourcePath="dist\table.fs" SelfReg="false" NextFile="tags.fs"/>
+    <ROW File="tags.fs" Component_="aclocal.m4" FileName="tags.fs" Attributes="0" SourcePath="dist\tags.fs" SelfReg="false" NextFile="tasker.fs"/>
+    <ROW File="target.fs" Component_="basic.fs" FileName="target.fs" Attributes="0" SourcePath="dist\asm\target.fs" SelfReg="false" NextFile="assert.fs"/>
+    <ROW File="tasker.fs" Component_="aclocal.m4" FileName="tasker.fs" Attributes="0" SourcePath="dist\tasker.fs" SelfReg="false" NextFile="termsize.fs"/>
+    <ROW File="termsize.fs" Component_="aclocal.m4" FileName="termsize.fs" Attributes="0" SourcePath="dist\termsize.fs" SelfReg="false" NextFile="checkans.fs"/>
+    <ROW File="test.mini" Component_="disasm.c" FileName="test~1.min|test.mini" Attributes="0" SourcePath="dist\vmgen-ex\test.mini" SelfReg="false" NextFile="test.out"/>
+    <ROW File="test.mini_1" Component_="disasm.c_1" FileName="test~1.min|test.mini" Attributes="0" SourcePath="dist\vmgen-ex2\test.mini" SelfReg="false" NextFile="test.out_1"/>
+    <ROW File="test.out" Component_="disasm.c" FileName="test.out" Attributes="0" SourcePath="dist\vmgen-ex\test.out" SelfReg="false" NextFile="disasm.c_1"/>
+    <ROW File="test.out_1" Component_="disasm.c_1" FileName="test.out" Attributes="0" SourcePath="dist\vmgen-ex2\test.out" SelfReg="false" NextFile="vmgen.in"/>
+    <ROW File="testasm.fs" Component_="asm.fs_2" FileName="testasm.fs" Attributes="0" SourcePath="dist\arch\alpha\testasm.fs" SelfReg="false" NextFile="asm.fs_3"/>
+    <ROW File="testasm.fs_1" Component_="asm.fs_4" FileName="testasm.fs" Attributes="0" SourcePath="dist\arch\mips\testasm.fs" SelfReg="false" NextFile="testdisasm.fs"/>
+    <ROW File="testdisasm.fs" Component_="asm.fs_4" FileName="testdi~1.fs|testdisasm.fs" Attributes="0" SourcePath="dist\arch\mips\testdisasm.fs" SelfReg="false" NextFile="asm.fs_5"/>
+    <ROW File="tester.fs" Component_="checkans.fs" FileName="tester.fs" Attributes="0" SourcePath="dist\test\tester.fs" SelfReg="false" NextFile="ttester.fs"/>
+    <ROW File="threaded.h" Component_="bit.h" FileName="threaded.h" Attributes="0" SourcePath="dist\engine\threaded.h" SelfReg="false" NextFile="environ.fs"/>
+    <ROW File="timings.sc" Component_="aclocal.m4" FileName="timings.sc" Attributes="0" SourcePath="dist\timings.sc" SelfReg="false" NextFile="ToDo"/>
+    <ROW File="tools.fs" Component_="accept.fs" FileName="tools.fs" Attributes="0" SourcePath="dist\kernel\tools.fs" SelfReg="false" NextFile="toolsext.fs"/>
+    <ROW File="toolsext.fs" Component_="accept.fs" FileName="toolsext.fs" Attributes="0" SourcePath="dist\kernel\toolsext.fs" SelfReg="false" NextFile="vars.fs"/>
+    <ROW File="tt.fs" Component_="asm.fs_5" FileName="tt.fs" Attributes="0" SourcePath="dist\arch\misc\tt.fs" SelfReg="false" NextFile="asm.fs_6"/>
+    <ROW File="tt.fs_1" Component_="aclocal.m4" FileName="tt.fs" Attributes="0" SourcePath="dist\tt.fs" SelfReg="false" NextFile="unbuffer.fs"/>
+    <ROW File="ttester.fs" Component_="checkans.fs" FileName="ttester.fs" Attributes="0" SourcePath="dist\test\ttester.fs" SelfReg="false" NextFile="timings.sc"/>
+    <ROW File="types.h" Component_="compile.sharc" FileName="types.h" Attributes="0" SourcePath="dist\arch\sharc\types.h" SelfReg="false" NextFile="asm.fs_8"/>
+    <ROW File="unbuffer.fs" Component_="aclocal.m4" FileName="unbuffer.fs" Attributes="0" SourcePath="dist\unbuffer.fs" SelfReg="false" NextFile="socket.fs"/>
+    <ROW File="utf8.fs" Component_="aclocal.m4" FileName="utf-8.fs" Attributes="0" SourcePath="dist\utf-8.fs" SelfReg="false" NextFile="versions.bsh"/>
+    <ROW File="vars.fs" Component_="accept.fs" FileName="vars.fs" Attributes="0" SourcePath="dist\kernel\vars.fs" SelfReg="false" NextFile="version.fs"/>
+    <ROW File="version.fs" Component_="accept.fs" FileName="version.fs" Attributes="0" SourcePath="dist\kernel\version.fs" SelfReg="false" NextFile="xchars.fs"/>
+    <ROW File="version.texi.in" Component_="fdl.texi" FileName="versio~1.in|version.texi.in" Attributes="0" SourcePath="dist\doc\version.texi.in" SelfReg="false" NextFile="CCodeMacros.html"/>
+    <ROW File="versions.bsh" Component_="aclocal.m4" FileName="versions.bsh" Attributes="0" SourcePath="dist\versions.bsh" SelfReg="false" NextFile="disasm.c"/>
+    <ROW File="vmgen.in" Component_="aclocal.m4" FileName="vmgen.in" Attributes="0" SourcePath="dist\vmgen.in" SelfReg="false" NextFile="vt100.fs"/>
+    <ROW File="vmgen.info" Component_="fdl.texi" FileName="vmgen~1.inf|vmgen.info" Attributes="0" SourcePath="dist\doc\vmgen.info" SelfReg="false" NextFile="vmgen.pdf"/>
+    <ROW File="vmgen.pdf" Component_="fdl.texi" FileName="vmgen.pdf" Attributes="0" SourcePath="dist\doc\vmgen.pdf" SelfReg="false" NextFile="vmgen.texi"/>
+    <ROW File="vmgen.texi" Component_="fdl.texi" FileName="vmgen~1.tex|vmgen.texi" Attributes="0" SourcePath="dist\doc\vmgen.texi" SelfReg="false" NextFile="dosconf.h"/>
+    <ROW File="vocabulary.fs" Component_="anslocal.fs" FileName="vocabu~1.fs|vocabulary.fs" Attributes="0" SourcePath="dist\compat\vocabulary.fs" SelfReg="false" NextFile="complex.fs"/>
+    <ROW File="vt100.fs" Component_="aclocal.m4" FileName="vt100.fs" Attributes="0" SourcePath="dist\vt100.fs" SelfReg="false" NextFile="vt100key.fs"/>
+    <ROW File="vt100key.fs" Component_="aclocal.m4" FileName="vt100key.fs" Attributes="0" SourcePath="dist\vt100key.fs" SelfReg="false" NextFile="wordinfo.fs"/>
+    <ROW File="wordinfo.fs" Component_="aclocal.m4" FileName="wordinfo.fs" Attributes="0" SourcePath="dist\wordinfo.fs" SelfReg="false" NextFile="wordsets.fs"/>
+    <ROW File="wordsets.fs" Component_="aclocal.m4" FileName="wordsets.fs" Attributes="0" SourcePath="dist\wordsets.fs" SelfReg="false" NextFile="xwords.fs"/>
+    <ROW File="xchars.fs" Component_="accept.fs" FileName="xchars.fs" Attributes="0" SourcePath="dist\kernel\xchars.fs" SelfReg="false" NextFile="kernl16b.fi"/>
+    <ROW File="xwords.fs" Component_="aclocal.m4" FileName="xwords.fs" Attributes="0" SourcePath="dist\xwords.fs" SelfReg="false"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
+    <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" PackageFolder="." PackageFileName="gforth-0.7.0" Languages="en" InstallationType="4" UseLargeSchema="true"/>
+    <ATTRIBUTE name="CurrentBuild" value="DefaultBuild"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.DictionaryComponent">
+    <ROW Path="&lt;AI_DICTS&gt;ui.ail"/>
+    <ROW Path="&lt;AI_DICTS&gt;ui_en.ail"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.FragmentComponent">
+    <ROW Fragment="CommonUI.aip" Path="&lt;AI_FRAGS&gt;CommonUI.aip"/>
+    <ROW Fragment="FolderDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\FolderDlg.aip"/>
+    <ROW Fragment="MaintenanceTypeDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\MaintenanceTypeDlg.aip"/>
+    <ROW Fragment="MaintenanceWelcomeDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\MaintenanceWelcomeDlg.aip"/>
+    <ROW Fragment="SequenceDialogs.aip" Path="&lt;AI_THEMES&gt;classic\fragments\SequenceDialogs.aip"/>
+    <ROW Fragment="Sequences.aip" Path="&lt;AI_FRAGS&gt;Sequences.aip"/>
+    <ROW Fragment="StaticUIStrings.aip" Path="&lt;AI_FRAGS&gt;StaticUIStrings.aip"/>
+    <ROW Fragment="UI.aip" Path="&lt;AI_THEMES&gt;classic\fragments\UI.aip"/>
+    <ROW Fragment="Validation.aip" Path="&lt;AI_FRAGS&gt;Validation.aip"/>
+    <ROW Fragment="VerifyRemoveDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\VerifyRemoveDlg.aip"/>
+    <ROW Fragment="VerifyRepairDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\VerifyRepairDlg.aip"/>
+    <ROW Fragment="WelcomeDlg.aip" Path="&lt;AI_THEMES&gt;classic\fragments\WelcomeDlg.aip"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiBinaryComponent">
+    <ROW Name="aicustact.dll" SourcePath="&lt;AI_CUSTACTS&gt;aicustact.dll"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiControlComponent">
+    <ATTRIBUTE name="FixedSizeBitmaps" value="2"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiControlEventComponent">
+    <ROW Dialog_="WelcomeDlg" Control_="Next" Event="NewDialog" Argument="FolderDlg" Condition="AI_INSTALL" Ordering="1"/>
+    <ROW Dialog_="FolderDlg" Control_="Next" Event="NewDialog" Argument="VerifyReadyDlg" Condition="AI_INSTALL" Ordering="201"/>
+    <ROW Dialog_="FolderDlg" Control_="Back" Event="NewDialog" Argument="WelcomeDlg" Condition="AI_INSTALL" Ordering="1"/>
+    <ROW Dialog_="MaintenanceWelcomeDlg" Control_="Next" Event="NewDialog" Argument="MaintenanceTypeDlg" Condition="AI_MAINT" Ordering="99"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Install" Event="EndDialog" Argument="Return" Condition="AI_MAINT" Ordering="198"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Back" Event="NewDialog" Argument="CustomizeDlg" Condition="AI_MAINT" Ordering="202"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Install" Event="EndDialog" Argument="Return" Condition="AI_INSTALL" Ordering="197"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Back" Event="NewDialog" Argument="FolderDlg" Condition="AI_INSTALL" Ordering="201"/>
+    <ROW Dialog_="CustomizeDlg" Control_="Next" Event="NewDialog" Argument="VerifyReadyDlg" Condition="AI_MAINT" Ordering="101"/>
+    <ROW Dialog_="CustomizeDlg" Control_="Back" Event="NewDialog" Argument="MaintenanceTypeDlg" Condition="AI_MAINT" Ordering="1"/>
+    <ROW Dialog_="MaintenanceTypeDlg" Control_="ChangeButton" Event="NewDialog" Argument="CustomizeDlg" Condition="AI_MAINT" Ordering="501"/>
+    <ROW Dialog_="MaintenanceTypeDlg" Control_="Back" Event="NewDialog" Argument="MaintenanceWelcomeDlg" Condition="AI_MAINT" Ordering="1"/>
+    <ROW Dialog_="MaintenanceTypeDlg" Control_="RemoveButton" Event="NewDialog" Argument="VerifyRemoveDlg" Condition="AI_MAINT AND InstallMode=&quot;Remove&quot;" Ordering="601"/>
+    <ROW Dialog_="VerifyRemoveDlg" Control_="Back" Event="NewDialog" Argument="MaintenanceTypeDlg" Condition="AI_MAINT AND InstallMode=&quot;Remove&quot;" Ordering="1"/>
+    <ROW Dialog_="MaintenanceTypeDlg" Control_="RepairButton" Event="NewDialog" Argument="VerifyRepairDlg" Condition="AI_MAINT AND InstallMode=&quot;Repair&quot;" Ordering="601"/>
+    <ROW Dialog_="VerifyRepairDlg" Control_="Back" Event="NewDialog" Argument="MaintenanceTypeDlg" Condition="AI_MAINT AND InstallMode=&quot;Repair&quot;" Ordering="1"/>
+    <ROW Dialog_="VerifyRepairDlg" Control_="Repair" Event="EndDialog" Argument="Return" Condition="AI_MAINT AND InstallMode=&quot;Repair&quot;" Ordering="399" Options="1"/>
+    <ROW Dialog_="VerifyRemoveDlg" Control_="Remove" Event="EndDialog" Argument="Return" Condition="AI_MAINT AND InstallMode=&quot;Remove&quot;" Ordering="299" Options="1"/>
+    <ROW Dialog_="PatchWelcomeDlg" Control_="Next" Event="NewDialog" Argument="VerifyReadyDlg" Condition="AI_PATCH" Ordering="201"/>
+    <ROW Dialog_="ResumeDlg" Control_="Install" Event="EndDialog" Argument="Return" Condition="AI_RESUME" Ordering="299"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Install" Event="EndDialog" Argument="Return" Condition="AI_PATCH" Ordering="199"/>
+    <ROW Dialog_="VerifyReadyDlg" Control_="Back" Event="NewDialog" Argument="PatchWelcomeDlg" Condition="AI_PATCH" Ordering="203"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiCustActComponent">
+    <ROW Action="AI_DOWNGRADE" Type="19" Target="4010"/>
+    <ROW Action="AI_InstallModeCheck" Type="1" Source="aicustact.dll" Target="UpdateInstallMode" WithoutSeq="true"/>
+    <ROW Action="AI_PREPARE_UPGRADE" Type="65" Source="aicustact.dll" Target="PrepareUpgrade"/>
+    <ROW Action="AI_RESTORE_LOCATION" Type="65" Source="aicustact.dll" Target="RestoreLocation"/>
+    <ROW Action="AI_ResolveKnownFolders" Type="1" Source="aicustact.dll" Target="AI_ResolveKnownFolders"/>
+    <ROW Action="AI_ResolveLocalizedCredentials" Type="1" Source="aicustact.dll" Target="GetLocalizedCredentials"/>
+    <ROW Action="AI_SHOW_LOG" Type="65" Source="aicustact.dll" Target="LaunchLogFile" WithoutSeq="true"/>
+    <ROW Action="AI_STORE_LOCATION" Type="51" Source="ARPINSTALLLOCATION" Target="[APPDIR]"/>
+    <ROW Action="SET_APPDIR" Type="307" Source="APPDIR" Target="[ProgramFilesFolder][Manufacturer]\[ProductName]" MultiBuildTarget="DefaultBuild:[ProductName]"/>
+    <ROW Action="SET_SHORTCUTDIR" Type="307" Source="SHORTCUTDIR" Target="[ProgramMenuFolder][ProductName]"/>
+    <ROW Action="SET_TARGETDIR_TO_APPDIR" Type="51" Source="TARGETDIR" Target="[APPDIR]"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiEnvComponent">
+    <ROW Environment="PATH" Name="=-PATH" Value="[~];[APPDIR]" Component_="ProductInformation"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
+    <ROW Name="forth.exe" SourcePath="forth.ico" Index="0"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
+    <ROW Action="AI_DOWNGRADE" Condition="AI_NEWERPRODUCTFOUND AND (UILevel &lt;&gt; 5)" Sequence="210"/>
+    <ROW Action="AI_RESTORE_LOCATION" Condition="APPDIR=&quot;&quot;" Sequence="749"/>
+    <ROW Action="AI_STORE_LOCATION" Condition="(Not Installed) OR REINSTALL" Sequence="1501"/>
+    <ROW Action="AI_PREPARE_UPGRADE" Condition="AI_UPGRADE=&quot;No&quot; AND (Not Installed)" Sequence="1399"/>
+    <ROW Action="AI_ResolveKnownFolders" Sequence="52"/>
+    <ROW Action="AI_ResolveLocalizedCredentials" Sequence="51"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiInstallUISequenceComponent">
+    <ROW Action="AI_RESTORE_LOCATION" Condition="APPDIR=&quot;&quot;" Sequence="749"/>
+    <ROW Action="AI_ResolveKnownFolders" Sequence="52"/>
+    <ROW Action="AI_ResolveLocalizedCredentials" Sequence="51"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiLaunchConditionsComponent">
+    <ROW Condition="VersionNT" Description="[ProductName] cannot be installed on [WindowsType9XDisplay]" DescriptionLocId="AI.LaunchCondition.No9X" IsPredefined="true" Builds="DefaultBuild"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiRegsComponent">
+    <ROW Registry="Path" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Path" Value="[APPDIR]" Component_="ProductInformation"/>
+    <ROW Registry="Version" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">
+    <ATTRIBUTE name="UsedTheme" value="classic"/>
+  </COMPONENT>
+  <COMPONENT cid="caphyon.advinst.msicomp.MsiUpgradeComponent">
+    <ROW UpgradeCode="[|UpgradeCode]" VersionMax="[|ProductVersion]" Attributes="1025" ActionProperty="OLDPRODUCTS"/>
+    <ROW UpgradeCode="[|UpgradeCode]" VersionMin="[|ProductVersion]" Attributes="2" ActionProperty="AI_NEWERPRODUCTFOUND"/>
+  </COMPONENT>
+</DOCUMENT>

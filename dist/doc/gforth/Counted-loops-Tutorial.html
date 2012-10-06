@@ -1,0 +1,110 @@
+<html lang="en">
+<head>
+<title>Counted loops Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="General-Loops-Tutorial.html#General-Loops-Tutorial" title="General Loops Tutorial">
+<link rel="next" href="Recursion-Tutorial.html#Recursion-Tutorial" title="Recursion Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Counted-loops-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Recursion-Tutorial.html#Recursion-Tutorial">Recursion Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="General-Loops-Tutorial.html#General-Loops-Tutorial">General Loops Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.19 Counted loops</h3>
+
+<p><a name="index-loops_002c-counted_002c-tutorial-102"></a>
+<pre class="example">     : ^ ( n1 u -- n )
+     \ n = the uth power of n1
+       1 swap 0 u+do
+         over *
+       loop
+       nip ;
+     3 2 ^ .
+     4 3 ^ .
+</pre>
+   <p><code>U+do</code> (from <samp><span class="file">compat/loops.fs</span></samp>, if your Forth system doesn't
+have it) takes two numbers of the stack <code>( u3 u4 -- )</code>, and then
+performs the code between <code>u+do</code> and <code>loop</code> for <code>u3-u4</code>
+times (or not at all, if <code>u3-u4&lt;0</code>).
+
+   <p>You can see the stack effect design rules at work in the stack effect of
+the loop start words: Since the start value of the loop is more
+frequently constant than the end value, the start value is passed on
+the top-of-stack.
+
+   <p>You can access the counter of a counted loop with <code>i</code>:
+
+<pre class="example">     : fac ( u -- u! )
+       1 swap 1+ 1 u+do
+         i *
+       loop ;
+     5 fac .
+     7 fac .
+</pre>
+   <p>There is also <code>+do</code>, which expects signed numbers (important for
+deciding whether to enter the loop).
+
+   <blockquote>
+<b>Assignment:</b> Write a definition for computing the nth Fibonacci number. 
+</blockquote>
+
+   <p>You can also use increments other than 1:
+
+<pre class="example">     : up2 ( n1 n2 -- )
+       +do
+         i .
+       2 +loop ;
+     10 0 up2
+     
+     : down2 ( n1 n2 -- )
+       -do
+         i .
+       2 -loop ;
+     0 10 down2
+</pre>
+   <p>Reference: <a href="Counted-Loops.html#Counted-Loops">Counted Loops</a>.
+
+   </body></html>
+

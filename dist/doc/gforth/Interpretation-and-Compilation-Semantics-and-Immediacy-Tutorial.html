@@ -1,0 +1,126 @@
+<html lang="en">
+<head>
+<title>Interpretation and Compilation Semantics and Immediacy Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Files-Tutorial.html#Files-Tutorial" title="Files Tutorial">
+<link rel="next" href="Execution-Tokens-Tutorial.html#Execution-Tokens-Tutorial" title="Execution Tokens Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Interpretation-and-Compilation-Semantics-and-Immediacy-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Execution-Tokens-Tutorial.html#Execution-Tokens-Tutorial">Execution Tokens Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Files-Tutorial.html#Files-Tutorial">Files Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.28 Interpretation and Compilation Semantics and Immediacy</h3>
+
+<p><a name="index-semantics-tutorial-115"></a><a name="index-interpretation-semantics-tutorial-116"></a><a name="index-compilation-semantics-tutorial-117"></a><a name="index-immediate_002c-tutorial-118"></a>
+When a word is compiled, it behaves differently from being interpreted. 
+E.g., consider <code>+</code>:
+
+<pre class="example">     1 2 + .
+     : foo + ;
+</pre>
+   <p>These two behaviours are known as compilation and interpretation
+semantics.  For normal words (e.g., <code>+</code>), the compilation semantics
+is to append the interpretation semantics to the currently defined word
+(<code>foo</code> in the example above).  I.e., when <code>foo</code> is executed
+later, the interpretation semantics of <code>+</code> (i.e., adding two
+numbers) will be performed.
+
+   <p>However, there are words with non-default compilation semantics, e.g.,
+the control-flow words like <code>if</code>.  You can use <code>immediate</code> to
+change the compilation semantics of the last defined word to be equal to
+the interpretation semantics:
+
+<pre class="example">     : [FOO] ( -- )
+      5 . ; immediate
+     
+     [FOO]
+     : bar ( -- )
+       [FOO] ;
+     bar
+     see bar
+</pre>
+   <p>Two conventions to mark words with non-default compilation semantics are
+names with brackets (more frequently used) and to write them all in
+upper case (less frequently used).
+
+   <p>In Gforth (and many other systems) you can also remove the
+interpretation semantics with <code>compile-only</code> (the compilation
+semantics is derived from the original interpretation semantics):
+
+<pre class="example">     : flip ( -- )
+      6 . ; compile-only \ but not immediate
+     flip
+     
+     : flop ( -- )
+      flip ;
+     flop
+</pre>
+   <p>In this example the interpretation semantics of <code>flop</code> is equal to
+the original interpretation semantics of <code>flip</code>.
+
+   <p>The text interpreter has two states: in interpret state, it performs the
+interpretation semantics of words it encounters; in compile state, it
+performs the compilation semantics of these words.
+
+   <p>Among other things, <code>:</code> switches into compile state, and <code>;</code>
+switches back to interpret state.  They contain the factors <code>]</code>
+(switch to compile state) and <code>[</code> (switch to interpret state), that
+do nothing but switch the state.
+
+<pre class="example">     : xxx ( -- )
+       [ 5 . ]
+     ;
+     
+     xxx
+     see xxx
+</pre>
+   <p>These brackets are also the source of the naming convention mentioned
+above.
+
+   <p>Reference: <a href="Interpretation-and-Compilation-Semantics.html#Interpretation-and-Compilation-Semantics">Interpretation and Compilation Semantics</a>.
+
+   </body></html>
+

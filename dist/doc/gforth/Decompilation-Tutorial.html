@@ -1,0 +1,73 @@
+<html lang="en">
+<head>
+<title>Decompilation Tutorial - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tutorial.html#Tutorial" title="Tutorial">
+<link rel="prev" href="Colon-Definitions-Tutorial.html#Colon-Definitions-Tutorial" title="Colon Definitions Tutorial">
+<link rel="next" href="Stack_002dEffect-Comments-Tutorial.html#Stack_002dEffect-Comments-Tutorial" title="Stack-Effect Comments Tutorial">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Decompilation-Tutorial"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Stack_002dEffect-Comments-Tutorial.html#Stack_002dEffect-Comments-Tutorial">Stack-Effect Comments Tutorial</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Colon-Definitions-Tutorial.html#Colon-Definitions-Tutorial">Colon Definitions Tutorial</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tutorial.html#Tutorial">Tutorial</a>
+<hr>
+</div>
+
+<h3 class="section">3.10 Decompilation</h3>
+
+<p><a name="index-decompilation-tutorial-88"></a><a name="index-see-tutorial-89"></a>
+You can decompile colon definitions with <code>see</code>:
+
+<pre class="example">     see squared
+     see cubed
+</pre>
+   <p>In Gforth <code>see</code> shows you a reconstruction of the source code from
+the executable code.  Informations that were present in the source, but
+not in the executable code, are lost (e.g., comments).
+
+   <p>You can also decompile the predefined words:
+
+<pre class="example">     see .
+     see +
+</pre>
+   </body></html>
+

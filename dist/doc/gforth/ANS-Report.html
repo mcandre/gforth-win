@@ -1,0 +1,93 @@
+<html lang="en">
+<head>
+<title>ANS Report - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Tools.html#Tools" title="Tools">
+<link rel="prev" href="Tools.html#Tools" title="Tools">
+<link rel="next" href="Stack-depth-changes.html#Stack-depth-changes" title="Stack depth changes">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="ANS-Report"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Stack-depth-changes.html#Stack-depth-changes">Stack depth changes</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Tools.html#Tools">Tools</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Tools.html#Tools">Tools</a>
+<hr>
+</div>
+
+<h3 class="section">7.1 <samp><span class="file">ans-report.fs</span></samp>: Report the words used, sorted by wordset</h3>
+
+<p><a name="index-g_t_0040file_007bans_002dreport_002efs_007d-3048"></a><a name="index-report-the-words-used-in-your-program-3049"></a><a name="index-words-used-in-your-program-3050"></a>
+If you want to label a Forth program as ANS Forth Program, you must
+document which wordsets the program uses; for extension wordsets, it is
+helpful to list the words the program requires from these wordsets
+(because Forth systems are allowed to provide only some words of them).
+
+   <p>The <samp><span class="file">ans-report.fs</span></samp> tool makes it easy for you to determine which
+words from which wordset and which non-ANS words your application
+uses. You simply have to include <samp><span class="file">ans-report.fs</span></samp> before loading the
+program you want to check. After loading your program, you can get the
+report with <code>print-ans-report</code>. A typical use is to run this as
+batch job like this:
+<pre class="example">     gforth ans-report.fs myprog.fs -e "print-ans-report bye"
+</pre>
+   <p>The output looks like this (for <samp><span class="file">compat/control.fs</span></samp>):
+<pre class="example">     The program uses the following words
+     from CORE :
+     : POSTPONE THEN ; immediate ?dup IF 0=
+     from BLOCK-EXT :
+     \
+     from FILE :
+     (
+</pre>
+   <h4 class="subsection">7.1.1 Caveats</h4>
+
+<p>Note that <samp><span class="file">ans-report.fs</span></samp> just checks which words are used, not whether
+they are used in an ANS Forth conforming way!
+
+   <p>Some words are defined in several wordsets in the
+standard. <samp><span class="file">ans-report.fs</span></samp> reports them for only one of the
+wordsets, and not necessarily the one you expect. It depends on usage
+which wordset is the right one to specify. E.g., if you only use the
+compilation semantics of <code>S"</code>, it is a Core word; if you also use
+its interpretation semantics, it is a File word.
+
+   </body></html>
+

@@ -1,0 +1,115 @@
+<html lang="en">
+<head>
+<title>VM code generation - Vmgen (Gforth 0.7.0)</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Vmgen (Gforth 0.7.0)">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Using-the-generated-code.html#Using-the-generated-code" title="Using the generated code">
+<link rel="prev" href="VM-instruction-table.html#VM-instruction-table" title="VM instruction table">
+<link rel="next" href="Peephole-optimization.html#Peephole-optimization" title="Peephole optimization">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Vmgen
+(version 0.7.0, November 2, 2008),
+the virtual machine interpreter generator
+
+Copyright (C) 2002,2003,2005,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="VM-code-generation"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Peephole-optimization.html#Peephole-optimization">Peephole optimization</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="VM-instruction-table.html#VM-instruction-table">VM instruction table</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Using-the-generated-code.html#Using-the-generated-code">Using the generated code</a>
+<hr>
+</div>
+
+<h3 class="section">8.3 VM code generation</h3>
+
+<p><a name="index-VM-code-generation-168"></a><a name="index-code-generation_002c-VM-169"></a><a name="index-g_t_0040file_007b_002dgen_002ei_007d-output-file-170"></a>
+Vmgen generates VM code generation functions in <samp><var>name</var><span class="file">-gen.i</span></samp>
+that the front end can call to generate VM code.  This is essential for
+an interpretive system.
+
+   <p><a name="index-gen_005f_0040var_007binst_007d-171"></a>For a VM instruction `<samp><span class="samp">x ( #a b #c -- d )</span></samp>', Vmgen generates a
+function with the prototype
+
+<pre class="example">     void gen_x(Inst **ctp, a_type a, c_type c)
+</pre>
+   <p>The <code>ctp</code> argument points to a pointer to the next instruction. 
+<code>*ctp</code> is increased by the generation functions; i.e., you should
+allocate memory for the code to be generated beforehand, and start with
+*ctp set at the start of this memory area.  Before running out of
+memory, allocate a new area, and generate a VM-level jump to the new
+area (this overflow handling is not implemented in our examples).
+
+   <p><a name="index-immediate-arguments_002c-VM-code-generation-172"></a>The other arguments correspond to the immediate arguments of the VM
+instruction (with their appropriate types as defined in the
+<code>type_prefix</code> declaration.
+
+   <p>The following types, variables, and functions are used in
+<samp><var>name</var><span class="file">-gen.i</span></samp>:
+
+     
+<a name="index-Inst-173"></a>
+<dl><dt><code>Inst</code><dd>The type of the VM instruction; if you use threaded code, this is
+<code>void *</code>; for switch dispatch this is an integer type.
+
+     <p><a name="index-g_t_0040code_007bvm_005fprim_007d_002c-use-174"></a><br><dt><code>vm_prim</code><dd>The VM instruction table (type: <code>Inst *</code>, see <a href="VM-instruction-table.html#VM-instruction-table">VM instruction table</a>).
+
+     <p><a name="index-gen_005finst-175"></a><br><dt><code>gen_inst(Inst **ctp, Inst i)</code><dd>This function compiles the instruction <code>i</code>.  Take a look at it in
+<samp><span class="file">vmgen-ex/peephole.c</span></samp>.  It is trivial when you don't want to use
+superinstructions (just the last two lines of the example function), and
+slightly more complicated in the example due to its ability to use
+superinstructions (see <a href="Peephole-optimization.html#Peephole-optimization">Peephole optimization</a>).
+
+     <p><a name="index-genarg_005f_0040var_007btype_005fprefix_007d-176"></a><br><dt><code>genarg_</code><var>type_prefix</var><code>(Inst **ctp, </code><var>type</var> <var>type_prefix</var><code>)</code><dd>This compiles an immediate argument of <var>type</var> (as defined in a
+<code>type-prefix</code> definition).  These functions are trivial to define
+(see <samp><span class="file">vmgen-ex/support.c</span></samp>).  You need one of these functions for
+every type that you use as immediate argument.
+
+   </dl>
+
+   <p><a name="index-BB_005fBOUNDARY-177"></a>In addition to using these functions to generate code, you should call
+<code>BB_BOUNDARY</code> at every basic block entry point if you ever want to
+use superinstructions (or if you want to use the profiling supported by
+Vmgen; but this support is also useful mainly for selecting
+superinstructions).  If you use <code>BB_BOUNDARY</code>, you should also
+define it (take a look at its definition in <samp><span class="file">vmgen-ex/mini.y</span></samp>).
+
+   <p>You do not need to call <code>BB_BOUNDARY</code> after branches, because you
+will not define superinstructions that contain branches in the middle
+(and if you did, and it would work, there would be no reason to end the
+superinstruction at the branch), and because the branches announce
+themselves to the profiler.
+
+<!--  -->
+</body></html>
+

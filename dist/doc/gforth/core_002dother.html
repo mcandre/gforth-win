@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+<title>core-other - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="The-Core-Words.html#The-Core-Words" title="The Core Words">
+<link rel="prev" href="core_002dambcond.html#core_002dambcond" title="core-ambcond">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="core-other"></a>
+<a name="core_002dother"></a>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="core_002dambcond.html#core_002dambcond">core-ambcond</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="The-Core-Words.html#The-Core-Words">The Core Words</a>
+<hr>
+</div>
+
+<h4 class="subsection">8.1.3 Other system documentation</h4>
+
+<!--  -->
+<p><a name="index-other-system-documentation_002c-core-words-3177"></a><a name="index-core-words_002c-other-system-documentation-3178"></a>
+     <dl>
+<dt><i>nonstandard words using </i><code>PAD</code><i>:</i><dd><a name="index-g_t_0040code_007bPAD_007d-use-by-nonstandard-words-3179"></a>None.
+
+     <br><dt><i>operator's terminal facilities available:</i><dd><a name="index-operator_0027s-terminal-facilities-available-3180"></a>After processing the OS's command line, Gforth goes into interactive mode,
+and you can give commands to Gforth interactively. The actual facilities
+available depend on how you invoke Gforth.
+
+     <br><dt><i>program data space available:</i><dd><a name="index-program-data-space-available-3181"></a><a name="index-data-space-available-3182"></a><code>UNUSED .</code> gives the remaining dictionary space. The total
+dictionary space can be specified with the <code>-m</code> switch
+(see <a href="Invoking-Gforth.html#Invoking-Gforth">Invoking Gforth</a>) when Gforth starts up.
+
+     <br><dt><i>return stack space available:</i><dd><a name="index-return-stack-space-available-3183"></a>You can compute the total return stack space in cells with
+<code>s" RETURN-STACK-CELLS" environment? drop .</code>. You can specify it at
+startup time with the <code>-r</code> switch (see <a href="Invoking-Gforth.html#Invoking-Gforth">Invoking Gforth</a>).
+
+     <br><dt><i>stack space available:</i><dd><a name="index-stack-space-available-3184"></a>You can compute the total data stack space in cells with
+<code>s" STACK-CELLS" environment? drop .</code>. You can specify it at
+startup time with the <code>-d</code> switch (see <a href="Invoking-Gforth.html#Invoking-Gforth">Invoking Gforth</a>).
+
+     <br><dt><i>system dictionary space required, in address units:</i><dd><a name="index-system-dictionary-space-required_002c-in-address-units-3185"></a>Type <code>here forthstart - .</code> after startup. At the time of this
+writing, this gives 80080 (bytes) on a 32-bit system. 
+</dl>
+
+<!-- ===================================================================== -->
+</body></html>
+

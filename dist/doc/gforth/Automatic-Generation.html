@@ -1,0 +1,141 @@
+<html lang="en">
+<head>
+<title>Automatic Generation - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Primitives.html#Primitives" title="Primitives">
+<link rel="prev" href="Primitives.html#Primitives" title="Primitives">
+<link rel="next" href="TOS-Optimization.html#TOS-Optimization" title="TOS Optimization">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Automatic-Generation"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="TOS-Optimization.html#TOS-Optimization">TOS Optimization</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Primitives.html#Primitives">Primitives</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Primitives.html#Primitives">Primitives</a>
+<hr>
+</div>
+
+<h4 class="subsection">14.3.1 Automatic Generation</h4>
+
+<p><a name="index-primitives_002c-automatic-generation-3488"></a>
+<a name="index-g_t_0040file_007bprims2x_002efs_007d-3489"></a>
+Since the primitives are implemented in a portable language, there is no
+longer any need to minimize the number of primitives. On the contrary,
+having many primitives has an advantage: speed. In order to reduce the
+number of errors in primitives and to make programming them easier, we
+provide a tool, the primitive generator (<samp><span class="file">prims2x.fs</span></samp> aka Vmgen,
+see <a href="../vmgen/index.html#Top">Vmgen</a>), that automatically
+generates most (and sometimes all) of the C code for a primitive from
+the stack effect notation.  The source for a primitive has the following
+form:
+
+   <p><a name="index-primitive-source-format-3490"></a>
+<pre class="format"><i>Forth-name</i>  ( <i>stack-effect</i> )        <i>category</i>    [<i>pronounc.</i>]
+[<code>""</code><i>glossary entry</i><code>""</code>]
+<i>C code</i>
+[<code>:</code>
+<i>Forth code</i>]
+</pre>
+   <p>The items in brackets are optional. The category and glossary fields
+are there for generating the documentation, the Forth code is there
+for manual implementations on machines without GNU C. E.g., the source
+for the primitive <code>+</code> is:
+<pre class="example">     +    ( n1 n2 -- n )   core    plus
+     n = n1+n2;
+</pre>
+   <p>This looks like a specification, but in fact <code>n = n1+n2</code> is C
+code. Our primitive generation tool extracts a lot of information from
+the stack effect notations<a rel="footnote" href="#fn-1" name="fnd-1"><sup>1</sup></a>: The number
+of items popped from and pushed on the stack, their type, and by what
+name they are referred to in the C code. It then generates a C code
+prelude and postlude for each primitive. The final C code for <code>+</code>
+looks like this:
+
+<pre class="example">     I_plus: /* + ( n1 n2 -- n ) */  /* label, stack effect */
+     /*  */                          /* documentation */
+     NAME("+")                       /* debugging output (with -DDEBUG) */
+     {
+     DEF_CA                          /* definition of variable ca (indirect threading) */
+     Cell n1;                        /* definitions of variables */
+     Cell n2;
+     Cell n;
+     NEXT_P0;                        /* NEXT part 0 */
+     n1 = (Cell) sp[1];              /* input */
+     n2 = (Cell) TOS;
+     sp += 1;                        /* stack adjustment */
+     {
+     n = n1+n2;                      /* C code taken from the source */
+     }
+     NEXT_P1;                        /* NEXT part 1 */
+     TOS = (Cell)n;                  /* output */
+     NEXT_P2;                        /* NEXT part 2 */
+     }
+</pre>
+   <p>This looks long and inefficient, but the GNU C compiler optimizes quite
+well and produces optimal code for <code>+</code> on, e.g., the R3000 and the
+HP RISC machines: Defining the <code>n</code>s does not produce any code, and
+using them as intermediate storage also adds no cost.
+
+   <p>There are also other optimizations that are not illustrated by this
+example: assignments between simple variables are usually for free (copy
+propagation). If one of the stack items is not used by the primitive
+(e.g.  in <code>drop</code>), the compiler eliminates the load from the stack
+(dead code elimination). On the other hand, there are some things that
+the compiler does not do, therefore they are performed by
+<samp><span class="file">prims2x.fs</span></samp>: The compiler does not optimize code away that stores
+a stack item to the place where it just came from (e.g., <code>over</code>).
+
+   <p>While programming a primitive is usually easy, there are a few cases
+where the programmer has to take the actions of the generator into
+account, most notably <code>?dup</code>, but also words that do not (always)
+fall through to <code>NEXT</code>.
+
+   <p>For more information
+
+   <div class="footnote">
+<hr>
+<h4>Footnotes</h4><p class="footnote"><small>[<a name="fn-1" href="#fnd-1">1</a>]</small> We use a one-stack notation, even
+though we have separate data and floating-point stacks; The separate
+notation can be generated easily from the unified notation.</p>
+
+   <p><hr></div>
+
+   </body></html>
+

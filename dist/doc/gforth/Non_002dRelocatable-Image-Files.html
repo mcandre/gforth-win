@@ -1,0 +1,74 @@
+<html lang="en">
+<head>
+<title>Non-Relocatable Image Files - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Image-Files.html#Image-Files" title="Image Files">
+<link rel="prev" href="Image-File-Background.html#Image-File-Background" title="Image File Background">
+<link rel="next" href="Data_002dRelocatable-Image-Files.html#Data_002dRelocatable-Image-Files" title="Data-Relocatable Image Files">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Non-Relocatable-Image-Files"></a>
+<a name="Non_002dRelocatable-Image-Files"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Data_002dRelocatable-Image-Files.html#Data_002dRelocatable-Image-Files">Data-Relocatable Image Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Image-File-Background.html#Image-File-Background">Image File Background</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Image-Files.html#Image-Files">Image Files</a>
+<hr>
+</div>
+
+<h3 class="section">13.3 Non-Relocatable Image Files</h3>
+
+<p><a name="index-non_002drelocatable-image-files-3399"></a><a name="index-image-file_002c-non_002drelocatable-3400"></a>
+These files are simple memory dumps of the dictionary. They are specific
+to the executable (i.e., <samp><span class="file">gforth</span></samp> file) they were created
+with. What's worse, they are specific to the place on which the
+dictionary resided when the image was created. Now, there is no
+guarantee that the dictionary will reside at the same place the next
+time you start Gforth, so there's no guarantee that a non-relocatable
+image will work the next time (Gforth will complain instead of crashing,
+though).
+
+   <p>You can create a non-relocatable image file with
+
+   <p><a name="index-savesystem-_0040var_007b-_0022name_0022-_002d_002d---_007d--gforth-3401"></a><a name="index-g_t_0040code_007bsavesystem_007d-3402"></a><a name="index-savesystem-3403"></a>
+<pre class="format"><code>savesystem</code>       <i>"name" &ndash;  </i>       gforth       &ldquo;savesystem&rdquo;
+</pre>
+   </body></html>
+

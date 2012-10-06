@@ -1,0 +1,101 @@
+<html lang="en">
+<head>
+<title>Environment variables - Gforth Manual</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Gforth Manual">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="start" href="index.html#Top">
+<link rel="up" href="Gforth-Environment.html#Gforth-Environment" title="Gforth Environment">
+<link rel="prev" href="Command_002dline-editing.html#Command_002dline-editing" title="Command-line editing">
+<link rel="next" href="Gforth-Files.html#Gforth-Files" title="Gforth Files">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+This manual is for Gforth (version 0.7.0, November 2, 2008),
+a fast and portable implementation of the ANS Forth language.  It
+serves as reference manual, but it also contains an introduction to
+Forth and a Forth tutorial.
+
+Copyright (C) 1995, 1996, 1997, 1998, 2000, 2003, 2004,2005,2006,2007,2008 Free Software Foundation, Inc.
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.1 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with the Front-Cover texts
+     being ``A GNU Manual,'' and with the Back-Cover Texts as in (a)
+     below.  A copy of the license is included in the section entitled
+     ``GNU Free Documentation License.''
+
+     (a) The FSF's Back-Cover Text is: ``You have freedom to copy and
+     modify this GNU Manual, like GNU software.  Copies published by
+     the Free Software Foundation raise funds for GNU development.''
+   -->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<div class="node">
+<p>
+<a name="Environment-variables"></a>
+Next:&nbsp;<a rel="next" accesskey="n" href="Gforth-Files.html#Gforth-Files">Gforth Files</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="Command_002dline-editing.html#Command_002dline-editing">Command-line editing</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="Gforth-Environment.html#Gforth-Environment">Gforth Environment</a>
+<hr>
+</div>
+
+<h3 class="section">2.4 Environment variables</h3>
+
+<p><a name="index-environment-variables-56"></a>
+Gforth uses these environment variables:
+
+     <ul>
+<li><a name="index-g_t_0040code_007bGFORTHHIST_007d-_002d_002d-environment-variable-57"></a><code>GFORTHHIST</code> &ndash; (Unix systems only) specifies the directory in which to
+open/create the history file, <samp><span class="file">.gforth-history</span></samp>. Default:
+<code>$HOME</code>.
+
+     <li><a name="index-g_t_0040code_007bGFORTHPATH_007d-_002d_002d-environment-variable-58"></a><code>GFORTHPATH</code> &ndash; specifies the path used when searching for the gforth image file and
+for Forth source-code files.
+
+     <li><a name="index-g_t_0040code_007bLANG_007d-_002d_002d-environment-variable-59"></a><code>LANG</code> &ndash; see <code>LC_CTYPE</code>
+
+     <li><a name="index-g_t_0040code_007bLC_005fALL_007d-_002d_002d-environment-variable-60"></a><code>LC_ALL</code> &ndash; see <code>LC_CTYPE</code>
+
+     <li><a name="index-g_t_0040code_007bLC_005fCTYPE_007d-_002d_002d-environment-variable-61"></a><code>LC_CTYPE</code> &ndash; If this variable contains &ldquo;UTF-8&rdquo; on Gforth
+startup, Gforth uses the UTF-8 encoding for strings internally and
+expects its input and produces its output in UTF-8 encoding, otherwise
+the encoding is 8bit (see see <a href="Xchars-and-Unicode.html#Xchars-and-Unicode">Xchars and Unicode</a>).  If this
+environment variable is unset, Gforth looks in <code>LC_ALL</code>, and if
+that is unset, in <code>LANG</code>.
+
+     <li><a name="index-g_t_0040code_007bGFORTHSYSTEMPREFIX_007d-_002d_002d-environment-variable-62"></a>
+<code>GFORTHSYSTEMPREFIX</code> &ndash; specifies what to prepend to the argument
+of <code>system</code> before passing it to C's <code>system()</code>.  Default:
+<code>"./$COMSPEC /c "</code> on Windows, <code>""</code> on other OSs.  The prefix
+and the command are directly concatenated, so if a space between them is
+necessary, append it to the prefix.
+
+     <li><a name="index-g_t_0040code_007bGFORTH_007d-_002d_002d-environment-variable-63"></a><code>GFORTH</code> &ndash; used by <samp><span class="file">gforthmi</span></samp>, See <a href="gforthmi.html#gforthmi">gforthmi</a>.
+
+     <li><a name="index-g_t_0040code_007bGFORTHD_007d-_002d_002d-environment-variable-64"></a><code>GFORTHD</code> &ndash; used by <samp><span class="file">gforthmi</span></samp>, See <a href="gforthmi.html#gforthmi">gforthmi</a>.
+
+     <li><a name="index-g_t_0040code_007bTMP_007d_002c-_0040code_007bTEMP_007d-_002d-environment-variable-65"></a><code>TMP</code>, <code>TEMP</code> - (non-Unix systems only) used as a potential
+location for the history file. 
+</ul>
+
+<!-- also POSIXELY_CORRECT LINES COLUMNS HOME but no interest in -->
+<!-- mentioning these. -->
+<p>All the Gforth environment variables default to sensible values if they
+are not set.
+
+<!--  -->
+</body></html>
+
