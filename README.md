@@ -2,7 +2,7 @@
 
 # ABOUT
 
-gforth-win takes a folder of gforth binaries and wraps them in a basic MSI installer that adds `gforth` to `PATH`.
+gforth-win takes a folder of gforth (GNU Forth) binaries and wraps them in a basic MSI installer that adds `gforth` to `PATH`.
 
 # DOWNLOAD
 
